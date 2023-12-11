@@ -8,3 +8,9 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
+
+rootProject.name = "riscjBlockitsMod"
+include (':controller')
+include (':model')
+include (':view')
+
