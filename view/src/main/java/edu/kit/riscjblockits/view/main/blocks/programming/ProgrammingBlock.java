@@ -14,7 +14,7 @@ public class ProgrammingBlock extends ModBlock {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return null;
+        return new ProgrammingBlockEntity(pos, state);
     }
 
 

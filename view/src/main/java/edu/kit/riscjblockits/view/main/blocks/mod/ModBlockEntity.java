@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.main.blocks.mod;
 
 import edu.kit.riscjblockits.controller.Controller;
+import edu.kit.riscjblockits.view.main.Data;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -20,7 +21,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        controller.loadFrom(nbt.getString(CONTROLLER_NBT_TAG));
+        controller.setData(new Data(nbt));
     }
 
     @Override

@@ -15,6 +15,6 @@ public class SystemClockBlock extends ComputerBlock {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return null;
+        return new SystemClockBlockEntity(pos, state);
     }
 }
