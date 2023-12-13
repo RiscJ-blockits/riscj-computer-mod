@@ -44,6 +44,7 @@ dependencies {
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 	implementation project(':controller')
+	implementation project(':model')
 }
 
 processResources {
