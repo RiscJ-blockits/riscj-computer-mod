@@ -1,6 +1,8 @@
 package edu.kit.riscjblockits.controller.computerhandler;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.model.BusSystemModel;
+import edu.kit.riscjblockits.model.blocks.BusModel;
 
 import java.util.List;
 
@@ -9,10 +11,16 @@ import java.util.List;
  */
 public class ClusterHandler implements IArchitectureCheckable {
 
+    private List<BlockController> clusterBlocks;
+    BusSystemModel busSystemModel;
     public ClusterHandler(BlockController blockController) {
+        clusterBlocks.add(blockController);
+
     }
-    //check clustering options --> reference class needed or not
-    public ClusterHandler combine(List<ClusterHandler> clusterHandlers) {
-        return null;
+
+    public void combine() {
+
+
+
     }
 }

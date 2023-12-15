@@ -8,7 +8,7 @@ public class ControlUnitController extends BlockController{
     }
 
     @Override
-    protected BlockModel getBlockModel() {
+    protected BlockModel createBlockModel() {
         return null;
     }
 }

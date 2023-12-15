@@ -1,9 +1,13 @@
 package edu.kit.riscjblockits.model.blocks;
 
+import java.util.List;
+
 public abstract class BlockModel implements IControllerQueryable, IViewQueryable {
 
     private boolean hasUnqueriedStateChange;
     private byte[] data;
+
+    private BlockPosition position;
 
     //Public Access Methods distinguished by users delegating access logic
 
@@ -18,5 +22,8 @@ public abstract class BlockModel implements IControllerQueryable, IViewQueryable
     }
 
     public abstract boolean getHasUnqueriedStateChange();
-    
+
+    public void setPosition(BlockPosition position) {
+        this.position = position;
+    }
 }

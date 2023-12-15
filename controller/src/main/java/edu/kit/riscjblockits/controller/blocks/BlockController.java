@@ -1,24 +1,28 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.controller.computerhandler.ClusterHandler;
+import edu.kit.riscjblockits.controller.data.IDataContainer;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
+import edu.kit.riscjblockits.model.blocks.BlockPosition;
 
 import java.util.List;
 
 public abstract class BlockController {
 
     private final BlockModel blockModel;
+    private final IQueryableBlockEntity blockEntity;
     private ClusterHandler clusterHandler;
 
     protected BlockController(IQueryableBlockEntity blockEntity) {
-        this.blockModel = getBlockModel();
-        blockEntity.setBlockModel();
-        this.clusterHandler = new ClusterHandler(this);
-        List<ClusterHandler> neighborClusters = controllerListToClusterList(blockEntity.getComputerNeighbours());
-        this.clusterHandler = this.clusterHandler.combine(neighborClusters);
+        this.blockEntity = blockEntity;
+        this.blockModel = createBlockModel();
+        blockEntity.setBlockModel(this.blockModel);
+        blockModel.setPosition(getBlockPosition());
+        clusterHandler = new ClusterHandler(this);
+        clusterHandler.combine();
     }
 
-    abstract protected BlockModel getBlockModel();
+    abstract protected BlockModel createBlockModel();
 
     private List<ClusterHandler> controllerListToClusterList(List<BlockController> blockControllers) {
         return null;
@@ -28,4 +32,25 @@ public abstract class BlockController {
         //blockModel.setData(data);
     }
 
+    public void setData(IDataContainer data) {
+        //
+    }
+
+    public String saveAsString() {
+        return "";
+    }
+
+    //public abstract boolean isBus();
+
+    /**
+     * Nur für den Bus relevant
+     * @return NULL wenn kein Bus, Model wenn ein Bus.
+     */
+    public Object getModel() {
+        return blockModel;
+    }
+
+    public BlockPosition getBlockPosition() {
+        return blockEntity.getBlockPosition();
+    }
 }

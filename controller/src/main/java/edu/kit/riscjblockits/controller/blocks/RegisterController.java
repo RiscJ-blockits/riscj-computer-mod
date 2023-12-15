@@ -8,7 +8,7 @@ public class RegisterController extends BlockController {
     }
 
     @Override
-    protected BlockModel getBlockModel() {
+    protected BlockModel createBlockModel() {
         return null;
     }
 }
