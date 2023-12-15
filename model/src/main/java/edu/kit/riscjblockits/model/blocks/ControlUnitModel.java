@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.model.blocks;
 
-public class SpeicherModel extends BlockModel {
+public class ControlUnitModel extends BlockModel{
     @Override
     public boolean getHasUnqueriedStateChange() {
         return false;
