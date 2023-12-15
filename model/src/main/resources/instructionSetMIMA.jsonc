@@ -1,0 +1,201 @@
+{
+    "name": "MIMA",             // declare name
+    "instruction_length": 24,   // declade instruction length
+    
+    "registers": {              // define existing (required) registers
+        "alu": [                // alu specific registers
+            "X",
+            "Y",
+            "Z"
+        ],
+        "float": {},            // float registers
+        "integer": {            // 
+        "IAR": 0,
+        "IR": 1,
+        "EINS": 2,
+        "AKKU": 3,
+        "SAR": 4,
+        "SDR": 5
+        }
+    },
+    "memory": {
+        "word_length": 24,
+        "address_length": 20,
+        "access_delay": 3,
+        "byte_order": "le",
+        "address_relay": "SAR",
+        "data_relay": "SDR"
+    },
+    "alu_operations": {
+        "0": "None",
+        "1": "ADD",
+        "2": "RR",
+        "3": "AND",
+        "4": "OR",
+        "5": "XOR",
+        "6": "NEG",
+        "7": "EQ",
+        "8": "JMN"
+    },
+    "parsing": {
+        "instructions": {
+            "LDC [const]": {                    // load constant 
+                "execution": [
+                    ["AKKU", "[const]", ""]     // set AKKU to contents of constant
+                ],
+                "translation": [
+                    "0000",                     // op-code
+                    "[const]<20>"               // 20 bit constant
+                ]
+            },
+            "ADD [addr]": {
+                "execution": [
+                    ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],     
+                    // to     from memoryAction [to         from]
+                    ["X", "AKKU", "r"],
+                    ["", "", "r", ["SDR", "<mem_data>"]],
+                    ["Y", "SDR", ""],
+                    ["ADD", "Z", "X", "Y", ""],
+                    //alu-op to   x   y  memAction
+                    ["AKKU", "Z", ""]
+                ],
+                "translation": [
+                    "0011",
+                    "[addr]<20>"
+                ]
+            },
+            "LDV [addr]": {
+                "execution": [
+                    ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
+                    ["", "", "r"],
+                    ["", "", "r", ["SDR", "<mem_data>"]],
+                    ["AKKU", "SDR", ""]
+                ],
+                "translation": [
+                  "0001",
+                  "[addr]<20>"
+                ]
+            },
+            "STV [addr]": {
+                "execution": [
+                    ["SAR", "[addr]", "w", ["<mem_addr>", "SAR"]],
+                    ["SDR", "AKKU", "w"],
+                    ["", "", "w", ["<mem_data>", "SDR"]]
+                ],
+                "translation": [
+                  "0010",
+                  "[addr]<20>"
+                ]
+            },
+            "AND [addr]": {
+                "execution": [
+                    ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
+                    ["X", "AKKU", "r"],
+                    ["", "", "r", ["SDR", "<mem_data>"]],
+                    ["Y", "SDR", ""],
+                    ["AND", "Z", "X", "Y", ""],
+                    ["AKKU", "Z", ""]
+                ],
+                "translation": [
+                  "0100",
+                  "[addr]<20>"
+                ]
+            },
+            "OR [addr]": {
+                "execution": [
+                    ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
+                    ["X", "AKKU", "r"],
+                    ["", "", "r", ["SDR", "<mem_data>"]],
+                    ["Y", "SDR", ""],
+                    ["OR", "Z", "X", "Y", ""],
+                    ["AKKU", "Z", ""]
+                ],
+                "translation": [
+                  "0101",
+                  "[addr]<20>"
+                ]
+            },
+            "XOR [addr]": {
+                "execution": [
+                    ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
+                    ["X", "AKKU", "r"],
+                    ["", "", "r", ["SDR", "<mem_data>"]],
+                    ["Y", "SDR", ""],
+                    ["XOR", "Z", "X", "Y", ""],
+                    ["AKKU", "Z", ""]
+                ],
+                "translation": [
+                  "0110",
+                  "[addr]<20>"
+                ]
+            },
+            "HALT": {
+                "execution": [
+                    ["PAUSE"]
+                ],
+                "translation": [
+                  "11110000",
+                  "0000000000000000"
+                ]
+            },
+            "NOT": {
+                "execution": [
+                    ["X", "AKKU", ""],
+                    ["NEG", "Z", "X", "", ""],
+                    ["AKKU", "Z", ""]
+                            ],
+                "translation": [
+                  "11110001",
+                  "0000000000000000"
+                ]
+            },
+            "RAR": {
+                "execution": [
+                    ["X", "AKKU", ""],
+                    ["RR", "Z", "X", "", ""],
+                    ["AKKU", "Z", ""]
+                            ],
+                "translation": [
+                  "11110010",
+                  "0000000000000000"
+                ]
+            },
+            "EQL [addr]": {
+                "execution": [
+                  ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
+                  ["X", "AKKU", "r"],
+                  ["", "", "r", ["SDR", "<mem_data>"]],
+                  ["Y", "SDR", ""],
+                  ["EQ", "Z", "X", "Y", ""],
+                  ["AKKU", "Z"]
+                ],
+                "translation": [
+                  "0111",
+                  "[addr]<20>"
+                ]
+            },
+            "JMP [addr]": {
+                "execution": [
+                  ["IAR", "[addr]", ""]
+                ],
+                "translation": [
+                  "1000",
+                  "[addr]<20>"
+                ]
+            },
+            "JMN [addr]": {
+                "execution": [
+                  ["X", "AKKU", ""],
+                  ["Y", "[addr]", ""],
+                  ["JMN", "", "X", "Y", ""]
+                ],
+                "translation": [
+                  "1001",
+                  "[addr]<20>"
+                ]
+              }
+              
+            
+        }
+    }
+}
