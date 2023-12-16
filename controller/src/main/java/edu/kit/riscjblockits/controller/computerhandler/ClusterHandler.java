@@ -55,6 +55,7 @@ public class ClusterHandler implements IArchitectureCheckable {
 
     public void blockDestroyed(BlockController destroyedBlockController) {
         List<BusSystemModel> newBusSystemModels = busSystemModel.splitBusSystemModel(destroyedBlockController.getBlockPosition());
+        System.out.println(newBusSystemModels.size());
         if (destroyedBlockController.isBus()) {
             busBlocks.remove(destroyedBlockController);
         } else {
@@ -64,6 +65,7 @@ public class ClusterHandler implements IArchitectureCheckable {
         for (BusSystemModel newBusSystemModel: newBusSystemModels) {
             newClusterHandlers.add(new ClusterHandler(newBusSystemModel));
         }
+        System.out.println(newClusterHandlers.size());
         for (BlockController blockController: blocks) {
             for (ClusterHandler clusterHandler: newClusterHandlers) {
                 if (clusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {

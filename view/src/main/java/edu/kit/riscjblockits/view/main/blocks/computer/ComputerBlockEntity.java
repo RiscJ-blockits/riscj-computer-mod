@@ -64,8 +64,10 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements IQue
     }
 
     public void onBroken() {
+        if (!world.isClient) {
+            getController().onBroken();
+        }
         //ToDo controller must be there
-        //getController().onBroken();
     }
 
 

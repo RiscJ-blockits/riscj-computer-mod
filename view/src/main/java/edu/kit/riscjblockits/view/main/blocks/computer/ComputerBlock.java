@@ -28,9 +28,15 @@ public abstract class ComputerBlock extends ModBlock {
     }
 
     @Override
-    public void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
-        super.onBroken(world, pos, state);
-        ((ComputerBlockEntity)world.getBlockEntity(pos)).onBroken();
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        //check if the block has been broken
+        if (!world.isClient && state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof ComputerBlockEntity) {
+                ((ComputerBlockEntity) blockEntity).onBroken();
+            }
+        }
+        super.onStateReplaced(state, world, pos, newState, moved);
     }
 
     @Override

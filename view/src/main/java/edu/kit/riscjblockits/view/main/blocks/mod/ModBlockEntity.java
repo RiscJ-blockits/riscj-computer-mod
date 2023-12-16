@@ -56,6 +56,9 @@ public abstract class ModBlockEntity extends BlockEntity {
     }
 
     public BlockController getController() {
+        if (world.isClient) {
+            return null;
+        }
         return controller;
     }
 
