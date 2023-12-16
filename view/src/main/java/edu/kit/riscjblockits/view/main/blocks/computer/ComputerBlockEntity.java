@@ -39,19 +39,24 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements IQue
      * @return
      */
     public List<BlockController> getComputerNeighbours() {
-
-        if (world.getBlockEntity(getPos().down()).getType() ) {
-
-
+        List<BlockController> neigbhours = new ArrayList<>();
+        List<BlockEntity> blockEntities = new ArrayList<>();
+        World world = getWorld();
+        blockEntities.add(world.getBlockEntity(getPos().down()));
+        blockEntities.add(world.getBlockEntity(getPos().up()));
+        blockEntities.add(world.getBlockEntity(getPos().south()));
+        blockEntities.add(world.getBlockEntity(getPos().north()));
+        blockEntities.add(world.getBlockEntity(getPos().east()));
+        blockEntities.add(world.getBlockEntity(getPos().west()));
+        //test blocks
+        for (BlockEntity entity:blockEntities) {
+            if (entity instanceof ComputerBlockEntity) {               //FixMe instanceof schöner machen
+                if (((ComputerBlockEntity) entity).getModblockType() == EntityType.BUS) {
+                    neigbhours.add(((ComputerBlockEntity) entity).getController());
+                }
+            }
         }
-
-        world.getBlockEntity(getPos().down())
-
-
-
-
-
-        return null;
+        return neigbhours;
     }
 
     public void setBlockModel(BlockModel model) {

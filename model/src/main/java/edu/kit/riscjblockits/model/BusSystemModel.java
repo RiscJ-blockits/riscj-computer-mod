@@ -23,6 +23,9 @@ public class BusSystemModel {
         addNode(firstBlock);
     }
 
+        private BusSystemModel(Map<BlockPosition, List<BlockPosition>> adjPositions) {
+        this.adjPositions = adjPositions;
+    }
     public void addNode(BlockPosition newBlock) {
         adjPositions.put(newBlock, new ArrayList<>());
     }
@@ -98,5 +101,9 @@ public class BusSystemModel {
             }
         }
         return discovered;
+    }
+
+    public boolean isNode(BlockPosition blockPosition) {
+        return adjPositions.containsKey(blockPosition);
     }
 }
