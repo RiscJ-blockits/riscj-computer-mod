@@ -20,7 +20,7 @@ public abstract class BlockController {
         this.blockModel = createBlockModel();
         blockEntity.setBlockModel(this.blockModel);
         blockModel.setPosition(getBlockPosition());
-        clusterHandler = new ClusterHandler(this);
+        new ClusterHandler(this);
     }
 
     abstract protected BlockModel createBlockModel();

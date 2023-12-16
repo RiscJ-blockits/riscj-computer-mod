@@ -2,8 +2,6 @@ package edu.kit.riscjblockits.controller.computerhandler;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.model.BusSystemModel;
-import edu.kit.riscjblockits.model.blocks.BlockPosition;
-import edu.kit.riscjblockits.model.blocks.BusModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,7 @@ public class ClusterHandler implements IArchitectureCheckable {
         }
         busSystemModel = new BusSystemModel(blockController.getBlockPosition());
         System.out.println("Start combine");
-        combine(blockController);
+        combineToNeighbours(blockController);
     }
 
     public ClusterHandler(BusSystemModel busSystemModel) {
@@ -37,25 +35,42 @@ public class ClusterHandler implements IArchitectureCheckable {
         this.busSystemModel = busSystemModel;
     }
 
-    private void combine(BlockController blockController) {
+    private void combineToNeighbours(BlockController blockController) {
         List<BlockController> neighbourBlockControllers = blockController.getNeighbours();
+        ClusterHandler actualCluster = this;
         for (BlockController neighbourBlock: neighbourBlockControllers) {
-            busSystemModel.combineGraph(blockController.getBlockPosition(), neighbourBlock.getBlockPosition(), neighbourBlock.getClusterHandler().getBusSystemModel());
-            blocks.addAll(neighbourBlock.getClusterHandler().getBlocks());
-            for (BlockController newBlock: (neighbourBlock.getClusterHandler().getBlocks())) {
-                newBlock.setClusterHandler(this);
-            }
-            busBlocks.addAll(neighbourBlock.getClusterHandler().getBusBlocks());
-            for (BlockController newBlock: (neighbourBlock.getClusterHandler().getBusBlocks())) {
-                newBlock.setClusterHandler(this);
-            }
-            System.out.println("combine");
+            neighbourBlock.getClusterHandler().combine(neighbourBlock, blockController, actualCluster);
+            actualCluster = neighbourBlock.getClusterHandler();
+            //busSystemModel.combineGraph(blockController.getBlockPosition(), neighbourBlock.getBlockPosition(), neighbourBlock.getClusterHandler().getBusSystemModel());
+            //blocks.addAll(neighbourBlock.getClusterHandler().getBlocks());
+            //for (BlockController newBlock: (neighbourBlock.getClusterHandler().getBlocks())) {
+            //    newBlock.setClusterHandler(this);
+            //}
+            //busBlocks.addAll(neighbourBlock.getClusterHandler().getBusBlocks());
+            //for (BlockController newBlock: (neighbourBlock.getClusterHandler().getBusBlocks())) {
+            //    newBlock.setClusterHandler(this);
+            //}
+            //System.out.println("combine");
         }
     }
 
+    public void combine(BlockController ownBlock,BlockController neighbourBlock, ClusterHandler oldCluster) {
+        busSystemModel.combineGraph(ownBlock.getBlockPosition(), neighbourBlock.getBlockPosition(), oldCluster.getBusSystemModel());
+        blocks.addAll(oldCluster.getBlocks());
+        for (BlockController newBlock: (oldCluster.getBlocks())) {
+            newBlock.setClusterHandler(this);
+        }
+        busBlocks.addAll(oldCluster.getBusBlocks());
+        for (BlockController newBlock: (oldCluster.getBusBlocks())) {
+            newBlock.setClusterHandler(this);
+        }
+        System.out.println("combine");
+    }
+
+
     public void blockDestroyed(BlockController destroyedBlockController) {
         List<BusSystemModel> newBusSystemModels = busSystemModel.splitBusSystemModel(destroyedBlockController.getBlockPosition());
-        System.out.println(newBusSystemModels.size());
+        //System.out.println(newBusSystemModels.size());
         if (destroyedBlockController.isBus()) {
             busBlocks.remove(destroyedBlockController);
         } else {
