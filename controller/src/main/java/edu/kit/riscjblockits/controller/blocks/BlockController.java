@@ -42,7 +42,9 @@ public abstract class BlockController {
         return "";
     }
 
-    public abstract boolean isBus();
+    public boolean isBus() {
+        return false;
+    }
 
     /**
      * Nur für den Bus relevant

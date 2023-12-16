@@ -1,15 +1,19 @@
 package edu.kit.riscjblockits.view.main.blocks.computer;
 
-import edu.kit.riscjblockits.controller.Controller;
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableBlockEntity;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
+import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.PistonBlock;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,6 +30,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements IQue
     private BlockModel model;
     public ComputerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+        setType(EntityType.CONNECTABLE);
     }
 
     /**
@@ -49,10 +54,13 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements IQue
         return null;
     }
 
-    protected void updateDataFromModel() {}
-
     public void setBlockModel(BlockModel model) {
         this.model = model;
+    }
+
+    public void onBroken() {
+        //ToDo controller must be there
+        //getController().onBroken();
     }
 
 

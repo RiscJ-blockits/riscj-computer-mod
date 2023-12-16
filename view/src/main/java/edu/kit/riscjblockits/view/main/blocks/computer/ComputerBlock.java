@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.view.main.blocks.computer;
 
+import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
@@ -10,7 +11,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public abstract class ComputerBlock extends ModBlock {
     public ComputerBlock(AbstractBlock.Settings settings) {
@@ -21,6 +25,12 @@ public abstract class ComputerBlock extends ModBlock {
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
         // Connection Logic
+    }
+
+    @Override
+    public void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
+        super.onBroken(world, pos, state);
+        ((ComputerBlockEntity)world.getBlockEntity(pos)).onBroken();
     }
 
     @Override
