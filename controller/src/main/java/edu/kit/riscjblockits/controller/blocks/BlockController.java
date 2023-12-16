@@ -12,8 +12,10 @@ public abstract class BlockController {
     private final BlockModel blockModel;
     private final IQueryableBlockEntity blockEntity;
     private ClusterHandler clusterHandler;
+    private BlockPosition pos;
 
     protected BlockController(IQueryableBlockEntity blockEntity) {
+        pos = blockEntity.getBlockPosition();
         this.blockEntity = blockEntity;
         this.blockModel = createBlockModel();
         blockEntity.setBlockModel(this.blockModel);

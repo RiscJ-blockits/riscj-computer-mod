@@ -34,6 +34,18 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements IQue
      * @return
      */
     public List<BlockController> getComputerNeighbours() {
+
+        if (world.getBlockEntity(getPos().down()).getType() ) {
+
+
+        }
+
+        world.getBlockEntity(getPos().down())
+
+
+
+
+
         return null;
     }
 
@@ -42,5 +54,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements IQue
     public void setBlockModel(BlockModel model) {
         this.model = model;
     }
+
+
 
 }
