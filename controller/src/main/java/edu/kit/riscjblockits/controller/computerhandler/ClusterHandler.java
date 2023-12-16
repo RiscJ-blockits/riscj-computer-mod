@@ -11,11 +11,17 @@ import java.util.List;
  */
 public class ClusterHandler implements IArchitectureCheckable {
 
-    private List<BlockController> clusterBlocks;
+    private List<BlockController> blocks;
+    private List<BlockController> busBlocks;
     BusSystemModel busSystemModel;
     public ClusterHandler(BlockController blockController) {
-        clusterBlocks.add(blockController);
-
+        if (blockController.isBus()) {
+            busBlocks.add(blockController);
+        } else {
+            blocks.add(blockController);
+        }
+        busSystemModel = new BusSystemModel(blockController.getBlockPosition());
+        List<BlockController> neighbourBlockControllers = blockController.getNeighbours();
     }
 
     public void combine() {

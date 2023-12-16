@@ -28,6 +28,11 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements IQue
         super(type, pos, state);
     }
 
+    /**
+     * Get the neighbours of this block that are bus blocks.
+     * The Bus Entity needs to overwrite this method to return all neighbour computer blocks.
+     * @return
+     */
     public List<BlockController> getComputerNeighbours() {
         return null;
     }

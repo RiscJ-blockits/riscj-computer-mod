@@ -40,7 +40,7 @@ public abstract class BlockController {
         return "";
     }
 
-    //public abstract boolean isBus();
+    public abstract boolean isBus();
 
     /**
      * Nur für den Bus relevant
@@ -52,5 +52,9 @@ public abstract class BlockController {
 
     public BlockPosition getBlockPosition() {
         return blockEntity.getBlockPosition();
+    }
+
+    public List<BlockController> getNeighbours() {
+        return blockEntity.getComputerNeighbours();
     }
 }

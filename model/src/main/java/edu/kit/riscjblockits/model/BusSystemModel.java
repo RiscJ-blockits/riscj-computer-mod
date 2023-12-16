@@ -13,8 +13,14 @@ public class BusSystemModel {
 
     private Map<BlockPosition, List<BlockPosition>> adjPositions;
 
-    BusSystemModel() {
+    public BusSystemModel() {
         adjPositions = new HashMap<>();
+    }
+
+    public BusSystemModel(BlockPosition firstBlock) {
+
+        adjPositions = new HashMap<>();
+        addNode(firstBlock);
     }
 
     public void addNode(BlockPosition newBlock) {
