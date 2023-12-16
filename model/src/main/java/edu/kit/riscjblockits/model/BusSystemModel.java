@@ -66,7 +66,22 @@ public class BusSystemModel {
         addEdge(newNode, ownNode);
     }
 
-    public List<Map<BlockPosition, List<BlockPosition>>> split(BlockPosition deletedNode) {
+    public List<BusSystemModel> splitBusSystemModel(BlockPosition deletedNode) {
+        List<Map<BlockPosition, List<BlockPosition>>> newGraphs = splitGraph(deletedNode);
+        List<BusSystemModel> newBusSystems = new ArrayList<>();
+        for (Map<BlockPosition, List<BlockPosition>> newGraph: newGraphs) {
+            BusSystemModel newBusSystem = new BusSystemModel(newGraph);
+            newBusSystems.add(newBusSystem);
+        }
+        return newBusSystems;
+    }
+    /**
+     * Only PUBLIC cause of JUnit-Test.
+     * Removes one Node and his Edges and split Graph when needed.
+     * @param deletedNode The Node to remove.
+     * @return List of new Graphs.
+     */
+    public List<Map<BlockPosition, List<BlockPosition>>> splitGraph(BlockPosition deletedNode) {
         List<BlockPosition> neighbors = adjPositions.get(deletedNode);
         removeNode(deletedNode);
         //find new connected graphs

@@ -55,7 +55,7 @@ class BusSystemModelTest {
     }
 
     @Test
-    void split() {
+    void splitGraph() {
         system1.addNode(new BlockPosition(0,0,0));
         system1.addNode(new BlockPosition(0,0,1));
         system1.addNode(new BlockPosition(0,1,0));
@@ -72,7 +72,7 @@ class BusSystemModelTest {
         system1.addEdge(new BlockPosition(0,1,1), new BlockPosition(0,1,0));
         system1.addEdge(new BlockPosition(0,1,1), new BlockPosition(1,0,0));
 
-        List<Map<BlockPosition, List<BlockPosition>>> result = system1.split(new BlockPosition(0,1,1));
+        List<Map<BlockPosition, List<BlockPosition>>> result = system1.splitGraph(new BlockPosition(0,1,1));
 
         //Build third Graph
         system3.addNode(new BlockPosition(0,0,0));

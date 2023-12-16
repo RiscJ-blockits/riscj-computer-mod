@@ -21,14 +21,13 @@ public abstract class BlockController {
         blockEntity.setBlockModel(this.blockModel);
         blockModel.setPosition(getBlockPosition());
         clusterHandler = new ClusterHandler(this);
-        clusterHandler.combine();
     }
 
     abstract protected BlockModel createBlockModel();
 
-    private List<ClusterHandler> controllerListToClusterList(List<BlockController> blockControllers) {
-        return null;
-    }
+    //private List<ClusterHandler> controllerListToClusterList(List<BlockController> blockControllers) {
+    //    return null;
+    //}
 
     public void manipulateModelData(byte[] data) {
         //blockModel.setData(data);
@@ -60,5 +59,18 @@ public abstract class BlockController {
 
     public List<BlockController> getNeighbours() {
         return blockEntity.getComputerNeighbours();
+    }
+
+    public ClusterHandler getClusterHandler() {
+        return clusterHandler;
+    }
+
+    public void setClusterHandler(ClusterHandler clusterHandler) {
+        this.clusterHandler = clusterHandler;
+    }
+
+    public void onBroken() {
+        System.out.println("Block broken");
+        clusterHandler.blockDestroyed(this);
     }
 }
