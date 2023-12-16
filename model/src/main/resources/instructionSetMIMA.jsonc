@@ -2,15 +2,15 @@
     "name": "MIMA",             // declare name
     "instruction_length": 24,   // declade instruction length
     
-    "registers": {              // define existing (required) registers
-        "alu": [                // alu specific registers
+    "registers": {                  // define existing (required) registers
+        "program_counter": "IAR",   // register containing the current program address
+        "alu": [                    // alu specific registers
             "X",
             "Y",
             "Z"
         ],
         "float": {},            // float registers
         "integer": {            // 
-        "IAR": 0,
         "IR": 1,
         "EINS": 2,
         "AKKU": 3,
@@ -26,17 +26,16 @@
         "address_relay": "SAR",
         "data_relay": "SDR"
     },
-    "alu_operations": {
-        "0": "None",
-        "1": "ADD",
-        "2": "RR",
-        "3": "AND",
-        "4": "OR",
-        "5": "XOR",
-        "6": "NEG",
-        "7": "EQ",
-        "8": "JMN"
-    },
+    "alu_operations": [
+        "None",
+        "ADD",
+        "RR",
+        "AND",
+        "OR",
+        "XOR",
+        "NEG",
+        "JMN"
+    ],
     "parsing": {
         "instructions": {
             "LDC [const]": {                    // load constant 
@@ -186,14 +185,15 @@
             "JMN [addr]": {
                 "execution": [
                   ["X", "AKKU", ""],
-                  ["Y", "[addr]", ""],
-                  ["JMN", "", "X", "Y", ""]
+                  ["Y", "[addr]", ""]
+                  ["IF", ["X", "0", "<"], ["PC", "[addr]"], "", ""]
+                  //if  cond  then
                 ],
                 "translation": [
                   "1001",
                   "[addr]<20>"
                 ]
-              }
+            }
               
             
         }
