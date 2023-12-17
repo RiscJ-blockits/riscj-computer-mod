@@ -1,16 +1,16 @@
 {
-    "name": "MIMA",             // declare name
-    "instruction_length": 24,   // declade instruction length
+    "name": "MIMA",             
+    "instruction_length": 24,   
     
-    "registers": {                  // define existing (required) registers
-        "program_counter": "IAR",   // register containing the current program address
-        "alu": [                    // alu specific registers
+    "registers": {                  
+        "program_counter": "IAR",   
+        "alu": [                    
             "X",
             "Y",
             "Z"
         ],
-        "float": {},            // float registers
-        "integer": {            // 
+        "float": {},            
+        "integer": {            
             "IR": 1,
             "EINS": 2,
             "AKKU": 3,
@@ -35,17 +35,17 @@
         "JMN"
     ],
     "instructions": {
-        "LDC": {                    // load constant
+        "LDC": {                    
         "arguments": ["[const]"],
                     "opcode": "0000",
             "arguments": ["[const]"],
             "opcode": "0000",
             "execution": [
-                ["AKKU", "[const]", ""]     // set AKKU to contents of constant
+                ["AKKU", "[const]", ""]     
             ],
             "translation": [
-                "0000",                     // op-code
-                "[const]<20>"               // 20 bit constant
+                "0000",                     
+                "[const]<20>"               
             ]
 
         },
@@ -56,12 +56,12 @@
             "opcode": "0011",
             "execution": [
                 ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
-                // to     from memoryAction [to         from]
+                
                 ["X", "AKKU", "r"],
                 ["", "", "r", ["SDR", "<mem_data>"]],
                 ["Y", "SDR", ""],
                 ["ADD", "Z", "X", "Y", ""],
-                //alu-op to   x   y  memAction
+                
                 ["AKKU", "Z", ""]
             ],
             "translation": [
@@ -203,7 +203,7 @@
               ["X", "AKKU", ""],
               ["Y", "[addr]", ""],
               ["IF", ["X", "0", "<"], ["PC", "[addr]"], "", ""]
-              //if  cond  then
+              
             ],
             "translation": [
               "1001",

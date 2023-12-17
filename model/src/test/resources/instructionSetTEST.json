@@ -1,0 +1,121 @@
+{
+    "name": "Test",
+    "instruction_length": 24,   
+    
+    "registers": {                  
+        "program_counter": "IAR",   
+        "alu": [                    
+            "X",
+            "Y",
+            "Z"
+        ],
+        "float": {},            
+        "integer": {            
+            "IR": 1,
+            "EINS": 2,
+            "AKKU": 3,
+            "SAR": 4,
+            "SDR": 5
+        }
+    },
+    "memory": {
+        "word_length": 24,
+        "address_length": 20,
+        "access_delay": 3,
+        "byte_order": "le"
+    },
+    "alu_operations": [
+        "None",
+        "ADD",
+        "RR",
+        "AND",
+        "OR",
+        "XOR",
+        "NEG",
+        "JMN"
+    ],
+    "instructions": {
+        "LDC": {
+            "arguments": ["[const]"],
+            "opcode": "0000",
+            "execution": [
+                ["AKKU", "[const]", ""]     
+            ],
+            "translation": [
+                "0000",                     
+                "[const]<20>"               
+            ]
+
+        },
+        "ADD [addr]": {
+            "arguments": ["[adr]"],
+            "opcode": "0011",
+            "execution": [
+                ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
+                
+                ["X", "AKKU", "r"],
+                ["", "", "r", ["SDR", "<mem_data>"]],
+                ["Y", "SDR", ""],
+                ["ADD", "Z", "X", "Y", ""],
+                
+                ["AKKU", "Z", ""]
+            ],
+            "translation": [
+                "0011",
+                "[addr]<20>"
+            ]
+        },
+        "XOR": {
+            "arguments": ["[addr]"],
+            "opcode": "0110",
+            "execution": [
+                ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
+                ["X", "AKKU", "r"],
+                ["", "", "r", ["SDR", "<mem_data>"]],
+                ["Y", "SDR", ""],
+                ["XOR", "Z", "X", "Y", ""],
+                ["AKKU", "Z", ""]
+            ],
+            "translation": [
+              "0110",
+              "[addr]<20>"
+            ]
+        },
+        "HALT": {
+            "arguments": [],
+            "opcode": "11110000",
+            "execution": [
+                ["PAUSE"]
+            ],
+            "translation": [
+              "11110000",
+              "0000000000000000"
+            ]
+        },
+        "JMP [addr]": {
+            "arguments": ["[addr]"],
+            "opcode": "1000",
+            "execution": [
+              ["IAR", "[addr]", ""]
+            ],
+            "translation": [
+              "1000",
+              "[addr]<20>"
+            ]
+        },
+        "JMN [addr]": {
+            "arguments": ["[addr]"],
+            "opcode": "1001",
+            "execution": [
+              ["X", "AKKU", ""],
+              ["Y", "[addr]", ""],
+              ["IF", ["X", "0", "<"], ["PC", "[addr]"], "", ""]
+              
+            ],
+            "translation": [
+              "1001",
+              "[addr]<20>"
+            ]
+        }
+    }
+}
