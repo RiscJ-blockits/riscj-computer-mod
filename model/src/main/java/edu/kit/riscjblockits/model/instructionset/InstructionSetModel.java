@@ -1,86 +1,61 @@
 package edu.kit.riscjblockits.model.instructionset;
 
-import javafx.util.Pair;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class InstructionSetModel {
+
     private final String name;
+    @SerializedName(value = "instruction_length")
     private final int instructionLength;
 
-    private final String programCounterRegister;
-    private final String[] aluRegisters;
-    private final Map<String, Integer> floatRegisters;
-    private final Map<String, Integer> integerRegisters;
-    private final int memoryWordLength;
-    private final int memoryAddressLength;
-    private final String memoryByteOrder;
-    private final String[] aluOperations;
+    @SerializedName(value = "registers")
+    private final InstructionSetRegisters instructionSetRegisters;
+    @SerializedName(value = "memory")
+    private final InstructionSetMemory instructionSetMemory;
+    @SerializedName(value = "alu_operations")
+    private final String[] aluActions;
 
-    /**
-     * map the command (e.g."ADD") to the corresponding arguments and translation
-     */
-    private final Map<String, Pair<String[], String[]>> commandArgumentsTranslationMap;
+    @SerializedName(value = "instructions")
+    private final HashMap<String, Instruction> commandHashMap;
 
-    /**
-     * map the opcodes to all matching instructions with their corresponding micro-instructions and full translation
-     */
-    private final Map<String, List<Pair<MicroInstruction[], String[]>>> opcodeExecutionTranslationMap;
+    private HashMap<String, Instruction> opcodeHashMap;
 
-    InstructionSetModel() {
+    public InstructionSetModel() {
         this.name = null;
         this.instructionLength = 0;
-        this.programCounterRegister = null;
-        this.aluRegisters = null;
-        this.floatRegisters = null;
-        this.integerRegisters = null;
-        this.memoryWordLength = 0;
-        this.memoryAddressLength = 0;
-        this.memoryByteOrder = null;
-        this.aluOperations = null;
-        this.commandArgumentsTranslationMap = null;
-        this.opcodeExecutionTranslationMap = null;
+        this.aluActions = null;
+        this.commandHashMap = null;
+        this.instructionSetMemory = null;
+        this.instructionSetRegisters = null;
+        this.opcodeHashMap = null;
     }
-    InstructionSetModel(String name, int instructionLength,
-                               String programCounterRegister,
-                               String[] aluRegisters,
-                               Map<String, Integer> floatRegisters,
-                               Map<String, Integer> integerRegisters,
-                               int memoryWordLength,
-                               int memoryAddressLength,
-                               String memoryByteOrder,
-                               String[] aluOperations,
-                               Map<String, Pair<String[], String[]>> commandArgumentsTranslationMap,
-                               Map<String, List<Pair<MicroInstruction[], String[]>>> opcodeExecutionTranslationMap) {
+
+    public InstructionSetModel(String name, int instructionLength, InstructionSetRegisters instructionSetRegisters, InstructionSetMemory instructionSetMemory, String[] aluActions, HashMap<String, Instruction> commandHashMap, HashMap<String, Instruction> opcodeHashMap) {
         this.name = name;
         this.instructionLength = instructionLength;
-        this.programCounterRegister = programCounterRegister;
-        this.aluRegisters = aluRegisters;
-        this.floatRegisters = floatRegisters;
-        this.integerRegisters = integerRegisters;
-        this.memoryWordLength = memoryWordLength;
-        this.memoryAddressLength = memoryAddressLength;
-        this.memoryByteOrder = memoryByteOrder;
-        this.aluOperations = aluOperations;
-        this.commandArgumentsTranslationMap = commandArgumentsTranslationMap;
-        this.opcodeExecutionTranslationMap = opcodeExecutionTranslationMap;
+        this.instructionSetRegisters = instructionSetRegisters;
+        this.instructionSetMemory = instructionSetMemory;
+        this.aluActions = aluActions;
+        this.commandHashMap = commandHashMap;
+        this.opcodeHashMap = opcodeHashMap;
+    }
+
+    public void generateOpcodeHashmap(){
+        this.opcodeHashMap = new HashMap<>();
+        if(this.commandHashMap == null) return;
+        this.commandHashMap.values().forEach(e -> opcodeHashMap.put(e.getOpcode(), e));
+    }
+
+    public String[] getAluRegisters() {
+        return instructionSetRegisters.aluRegs;
     }
 
     public String getName() {
         return name;
     }
 
-    public String[] getAluRegisters() {
-        return aluRegisters;
-    }
-
-    public Map<String, Integer> getIntegerRegisters() {
-        return integerRegisters;
-    }
-
-    public Map<String, Pair<String[], String[]>> getCommandArgumentsTranslationMap() {
-        return commandArgumentsTranslationMap;
+    public Integer getIntegerRegister(String key) {
+        return instructionSetRegisters.getIntegerRegister(key);
     }
 }

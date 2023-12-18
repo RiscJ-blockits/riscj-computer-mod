@@ -1,11 +1,10 @@
 package edu.kit.riscjblockits.model.instructionset;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,27 +14,13 @@ class InstructionSetBuilderTest {
 
     InstructionSetModel model;
     @Test
-    void testSimpleHashMapExtraction() {
+    void testHashMapExtraction() {
         HashMap<String, Integer> registers = new HashMap<>();
         registers.put("IR", 1);
         registers.put("SDR", 5);
         for (String key :
             registers.keySet()) {
-            assertEquals(registers.get(key), model.getIntegerRegisters().get(key));
-        }
-    }
-
-    void testAdvancedHashMapExtraction() {
-        Map<String, Pair<String[], String[]>> commandArgumentsTranslationMap = new HashMap<>();
-        commandArgumentsTranslationMap.put("LDC", new Pair<>(
-            new String[] {"[const]"}, new String[] {"0000", "[const]<20>"}));
-
-        for (String key :
-            commandArgumentsTranslationMap.keySet()) {
-            assertEquals(commandArgumentsTranslationMap.get(key).getKey(),
-                model.getCommandArgumentsTranslationMap().get(key).getKey());
-            assertEquals(commandArgumentsTranslationMap.get(key).getValue(),
-                model.getCommandArgumentsTranslationMap().get(key).getValue());
+            assertEquals(registers.get(key), model.getIntegerRegister(key));
         }
     }
 
@@ -55,7 +40,7 @@ class InstructionSetBuilderTest {
         InputStream is = getClass().getClassLoader().getResourceAsStream("instructionSetTEST.json");
         try {
             model = InstructionSetBuilder.buildInstructionSetModel(is);
-        } catch (JsonProcessingException e) {
+        }  catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
     }
