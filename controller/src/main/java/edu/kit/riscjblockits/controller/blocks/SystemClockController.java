@@ -7,12 +7,12 @@ public class SystemClockController extends BlockController {
 
     SimulationTimeHandler simulationTimeHandler;
 
-    protected SystemClockController(IQueryableBlockEntity blockEntity) {
+    public SystemClockController(IQueryableBlockEntity blockEntity) {
         super(blockEntity);
     }
 
     @Override
-    protected BlockModel getBlockModel() {
+    protected BlockModel createBlockModel() {
         return null;
     }
 
