@@ -62,7 +62,11 @@ public class BusSystemModel {
      * @param busSystemToCombine The Bussystem that is merged into the current Bussystem.
      */
     public void combineGraph(BlockPosition ownNode, BlockPosition newNode, BusSystemModel busSystemToCombine) {
-        adjPositions.putAll(busSystemToCombine.getBusGraph());
+        if (!busSystemToCombine.equals(this)) {
+            adjPositions.putAll(busSystemToCombine.getBusGraph());
+        }
+        //adjPositions.putAll(busSystemToCombine.getBusGraph());
+        //System.out.println("Graphsize:" + adjPositions.size());
         addEdge(newNode, ownNode);
     }
 
