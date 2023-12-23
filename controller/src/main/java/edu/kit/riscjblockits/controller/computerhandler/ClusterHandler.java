@@ -1,7 +1,11 @@
 package edu.kit.riscjblockits.controller.computerhandler;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
+import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.model.BusSystemModel;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +17,14 @@ public class ClusterHandler implements IArchitectureCheckable {
 
     private List<BlockController> blocks;
     private List<BlockController> busBlocks;
-    BusSystemModel busSystemModel;
+    private BusSystemModel busSystemModel;
+
+    private InstructionSetModel istModel;
+
+    private boolean buildingFinished;
 
     public ClusterHandler(BlockController blockController) {
+        buildingFinished = false;
         blockController.setClusterHandler(this);
         blocks = new ArrayList<>();
         busBlocks = new ArrayList<>();
@@ -27,12 +36,17 @@ public class ClusterHandler implements IArchitectureCheckable {
         busSystemModel = new BusSystemModel(blockController.getBlockPosition());
         System.out.println("Start combine");
         combineToNeighbours(blockController);
+        //ToDo remove test code
+        istModel = InstructionSetBuilder.buildInstructionSetModelMima();
     }
 
     public ClusterHandler(BusSystemModel busSystemModel) {
+        buildingFinished = false;
         blocks = new ArrayList<>();
         busBlocks = new ArrayList<>();
         this.busSystemModel = busSystemModel;
+        //ToDo remove test code
+        istModel = InstructionSetBuilder.buildInstructionSetModelMima();
     }
 
     private void combineToNeighbours(BlockController blockController) {
@@ -97,6 +111,7 @@ public class ClusterHandler implements IArchitectureCheckable {
                 }
             }
         }
+        //ToDo stop Simulation if architecture invalid
     }
     public void addBlocks(BlockController blockController) {
         blocks.add(blockController);
@@ -116,4 +131,24 @@ public class ClusterHandler implements IArchitectureCheckable {
     public List<BlockController> getBusBlocks() {
         return busBlocks;
     }
+
+    public void checkFinished() {
+        ClusterArchitectureHandler.checkArchitecture(null);
+        //ToDo remove test code and implement method
+        if (blocks.size() == 13) {
+            System.out.println("Simulation Start [Cluster Handler]");
+            buildingFinished = true;
+            startSimulation();
+        }
+    }
+
+    public void startSimulation() {
+        SimulationTimeHandler sim = new SimulationTimeHandler(blocks);
+        for (BlockController c : blocks) {
+            if (c.getControllerType() == BlockControllerType.CLOCK) {
+                ((SystemClockController) c).setSimulationTimeHandler(sim);
+            }
+        }
+    }
+
 }

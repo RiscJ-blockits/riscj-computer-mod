@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "riscj_blockits:block/bus_block" }
+  }
+}

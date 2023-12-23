@@ -68,4 +68,6 @@ public abstract class ModBlock extends BlockWithEntity {
         world.getBlockEntity(pos).setWorld(world);
         ((ModBlockEntity)world.getBlockEntity(pos)).setController();
     }
+
+
 }

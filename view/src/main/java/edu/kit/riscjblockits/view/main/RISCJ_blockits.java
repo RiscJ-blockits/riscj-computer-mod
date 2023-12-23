@@ -126,7 +126,7 @@ public class RISCJ_blockits implements ModInitializer {
 
 	private static final ItemGroup ITEM_GROUP = FabricItemGroup.builder()
 			.icon(() -> new ItemStack(ALU_BLOCK_ITEM))
-			.displayName(Text.translatable("itemGroup.riscjblockits.computer_components"))
+			.displayName(Text.translatable("itemGroup.riscj_blockits.computer_components"))
 			.entries((context, entries) -> {
 				entries.add(ALU_BLOCK_ITEM);
 				entries.add(BUS_BLOCK_ITEM);

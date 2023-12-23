@@ -23,9 +23,12 @@ import java.util.List;
  * @version 1.0 */
 public abstract class ComputerBlockEntity extends ModBlockEntity implements IQueryableBlockEntity {
 
-    public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity be) {
-        //if (be.model.hasUnqueriedChange())
-        //    be.updateDataFromModel();
+
+
+    public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
+        if (!world.isClient && entity.getController() != null) {
+            entity.getController().tick();
+        }
     }
     private BlockModel model;
     public ComputerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {

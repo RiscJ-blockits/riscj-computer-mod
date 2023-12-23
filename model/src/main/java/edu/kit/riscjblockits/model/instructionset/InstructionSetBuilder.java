@@ -13,4 +13,13 @@ public class InstructionSetBuilder {
         instructionSet.generateOpcodeHashmap();
         return instructionSet;
     }
+
+    public static InstructionSetModel buildInstructionSetModelMima() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.json");
+        try {
+            return buildInstructionSetModel(is);
+        }  catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

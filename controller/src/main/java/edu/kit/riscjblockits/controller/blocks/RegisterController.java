@@ -11,4 +11,10 @@ public class RegisterController extends BlockController {
     protected BlockModel createBlockModel() {
         return null;
     }
+
+    public String getType() {
+        //ToDo
+
+        return "";
+    }
 }

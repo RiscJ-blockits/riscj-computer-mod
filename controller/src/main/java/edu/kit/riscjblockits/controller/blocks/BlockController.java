@@ -14,13 +14,17 @@ public abstract class BlockController {
     private ClusterHandler clusterHandler;
     private BlockPosition pos;
 
+    private BlockControllerType controllerType;
+
     protected BlockController(IQueryableBlockEntity blockEntity) {
+        controllerType = BlockControllerType.UNDEFINED;
         pos = blockEntity.getBlockPosition();
         this.blockEntity = blockEntity;
         this.blockModel = createBlockModel();
         blockEntity.setBlockModel(this.blockModel);
         blockModel.setPosition(getBlockPosition());
         new ClusterHandler(this);
+        clusterHandler.checkFinished();
     }
 
     abstract protected BlockModel createBlockModel();
@@ -72,5 +76,21 @@ public abstract class BlockController {
     public void onBroken() {
         System.out.println("Block broken");
         clusterHandler.blockDestroyed(this);
+    }
+
+    public BlockControllerType getControllerType() {
+        return controllerType;
+    }
+
+    public void setControllerType(BlockControllerType controllerType) {
+        this.controllerType = controllerType;
+    }
+
+    /**
+     * gets called every tick.
+     * Overwritten by Clock
+     */
+    public void tick() {
+
     }
 }

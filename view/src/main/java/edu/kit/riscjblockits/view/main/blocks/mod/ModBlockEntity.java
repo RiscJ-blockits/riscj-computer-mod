@@ -65,4 +65,5 @@ public abstract class ModBlockEntity extends BlockEntity {
     public void setType(EntityType type) {
         this.etype = type;
     }
+
 }
