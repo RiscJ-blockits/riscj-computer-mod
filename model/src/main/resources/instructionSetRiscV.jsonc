@@ -3,6 +3,7 @@
     "instruction_length": 32,								//Länge des Befehlswortes
 	
     "registers": {
+        //TODO: add program counter
 		"alu":["A", "B", "OUT"],							//Register der Architektur, die direkt an die ALU gebunden werden müssen
         "float": {											//Register für Float-Operationen
             "ft0": 0,
@@ -77,7 +78,9 @@
         "word_length": 32,									//Wortlänge im Speicher
         "address_length": 32,								//Länge der Speicheradresse
         "access_delay": 0,									//Verzögerung beim Speicherzugriff in Takten					
-		"byte_order": "be"									//Big-Endian oder Little-Endian
+		"byte_order": "be",									//Big-Endian oder Little-Endian
+		"possible_opcode_lengths": [7],
+		"opcode_position": "LEAST"
     },
     "alu_operations": {										//ALU-Operationen, die direkt angeboten werden
         "0": "AND",
@@ -98,6 +101,7 @@
         "15": "REMU"										
 
     },
+    //TODO: Add fetch instruction
 	"parsing": {
 		"instructions": {
 			 "ADD [destaddr], [origaddr1], [origaddr2]": {	//Gibt das Format des Befehls in der Texteingabe an

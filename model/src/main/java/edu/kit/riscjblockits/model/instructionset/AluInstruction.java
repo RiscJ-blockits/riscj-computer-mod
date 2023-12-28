@@ -13,4 +13,9 @@ public class AluInstruction extends ComplexMicroInstruction {
     public String getAction() {
         return action;
     }
+
+    @Override
+    public void execute(IExecutor executor) {
+        executor.execute(this);
+    }
 }

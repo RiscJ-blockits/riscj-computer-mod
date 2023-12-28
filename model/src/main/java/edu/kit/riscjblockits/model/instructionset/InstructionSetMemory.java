@@ -2,6 +2,8 @@ package edu.kit.riscjblockits.model.instructionset;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class InstructionSetMemory {
     @SerializedName(value = "word_length")
     int wordLength;
@@ -11,6 +13,12 @@ public class InstructionSetMemory {
     int accessDelay;
     @SerializedName(value = "byte_order")
     String byteOrder;
+    
+    @SerializedName(value = "possible_opcode_lengths")
+    List<Integer> possibleOpcodeLengths;
+    
+    @SerializedName(value = "opcode_position")
+    String opcodePosition;
 
     public InstructionSetMemory(int wordLength, int addressLenght, int accessDelay, String byteOrder) {
         this.wordLength = wordLength;

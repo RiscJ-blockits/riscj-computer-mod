@@ -22,7 +22,9 @@
         "word_length": 24,
         "address_length": 20,
         "access_delay": 3,
-        "byte_order": "le"
+        "byte_order": "le",
+        "possible_opcode_lengths": [4, 8],
+        "opcode_position": "MOST"
     },
     "alu_operations": [
         "None",

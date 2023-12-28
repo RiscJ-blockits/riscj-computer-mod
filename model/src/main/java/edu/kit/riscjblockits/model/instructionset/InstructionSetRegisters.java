@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 
 public class InstructionSetRegisters {
+
     @SerializedName(value = "program_counter")
     String programCounter;
     @SerializedName(value = "alu")
@@ -27,5 +28,9 @@ public class InstructionSetRegisters {
 
     public Integer getIntegerRegister(String name) {
         return intRegs.get(name);
+    }
+
+    public String getProgramCounter() {
+        return programCounter;
     }
 }

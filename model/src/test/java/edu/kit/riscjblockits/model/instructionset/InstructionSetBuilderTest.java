@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,7 +36,7 @@ class InstructionSetBuilderTest {
 
     @BeforeEach
     void pre() {
-        InputStream is = getClass().getClassLoader().getResourceAsStream("instructionSetTEST.json");
+        InputStream is = getClass().getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
         try {
             model = InstructionSetBuilder.buildInstructionSetModel(is);
         }  catch (UnsupportedEncodingException e) {

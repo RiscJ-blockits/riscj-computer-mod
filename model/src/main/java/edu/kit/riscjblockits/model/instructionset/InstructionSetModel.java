@@ -58,4 +58,9 @@ public class InstructionSetModel {
     public Integer getIntegerRegister(String key) {
         return instructionSetRegisters.getIntegerRegister(key);
     }
+
+    public String getProgramCounter() {
+        return instructionSetRegisters.getProgramCounter();
+    }
+
 }

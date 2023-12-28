@@ -9,4 +9,9 @@ public class ConditionedInstruction extends ComplexMicroInstruction {
         super(from, to, memoryFlag, memoryInstruction);
         this.condition = condition;
     }
+
+    @Override
+    public void execute(IExecutor executor) {
+        executor.execute(this);
+    }
 }
