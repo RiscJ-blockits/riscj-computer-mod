@@ -17,4 +17,7 @@ public abstract class MicroInstruction {
         return to;
     }
 
+
+    public abstract void execute(IExecutor executor);
+
 }

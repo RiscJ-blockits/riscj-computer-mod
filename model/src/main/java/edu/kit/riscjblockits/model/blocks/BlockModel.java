@@ -21,8 +21,6 @@ public abstract class BlockModel implements IControllerQueryable, IViewQueryable
         this.data = data;
     }
 
-    public abstract boolean getHasUnqueriedStateChange();
-
     public void setPosition(BlockPosition position) {
         this.position = position;
     }

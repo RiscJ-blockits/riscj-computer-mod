@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SimulationTimeHandler {
+public class SimulationTimeHandler implements IObserver {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private SimulationSequenceHandler simulationSequenceHandler;
     private int clockSpeed;
@@ -21,7 +21,15 @@ public class SimulationTimeHandler {
     private int minecraftTickCounter = 0;
 
     public SimulationTimeHandler(List<BlockController> blockControllers) {
-        blocks = blockControllers;
+        simulationSequenceHandler = new SimulationSequenceHandler(blockControllers);
+        //Register us as an SystemClockModel Observer
+        for(BlockController blockController: blockControllers) {
+            if (blockController.getControllerType() == BlockControllerType.CLOCK) {
+                systemClockModel = (SystemClockModel) blockController.getModel();
+                systemClockModel.registerObserver(this);
+            }
+        }
+        updateObservedState();
     }
 
     /**

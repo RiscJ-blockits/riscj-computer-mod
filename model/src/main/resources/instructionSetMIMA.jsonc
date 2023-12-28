@@ -38,10 +38,16 @@
         "NEG",
         "JMN"
     ],
+    "fetch": [
+        ["SAR", "IAR", "r", ["<mem_addr>", "SAR"]],
+        ["X", "IAR", "r"],
+        ["Y", "EINS", "r"],
+        ["ADD", "Z", "X", "Y"],
+        ["IAR", "Z", "r", ["SDR", "<mem_data>"]],
+        ["IR", "SDR", ""]
+    ],
     "instructions": {
         "LDC": {                    // load constant
-        "arguments": ["[const]"],
-                    "opcode": "0000",
             "arguments": ["[const]"],
             "opcode": "0000",
             "execution": [
@@ -74,8 +80,8 @@
             ]
         },
         "LDV [addr]": {
-        "arguments": ["[addr]"],
-                    "opcode": "0001",
+            "arguments": ["[addr]"],
+            "opcode": "0001",
             "execution": [
                 ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
                 ["", "", "r"] ,

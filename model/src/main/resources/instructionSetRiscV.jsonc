@@ -1,4 +1,6 @@
 {
+// TODO update to Structure of mima
+
     "name": "RiscV",										//Name des Befehlssatzes
     "instruction_length": 32,								//Länge des Befehlswortes
 	

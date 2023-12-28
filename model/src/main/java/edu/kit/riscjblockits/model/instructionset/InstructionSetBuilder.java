@@ -15,7 +15,7 @@ public class InstructionSetBuilder {
     }
 
     public static InstructionSetModel buildInstructionSetModelMima() {
-        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.json");
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
         try {
             return buildInstructionSetModel(is);
         }  catch (UnsupportedEncodingException e) {
