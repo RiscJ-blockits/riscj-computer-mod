@@ -1,7 +1,7 @@
 {
     //FixMe: some micro Instructions are still producing null elements
 
-    "name": "MIMA",             // declare name
+    "name": "Test",             // declare name
     "instruction_length": 24,   // declade instruction length
 
     "registers": {                  // define existing (required) registers

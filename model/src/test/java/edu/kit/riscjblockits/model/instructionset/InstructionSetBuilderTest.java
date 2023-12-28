@@ -36,7 +36,7 @@ class InstructionSetBuilderTest {
 
     @BeforeEach
     void pre() {
-        InputStream is = getClass().getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
+        InputStream is = getClass().getClassLoader().getResourceAsStream("instructionSetTEST.jsonc");
         try {
             model = InstructionSetBuilder.buildInstructionSetModel(is);
         }  catch (UnsupportedEncodingException e) {
