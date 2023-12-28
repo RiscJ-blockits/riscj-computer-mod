@@ -6,7 +6,7 @@ public abstract class BlockModel implements IControllerQueryable, IViewQueryable
 
     private boolean hasUnqueriedStateChange;
     private byte[] data;
-
+    private ModelType type;
     private BlockPosition position;
 
     //Public Access Methods distinguished by users delegating access logic
@@ -25,5 +25,13 @@ public abstract class BlockModel implements IControllerQueryable, IViewQueryable
 
     public void setPosition(BlockPosition position) {
         this.position = position;
+    }
+
+    public ModelType getType() {
+        return type;
+    }
+
+    public void setType(ModelType type) {
+        this.type = type;
     }
 }

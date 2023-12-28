@@ -1,20 +1,31 @@
 package edu.kit.riscjblockits.controller.blocks;
 
+import edu.kit.riscjblockits.model.Value;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
+import edu.kit.riscjblockits.model.blocks.RegisterModel;
 
 public class RegisterController extends BlockController {
     public RegisterController(IQueryableBlockEntity blockEntity) {
         super(blockEntity);
+        setControllerType(BlockControllerType.REGISTER);
     }
 
     @Override
     protected BlockModel createBlockModel() {
-        return null;
+        return new RegisterModel();
     }
 
-    public String getType() {
-        //ToDo
-
-        return "";
+    public String getRegisterType() {
+        return ((RegisterModel)getModel()).getRegisterType();
     }
+
+    public Value getValue() {
+        return ((RegisterModel)getModel()).getValue();
+    }
+
+    public void setNewValue(Value value) {
+        //ToDo check input
+        ((RegisterModel)getModel()).setValue(value);
+    }
+
 }

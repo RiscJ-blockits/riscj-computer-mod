@@ -38,6 +38,7 @@ public class ClusterHandler implements IArchitectureCheckable {
         combineToNeighbours(blockController);
         //ToDo remove test code
         istModel = InstructionSetBuilder.buildInstructionSetModelMima();
+        System.out.println("Model ready");
     }
 
     public ClusterHandler(BusSystemModel busSystemModel) {

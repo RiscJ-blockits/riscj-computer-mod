@@ -1,6 +1,12 @@
 package edu.kit.riscjblockits.controller.computerhandler;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
+import edu.kit.riscjblockits.controller.blocks.SystemClockController;
+import edu.kit.riscjblockits.model.ClockMode;
+import edu.kit.riscjblockits.model.IObserver;
+import edu.kit.riscjblockits.model.blocks.BlockModel;
+import edu.kit.riscjblockits.model.blocks.SystemClockModel;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -9,7 +15,11 @@ import java.util.concurrent.Executors;
 public class SimulationTimeHandler {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private SimulationSequenceHandler simulationSequenceHandler;
-    private List<BlockController> blocks;
+    private int clockSpeed;
+    private ClockMode clockMode;
+    private SystemClockModel systemClockModel;
+    private int minecraftTickCounter = 0;
+
     public SimulationTimeHandler(List<BlockController> blockControllers) {
         blocks = blockControllers;
     }
@@ -49,5 +59,14 @@ public class SimulationTimeHandler {
     private void runTick() {
         //ToDo @Leon no check if the previous tick has completed. Necessary?
         executorService.execute(simulationSequenceHandler);
+    }
+
+    /**
+     * Always get Clock State using an observer pattern.
+     */
+    @Override
+    public void updateObservedState() {
+        clockSpeed = systemClockModel.getClockSpeed();
+        clockMode = systemClockModel.getClockMode();
     }
 }

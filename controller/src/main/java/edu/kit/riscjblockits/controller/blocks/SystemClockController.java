@@ -28,7 +28,7 @@ public class SystemClockController extends BlockController {
     @Override
     public void tick() {
         if (simStarted) {
-            simulationTimeHandler.tick();
+            simulationTimeHandler.onMinecraftTick();
         }
     }
 }

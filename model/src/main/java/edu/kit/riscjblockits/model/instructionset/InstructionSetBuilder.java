@@ -22,4 +22,14 @@ public class InstructionSetBuilder {
             throw new RuntimeException(e);
         }
     }
+
+    public static InstructionSetModel buildInstructionSetModelRiscV() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetRiscV.jsonc");
+        try {
+            return buildInstructionSetModel(is);
+        }  catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
