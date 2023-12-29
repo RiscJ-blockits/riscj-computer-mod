@@ -30,12 +30,6 @@ public abstract class ComputerBlock extends ModBlock {
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        super.onPlaced(world, pos, state, placer, itemStack);
-        // Connection Logic
-    }
-
-    @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         //check if the block has been broken
         if (!world.isClient && state.getBlock() != newState.getBlock()) {
