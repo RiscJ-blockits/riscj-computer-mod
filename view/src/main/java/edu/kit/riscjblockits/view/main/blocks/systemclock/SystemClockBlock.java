@@ -12,6 +12,13 @@ public class SystemClockBlock extends ComputerBlock {
         super(settings);
     }
 
+    /**
+     * Creates a new SystemClockBlock with default settings.
+     */
+    public SystemClockBlock() {
+        super();
+    }
+
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {

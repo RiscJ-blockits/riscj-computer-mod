@@ -12,6 +12,13 @@ public class MemoryBlock extends ComputerBlock {
         super(settings);
     }
 
+    /**
+     * Creates a new MemoryBlock with default settings.
+     */
+    public MemoryBlock() {
+        super();
+    }
+
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {

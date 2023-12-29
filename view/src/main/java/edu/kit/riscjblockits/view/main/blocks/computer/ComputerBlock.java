@@ -17,8 +17,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public abstract class ComputerBlock extends ModBlock {
-    public ComputerBlock(AbstractBlock.Settings settings) {
+
+    protected ComputerBlock(AbstractBlock.Settings settings) {
         super(settings);
+    }
+
+    /**
+     * Creates a new ComputerBlock with default settings.
+     */
+    protected ComputerBlock() {
+        super();
     }
 
     @Override

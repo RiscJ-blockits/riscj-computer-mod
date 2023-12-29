@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.main.blocks.mod;
 
 import edu.kit.riscjblockits.view.main.blocks.ImplementedInventory;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -18,11 +19,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-//
 public abstract class ModBlock extends BlockWithEntity {
 
-    public ModBlock(Settings settings) {
+    /**
+     * Default strength of all blocks.
+     */
+    private static final float BLOCK_STRENGTH = 1.0f;
+
+    protected ModBlock(Settings settings) {
         super(settings);
+    }
+
+    /**
+     * Creates a new ModBlock with default settings.
+     */
+    protected ModBlock() {
+        super(FabricBlockSettings.create().strength(BLOCK_STRENGTH));
     }
 
     @Override

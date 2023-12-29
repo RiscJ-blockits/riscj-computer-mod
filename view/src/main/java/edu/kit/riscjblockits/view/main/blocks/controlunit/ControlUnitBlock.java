@@ -9,9 +9,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class ControlUnitBlock extends ComputerBlock {
 
-
     public ControlUnitBlock(Settings settings) {
         super(settings);
+    }
+
+    /**
+     * Creates a new ControlUnitBlock with default settings.
+     */
+    public ControlUnitBlock() {
+        super();
     }
 
     @Nullable

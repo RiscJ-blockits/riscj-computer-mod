@@ -12,6 +12,13 @@ public class RegisterBlock  extends ComputerBlock {
         super(settings);
     }
 
+    /**
+     * Creates a new RegisterBlock with default settings.
+     */
+    public RegisterBlock() {
+        super();
+    }
+
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {

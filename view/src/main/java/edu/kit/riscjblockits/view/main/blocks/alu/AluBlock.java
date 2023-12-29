@@ -12,6 +12,13 @@ public class AluBlock extends ComputerBlock {
         super(settings);
     }
 
+    /**
+     * Creates a new AluBlock with default settings.
+     */
+    public AluBlock() {
+        super();
+    }
+
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {

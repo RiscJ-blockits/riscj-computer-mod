@@ -11,6 +11,13 @@ public class ProgrammingBlock extends ModBlock {
         super(settings);
     }
 
+    /**
+     * Creates a new ProgrammingBlock with default settings.
+     */
+    public ProgrammingBlock() {
+        super();
+    }
+
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {

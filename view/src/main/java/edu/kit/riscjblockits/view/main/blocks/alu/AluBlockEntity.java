@@ -19,4 +19,9 @@ public class AluBlockEntity extends ComputerBlockEntity {
     protected BlockController createController() {
         return new AluController(this);
     }
+
+    @Override
+    public String getInfo() {
+        return null;
+    }
 }

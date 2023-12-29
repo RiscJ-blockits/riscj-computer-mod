@@ -13,6 +13,13 @@ public class BusBlock extends ComputerBlock {
         super(settings);
     }
 
+    /**
+     * Creates a new BusBlock with default settings.
+     */
+    public BusBlock() {
+        super();
+    }
+
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
