@@ -50,4 +50,9 @@ public class ProgrammingBlockEntity extends ComputerBlockEntity implements Exten
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return null;
     }
+
+    @Override
+    public String getInfo() {
+        return null;
+    }
 }

@@ -17,4 +17,9 @@ public class SystemClockBlockEntity extends ComputerBlockEntity {
     protected BlockController createController() {
         return new SystemClockController(this);
     }
+
+    @Override
+    public String getInfo() {
+        return null;
+    }
 }

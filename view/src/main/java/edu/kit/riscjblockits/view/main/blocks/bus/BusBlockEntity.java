@@ -30,6 +30,11 @@ public class BusBlockEntity extends ComputerBlockEntity {
         return new BusController(this);
     }
 
+    @Override
+    public String getInfo() {
+        return null;
+    }
+
     /**
      * Get the neighbours of this block that are bus blocks or are computer blocks.
      * @return

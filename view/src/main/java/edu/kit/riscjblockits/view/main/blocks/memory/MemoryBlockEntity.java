@@ -17,4 +17,9 @@ public class MemoryBlockEntity extends ComputerBlockEntity {
     protected BlockController createController() {
         return new MemoryController(this);
     }
+
+    @Override
+    public String getInfo() {
+        return null;
+    }
 }

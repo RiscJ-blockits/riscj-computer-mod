@@ -23,4 +23,9 @@ public class RegisterBlockEntity extends ComputerBlockEntity {
     public @Nullable Object getRenderData() {
         return super.getRenderData();
     }
+
+    @Override
+    public String getInfo() {
+        return null;
+    }
 }

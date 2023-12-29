@@ -51,4 +51,9 @@ public class ControlUnitBlockEntity extends ComputerBlockEntity implements Imple
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return null;
     }
+
+    @Override
+    public String getInfo() {
+        return null;
+    }
 }
