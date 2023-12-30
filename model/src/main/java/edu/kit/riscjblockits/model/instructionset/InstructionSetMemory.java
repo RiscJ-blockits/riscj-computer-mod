@@ -26,4 +26,13 @@ public class InstructionSetMemory {
         this.accessDelay = accessDelay;
         this.byteOrder = byteOrder;
     }
+
+
+    public int getWordSize() {
+        return wordLength;
+    }
+
+    public int getAddressSize() {
+        return addressLenght;
+    }
 }

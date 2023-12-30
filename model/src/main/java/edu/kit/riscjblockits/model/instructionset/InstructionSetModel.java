@@ -63,4 +63,20 @@ public class InstructionSetModel {
         return instructionSetRegisters.getProgramCounter();
     }
 
+    public int getMemoryWordSize() {
+        return instructionSetMemory.getWordSize();
+    }
+
+    public int getMemoryAddressSize() {
+        return instructionSetMemory.getAddressSize();
+    }
+
+    public Instruction getInstruction(String s) {
+        return commandHashMap.get(s);
+    }
+
+    public String getAddressChangeRegex() {
+        // TODO: implement
+        return null;
+    }
 }

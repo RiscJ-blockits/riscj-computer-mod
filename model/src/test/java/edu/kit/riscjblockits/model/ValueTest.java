@@ -35,13 +35,43 @@ class ValueTest {
 
     @Test
     void fromHex() {
-        Value val = Value.fromHex("0011");
+        Value val = Value.fromHex("0011", 2);
         assertEquals("0011", val.getHexadecimalValue());
 
-        val = Value.fromHex("000001");
+        val = Value.fromHex("11", 2);
+        assertEquals("0011", val.getHexadecimalValue());
+
+        val = Value.fromHex("000001", 3);
         assertEquals("000001", val.getHexadecimalValue());
 
-        val = Value.fromHex("FF");
+        val = Value.fromHex("FF", 1);
         assertEquals("FF", val.getHexadecimalValue());
+    }
+
+    @Test
+    void fromBinary() {
+        Value val = Value.fromBinary("00000011", 1);
+        assertEquals("00000011", val.getBinaryValue());
+
+        val = Value.fromBinary("011", 1);
+        assertEquals("00000011", val.getBinaryValue());
+
+        val = Value.fromBinary("10000001", 1);
+        assertEquals("10000001", val.getBinaryValue());
+
+        val = Value.fromBinary("11111111", 1);
+        assertEquals("FF", val.getHexadecimalValue());
+    }
+
+    @Test
+    void getIncrementedValue() {
+        Value val = Value.fromHex("00", 1).getIncrementedValue();
+        assertEquals("01", val.getHexadecimalValue());
+
+        val = Value.fromHex("FF", 1).getIncrementedValue();
+        assertEquals("00", val.getHexadecimalValue());
+
+        val = Value.fromHex("00FF", 2).getIncrementedValue();
+        assertEquals("0100", val.getHexadecimalValue());
     }
 }

@@ -15,7 +15,7 @@ class MemoryTest {
 
         Value v = memory.getValueAt(new Value(new byte[]{0,0,0,0x10}));
 
-        assertArrayEquals(val.getValue(), v.getValue());
+        assertArrayEquals(val.getByteValue(), v.getByteValue());
 
 
     }

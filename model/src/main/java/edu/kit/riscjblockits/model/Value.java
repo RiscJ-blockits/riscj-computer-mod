@@ -3,14 +3,61 @@ package edu.kit.riscjblockits.model;
 import java.util.Arrays;
 import java.util.HexFormat;
 
+/**
+ * This class represents a value
+ * also provides methods to convert the value to and from binary and hexadecimal
+ * as well as incrementing the value
+ */
 public class Value {
+
+    /**
+     * the value as byte array
+     */
     private final byte[] value;
 
-    public static Value fromHex(String s) {
-        return new Value(HexFormat.of().parseHex(s));
+    /**
+     * Creates a value from a hexadecimal string
+     * @param s the hexadecimal string
+     * @param length the length of the value in bytes
+     * @return the value
+     */
+    public static Value fromHex(String s, int length) {
+        byte[] bytes = new byte[length];
+        byte[] hexBytes = HexFormat.of().parseHex(s);
+        int offset = length - hexBytes.length;
+        for (int i = 0; i < hexBytes.length; i++) {
+            bytes[i + offset] = hexBytes[i];
+        }
+
+        return new Value(bytes);
     }
 
+    /**
+     * Creates a value from a binary string
+     * @param s the binary string
+     * @param length the length of the value in bytes
+     * @return the value
+     */
+    public static Value fromBinary(String s, int length) {
+        byte[] bytes = new byte[length];
+        for (char c: s.toCharArray()) {
+            if (c == '1') {
+                bytes[0] = (byte) (bytes[0] << 1);
+                bytes[0] = (byte) (bytes[0] | 1);
+            } else if (c == '0') {
+                bytes[0] = (byte) (bytes[0] << 1);
+            } else {
+                throw new IllegalArgumentException("Value String must only contain 1 and 0");
+            }
+        }
 
+        return new Value(bytes);
+    }
+
+    /**
+     * Constructor for a value
+     * @param initial the initial value as byte array
+     */
     public Value(byte[] initial) {
         this.value = initial;
     }
@@ -22,10 +69,16 @@ public class Value {
         this.value = new byte[0];
     }
 
-    public byte[] getValue() {
+    /**
+     * @return the value as byte array
+     */
+    public byte[] getByteValue() {
         return value;
     }
 
+    /**
+     * @return the value as binary string
+     */
     public String getBinaryValue() {
         StringBuilder stringBuilder = new StringBuilder();
         for (byte val: value) {
@@ -35,6 +88,9 @@ public class Value {
         return stringBuilder.toString();
     }
 
+    /**
+     * @return the value as hexadecimal string
+     */
     public String getHexadecimalValue() {
         StringBuilder stringBuilder = new StringBuilder();
         for (byte val: value) {
@@ -42,6 +98,26 @@ public class Value {
         }
 
         return stringBuilder.toString();
+    }
+
+    /**
+     * return the value incremented by 1
+     * @return the incremented value
+     */
+    public Value getIncrementedValue() {
+        byte[] incrementedValue = new byte[value.length];
+        System.arraycopy(value, 0, incrementedValue, 0, value.length);
+
+        for (int i = incrementedValue.length - 1; i >= 0; i--) {
+            // if value is -1 (0xFF) set to 0
+            if (incrementedValue[i] == -1) {
+                incrementedValue[i] = 0;
+            } else {
+                incrementedValue[i]++;
+                break;
+            }
+        }
+        return new Value(incrementedValue);
     }
 
     @Override
