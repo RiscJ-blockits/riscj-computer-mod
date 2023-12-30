@@ -11,14 +11,14 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 
 /**
- * This class represents a block from our mod in the game.
+ * This class represents a block entity from our mod in the game.
  * Every Block has its own unique BlockEntity while it is loaded.
  * [JavaDoc in this class partially generated with GitHub Copilot]
  */
 public abstract class ModBlockEntity extends BlockEntity {
     private static final String CONTROLLER_NBT_TAG = "riscj_blockits.controller";
     /**
-     * The controller of this block.
+     * The controller of this block entity.
      * It can be null if the block is in the process of being loaded.
      * The controller handles the computer logic of the block and the communication with the model.
      * Is null on the client side.

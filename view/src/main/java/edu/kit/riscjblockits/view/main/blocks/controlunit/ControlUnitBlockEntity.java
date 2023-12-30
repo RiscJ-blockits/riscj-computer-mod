@@ -7,7 +7,6 @@ import edu.kit.riscjblockits.view.main.blocks.ImplementedInventory;
 import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntity;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -19,41 +18,80 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * This class represents a control unit entity from our mod in the game.
+ * Every control unit has its own unique ControlUnitBlockEntity while it is loaded.
+ */
 public class ControlUnitBlockEntity extends ComputerBlockEntity implements ImplementedInventory,
     ExtendedScreenHandlerFactory {
 
+    /**
+     * Creates a new ControlUnitBlockEntity with the given settings.
+     * @param pos The position of the block in the minecraft world.
+     * @param state The state of the minecraft block.
+     */
     public ControlUnitBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.CONTROL_UNIT_BLOCK_ENTITY, pos, state);
     }
 
+    /**
+     * Every entity needs its own controller.
+     * @return An ControlUnitController bound to this entity.
+     */
     @Override
     protected BlockController createController() {
         return new ControlUnitController(this);
     }
 
+    /**
+     * ToDo
+     * @return
+     */
     @Override
     public DefaultedList<ItemStack> getItems() {
+        //ToDo warum überschreiben wir hier?
         return null;
     }
 
+    /**
+     * ToDo
+     * @param player
+     * @return
+     */
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-
+        //
     }
 
+    /**
+     * ToDo
+     * @return
+     */
     @Override
     public Text getDisplayName() {
         return null;
     }
 
+    /**
+     * ToDo
+     * @param syncId
+     * @param playerInventory
+     * @param player
+     * @return
+     */
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return null;
     }
 
+    /**
+     * ToDo
+     * @return
+     */
     @Override
     public String getInfo() {
         return null;
     }
+
 }

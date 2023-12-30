@@ -15,10 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
+/** ToDo Javadoc
  * Blocks that connect with a bus or are a bus. They have a controller.
- * @author ujiqk
- * @version 1.0 */
+ */
 public abstract class ComputerBlockEntity extends ModBlockEntity implements IQueryableBlockEntity {
 
     public abstract String getInfo();

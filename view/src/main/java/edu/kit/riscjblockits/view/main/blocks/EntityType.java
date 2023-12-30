@@ -1,9 +1,15 @@
 package edu.kit.riscjblockits.view.main.blocks;
 
+/**
+ * Defines the type of this entity. Is used to differentiate between different types of entities.
+ */
 public enum EntityType {
+    /**
+     * Is used only for bus blocks.
+     */
     BUS,
     /**
-     * Alle block of the computer except the bus.
+     * All blocks of the computer except the bus.
      */
     CONNECTABLE,
     /**

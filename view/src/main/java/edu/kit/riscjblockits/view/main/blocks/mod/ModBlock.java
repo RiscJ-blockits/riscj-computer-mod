@@ -33,7 +33,7 @@ public abstract class ModBlock extends BlockWithEntity {
 
     /**
      * Creates a new Modblock with the given settings.
-     * @param settings the settings for the block as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
+     * @param settings The settings for the block as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
      */
     protected ModBlock(Settings settings) {
         super(settings);
@@ -116,11 +116,11 @@ public abstract class ModBlock extends BlockWithEntity {
     /**
      * This method is called when the block is placed in the world.
      * The Block initializes the creation of his Block Controller.
-     * @param world the minecraft world the block is placed in.
-     * @param pos the position the block is placed at.
+     * @param world The minecraft world the block is placed in.
+     * @param pos The position the block is placed at.
      * @param state ToDo ??
-     * @param placer the entity that placed the block.
-     * @param itemStack the itemstack that was used to place the block.
+     * @param placer The entity that placed the block.
+     * @param itemStack The itemstack that was used to place the block.
      */
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
