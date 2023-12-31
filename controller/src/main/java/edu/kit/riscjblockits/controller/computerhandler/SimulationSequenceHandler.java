@@ -2,7 +2,6 @@ package edu.kit.riscjblockits.controller.computerhandler;
 
 import edu.kit.riscjblockits.controller.blocks.*;
 import edu.kit.riscjblockits.model.instructionset.*;
-import edu.kit.riscjblockits.model.Value;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +24,7 @@ public class SimulationSequenceHandler implements Runnable {
         phaseCounter = 0;
         runPhase = RunPhase.FETCH;
         for(BlockController blockController: blockControllers) {
-            if ((blockController.getControllerType()) == BlockControllerType.CONTROLL_UNIT) {
+            if ((blockController.getControllerType()) == BlockControllerType.CONTROL_UNIT) {
                 instructionSetModel = ((ControlUnitController) blockController).getInstructionSetModel();
             }
             if ((blockController.getControllerType()) == BlockControllerType.MEMORY) {

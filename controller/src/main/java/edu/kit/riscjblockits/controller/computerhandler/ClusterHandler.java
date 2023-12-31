@@ -35,7 +35,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     private InstructionSetModel istModel;
 
     /**
-     * True if the cluster is finished building
+     * True, if the cluster is finished building
      */
     private boolean buildingFinished;
 
