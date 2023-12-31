@@ -88,6 +88,7 @@ public class Command {
         for (String s : assembledTranslation) {
             binary.append(s);
         }
-        return Value.fromBinary(binary.toString(), binary.length()/8 + binary.length()%8 > 0 ? 1 : 0);
+        String binaryString = binary.toString();
+        return Value.fromBinary(binaryString, binaryString.length()/8 + (binaryString.length()%8 > 0 ? 1 : 0));
     }
 }

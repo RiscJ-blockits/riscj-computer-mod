@@ -77,6 +77,6 @@ public class InstructionSetModel {
 
     public String getAddressChangeRegex() {
         // TODO: implement
-        return null;
+        return " *\\* *=  *(?<address>\\w+) *";
     }
 }

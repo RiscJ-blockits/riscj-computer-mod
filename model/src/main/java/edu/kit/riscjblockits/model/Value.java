@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.model;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HexFormat;
 
@@ -40,14 +41,21 @@ public class Value {
      */
     public static Value fromBinary(String s, int length) {
         byte[] bytes = new byte[length];
+        int currentByte = 0;
+        int currentBit = 0;
         for (char c: s.toCharArray()) {
             if (c == '1') {
-                bytes[0] = (byte) (bytes[0] << 1);
-                bytes[0] = (byte) (bytes[0] | 1);
+                bytes[currentByte] = (byte) (bytes[currentByte] << 1);
+                bytes[currentByte] = (byte) (bytes[currentByte] | 1);
             } else if (c == '0') {
-                bytes[0] = (byte) (bytes[0] << 1);
+                bytes[currentByte] = (byte) (bytes[currentByte] << 1);
             } else {
                 throw new IllegalArgumentException("Value String must only contain 1 and 0");
+            }
+            currentBit++;
+            if (currentBit == 8) {
+                currentBit = 0;
+                currentByte++;
             }
         }
 
@@ -67,6 +75,17 @@ public class Value {
      */
     public Value() {
         this.value = new byte[0];
+    }
+
+    public static Value fromDecimal(String value, int length) {
+        byte[] val = new BigInteger(value).toByteArray();
+        byte[] bytes = new byte[length];
+        if (val.length > length) {
+            System.arraycopy(val, val.length - length, bytes, 0, length);
+        } else {
+            System.arraycopy(val, 0, bytes, length - val.length, val.length);
+        }
+        return new Value(bytes);
     }
 
     /**

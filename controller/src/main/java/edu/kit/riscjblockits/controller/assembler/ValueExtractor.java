@@ -27,11 +27,11 @@ public class ValueExtractor {
     public static Value extractValue(String value, int length) {
         String argumentValueBinary = null;
         if (HEX_VALUE_PATTERN.matcher(value).matches()) {
-            return Value.fromHex(value, length);
+            return Value.fromHex(value.replace("0x", ""), length);
         } else if (DEC_VALUE_PATTERN.matcher(value).matches()) {
-            return Value.fromHex(value, length);
+            return Value.fromDecimal(value, length);
         } else if (BIN_VALUE_PATTERN.matcher(value).matches()) {
-            return Value.fromHex(value, length);
+            return Value.fromBinary(value.replace("0b", ""), length);
         }
         return null;
     }

@@ -59,10 +59,8 @@
             ]
 
         },
-        "ADD [addr]": {
-        "arguments": ["[adr]"],
-                    "opcode": "0011",
-            "arguments": ["[adr]"],
+        "ADD": {
+            "arguments": ["[addr]"],
             "opcode": "0011",
             "execution": [
                 ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
@@ -79,7 +77,7 @@
                 "[addr]<20>"
             ]
         },
-        "LDV [addr]": {
+        "LDV": {
             "arguments": ["[addr]"],
             "opcode": "0001",
             "execution": [
@@ -93,9 +91,9 @@
               "[addr]<20>"
             ]
         },
-        "STV [addr]": {
-        "arguments": ["[addr]"],
-                    "opcode": "0010",
+        "STV": {
+            "arguments": ["[addr]"],
+            "opcode": "0010",
             "execution": [
                 ["SAR", "[addr]", "w", ["<mem_addr>", "SAR"]],
                 ["SDR", "AKKU", "w"],
@@ -106,9 +104,9 @@
               "[addr]<20>"
             ]
         },
-        "AND [addr]": {
-        "arguments": ["[addr]"],
-                    "opcode": "0100",
+        "AND": {
+            "arguments": ["[addr]"],
+            "opcode": "0100",
             "execution": [
                 ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
                 ["X", "AKKU", "r"],
@@ -122,9 +120,9 @@
               "[addr]<20>"
             ]
         },
-        "OR [addr]": {
-        "arguments": ["[addr]"],
-                    "opcode": "0101",
+        "OR": {
+            "arguments": ["[addr]"],
+            "opcode": "0101",
             "execution": [
                 ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
                 ["X", "AKKU", "r"],
@@ -155,6 +153,8 @@
             ]
         },
         "HALT": {
+            "arguments": [],
+            "opcode": "11110000",
             "execution": [
                 ["PAUSE"]
             ],
@@ -164,6 +164,8 @@
             ]
         },
         "NOT": {
+            "arguments": [],
+            "opcode": "11110001",
             "execution": [
                 ["X", "AKKU", ""],
                 ["NEG", "Z", "X", "", ""],
@@ -175,6 +177,8 @@
             ]
         },
         "RAR": {
+            "arguments": [],
+            "opcode": "11110010",
             "execution": [
                 ["X", "AKKU", ""],
                 ["RR", "Z", "X", "", ""],
@@ -186,6 +190,8 @@
             ]
         },
         "EQL [addr]": {
+            "arguments": ["[addr]"],
+            "opcode": "0111",
             "execution": [
               ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
               ["X", "AKKU", "r"],
@@ -199,7 +205,9 @@
               "[addr]<20>"
             ]
         },
-        "JMP [addr]": {
+        "JMP": {
+            "arguments": ["[addr]"],
+            "opcode": "1000",
             "execution": [
               ["IAR", "[addr]", ""]
             ],
@@ -208,7 +216,9 @@
               "[addr]<20>"
             ]
         },
-        "JMN [addr]": {
+        "JMN": {
+            "arguments": ["[addr]"],
+            "opcode": "1001",
             "execution": [
               ["X", "AKKU", ""],
               ["Y", "[addr]", ""],
