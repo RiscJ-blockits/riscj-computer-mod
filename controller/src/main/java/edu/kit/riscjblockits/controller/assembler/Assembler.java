@@ -17,7 +17,11 @@ import java.util.regex.Pattern;
  */
 public class Assembler {
 
+    /**
+     * regex pattern to separate a lines label and command
+     */
     private static final Pattern LABEL_COMMAND_PATTERN = Pattern.compile(" *(?:(?<label>\\w+):)? *(?<command>\\w.*)? *");
+
     /**
      * the {@link InstructionSetModel} that is used for the assembly
      */
@@ -44,8 +48,15 @@ public class Assembler {
      */
     private int calculatedMemoryWordSize;
 
+    /**
+     * the Map of all labels and their addresses labeling to
+     */
     private final Map<String, Value> labels;
 
+    /**
+     * the pattern to identify an address change.
+     * will be read from instruction set
+     */
     private final Pattern addressChangePattern;
 
     /**
@@ -134,9 +145,16 @@ public class Assembler {
         return new Command(instruction, arguments);
     }
 
+    /**
+     * extracts the addresses of all labels in the assembly code.
+     * this is done by iterating over all commands, as well as respecting
+     * address changes.
+     *
+     * @param lines the lines of assembly that are to be label checked
+     */
     private void extractLabelPositions(String[] lines) {
         // keep own address, so assembling does get messed up
-        Value currentAddress = new Value(new byte[calculatedMemoryAddressSize]);
+        Value localCurrentAddress = new Value(currentAddress.getByteValue());
         for (String line : lines) {
             // skip empty lines
             if (line.matches(" *"))
@@ -146,7 +164,7 @@ public class Assembler {
             Matcher matcher = addressChangePattern.matcher(line);
             if (matcher.matches()) {
                 String address = matcher.group("address");
-                currentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
+                localCurrentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
                 continue;
             }
 
@@ -156,13 +174,18 @@ public class Assembler {
             }
             String label = labelMatcher.group("label");
             if (label != null) {
-                labels.put(label, currentAddress);
+                labels.put(label, localCurrentAddress);
             }
             // increment memory address
-            currentAddress = currentAddress.getIncrementedValue();
+            localCurrentAddress = localCurrentAddress.getIncrementedValue();
         }
     }
 
+    /**
+     * uses the detected Labels to fill those, when given as an argument
+     *
+     * @param arguments array of arguments that may have labels, in need to be replaced
+     */
     private void writeLabelsToArguments(String[] arguments) {
         for (int i = 0; i < arguments.length; i++) {
             String argument = arguments[i];

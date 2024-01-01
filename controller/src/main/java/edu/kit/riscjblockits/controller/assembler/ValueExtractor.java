@@ -4,6 +4,9 @@ import edu.kit.riscjblockits.model.Value;
 
 import java.util.regex.Pattern;
 
+/**
+ * This class provides parsing of different number values into {@link Value} objects
+ */
 public class ValueExtractor {
     /**
      * regex pattern to match hex values
@@ -19,13 +22,13 @@ public class ValueExtractor {
     private static final Pattern BIN_VALUE_PATTERN = Pattern.compile("0b[01]+");
 
     /**
-     * Extracts a value from a string
+     * Extracts a value from a string.
+     * can extract hexadecimal (0x), binary (0b) or decimal values
      * @param value the string to extract the value from
-     * @param length the length of the value in bits
+     * @param length the length of the value in bytes
      * @return the extracted value, null if the value cant be extracted
      */
     public static Value extractValue(String value, int length) {
-        String argumentValueBinary = null;
         if (HEX_VALUE_PATTERN.matcher(value).matches()) {
             return Value.fromHex(value.replace("0x", ""), length);
         } else if (DEC_VALUE_PATTERN.matcher(value).matches()) {
