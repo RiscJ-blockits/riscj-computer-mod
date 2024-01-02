@@ -1,7 +1,9 @@
 package edu.kit.riscjblockits.view.main.blocks.computer;
 
-import edu.kit.riscjblockits.controller.blocks.BlockController;
-import edu.kit.riscjblockits.controller.blocks.IQueryableBlockEntity;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
+import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
+import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
+import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableController;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.view.main.blocks.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
@@ -24,9 +26,11 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
 
     public abstract String getInfo();
 
+    protected abstract IUserInputReceivableComputerController createController();
+
     public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
         if (!world.isClient && entity.getController() != null) {
-            entity.getController().tick();
+            ((ComputerBlockController)entity.getController()).tick();
         }
     }
     private BlockModel model;
@@ -40,8 +44,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * The Bus Entity needs to overwrite this method to return all neighbour computer blocks.
      * @return
      */
-    public List<BlockController> getComputerNeighbours() {
-        List<BlockController> neigbhours = new ArrayList<>();
+    public List<ComputerBlockController> getComputerNeighbours() {
+        List<ComputerBlockController> neigbhours = new ArrayList<>();
         List<BlockEntity> blockEntities = new ArrayList<>();
         World world = getWorld();
         blockEntities.add(world.getBlockEntity(getPos().down()));
@@ -67,7 +71,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
 
     public void onBroken() {
         if (!world.isClient) {
-            getController().onBroken();
+            ((ComputerBlockController)getController()).onBroken();
         }
         //ToDo controller must be there
     }

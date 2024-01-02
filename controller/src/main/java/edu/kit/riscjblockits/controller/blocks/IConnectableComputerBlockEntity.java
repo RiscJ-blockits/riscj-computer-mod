@@ -12,4 +12,5 @@ public interface IConnectableComputerBlockEntity {
     List<ComputerBlockController> getComputerNeighbours();
 
     BlockPosition getBlockPosition();
+
 }

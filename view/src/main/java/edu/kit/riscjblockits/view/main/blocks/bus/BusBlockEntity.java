@@ -42,8 +42,8 @@ public class BusBlockEntity extends ComputerBlockEntity {
      * @return
      */
     @Override
-    public List<BlockController> getComputerNeighbours() {
-        List<BlockController> neigbhours = new ArrayList<>();
+    public List<ComputerBlockController> getComputerNeighbours() {
+        List<ComputerBlockController> neigbhours = new ArrayList<>();
         List<BlockEntity> blockEntities = new ArrayList<>();
         World world = getWorld();
 

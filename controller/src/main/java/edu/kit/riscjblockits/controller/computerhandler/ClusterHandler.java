@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.computerhandler;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.model.BusSystemModel;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
@@ -19,11 +20,11 @@ public class ClusterHandler implements IArchitectureCheckable {
     /**
      * List of all blocks controllers in this cluster
      */
-    private List<BlockController> blocks;
+    private List<ComputerBlockController> blocks;
     /**
      * List of all bus blocks controllers in this cluster
      */
-    private List<BlockController> busBlocks;
+    private List<ComputerBlockController> busBlocks;
 
     /**
      * BusSystemModel of this cluster
@@ -45,7 +46,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * Creates a new ClusterHandler and combines it with all neighbours
      * @param blockController BlockController to start the cluster with
      */
-    public ClusterHandler(BlockController blockController) {
+    public ClusterHandler(ComputerBlockController blockController) {
         buildingFinished = false;
         blockController.setClusterHandler(this);
         blocks = new ArrayList<>();
@@ -80,8 +81,8 @@ public class ClusterHandler implements IArchitectureCheckable {
      * Combines the given block with the cluster
      * @param blockController BlockController to combine
      */
-    private void combineToNeighbours(BlockController blockController) {
-        List<BlockController> neighbourBlockControllers = blockController.getNeighbours();
+    private void combineToNeighbours(ComputerBlockController blockController) {
+        List<ComputerBlockController> neighbourBlockControllers = blockController.getNeighbours();
         ClusterHandler actualCluster = this;
         for (ComputerBlockController neighbourBlock: neighbourBlockControllers) {
             neighbourBlock.getClusterHandler().combine(neighbourBlock, blockController, actualCluster);

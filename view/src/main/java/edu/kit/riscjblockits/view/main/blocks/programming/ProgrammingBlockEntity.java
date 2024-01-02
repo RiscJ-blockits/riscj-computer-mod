@@ -33,8 +33,8 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
     }
 
     @Override
-    protected BlockController createController() {
-        return new ProgrammingController(this);
+    protected IUserInputReceivableController createController() {
+        return new ProgrammingController();
     }
 
     @Override

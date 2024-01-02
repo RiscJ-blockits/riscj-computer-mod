@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-public class BusSystemModel {
+public class BusSystemModel implements IQuerybleBusSystem {
 
     private Map<BlockPosition, List<BlockPosition>> adjPositions;
 

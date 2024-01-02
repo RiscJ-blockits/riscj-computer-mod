@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.model.instructionset;
 
-public class Instruction {
+public class Instruction implements IQueryableInstruction {
     private String[] arguments;
 
     public String getOpcode() {

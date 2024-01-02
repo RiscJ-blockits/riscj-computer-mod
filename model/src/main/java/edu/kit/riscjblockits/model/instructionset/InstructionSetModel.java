@@ -3,7 +3,7 @@ package edu.kit.riscjblockits.model.instructionset;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
-public class InstructionSetModel {
+public class InstructionSetModel implements IQueryableInstructionSetModel {
 
     private final String name;
     @SerializedName(value = "instruction_length")

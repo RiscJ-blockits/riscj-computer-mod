@@ -14,11 +14,11 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-public class ProgrammingController extends BlockController{
-    public ProgrammingController(IQueryableBlockEntity blockEntity) {
-        super(blockEntity);
-        //ToDo ruft auch ein Clustering auf
-        // weil? clustert doch nicht
+
+public class ProgrammingController extends BlockController implements IAssemblerController {
+
+    public ProgrammingController() {
+
     }
 
     public void assemble(String code, IDataContainer instructionSetData, IDataContainer memoryData)
@@ -43,5 +43,10 @@ public class ProgrammingController extends BlockController{
             return;
         }
         assembler.assemble(code);
+    }
+
+    @Override
+    public void setData(IDataElement data) {
+
     }
 }

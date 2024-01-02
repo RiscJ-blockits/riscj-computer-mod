@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 
 public abstract class ModBlockEntity extends BlockEntity {
     private static final String CONTROLLER_NBT_TAG = "riskjblockits.controller";
-    private BlockController controller;
+    private IUserInputReceivableController controller;
     private EntityType etype;
 
     protected ModBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
