@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.main.blocks.mod;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.data.Data;
 import edu.kit.riscjblockits.view.main.blocks.EntityType;
@@ -25,7 +26,7 @@ public abstract class ModBlockEntity extends BlockEntity {
         //}
     }
 
-    protected abstract BlockController createController();
+    protected abstract IUserInputReceivableController createController();
 
     public void setController() {
         if (!world.isClient) {
@@ -39,12 +40,6 @@ public abstract class ModBlockEntity extends BlockEntity {
         controller.setData(new Data(nbt));
     }
 
-    @Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
-        nbt.putString(CONTROLLER_NBT_TAG, controller.saveAsString());
-    }
-
     public BlockPosition getBlockPosition() {
         BlockPos pos = getPos();
         return new BlockPosition(pos.getX(), pos.getY(), pos.getZ());
@@ -54,7 +49,7 @@ public abstract class ModBlockEntity extends BlockEntity {
         return etype;
     }
 
-    public BlockController getController() {
+    public IUserInputReceivableController getController() {
         if (world.isClient) {
             return null;
         }

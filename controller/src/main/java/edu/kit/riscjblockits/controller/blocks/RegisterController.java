@@ -4,8 +4,8 @@ import edu.kit.riscjblockits.model.Value;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
 
-public class RegisterController extends BlockController {
-    public RegisterController(IQueryableBlockEntity blockEntity) {
+public class RegisterController extends ComputerBlockController {
+    public RegisterController(IConnectableComputerBlockEntity blockEntity) {
         super(blockEntity);
         setControllerType(BlockControllerType.REGISTER);
     }

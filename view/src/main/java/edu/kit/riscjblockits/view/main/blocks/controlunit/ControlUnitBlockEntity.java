@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.main.blocks.controlunit;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.ImplementedInventory;
@@ -27,7 +28,12 @@ public class ControlUnitBlockEntity extends ComputerBlockEntity implements Imple
     }
 
     @Override
-    protected BlockController createController() {
+    public String getInfo() {
+        return null;
+    }
+
+    @Override
+    protected ComputerBlockController createController() {
         return new ControlUnitController(this);
     }
 

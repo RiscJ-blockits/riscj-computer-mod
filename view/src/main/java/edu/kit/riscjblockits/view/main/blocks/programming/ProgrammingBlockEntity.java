@@ -2,6 +2,8 @@ package edu.kit.riscjblockits.view.main.blocks.programming;
 
 import edu.kit.riscjblockits.controller.assembler.AssemblyException;
 import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
+import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableController;
 import edu.kit.riscjblockits.controller.blocks.ProgrammingController;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.ImplementedInventory;

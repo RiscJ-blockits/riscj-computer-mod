@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.computerhandler;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.model.instructionset.*;
 
@@ -11,10 +12,10 @@ import java.util.Map;
 
 public class Executor implements IExecutor {
 
-    private List<BlockController> blockControllers;
+    private List<ComputerBlockController> blockControllers;
     private Map<String, RegisterController> registerControllerMap;
 
-    public Executor(List<BlockController> blockControllers) {
+    public Executor(List<ComputerBlockController> blockControllers) {
         this.blockControllers = blockControllers;
         registerControllerMap = new HashMap<>();
 

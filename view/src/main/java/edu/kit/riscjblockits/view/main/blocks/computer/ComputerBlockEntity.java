@@ -8,6 +8,7 @@ import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -19,7 +20,7 @@ import java.util.List;
  * Blocks that connect with a bus or are a bus. They have a controller.
  * @author ujiqk
  * @version 1.0 */
-public abstract class ComputerBlockEntity extends ModBlockEntity implements IQueryableBlockEntity {
+public abstract class ComputerBlockEntity extends ModBlockEntity implements IConnectableComputerBlockEntity, IGoggleQueriable {
 
     public abstract String getInfo();
 
@@ -71,8 +72,17 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements IQue
         //ToDo controller must be there
     }
 
+    @Override
+    public ComputerBlockController getController() {
+        if (world.isClient) {
+            return null;
+        }
+        return getController();
+    }
 
-
-
+    @Override
+    public Text getGoggleText() {
+        return Text.empty();
+    }
 
 }

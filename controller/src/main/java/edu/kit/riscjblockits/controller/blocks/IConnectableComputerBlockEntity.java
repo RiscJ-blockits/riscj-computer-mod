@@ -5,10 +5,11 @@ import edu.kit.riscjblockits.model.blocks.BlockPosition;
 
 import java.util.List;
 
-public interface IQueryableBlockEntity {
-    public void setBlockModel(BlockModel model);
+public interface IConnectableComputerBlockEntity {
+    //vom Controller zur Entity
+    void setBlockModel(BlockModel model);
 
-    List<BlockController> getComputerNeighbours();
+    List<ComputerBlockController> getComputerNeighbours();
 
     BlockPosition getBlockPosition();
 }

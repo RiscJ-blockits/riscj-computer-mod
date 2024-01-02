@@ -2,7 +2,6 @@ package edu.kit.riscjblockits.controller.computerhandler;
 
 import edu.kit.riscjblockits.controller.blocks.*;
 import edu.kit.riscjblockits.model.instructionset.*;
-import edu.kit.riscjblockits.model.Value;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,14 +11,14 @@ public class SimulationSequenceHandler implements Runnable {
     private int phaseCounter;
     private RunPhase runPhase;
     private MicroInstruction[] microInstructions;
-    private List<BlockController> blockControllers;
+    private List<ComputerBlockController> blockControllers;
     private InstructionSetModel instructionSetModel;
     private RegisterController programCounterController;
     private RegisterController irController;
     private MemoryController memoryController;
     private Executor executor;
 
-    public SimulationSequenceHandler(List<BlockController> blockControllers) {
+    public SimulationSequenceHandler(List<ComputerBlockController> blockControllers) {
         this.blockControllers = blockControllers;
         this.executor = new Executor(blockControllers);
         phaseCounter = 0;

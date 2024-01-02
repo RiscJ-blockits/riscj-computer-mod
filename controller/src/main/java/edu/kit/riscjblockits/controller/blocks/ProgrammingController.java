@@ -7,7 +7,6 @@ import edu.kit.riscjblockits.controller.data.IDataContainer;
 import edu.kit.riscjblockits.controller.data.IDataElement;
 import edu.kit.riscjblockits.controller.data.IDataEntry;
 import edu.kit.riscjblockits.controller.data.IDataStringEntry;
-import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 
 import java.io.ByteArrayInputStream;
@@ -20,15 +19,6 @@ public class ProgrammingController extends BlockController{
         super(blockEntity);
         //ToDo ruft auch ein Clustering auf
         // weil? clustert doch nicht
-    }
-
-    /**
-     * braucht der ein Model??
-     * @return
-     */
-    @Override
-    protected BlockModel createBlockModel() {
-        return null;
     }
 
     public void assemble(String code, IDataContainer instructionSetData, IDataContainer memoryData)

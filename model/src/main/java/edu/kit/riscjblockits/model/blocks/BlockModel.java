@@ -1,8 +1,6 @@
 package edu.kit.riscjblockits.model.blocks;
 
-import java.util.List;
-
-public abstract class BlockModel implements IControllerQueryable, IViewQueryable {
+public abstract class BlockModel implements IControllerQueryableBlockModel, IViewQueryableBlockModel {
 
     private boolean hasUnqueriedStateChange;
     private byte[] data;

@@ -4,12 +4,12 @@ import edu.kit.riscjblockits.controller.computerhandler.SimulationTimeHandler;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.model.blocks.SystemClockModel;
 
-public class SystemClockController extends BlockController {
+public class SystemClockController extends ComputerBlockController {
 
     private SimulationTimeHandler simulationTimeHandler;
     private boolean simStarted;
 
-    public SystemClockController(IQueryableBlockEntity blockEntity) {
+    public SystemClockController(IConnectableComputerBlockEntity blockEntity) {
         super(blockEntity);
         setControllerType(BlockControllerType.CLOCK);
         simStarted = false;

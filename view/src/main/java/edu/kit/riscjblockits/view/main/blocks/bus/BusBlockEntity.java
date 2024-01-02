@@ -4,6 +4,7 @@ package edu.kit.riscjblockits.view.main.blocks.bus;
 import edu.kit.riscjblockits.controller.blocks.AluController;
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BusController;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntity;
@@ -25,8 +26,14 @@ public class BusBlockEntity extends ComputerBlockEntity {
         setType(EntityType.BUS);
 
     }
+
     @Override
-    protected BlockController createController() {
+    public String getInfo() {
+        return null;
+    }
+
+    @Override
+    protected ComputerBlockController createController() {
         return new BusController(this);
     }
 

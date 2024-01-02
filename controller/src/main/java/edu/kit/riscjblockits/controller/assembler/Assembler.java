@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.assembler;
 
 import edu.kit.riscjblockits.model.Memory;
 import edu.kit.riscjblockits.model.Value;
+import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
 import edu.kit.riscjblockits.model.instructionset.Instruction;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
@@ -136,7 +137,7 @@ public class Assembler {
         }
 
         String[] cmd = command.split(" +,?");
-        Instruction instruction = instructionSetModel.getInstruction(cmd[0]);
+        IQueryableInstruction instruction = instructionSetModel.getInstruction(cmd[0]);
         if (instruction == null) {
             throw new AssemblyException("Unknown instruction");
         }

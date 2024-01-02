@@ -8,6 +8,7 @@ import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -82,7 +83,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     private void combineToNeighbours(BlockController blockController) {
         List<BlockController> neighbourBlockControllers = blockController.getNeighbours();
         ClusterHandler actualCluster = this;
-        for (BlockController neighbourBlock: neighbourBlockControllers) {
+        for (ComputerBlockController neighbourBlock: neighbourBlockControllers) {
             neighbourBlock.getClusterHandler().combine(neighbourBlock, blockController, actualCluster);
             actualCluster = neighbourBlock.getClusterHandler();
             //busSystemModel.combineGraph(blockController.getBlockPosition(), neighbourBlock.getBlockPosition(), neighbourBlock.getClusterHandler().getBusSystemModel());
@@ -104,14 +105,14 @@ public class ClusterHandler implements IArchitectureCheckable {
      * @param neighbourBlock BlockController of the other cluster
      * @param oldCluster ClusterHandler of the other cluster
      */
-    public void combine(BlockController ownBlock,BlockController neighbourBlock, ClusterHandler oldCluster) {
+    public void combine(ComputerBlockController ownBlock,ComputerBlockController neighbourBlock, ClusterHandler oldCluster) {
         busSystemModel.combineGraph(ownBlock.getBlockPosition(), neighbourBlock.getBlockPosition(), oldCluster.getBusSystemModel());
         blocks.addAll(oldCluster.getBlocks());
-        for (BlockController newBlock: (oldCluster.getBlocks())) {
+        for (ComputerBlockController newBlock: (oldCluster.getBlocks())) {
             newBlock.setClusterHandler(this);
         }
         busBlocks.addAll(oldCluster.getBusBlocks());
-        for (BlockController newBlock: (oldCluster.getBusBlocks())) {
+        for (ComputerBlockController newBlock: (oldCluster.getBusBlocks())) {
             newBlock.setClusterHandler(this);
         }
         System.out.println("combine");
@@ -122,7 +123,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * manages the destruction of a block and the corresponding change in the cluster
      * @param destroyedBlockController BlockController of the destroyed block
      */
-    public void blockDestroyed(BlockController destroyedBlockController) {
+    public void blockDestroyed(ComputerBlockController destroyedBlockController) {
         List<BusSystemModel> newBusSystemModels = busSystemModel.splitBusSystemModel(destroyedBlockController.getBlockPosition());
         //System.out.println(newBusSystemModels.size());
         if (destroyedBlockController.isBus()) {
@@ -135,7 +136,7 @@ public class ClusterHandler implements IArchitectureCheckable {
             newClusterHandlers.add(new ClusterHandler(newBusSystemModel));
         }
         System.out.println(newClusterHandlers.size());
-        for (BlockController blockController: blocks) {
+        for (ComputerBlockController blockController: blocks) {
             for (ClusterHandler clusterHandler: newClusterHandlers) {
                 if (clusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
                     clusterHandler.addBlocks(blockController);
@@ -143,7 +144,7 @@ public class ClusterHandler implements IArchitectureCheckable {
                 }
             }
         }
-        for (BlockController blockController: busBlocks) {
+        for (ComputerBlockController blockController: busBlocks) {
             for (ClusterHandler newclusterHandler: newClusterHandlers) {
                 if (newclusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
                     newclusterHandler.addBusBlocks(blockController);
@@ -158,7 +159,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * method to add a block to the cluster
      * @param blockController BlockController to add
      */
-    public void addBlocks(BlockController blockController) {
+    public void addBlocks(ComputerBlockController blockController) {
         blocks.add(blockController);
     }
 
@@ -166,7 +167,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * method to add a bus block to the cluster
      * @param blockController BlockController to add
      */
-    public void addBusBlocks(BlockController blockController) {
+    public void addBusBlocks(ComputerBlockController blockController) {
         busBlocks.add(blockController);
     }
 
@@ -180,17 +181,19 @@ public class ClusterHandler implements IArchitectureCheckable {
 
     /**
      * method to get all Blocks of the cluster
+     *
      * @return List of all Blocks of the cluster
      */
-    public List<BlockController> getBlocks() {
+    public Collection<? extends ComputerBlockController> getBlocks() {
         return blocks;
     }
 
     /**
      * method to get all Bus Blocks of the cluster
+     *
      * @return List of all Bus Blocks of the cluster
      */
-    public List<BlockController> getBusBlocks() {
+    public Collection<? extends ComputerBlockController> getBusBlocks() {
         return busBlocks;
     }
 

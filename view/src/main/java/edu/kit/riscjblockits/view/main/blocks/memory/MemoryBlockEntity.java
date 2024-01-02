@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.main.blocks.memory;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntity;
@@ -14,7 +15,12 @@ public class MemoryBlockEntity extends ComputerBlockEntity {
     }
 
     @Override
-    protected BlockController createController() {
+    public String getInfo() {
+        return null;
+    }
+
+    @Override
+    protected ComputerBlockController createController() {
         return new MemoryController(this);
     }
 }

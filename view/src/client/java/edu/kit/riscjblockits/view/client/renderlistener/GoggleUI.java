@@ -1,12 +1,13 @@
 package edu.kit.riscjblockits.view.client.renderlistener;
 
-import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.computer.IGoggleQueriable;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -34,14 +35,14 @@ public class GoggleUI {
             return;
         }
 
-        if (!(blockEntity instanceof ComputerBlockEntity computerBlockEntity)) {
+        if (!(blockEntity instanceof IGoggleQueriable goggleQueriable)) {
             return;
         }
 
-        drawUI(context, "inspectable: "+ computerBlockEntity.getInfo(), block.asItem().getDefaultStack());
+        drawUI(context, goggleQueriable.getGoggleText(), block.asItem().getDefaultStack());
     }
 
-    private void drawUI(DrawContext context, String text, ItemStack stack) {
+    private void drawUI(DrawContext context, Text text, ItemStack stack) {
         int textHeight = textRenderer.fontHeight;
         int width = context.drawText(textRenderer, text, 30, 10, 0xFF17FF77, false);
         context.drawItem(stack, 8, 5);

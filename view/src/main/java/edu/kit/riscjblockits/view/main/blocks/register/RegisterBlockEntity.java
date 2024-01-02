@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.main.blocks.register;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntity;
@@ -15,7 +16,12 @@ public class RegisterBlockEntity extends ComputerBlockEntity {
     }
 
     @Override
-    protected BlockController createController() {
+    public String getInfo() {
+        return null;
+    }
+
+    @Override
+    protected ComputerBlockController createController() {
         return new RegisterController(this);
     }
 
