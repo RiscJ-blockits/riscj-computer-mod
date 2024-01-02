@@ -3,11 +3,9 @@ package edu.kit.riscjblockits.view.main.blocks.computer;
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableBlockEntity;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
-import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.PistonBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
@@ -23,9 +21,12 @@ import java.util.List;
  * @version 1.0 */
 public abstract class ComputerBlockEntity extends ModBlockEntity implements IQueryableBlockEntity {
 
-    public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity be) {
-        //if (be.model.hasUnqueriedChange())
-        //    be.updateDataFromModel();
+    public abstract String getInfo();
+
+    public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
+        if (!world.isClient && entity.getController() != null) {
+            entity.getController().tick();
+        }
     }
     private BlockModel model;
     public ComputerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -69,6 +70,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements IQue
         }
         //ToDo controller must be there
     }
+
+
 
 
 

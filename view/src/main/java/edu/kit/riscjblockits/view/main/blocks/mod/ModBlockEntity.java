@@ -2,14 +2,13 @@ package edu.kit.riscjblockits.view.main.blocks.mod;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
-import edu.kit.riscjblockits.view.main.Data;
+import edu.kit.riscjblockits.view.main.data.Data;
 import edu.kit.riscjblockits.view.main.blocks.EntityType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Position;
 
 public abstract class ModBlockEntity extends BlockEntity {
     private static final String CONTROLLER_NBT_TAG = "riskjblockits.controller";
@@ -65,4 +64,5 @@ public abstract class ModBlockEntity extends BlockEntity {
     public void setType(EntityType type) {
         this.etype = type;
     }
+
 }
