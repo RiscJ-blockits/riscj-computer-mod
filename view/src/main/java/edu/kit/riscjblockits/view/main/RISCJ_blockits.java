@@ -10,6 +10,7 @@ import edu.kit.riscjblockits.view.main.blocks.memory.MemoryBlock;
 import edu.kit.riscjblockits.view.main.blocks.memory.MemoryBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.programming.ProgrammingBlock;
 import edu.kit.riscjblockits.view.main.blocks.programming.ProgrammingBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.programming.ProgrammingScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.register.RegisterBlock;
 import edu.kit.riscjblockits.view.main.blocks.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.systemclock.SystemClockBlock;
@@ -17,10 +18,10 @@ import edu.kit.riscjblockits.view.main.blocks.systemclock.SystemClockBlockEntity
 import edu.kit.riscjblockits.view.main.items.goggles.GogglesItem;
 import edu.kit.riscjblockits.view.main.items.program.ProgramItem;
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
@@ -29,6 +30,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -76,10 +78,16 @@ public class RISCJ_blockits implements ModInitializer {
 	public static final Item MANUAL_ITEM = new GogglesItem(new Item.Settings().maxCount(1));
 
 
+	public static ScreenHandlerType<ProgrammingScreenHandler> PROGRAMMING_SCREEN_HANDLER;
+
 
 
 	@Override
 	public void onInitialize() {
+		// register ScreenHandlers
+		PROGRAMMING_SCREEN_HANDLER = ScreenHandlerRegistry.registerExtended(new Identifier(MODID, "programming_screen"), ProgrammingScreenHandler::new);
+
+
 		// register Blocks
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "alu_block"), ALU_BLOCK);
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "bus_block"), BUS_BLOCK);
