@@ -1,5 +1,7 @@
 package edu.kit.riscjblockits.view.main.blocks.programming;
 
+import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.controller.blocks.ProgrammingController;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.ImplementedInventory;
 import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntity;
@@ -21,6 +23,11 @@ public class ProgrammingBlockEntity extends ComputerBlockEntity implements Exten
         ImplementedInventory {
     public ProgrammingBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.PROGRAMMING_BLOCK_ENTITY, pos, state);
+    }
+
+    @Override
+    protected BlockController createController() {
+        return new ProgrammingController(this);
     }
 
     @Override

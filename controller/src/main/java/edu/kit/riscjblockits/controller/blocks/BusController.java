@@ -1,14 +1,20 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.blocks.BlockModel;
+import edu.kit.riscjblockits.model.blocks.BusModel;
 
 public class BusController extends BlockController{
-    protected BusController(IQueryableBlockEntity blockEntity) {
+    public BusController(IQueryableBlockEntity blockEntity) {
         super(blockEntity);
     }
 
     @Override
-    protected BlockModel getBlockModel() {
-        return null;
+    protected BlockModel createBlockModel() {
+        return new BusModel();
+    }
+
+    @Override
+    public boolean isBus() {
+        return true;
     }
 }

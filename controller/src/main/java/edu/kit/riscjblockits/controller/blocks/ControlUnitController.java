@@ -3,12 +3,17 @@ package edu.kit.riscjblockits.controller.blocks;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
 
 public class ControlUnitController extends BlockController{
-    protected ControlUnitController(IQueryableBlockEntity blockEntity) {
+    public ControlUnitController(IQueryableBlockEntity blockEntity) {
         super(blockEntity);
     }
 
     @Override
-    protected BlockModel getBlockModel() {
+    protected BlockModel createBlockModel() {
         return null;
+    }
+
+    @Override
+    public boolean isBus() {
+        return false;
     }
 }
