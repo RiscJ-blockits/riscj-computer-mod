@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.view.client.renderlistener;
 
-import edu.kit.riscjblockits.view.main.blocks.computer.IGoggleQueriable;
+import edu.kit.riscjblockits.view.main.blocks.computer.IGoggleQueryable;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -35,7 +35,7 @@ public class GoggleUI {
             return;
         }
 
-        if (!(blockEntity instanceof IGoggleQueriable goggleQueriable)) {
+        if (!(blockEntity instanceof IGoggleQueryable goggleQueriable)) {
             return;
         }
 

@@ -3,7 +3,6 @@ package edu.kit.riscjblockits.view.main.blocks.computer;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
-import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableController;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.view.main.blocks.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
@@ -22,7 +21,8 @@ import java.util.List;
  * Blocks that connect with a bus or are a bus. They have a controller.
  * @author ujiqk
  * @version 1.0 */
-public abstract class ComputerBlockEntity extends ModBlockEntity implements IConnectableComputerBlockEntity, IGoggleQueriable {
+public abstract class ComputerBlockEntity extends ModBlockEntity implements IConnectableComputerBlockEntity,
+    IGoggleQueryable {
 
     public abstract String getInfo();
 
