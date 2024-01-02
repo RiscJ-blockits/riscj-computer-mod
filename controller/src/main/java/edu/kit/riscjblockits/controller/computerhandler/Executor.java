@@ -22,6 +22,7 @@ public class Executor implements IExecutor {
      * Contains the block controllers of the associated computer blocks.
      */
     private List<BlockController> blockControllers;
+
     /**
      * Map of the register controllers for faster access and resolving string references.
      */
