@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.controller.computerhandler.ClusterHandler;
 import edu.kit.riscjblockits.controller.data.IDataContainer;
+import edu.kit.riscjblockits.controller.data.IDataElement;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
@@ -39,6 +40,10 @@ public abstract class ComputerBlockController extends BlockController implements
     }
 
     public void setData(IDataContainer data) {
+        //
+    }
+
+    public void setData(IDataElement data) {
         //
     }
 

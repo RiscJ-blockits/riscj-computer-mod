@@ -58,10 +58,12 @@ public class BusBlockEntity extends ComputerBlockEntity {
             if (entity instanceof ComputerBlockEntity) {               //FixMe instanceof schöner machen
                 if (((ComputerBlockEntity) entity).getModblockType() == EntityType.BUS ||
                 ((ComputerBlockEntity) entity).getModblockType() == EntityType.CONNECTABLE) {
-                    neigbhours.add(((ComputerBlockEntity) entity).getController());
+                    //ToDo: cast entfernen
+                    neigbhours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
                 }
             }
         }
         return neigbhours;
     }
+
 }

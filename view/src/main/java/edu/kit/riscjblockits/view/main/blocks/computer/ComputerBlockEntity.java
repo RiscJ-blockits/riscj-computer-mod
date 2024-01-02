@@ -58,7 +58,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         for (BlockEntity entity:blockEntities) {
             if (entity instanceof ComputerBlockEntity) {               //FixMe instanceof schöner machen
                 if (((ComputerBlockEntity) entity).getModblockType() == EntityType.BUS) {
-                    neigbhours.add(((ComputerBlockEntity) entity).getController());
+                    //ToDo cast entfernen
+                    neigbhours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
                 }
             }
         }
@@ -74,14 +75,6 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             ((ComputerBlockController)getController()).onBroken();
         }
         //ToDo controller must be there
-    }
-
-    @Override
-    public ComputerBlockController getController() {
-        if (world.isClient) {
-            return null;
-        }
-        return getController();
     }
 
     @Override
