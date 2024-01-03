@@ -1,7 +1,7 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.Value;
-import edu.kit.riscjblockits.model.blocks.BlockModel;
+import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
@@ -25,7 +25,7 @@ public class RegisterController extends ComputerBlockController {
      * @return The model for the Register.
      */
     @Override
-    protected BlockModel createBlockModel() {
+    protected IControllerQueryableBlockModel createBlockModel() {
         return new RegisterModel();
     }
 
@@ -54,9 +54,13 @@ public class RegisterController extends ComputerBlockController {
         ((RegisterModel)getModel()).setValue(value);
     }
 
-
+    /**
+     * Used from the view if it wants to update Data in the model.
+     * @param data The data that should be set.
+     */
     @Override
     public void setData(IDataElement data) {
-
+        //ToDo
     }
+
 }

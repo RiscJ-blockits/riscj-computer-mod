@@ -25,5 +25,13 @@ public enum BlockControllerType {
      * The controller for a bus.
      */
     BUS,
+    /**
+     * The controller for a programming block.
+     */
+    PROGRAMMING,
+    /**
+     * The controller for an ALU.
+     */
+    ALU,
 
 }

@@ -1,13 +1,18 @@
 package edu.kit.riscjblockits.controller.blocks;
 
-import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
-
-//Zugriff vom View auf den Controller (Für Computer Blöcke)
+/**
+ * Defines all Computer Controllers that take part in the simulation and can be queried by the view.
+ */
 public interface IUserInputReceivableComputerController extends IUserInputReceivableController {
-    //tick == UserInput
-    void tick();
 
+    /**
+     * Must be called every tick from the view.
+     */
+    void tick();       //tick == UserInput
+
+    /**
+     * Must be called when the block is broken.
+     */
     void onBroken();
 
-    IQueryableBlockModel getModel();
 }

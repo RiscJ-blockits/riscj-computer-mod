@@ -34,7 +34,7 @@ public class SimulationSequenceHandler implements Runnable {
     /**
      * Instruction set model that holds all information on how to execute code based on the instruction set.
      */
-    private InstructionSetModel instructionSetModel;
+    private InstructionSetModel instructionSetModel;            //FixMe: not an Interface, more in this class
     /**
      * Controller of the program counter register.
      */

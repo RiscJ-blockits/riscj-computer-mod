@@ -1,7 +1,7 @@
 package edu.kit.riscjblockits.controller.blocks;
 
-import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.model.blocks.BusModel;
+import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
 /**
@@ -16,6 +16,7 @@ public class BusController extends ComputerBlockController{
      */
     public BusController(IConnectableComputerBlockEntity blockEntity) {
         super(blockEntity);
+        setControllerType(BlockControllerType.BUS);
     }
 
     /**
@@ -23,18 +24,17 @@ public class BusController extends ComputerBlockController{
      * @return The model for the bus.
      */
     @Override
-    protected BlockModel createBlockModel() {
+    protected IControllerQueryableBlockModel createBlockModel() {
         return new BusModel();
     }
 
-    //ToDo remove
-    @Override
-    public boolean isBus() {
-        return true;
-    }
-
+    /**
+     * Used from the view if it wants to update Data in the model.
+     * @param data The data that should be set.
+     */
     @Override
     public void setData(IDataElement data) {
-
+        //ToDo
     }
+
 }

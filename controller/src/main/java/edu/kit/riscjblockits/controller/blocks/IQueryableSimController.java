@@ -1,6 +1,14 @@
 package edu.kit.riscjblockits.controller.blocks;
 
-//zwischen Simulation und den Controllern
+import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
+
+/**
+ * Defines all block controllers that can be queried by the simulation.
+ */
 public interface IQueryableSimController {
     //ToDo
+    BlockControllerType getControllerType();
+
+    IControllerQueryableBlockModel getModel();
+
 }

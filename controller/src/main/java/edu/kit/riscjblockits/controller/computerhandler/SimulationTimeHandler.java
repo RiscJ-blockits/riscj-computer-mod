@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 /**
  * Handling of the simulation execution timing. Uses the observer pattern to keep track of the clock state as
  * represented in the {@link SystemClockModel}. Depending on the state, the next simulation tick is executed or
- * necessary wait time for the next execution is decreased by one step.
+ *  the necessary wait time for the next execution is decreased by one step.
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
 public class SimulationTimeHandler implements IObserver {
@@ -40,7 +40,7 @@ public class SimulationTimeHandler implements IObserver {
     /**
      * The {@link SystemClockModel} that is observed for changes in the clock state.
      */
-    private SystemClockModel systemClockModel;
+    private SystemClockModel systemClockModel;              //FixMe: not an Interface, more in this class
     /**
      * Counter for the Minecraft tick mode to decide waiting time between executions.
      */

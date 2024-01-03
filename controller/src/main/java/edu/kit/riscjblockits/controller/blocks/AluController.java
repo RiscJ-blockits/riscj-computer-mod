@@ -1,9 +1,8 @@
 package edu.kit.riscjblockits.controller.blocks;
 
+import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.blocks.AluModel;
-import edu.kit.riscjblockits.model.blocks.BlockModel;
-import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
 
 /**
  * The controller for an ALU block entity.
@@ -17,6 +16,7 @@ public class AluController extends ComputerBlockController {
      */
     public AluController(IConnectableComputerBlockEntity blockEntity) {
         super(blockEntity);
+        setControllerType(BlockControllerType.ALU);
     }
 
     /**
@@ -24,24 +24,17 @@ public class AluController extends ComputerBlockController {
      * @return The model for the Alu.
      */
     @Override
-    protected BlockModel createBlockModel() {
+    protected IControllerQueryableBlockModel createBlockModel() {
         return new AluModel();
     }
 
-    //ToDo remove
-    @Override
-    public boolean isBus() {
-        return false;
-    }
-
-    @Override
-    public IViewQueryableBlockModel getModel() {
-        return null;
-    }
-
+    /**
+     * Used from the view if it wants to update Data in the model.
+     * @param data The data that should be set.
+     */
     @Override
     public void setData(IDataElement data) {
-
+        //ToDo
     }
 
     /**

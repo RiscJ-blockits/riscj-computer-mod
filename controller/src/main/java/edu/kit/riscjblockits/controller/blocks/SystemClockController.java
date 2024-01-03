@@ -1,7 +1,7 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.controller.computerhandler.SimulationTimeHandler;
-import edu.kit.riscjblockits.model.blocks.BlockModel;
+import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.SystemClockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
@@ -37,7 +37,7 @@ public class SystemClockController extends ComputerBlockController {
      * @return The model for the system clock.
      */
     @Override
-    protected BlockModel createBlockModel() {
+    protected IControllerQueryableBlockModel createBlockModel() {
         return new SystemClockModel();
     }
 
@@ -64,12 +64,13 @@ public class SystemClockController extends ComputerBlockController {
     }
 
     /**
-     * If the block is reloaded a new model is created and it gets set to its old data from its NBT value.
+     * If the block is reloaded, a new model is created, and it gets set to its old data from its NBT value.
      * Is also used for setting a new clock mode.
-     * @param data
+     * @param data  The data that should be set.
      */
     @Override
     public void setData(IDataElement data) {
-
+        //ToDo
     }
+
 }

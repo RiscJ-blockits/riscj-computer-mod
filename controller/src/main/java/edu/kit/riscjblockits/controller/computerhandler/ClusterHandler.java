@@ -50,7 +50,7 @@ public class ClusterHandler implements IArchitectureCheckable {
         blockController.setClusterHandler(this);
         blocks = new ArrayList<>();
         busBlocks = new ArrayList<>();
-        if (blockController.isBus()) {
+        if (blockController.getControllerType() == BlockControllerType.BUS) {
             busBlocks.add(blockController);
         } else {
             blocks.add(blockController);
@@ -127,7 +127,7 @@ public class ClusterHandler implements IArchitectureCheckable {
         List<BusSystemModel> newBusSystemModels = busSystemModel.splitBusSystemModel(destroyedBlockController.getBlockPosition());
         //System.out.println(newBusSystemModels.size());
        //Remove Block from ClusterHandler Lists
-        if (destroyedBlockController.isBus()) {
+        if (destroyedBlockController.getControllerType() == BlockControllerType.BUS) {
             busBlocks.remove(destroyedBlockController);
         } else {
             blocks.remove(destroyedBlockController);

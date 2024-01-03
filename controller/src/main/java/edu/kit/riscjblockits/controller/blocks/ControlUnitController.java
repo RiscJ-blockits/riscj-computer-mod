@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
+import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
@@ -25,17 +26,11 @@ public class ControlUnitController extends ComputerBlockController{
      * @return The model for the ControlUnit.
      */
     @Override
-    protected BlockModel createBlockModel() {
+    protected IControllerQueryableBlockModel createBlockModel() {
         return new ControlUnitModel();
     }
 
-    //ToDo remove
-    @Override
-    public boolean isBus() {
-        return false;
-    }
-
-    /**
+    /** ToDo mit Interface kapseln?
      * Returns the instruction set model inside the inventory of the block entity.
      * @return An {@link InstructionSetModel} object.
      */
@@ -43,8 +38,13 @@ public class ControlUnitController extends ComputerBlockController{
         return ((ControlUnitModel)getModel()).getIstModel();
     }
 
+    /**
+     * Used from the view if it wants to update Data in the model.
+     * @param data The data that should be set.
+     */
     @Override
     public void setData(IDataElement data) {
-
+        //ToDo
     }
+
 }

@@ -6,12 +6,28 @@ import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.List;
 
+/**
+ * Defines all Computer Entities that can be queried or updated by a controller.
+ */
 public interface IConnectableComputerBlockEntity {
-    //vom Controller zur Entity
+
+    /**
+     * @param model Sets the model of the block entity, so it can query the model for visualization.
+     */
     void setBlockModel(IQueryableBlockModel model);
 
+    /**
+     * Gather the neighbors of the block.
+     * Only returns bus blocks if the block is a computer block.
+     * Returns all computer blocks if the block is a bus block.
+     * Returns an empty list if the block is not a computer block.
+     * @return List of neighbors.
+     */
     List<ComputerBlockController> getComputerNeighbours();
 
+    /**
+     * @return The position of the block in the minecraft world.
+     */
     BlockPosition getBlockPosition();
 
     /**
