@@ -29,7 +29,11 @@ import org.jetbrains.annotations.Nullable;
 public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implements ExtendedScreenHandlerFactory,
         ImplementedInventory {
 
-    public TextContent textContent;
+    /**
+     * The code that is currently in the programming block.
+     * might not be up-to-date with the code in the clients programming screen.
+     */
+    private String code;
 
     /**
      * Creates a new ProgrammingBlockEntity with the given settings.
@@ -38,7 +42,6 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
      */
     public ProgrammingBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.PROGRAMMING_BLOCK_ENTITY, pos, state, 2);
-        textContent = new TextContent();
     }
 
     /**
@@ -51,19 +54,10 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
     }
 
     /**
-     * ToDo
-     * @return
-     */
-    @Override
-    public DefaultedList<ItemStack> getItems() {
-        //ToDo warum überschreiben wir hier?
-        return null;
-    }
-
-    /**
-     * ToDo
+     * Will write the data that is needed to open the screen to the packet buffer.
+     *
      * @param player the player that is opening the screen
-     * @param buf    the packet buffer
+     * @param buf    the packet buffer to write to
      */
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
@@ -71,20 +65,21 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
     }
 
     /**
-     * ToDo
-     * @return
+     * Will return the display name of the screen.
+     *
+     * @return the display name of the screen
      */
     @Override
     public Text getDisplayName() {
-        return Text.of("Test");
+        return Text.of("Program Editor");
     }
 
     /**
-     * ToDo
-     * @param syncId
-     * @param playerInventory
-     * @param player
-     * @return
+     * Will create the screenHandler for the screen.
+     * @param syncId the sync id of the screenHandler
+     * @param playerInventory the player inventory
+     * @param player the player
+     * @return the screenHandler
      */
     @Nullable
     @Override
@@ -92,16 +87,39 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
         return new ProgrammingScreenHandler(syncId, playerInventory, this,this);
     }
 
+
+    /**
+     * Will assemble the code in the programming block.
+     * code will have to be synced before calling this method.
+     *
+     * @throws AssemblyException if the code cant be assembled
+     */
     public void assemble() throws AssemblyException {
 
         ItemStack instructionSetStack = getStack(0);
         ItemStack memoryStack = getStack(1);
 
-        String code = textContent.toString();
         Data instructionSetData = new Data(instructionSetStack.getOrCreateSubNbt("riskjblockits.instruction_set"));
         Data memoryData = new Data(memoryStack.getOrCreateSubNbt("riskjblockits.memory"));
         ((ProgrammingController) getController()).assemble(code, instructionSetData, memoryData);
         memoryStack.setSubNbt("riskjblockits.memory", memoryData.toNbt());
     }
 
+    /**
+     * Will set the code of the programming block.
+     *
+     * @param code the code to be set
+     */
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    /**
+     * Will return the code of the programming block.
+     *
+     * @return the code of the programming block
+     */
+    public String getCode() {
+        return code;
+    }
 }

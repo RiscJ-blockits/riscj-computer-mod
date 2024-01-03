@@ -11,5 +11,10 @@ public interface IDataEntry extends IDataElement {
         return true;
     }
 
+    /**
+     * Will return the type of the entry.
+     *
+     * @return the type of the entry
+     */
     DataType getType();
 }
