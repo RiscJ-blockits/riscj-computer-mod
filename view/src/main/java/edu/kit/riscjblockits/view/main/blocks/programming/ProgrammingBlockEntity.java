@@ -104,13 +104,4 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
         memoryStack.setSubNbt("riskjblockits.memory", memoryData.toNbt());
     }
 
-    /**
-     * ToDo
-     * @return
-     */
-    @Override
-    public String getInfo() {
-        return null;
-    }
-
 }

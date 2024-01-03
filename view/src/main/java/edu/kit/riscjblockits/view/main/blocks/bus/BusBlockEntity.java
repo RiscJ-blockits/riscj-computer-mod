@@ -44,15 +44,7 @@ public class BusBlockEntity extends ComputerBlockEntity {
     protected ComputerBlockController createController() {
         return new BusController(this);
     }
-
-    /**
-     * ToDo
-     * @return
-     */
-    @Override
-    public String getInfo() {
-        return null;
-    }
+    
 
     /**
      * Get the neighbors of this block that are bus blocks or are computer blocks.
