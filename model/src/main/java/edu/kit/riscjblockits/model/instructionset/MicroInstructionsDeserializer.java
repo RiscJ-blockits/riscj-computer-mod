@@ -5,8 +5,20 @@ import com.google.gson.*;
 import java.lang.reflect.Type;
 import java.util.List;
 
+/**
+ * Deserializer for MicroInstructions to customize Json parsing to match the instruction set json format.
+ * [JavaDoc in this class with minor support by GitHub Copilot]
+ */
 public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInstruction> {
 
+    /**
+     * Deserializes a JsonElement to a MicroInstruction.
+     * @param jsonElement JsonElement to be deserialized
+     * @param type Type of the JsonElement
+     * @param jsonDeserializationContext Context of the deserialization
+     * @return MicroInstruction created from the JsonElement
+     * @throws JsonParseException if the JsonElement is not in the correct format
+     */
     @Override
     public MicroInstruction deserialize(JsonElement jsonElement, Type type,
                                         JsonDeserializationContext jsonDeserializationContext)
@@ -21,7 +33,7 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
     }
 
     /**
-     *
+     * Parse a JsonArray to a MicroInstruction while distinguishing MicroInstruction types.
      * @param jsonArray MicroInstruction of one of the three possible formats
      * @return MicroInstruction Instance matching the instruction type
      */
@@ -40,8 +52,8 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
     }
 
     /**
-     * Generate DataMovementInstruction from json of form [destination, origin, memory flag, storage operation]
-     * @param jsonArray [destination, origin, memory flag, storage operation]
+     * Generate DataMovementInstruction from json of form ["[destination]", "[origin]", "[memory_flag]", "[storage operation]"]
+     * @param jsonArray ["[destination]", "[origin]", "[memory_flag]", "[storage operation]"]
      * @return DataMovementInstruction
      */
     private DataMovementInstruction parseDataMovementInstruction(JsonArray jsonArray) {
@@ -58,7 +70,7 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
 
     /**
      * Generate MemoryInstruction from json of form [from, to]
-     * @param jsonElement [from, to]
+     * @param jsonElement ["[from]", "[to]"]
      * @return MemoryInstruction
      */
     private MemoryInstruction parseMemoryInstruction(JsonElement jsonElement) {
@@ -76,9 +88,9 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
 
     /**
      * Generate AluInstruction from json of form
-     * [operation, alu-dest, alu-origin 1, alu-origin 2, memory flag, storage operation]
+     * ["operation", "[alu-dest]", "[alu-origin 1]", "[alu-origin 2]", "[memory flag]", "[storage operation]"]
      *
-     * @param jsonArray [operation, alu-dest, alu-origin 1, alu-origin 2, memory flag, storage operation]
+     * @param jsonArray ["operation", "[alu-dest]", "[alu-origin 1]", "[alu-origin 2]", "[memory flag]", "[storage operation]"]
      * @return AluInstruction aus dem Array
      */
     private AluInstruction parseAluInstruction(JsonArray jsonArray) {
@@ -96,8 +108,8 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
 
     /**
      * Generate ConditionedInstruction from json of form
-     * ["IF", ["[comparator1]", "[comparator2]", "comparing_operation"], [then_from, then_to], "", ""]
-     * @param jsonArray ["IF", ["[comparator1]", "[comparator2]", "comparing_operation"], [then_to, then_from], "", ""]
+     * ["IF", ["[comparator1]", "[comparator2]", "comparing_operation"], [then_from, then_to], "memory_flag", "storage_operation"]
+     * @param jsonArray ["IF", ["[comparator1]", "[comparator2]", "comparing_operation"], [then_to, then_from], "memory_flag", "storage_operation"]
      * @return ConditionedInstruction
      */
     private ConditionedInstruction parseConditionedInstruction(JsonArray jsonArray) {

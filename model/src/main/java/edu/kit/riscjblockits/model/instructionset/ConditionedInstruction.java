@@ -1,7 +1,14 @@
 package edu.kit.riscjblockits.model.instructionset;
 
+/**
+ * Holds a conditioned instruction like a jump or branch operation.
+ * [JavaDoc in this class with minor support by GitHub Copilot]
+ */
 public class ConditionedInstruction extends ComplexMicroInstruction {
 
+    /**
+     * Condition of the instruction.
+     */
     InstructionCondition condition;
 
     public ConditionedInstruction(String[] from, String to, String memoryFlag,
@@ -10,6 +17,9 @@ public class ConditionedInstruction extends ComplexMicroInstruction {
         this.condition = condition;
     }
 
+    /**
+     * Hands the conditioned instruction to the executor and executes it as part of a visitor pattern.
+     */
     @Override
     public void execute(IExecutor executor) {
         executor.execute(this);
