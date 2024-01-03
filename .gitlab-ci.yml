@@ -42,9 +42,9 @@ test:
   artifacts:
     reports:
       junit:
-        - model/test-results/test/TEST-*.xml
-        - controller/test-results/test/TEST-*.xml
-        - view/test-results/test/TEST-*.xml
+        - model/build/test-results/test/TEST-*.xml
+        - controller/build/test-results/test/TEST-*.xml
+        - view/build/test-results/test/TEST-*.xml
     paths:
       - controller/build/reports/tests/
       - model/build/reports/tests/
