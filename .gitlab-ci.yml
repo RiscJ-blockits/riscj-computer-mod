@@ -1,4 +1,6 @@
 qodana:
+   tags:
+      - docker
    image:
       name: jetbrains/qodana-jvm
       entrypoint: [""]
@@ -16,5 +18,29 @@ qodana:
          --cache-dir=$CI_PROJECT_DIR/.qodana/cache
    artifacts:
       paths:
-         - qodana/report/
+         - report/qodana/
       expose_as: 'Qodana report'
+
+stages:
+   - build
+   - test
+
+build:
+   tags:
+      - shell
+   stage: build
+   script:
+      - ./gradlew build
+   artifacts:
+      paths:
+         - report/build/
+
+test:
+   tags:
+      - shell
+   stage: test
+   script:
+      - ./gradlew test
+   artifacts:
+      reports:
+         junit: report/test/TEST-*.xml
