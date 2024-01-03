@@ -9,7 +9,6 @@ import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -37,7 +36,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     private InstructionSetModel istModel;
 
     /**
-     * True if the cluster is finished building
+     * True, if the cluster is finished building
      */
     private boolean buildingFinished;
 
@@ -119,24 +118,27 @@ public class ClusterHandler implements IArchitectureCheckable {
         System.out.println("combine");
     }
 
-
     /**
      * manages the destruction of a block and the corresponding change in the cluster
      * @param destroyedBlockController BlockController of the destroyed block
      */
     public void blockDestroyed(ComputerBlockController destroyedBlockController) {
+        //Remove Block from BusSystemModel
         List<BusSystemModel> newBusSystemModels = busSystemModel.splitBusSystemModel(destroyedBlockController.getBlockPosition());
         //System.out.println(newBusSystemModels.size());
+       //Remove Block from ClusterHandler Lists
         if (destroyedBlockController.isBus()) {
             busBlocks.remove(destroyedBlockController);
         } else {
             blocks.remove(destroyedBlockController);
         }
+        //Create new ClusterHandler for fragmented BusSystemModels
         List<ClusterHandler> newClusterHandlers = new ArrayList<>();
         for (BusSystemModel newBusSystemModel: newBusSystemModels) {
             newClusterHandlers.add(new ClusterHandler(newBusSystemModel));
         }
         System.out.println(newClusterHandlers.size());
+        //finish the new ClusterHandlers
         for (ComputerBlockController blockController: blocks) {
             for (ClusterHandler clusterHandler: newClusterHandlers) {
                 if (clusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
@@ -182,19 +184,17 @@ public class ClusterHandler implements IArchitectureCheckable {
 
     /**
      * method to get all Blocks of the cluster
-     *
      * @return List of all Blocks of the cluster
      */
-    public Collection<? extends ComputerBlockController> getBlocks() {
+    public List<ComputerBlockController> getBlocks() {
         return blocks;
     }
 
     /**
      * method to get all Bus Blocks of the cluster
-     *
      * @return List of all Bus Blocks of the cluster
      */
-    public Collection<? extends ComputerBlockController> getBusBlocks() {
+    public List<ComputerBlockController> getBusBlocks() {
         return busBlocks;
     }
 
@@ -202,6 +202,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * method to check whether the cluster is finished building
      */
     public void checkFinished() {
+        System.out.println("Blocks: " + blocks.size() + " | BusBlocks: " + busBlocks.size());
         ClusterArchitectureHandler.checkArchitecture(null);
         //ToDo remove test code and implement method
         if (blocks.size() == 13) {
@@ -212,7 +213,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     }
 
     /**
-     * start the simulation, using the current cluster
+     * start the simulation using the current cluster
      */
     public void startSimulation() {
         SimulationTimeHandler sim = new SimulationTimeHandler(blocks);

@@ -18,18 +18,17 @@ public class BusSystemModel implements IQuerybleBusSystem {
     }
 
     public BusSystemModel(BlockPosition firstBlock) {
-
         adjPositions = new HashMap<>();
         addNode(firstBlock);
     }
 
-        private BusSystemModel(Map<BlockPosition, List<BlockPosition>> adjPositions) {
+    private BusSystemModel(Map<BlockPosition, List<BlockPosition>> adjPositions) {
         this.adjPositions = adjPositions;
     }
     public void addNode(BlockPosition newBlock) {
         adjPositions.put(newBlock, new ArrayList<>());
     }
-// rethink publicity
+
     public void addEdge(BlockPosition pos1, BlockPosition pos2) {
         //ToDo kontrollieren on Knoten da, maybe check if actually adjacent
         adjPositions.get(pos1).add(pos2);
@@ -79,6 +78,7 @@ public class BusSystemModel implements IQuerybleBusSystem {
         }
         return newBusSystems;
     }
+
     /**
      * Only PUBLIC cause of JUnit-Test.
      * Removes one Node and his Edges and split Graph when needed.
@@ -125,4 +125,5 @@ public class BusSystemModel implements IQuerybleBusSystem {
     public boolean isNode(BlockPosition blockPosition) {
         return adjPositions.containsKey(blockPosition);
     }
+
 }
