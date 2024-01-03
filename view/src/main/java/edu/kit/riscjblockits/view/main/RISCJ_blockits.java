@@ -16,6 +16,8 @@ import edu.kit.riscjblockits.view.main.blocks.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.systemclock.SystemClockBlock;
 import edu.kit.riscjblockits.view.main.blocks.systemclock.SystemClockBlockEntity;
 import edu.kit.riscjblockits.view.main.items.goggles.GogglesItem;
+import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
+import edu.kit.riscjblockits.view.main.items.manual.ManualItem;
 import edu.kit.riscjblockits.view.main.items.program.ProgramItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -35,6 +37,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class RISCJ_blockits implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -74,8 +79,12 @@ public class RISCJ_blockits implements ModInitializer {
 	// define Items
 	public static final Item PROGRAM_ITEM = new ProgramItem(new Item.Settings().maxCount(1));
 	public static final Item GOGGLES_ITEM = new GogglesItem(new Item.Settings().maxCount(1));
-	public static final Item INSTRUCTION_SET_ITEM = new GogglesItem(new Item.Settings().maxCount(1));
-	public static final Item MANUAL_ITEM = new GogglesItem(new Item.Settings().maxCount(1));
+	//ToDo right location for .json
+	public static final Item INSTRUCTION_SET_ITEM_MIMA = new InstructionSetItem(new Item.Settings().maxCount(1),
+			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionset/instructionSetMIMA.jsonc"));
+	public static final Item INSTRUCTION_SET_ITEM_RISCV = new InstructionSetItem(new Item.Settings().maxCount(1),
+			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionset/instructionSetMIMA.jsonc"));
+	public static final Item MANUAL_ITEM = new ManualItem(new Item.Settings().maxCount(1));
 
 
 	public static ScreenHandlerType<ProgrammingScreenHandler> PROGRAMMING_SCREEN_HANDLER;
@@ -108,7 +117,8 @@ public class RISCJ_blockits implements ModInitializer {
 
 		// register Items
 		Registry.register(Registries.ITEM, new Identifier(MODID, "goggles"), GOGGLES_ITEM);
-		Registry.register(Registries.ITEM, new Identifier(MODID, "instruction_set"), INSTRUCTION_SET_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(MODID, "instruction_set_mima"), INSTRUCTION_SET_ITEM_MIMA);
+		Registry.register(Registries.ITEM, new Identifier(MODID, "instruction_set_riscv"), INSTRUCTION_SET_ITEM_RISCV);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "manual"), MANUAL_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "program"), PROGRAM_ITEM);
 
@@ -143,8 +153,9 @@ public class RISCJ_blockits implements ModInitializer {
 				entries.add(PROGRAMMING_BLOCK_ITEM);
 				entries.add(REGISTER_BLOCK_ITEM);
 				entries.add(SYSTEM_CLOCK_BLOCK_ITEM);
-
-				entries.add(INSTRUCTION_SET_ITEM);
+				//Items
+				entries.add(INSTRUCTION_SET_ITEM_MIMA);
+				entries.add(INSTRUCTION_SET_ITEM_RISCV);
 				entries.add(GOGGLES_ITEM);
 				entries.add(PROGRAM_ITEM);
 				entries.add(MANUAL_ITEM);

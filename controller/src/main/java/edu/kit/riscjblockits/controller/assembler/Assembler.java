@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.assembler;
 
 import edu.kit.riscjblockits.model.Memory;
 import edu.kit.riscjblockits.model.Value;
+import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
 import edu.kit.riscjblockits.model.instructionset.Instruction;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
@@ -54,12 +55,6 @@ public class Assembler {
     private final Map<String, Value> labels;
 
     /**
-     * the pattern to identify an address change.
-     * will be read from instruction set
-     */
-    private final Pattern addressChangePattern;
-
-    /**
      * Constructor for an {@link Assembler}
      * will create a new {@link Memory} with the address and word size of the {@link InstructionSetModel}
      * @param instructionSetModel the instruction set model to use for the assembly
@@ -78,7 +73,6 @@ public class Assembler {
             calculatedMemoryWordSize
         );
         currentAddress = new Value(new byte[calculatedMemoryAddressSize]);
-        addressChangePattern = Pattern.compile(instructionSetModel.getAddressChangeRegex());
     }
 
     /**
@@ -96,9 +90,9 @@ public class Assembler {
                 continue;
 
             // check if line is address change
-            Matcher matcher = addressChangePattern.matcher(line);
-            if (matcher.matches()) {
-                String address = matcher.group("address");
+
+            if (instructionSetModel.isAddressChange(line)) {
+                String address = instructionSetModel.getChangedAddress(line);
                 currentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
                 continue;
             }
@@ -136,7 +130,7 @@ public class Assembler {
         }
 
         String[] cmd = command.split(" +,?");
-        Instruction instruction = instructionSetModel.getInstruction(cmd[0]);
+        IQueryableInstruction instruction = instructionSetModel.getInstruction(cmd[0]);
         if (instruction == null) {
             throw new AssemblyException("Unknown instruction");
         }
@@ -161,10 +155,9 @@ public class Assembler {
                 continue;
 
             // check if line is address change
-            Matcher matcher = addressChangePattern.matcher(line);
-            if (matcher.matches()) {
-                String address = matcher.group("address");
-                localCurrentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
+            if (instructionSetModel.isAddressChange(line)) {
+                String address = instructionSetModel.getChangedAddress(line);
+                currentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
                 continue;
             }
 
@@ -193,6 +186,15 @@ public class Assembler {
                 arguments[i] = "0x" + labels.get(argument).getHexadecimalValue();
             }
         }
+    }
+
+    /**
+     * writes the instruction-set's register addresses to the arguments
+     *
+     * @param arguments array of arguments that may have registers, in need to be replaced
+     */
+    private void writeRegistersToArguments(String[] arguments) {
+
     }
 
     /**

@@ -5,9 +5,10 @@ import java.util.Arrays;
 import java.util.HexFormat;
 
 /**
- * This class represents a value
+ * This class represents a value and
  * also provides methods to convert the value to and from binary and hexadecimal
- * as well as incrementing the value
+ * as well as incrementing the value.
+ * Holds data for handling between Controller and Model.
  */
 public class Value {
 
@@ -63,6 +64,16 @@ public class Value {
     }
 
     /**
+     * Creates a value from a floating point decimal string
+     * @param s the float string
+     * @param length the length of the value in bytes
+     * @return the value
+     */
+    public static Value fromFloat(String s, int length) {
+        return null;
+    }
+
+    /**
      * Constructor for a value
      * @param initial the initial value as byte array
      */
@@ -105,6 +116,13 @@ public class Value {
         }
 
         return stringBuilder.toString();
+    }
+
+    /**
+     * @return the value as floating point decimal string
+     */
+    public String getFloatValue() {
+        return null;
     }
 
     /**

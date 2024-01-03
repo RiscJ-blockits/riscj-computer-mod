@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.computerhandler;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.model.BusSystemModel;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
@@ -18,11 +19,11 @@ public class ClusterHandler implements IArchitectureCheckable {
     /**
      * List of all blocks controllers in this cluster
      */
-    private List<BlockController> blocks;
+    private List<ComputerBlockController> blocks;
     /**
      * List of all bus blocks controllers in this cluster
      */
-    private List<BlockController> busBlocks;
+    private List<ComputerBlockController> busBlocks;
 
     /**
      * BusSystemModel of this cluster
@@ -35,7 +36,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     private InstructionSetModel istModel;
 
     /**
-     * True if the cluster is finished building
+     * True, if the cluster is finished building
      */
     private boolean buildingFinished;
 
@@ -44,7 +45,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * Creates a new ClusterHandler and combines it with all neighbours
      * @param blockController BlockController to start the cluster with
      */
-    public ClusterHandler(BlockController blockController) {
+    public ClusterHandler(ComputerBlockController blockController) {
         buildingFinished = false;
         blockController.setClusterHandler(this);
         blocks = new ArrayList<>();
@@ -79,10 +80,10 @@ public class ClusterHandler implements IArchitectureCheckable {
      * Combines the given block with the cluster
      * @param blockController BlockController to combine
      */
-    private void combineToNeighbours(BlockController blockController) {
-        List<BlockController> neighbourBlockControllers = blockController.getNeighbours();
+    private void combineToNeighbours(ComputerBlockController blockController) {
+        List<ComputerBlockController> neighbourBlockControllers = blockController.getNeighbours();
         ClusterHandler actualCluster = this;
-        for (BlockController neighbourBlock: neighbourBlockControllers) {
+        for (ComputerBlockController neighbourBlock: neighbourBlockControllers) {
             neighbourBlock.getClusterHandler().combine(neighbourBlock, blockController, actualCluster);
             actualCluster = neighbourBlock.getClusterHandler();
             //busSystemModel.combineGraph(blockController.getBlockPosition(), neighbourBlock.getBlockPosition(), neighbourBlock.getClusterHandler().getBusSystemModel());
@@ -104,38 +105,41 @@ public class ClusterHandler implements IArchitectureCheckable {
      * @param neighbourBlock BlockController of the other cluster
      * @param oldCluster ClusterHandler of the other cluster
      */
-    public void combine(BlockController ownBlock,BlockController neighbourBlock, ClusterHandler oldCluster) {
+    public void combine(ComputerBlockController ownBlock,ComputerBlockController neighbourBlock, ClusterHandler oldCluster) {
         busSystemModel.combineGraph(ownBlock.getBlockPosition(), neighbourBlock.getBlockPosition(), oldCluster.getBusSystemModel());
         blocks.addAll(oldCluster.getBlocks());
-        for (BlockController newBlock: (oldCluster.getBlocks())) {
+        for (ComputerBlockController newBlock: (oldCluster.getBlocks())) {
             newBlock.setClusterHandler(this);
         }
         busBlocks.addAll(oldCluster.getBusBlocks());
-        for (BlockController newBlock: (oldCluster.getBusBlocks())) {
+        for (ComputerBlockController newBlock: (oldCluster.getBusBlocks())) {
             newBlock.setClusterHandler(this);
         }
         System.out.println("combine");
     }
 
-
     /**
      * manages the destruction of a block and the corresponding change in the cluster
      * @param destroyedBlockController BlockController of the destroyed block
      */
-    public void blockDestroyed(BlockController destroyedBlockController) {
+    public void blockDestroyed(ComputerBlockController destroyedBlockController) {
+        //Remove Block from BusSystemModel
         List<BusSystemModel> newBusSystemModels = busSystemModel.splitBusSystemModel(destroyedBlockController.getBlockPosition());
         //System.out.println(newBusSystemModels.size());
+       //Remove Block from ClusterHandler Lists
         if (destroyedBlockController.isBus()) {
             busBlocks.remove(destroyedBlockController);
         } else {
             blocks.remove(destroyedBlockController);
         }
+        //Create new ClusterHandler for fragmented BusSystemModels
         List<ClusterHandler> newClusterHandlers = new ArrayList<>();
         for (BusSystemModel newBusSystemModel: newBusSystemModels) {
             newClusterHandlers.add(new ClusterHandler(newBusSystemModel));
         }
         System.out.println(newClusterHandlers.size());
-        for (BlockController blockController: blocks) {
+        //finish the new ClusterHandlers
+        for (ComputerBlockController blockController: blocks) {
             for (ClusterHandler clusterHandler: newClusterHandlers) {
                 if (clusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
                     clusterHandler.addBlocks(blockController);
@@ -143,7 +147,7 @@ public class ClusterHandler implements IArchitectureCheckable {
                 }
             }
         }
-        for (BlockController blockController: busBlocks) {
+        for (ComputerBlockController blockController: busBlocks) {
             for (ClusterHandler newclusterHandler: newClusterHandlers) {
                 if (newclusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
                     newclusterHandler.addBusBlocks(blockController);
@@ -158,7 +162,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * method to add a block to the cluster
      * @param blockController BlockController to add
      */
-    public void addBlocks(BlockController blockController) {
+    public void addBlocks(ComputerBlockController blockController) {
         blocks.add(blockController);
     }
 
@@ -166,7 +170,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * method to add a bus block to the cluster
      * @param blockController BlockController to add
      */
-    public void addBusBlocks(BlockController blockController) {
+    public void addBusBlocks(ComputerBlockController blockController) {
         busBlocks.add(blockController);
     }
 
@@ -182,7 +186,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * method to get all Blocks of the cluster
      * @return List of all Blocks of the cluster
      */
-    public List<BlockController> getBlocks() {
+    public List<ComputerBlockController> getBlocks() {
         return blocks;
     }
 
@@ -190,7 +194,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * method to get all Bus Blocks of the cluster
      * @return List of all Bus Blocks of the cluster
      */
-    public List<BlockController> getBusBlocks() {
+    public List<ComputerBlockController> getBusBlocks() {
         return busBlocks;
     }
 
@@ -198,6 +202,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * method to check whether the cluster is finished building
      */
     public void checkFinished() {
+        System.out.println("Blocks: " + blocks.size() + " | BusBlocks: " + busBlocks.size());
         ClusterArchitectureHandler.checkArchitecture(null);
         //ToDo remove test code and implement method
         if (blocks.size() == 13) {
@@ -208,7 +213,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     }
 
     /**
-     * start the simulation, using the current cluster
+     * start the simulation using the current cluster
      */
     public void startSimulation() {
         SimulationTimeHandler sim = new SimulationTimeHandler(blocks);

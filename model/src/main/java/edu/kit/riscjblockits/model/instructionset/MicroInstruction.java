@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.model.instructionset;
 
-public abstract class MicroInstruction {
+public abstract class MicroInstruction implements IQueryableMicroInstruction {
 
     String[] from;
     String to;

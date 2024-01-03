@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.controller.assembler;
 
 import edu.kit.riscjblockits.model.Value;
+import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
 import edu.kit.riscjblockits.model.instructionset.Instruction;
 
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class Command {
      * @param arguments the arguments of the command
      * @throws AssemblyException if the given command cant be assembled
      */
-    public Command(Instruction instruction, String[] arguments) throws AssemblyException {
+    public Command(IQueryableInstruction instruction, String[] arguments) throws AssemblyException {
         for (int i = 0; i < arguments.length; i++) {
             argumentsInstructionMap.put(instruction.getArguments()[i], arguments[i]);
         }

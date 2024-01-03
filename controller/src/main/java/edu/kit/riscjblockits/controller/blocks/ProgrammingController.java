@@ -2,12 +2,11 @@ package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.controller.assembler.Assembler;
 import edu.kit.riscjblockits.controller.assembler.AssemblyException;
-import edu.kit.riscjblockits.controller.data.DataType;
-import edu.kit.riscjblockits.controller.data.IDataContainer;
-import edu.kit.riscjblockits.controller.data.IDataElement;
-import edu.kit.riscjblockits.controller.data.IDataEntry;
-import edu.kit.riscjblockits.controller.data.IDataStringEntry;
-import edu.kit.riscjblockits.model.blocks.BlockModel;
+import edu.kit.riscjblockits.model.data.DataType;
+import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.data.IDataEntry;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 
 import java.io.ByteArrayInputStream;
@@ -15,20 +14,11 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-public class ProgrammingController extends BlockController{
-    public ProgrammingController(IQueryableBlockEntity blockEntity) {
-        super(blockEntity);
-        //ToDo ruft auch ein Clustering auf
-        // weil? clustert doch nicht
-    }
 
-    /**
-     * braucht der ein Model??
-     * @return
-     */
-    @Override
-    protected BlockModel createBlockModel() {
-        return null;
+public class ProgrammingController extends BlockController implements IAssemblerController {
+
+    public ProgrammingController() {
+
     }
 
     public void assemble(String code, IDataContainer instructionSetData, IDataContainer memoryData)
@@ -53,5 +43,11 @@ public class ProgrammingController extends BlockController{
             return;
         }
         assembler.assemble(code);
+        assembler.getMemory().writeToData(memoryData);
+    }
+
+    @Override
+    public void setData(IDataElement data) {
+
     }
 }

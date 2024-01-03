@@ -2,6 +2,8 @@ package edu.kit.riscjblockits.view.main.blocks.programming;
 
 import edu.kit.riscjblockits.controller.assembler.AssemblyException;
 import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
+import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableController;
 import edu.kit.riscjblockits.controller.blocks.ProgrammingController;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.ImplementedInventory;
@@ -31,8 +33,8 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
     }
 
     @Override
-    protected BlockController createController() {
-        return new ProgrammingController(this);
+    protected IUserInputReceivableController createController() {
+        return new ProgrammingController();
     }
 
     @Override
@@ -47,13 +49,13 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
 
     @Override
     public Text getDisplayName() {
-        return null;
+        return Text.of("Test");
     }
 
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return null;
+        return new ProgrammingScreenHandler(syncId, playerInventory, this,this);
     }
 
     public void assemble() throws AssemblyException {

@@ -1,8 +1,8 @@
 package edu.kit.riscjblockits.view.main.blocks.alu;
 
-import edu.kit.riscjblockits.controller.blocks.AluController;
-import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.controller.blocks.*;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntity;
 import net.minecraft.block.BlockState;
@@ -16,7 +16,13 @@ public class AluBlockEntity extends ComputerBlockEntity {
     }
 
     @Override
-    protected BlockController createController() {
+    public String getInfo() {
+        return null;
+    }
+
+    @Override
+    protected IUserInputReceivableComputerController createController() {
         return new AluController(this);
     }
+
 }

@@ -9,29 +9,42 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-public class BusSystemModel {
+public class BusSystemModel implements IQuerybleBusSystem {
 
     private Map<BlockPosition, List<BlockPosition>> adjPositions;
+
+    private Value presentData;
+    private String from;
+    private String to;
 
     public BusSystemModel() {
         adjPositions = new HashMap<>();
     }
 
     public BusSystemModel(BlockPosition firstBlock) {
-
         adjPositions = new HashMap<>();
         addNode(firstBlock);
     }
 
-        private BusSystemModel(Map<BlockPosition, List<BlockPosition>> adjPositions) {
+    private BusSystemModel(Map<BlockPosition, List<BlockPosition>> adjPositions) {
         this.adjPositions = adjPositions;
     }
+
+    public Value getPresentData(){
+        return presentData;
+    }
+
+    public boolean getActiveVisualization(BlockPosition blockPosition) {
+        //ToDo Berechne Pfade
+        return false;
+    }
+
     public void addNode(BlockPosition newBlock) {
         adjPositions.put(newBlock, new ArrayList<>());
     }
-// rethink publicity
+
     public void addEdge(BlockPosition pos1, BlockPosition pos2) {
-        //ToDo kontrollieren on Knoten da, maybe check if actually adjacent
+        //ToDo kontrollieren ob Knoten da, maybe check if actually adjacent
         adjPositions.get(pos1).add(pos2);
         adjPositions.get(pos2).add(pos1);
     }
@@ -79,6 +92,7 @@ public class BusSystemModel {
         }
         return newBusSystems;
     }
+
     /**
      * Only PUBLIC cause of JUnit-Test.
      * Removes one Node and his Edges and split Graph when needed.
@@ -125,4 +139,5 @@ public class BusSystemModel {
     public boolean isNode(BlockPosition blockPosition) {
         return adjPositions.containsKey(blockPosition);
     }
+
 }

@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.computerhandler;
 
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.model.ClockMode;
 import edu.kit.riscjblockits.model.IObserver;
@@ -20,10 +21,10 @@ public class SimulationTimeHandler implements IObserver {
     private SystemClockModel systemClockModel;
     private int minecraftTickCounter = 0;
 
-    public SimulationTimeHandler(List<BlockController> blockControllers) {
+    public SimulationTimeHandler(List<ComputerBlockController> blockControllers) {
         simulationSequenceHandler = new SimulationSequenceHandler(blockControllers);
         //Register us as an SystemClockModel Observer
-        for(BlockController blockController: blockControllers) {
+        for(ComputerBlockController blockController: blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.CLOCK) {
                 systemClockModel = (SystemClockModel) blockController.getModel();
                 systemClockModel.registerObserver(this);

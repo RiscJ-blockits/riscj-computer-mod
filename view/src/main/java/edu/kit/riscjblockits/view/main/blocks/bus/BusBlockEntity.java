@@ -4,6 +4,8 @@ package edu.kit.riscjblockits.view.main.blocks.bus;
 import edu.kit.riscjblockits.controller.blocks.AluController;
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BusController;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntity;
@@ -25,8 +27,14 @@ public class BusBlockEntity extends ComputerBlockEntity {
         setType(EntityType.BUS);
 
     }
+
     @Override
-    protected BlockController createController() {
+    public String getInfo() {
+        return null;
+    }
+
+    @Override
+    protected ComputerBlockController createController() {
         return new BusController(this);
     }
 
@@ -35,8 +43,8 @@ public class BusBlockEntity extends ComputerBlockEntity {
      * @return
      */
     @Override
-    public List<BlockController> getComputerNeighbours() {
-        List<BlockController> neigbhours = new ArrayList<>();
+    public List<ComputerBlockController> getComputerNeighbours() {
+        List<ComputerBlockController> neigbhours = new ArrayList<>();
         List<BlockEntity> blockEntities = new ArrayList<>();
         World world = getWorld();
 
@@ -51,10 +59,12 @@ public class BusBlockEntity extends ComputerBlockEntity {
             if (entity instanceof ComputerBlockEntity) {               //FixMe instanceof schöner machen
                 if (((ComputerBlockEntity) entity).getModblockType() == EntityType.BUS ||
                 ((ComputerBlockEntity) entity).getModblockType() == EntityType.CONNECTABLE) {
-                    neigbhours.add(((ComputerBlockEntity) entity).getController());
+                    //ToDo: cast entfernen
+                    neigbhours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
                 }
             }
         }
         return neigbhours;
     }
+
 }

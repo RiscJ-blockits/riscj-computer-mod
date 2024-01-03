@@ -1,8 +1,58 @@
 package edu.kit.riscjblockits.model.blocks;
 
+import edu.kit.riscjblockits.model.Value;
+import edu.kit.riscjblockits.model.data.IDataElement;
+
 public class AluModel extends BlockModel{
+
+    /**
+     * Current alu operation
+     */
+    private String operation;
+
+    /**
+     * First alu operand
+     */
+    private Value operand1;
+
+    /**
+     * Second alu operand
+     */
+    private Value operand2;
+
+    /**
+     * Result of the operation
+     */
+    private Value result;
+
+
     @Override
-    public boolean getHasUnqueriedStateChange() {
+    public boolean hasUnqueriedStateChange() {
         return false;
+    }
+
+    @Override
+    public void writeDataRequest(IDataElement dataElement) {
+
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public void setOperand1(Value operand1) {
+        this.operand1 = operand1;
+    }
+
+    public void setOperand2(Value operand2) {
+        this.operand2 = operand2;
+    }
+
+    public Value getResult() {
+        return result;
+    }
+
+    public void setResult(Value result) {
+        this.result = result;
     }
 }

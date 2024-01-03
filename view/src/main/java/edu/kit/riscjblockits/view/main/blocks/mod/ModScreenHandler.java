@@ -12,6 +12,7 @@ public abstract class ModScreenHandler extends ScreenHandler {
     protected ModScreenHandler(@Nullable ScreenHandlerType<?> type,
                                int syncId) {
         super(type, syncId);
+
     }
 
     @Override
@@ -24,7 +25,7 @@ public abstract class ModScreenHandler extends ScreenHandler {
         return true;
     }
 
-    private void addPlayerInventorySlots(PlayerInventory playerInventory) {
+    protected void addPlayerInventorySlots(PlayerInventory playerInventory) {
         int i;
         for(i = 0; i < 3; ++i) {
             for(int j = 0; j < 9; ++j) {
