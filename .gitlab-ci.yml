@@ -1,46 +1,52 @@
 qodana:
-   tags:
-      - docker
-   image:
-      name: jetbrains/qodana-jvm
-      entrypoint: [""]
-   cache:
-      - key: qodana-2023.2-$CI_DEFAULT_BRANCH-$CI_COMMIT_REF_SLUG
-        fallback_keys:
-           - qodana-2023.2-$CI_DEFAULT_BRANCH-
-           - qodana-2023.2-
-        paths:
-           - .qodana/cache
-   variables:
-      QODANA_TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdhbml6YXRpb24iOiIzMWJYeCIsInByb2plY3QiOiJwMjFCbiIsInRva2VuIjoiM3l4YmwifQ.ECLsuFCJ3ogjXDNR1p333VNDGkOixdPRKnLt2k-FoGo
-   script:
-      - qodana --save-report --results-dir=$CI_PROJECT_DIR/.qodana/results
-         --cache-dir=$CI_PROJECT_DIR/.qodana/cache
-   artifacts:
+  tags:
+    - docker
+  image:
+    name: jetbrains/qodana-jvm
+    entrypoint: [""]
+  cache:
+    - key: qodana-2023.2-$CI_DEFAULT_BRANCH-$CI_COMMIT_REF_SLUG
+      fallback_keys:
+        - qodana-2023.2-$CI_DEFAULT_BRANCH-
+        - qodana-2023.2-
       paths:
-         - report/qodana/
-      expose_as: 'Qodana report'
+        - .qodana/cache
+  variables:
+    QODANA_TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdhbml6YXRpb24iOiIzMWJYeCIsInByb2plY3QiOiJwMjFCbiIsInRva2VuIjoiM3l4YmwifQ.ECLsuFCJ3ogjXDNR1p333VNDGkOixdPRKnLt2k-FoGo
+  script:
+    - qodana --save-report --results-dir=$CI_PROJECT_DIR/.qodana/results
+      --cache-dir=$CI_PROJECT_DIR/.qodana/cache
+  artifacts:
+    paths:
+      - qodana/report/
+    expose_as: 'Qodana report'
+    when: always
 
 stages:
-   - build
-   - test
+  - build
+  - test
 
 build:
-   tags:
-      - shell
-   stage: build
-   script:
-      - ./gradlew build
-   artifacts:
-      paths:
-         - report/build/
+  tags:
+    - shell
+  stage: build
+  script:
+    - ./gradlew --continue build --stacktrace -x test
 
 test:
-   tags:
-      - shell
-   stage: test
-   script:
-      - ./gradlew test
-   artifacts:
-      reports:
-         junit: report/test/TEST-*.xml
+  tags:
+    - shell
+  stage: test
+  script:
+    - ./gradlew test
+  artifacts:
+    reports:
+      junit:
+        - model/test-results/test/TEST-*.xml
+        - controller/test-results/test/TEST-*.xml
+        - view/test-results/test/TEST-*.xml
+    paths:
+      - controller/build/reports/tests/
+      - model/build/reports/tests/
+      - view/build/reports/tests/
+    when: always
