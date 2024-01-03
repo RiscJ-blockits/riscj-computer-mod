@@ -22,6 +22,7 @@ public class SystemClockModel extends BlockModel implements IObserveable {
         //ToDo remove Test Code
         clockSpeed = 1;
         mode = ClockMode.MC_TICK;
+        setType(ModelType.CLOCK);
     }
 
     @Override

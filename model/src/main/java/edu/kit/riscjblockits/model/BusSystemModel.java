@@ -29,12 +29,22 @@ public class BusSystemModel implements IQuerybleBusSystem {
     private BusSystemModel(Map<BlockPosition, List<BlockPosition>> adjPositions) {
         this.adjPositions = adjPositions;
     }
+
+    public Value getPresentData(){
+        return presentData;
+    }
+
+    public boolean getActiveVisualization(BlockPosition blockPosition) {
+        //ToDo Berechne Pfade
+        return false;
+    }
+
     public void addNode(BlockPosition newBlock) {
         adjPositions.put(newBlock, new ArrayList<>());
     }
 
     public void addEdge(BlockPosition pos1, BlockPosition pos2) {
-        //ToDo kontrollieren on Knoten da, maybe check if actually adjacent
+        //ToDo kontrollieren ob Knoten da, maybe check if actually adjacent
         adjPositions.get(pos1).add(pos2);
         adjPositions.get(pos2).add(pos1);
     }

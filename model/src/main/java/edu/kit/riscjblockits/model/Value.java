@@ -5,9 +5,10 @@ import java.util.Arrays;
 import java.util.HexFormat;
 
 /**
- * This class represents a value
+ * This class represents a value and
  * also provides methods to convert the value to and from binary and hexadecimal
- * as well as incrementing the value
+ * as well as incrementing the value.
+ * Holds data for handling between Controller and Model.
  */
 public class Value {
 
