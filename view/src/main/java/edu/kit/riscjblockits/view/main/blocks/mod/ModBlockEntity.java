@@ -1,10 +1,10 @@
 package edu.kit.riscjblockits.view.main.blocks.mod;
 
-import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
-import edu.kit.riscjblockits.view.main.data.Data;
+import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.view.main.blocks.EntityType;
+import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -68,7 +68,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        controller.setData(new Data(nbt));
+        controller.setData(new NbtDataConverter(nbt).getData());
     }
 
     public BlockPosition getBlockPosition() {

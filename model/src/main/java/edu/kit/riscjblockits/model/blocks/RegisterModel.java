@@ -19,8 +19,8 @@ public class RegisterModel extends BlockModel {
     }
 
     @Override
-    public void writeDataRequest(IDataElement dataElement) {
-
+    public IDataElement getData() {
+        return null;
     }
 
     public void setWordLength(int wordLength){

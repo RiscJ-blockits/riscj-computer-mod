@@ -1,14 +1,15 @@
 package edu.kit.riscjblockits.view.main.blocks.programming;
 
 import edu.kit.riscjblockits.controller.assembler.AssemblyException;
-import edu.kit.riscjblockits.controller.blocks.BlockController;
-import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableController;
 import edu.kit.riscjblockits.controller.blocks.ProgrammingController;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.ImplementedInventory;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntityWithInventory;
-import edu.kit.riscjblockits.view.main.data.Data;
+import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.view.main.data.DataNbtConverter;
+import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +19,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
@@ -99,10 +99,9 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
         ItemStack instructionSetStack = getStack(0);
         ItemStack memoryStack = getStack(1);
 
-        Data instructionSetData = new Data(instructionSetStack.getOrCreateSubNbt("riskjblockits.instruction_set"));
-        Data memoryData = new Data(memoryStack.getOrCreateSubNbt("riskjblockits.memory"));
-        ((ProgrammingController) getController()).assemble(code, instructionSetData, memoryData);
-        memoryStack.setSubNbt("riskjblockits.memory", memoryData.toNbt());
+        IDataElement instructionSetData = new NbtDataConverter(instructionSetStack.getOrCreateSubNbt("riskjblockits.instruction_set")).getData();
+        IDataElement memoryData = ((ProgrammingController) getController()).assemble(code, instructionSetData);
+        memoryStack.setSubNbt("riskjblockits.memory", new DataNbtConverter(memoryData).getNbtElement());
     }
 
     /**

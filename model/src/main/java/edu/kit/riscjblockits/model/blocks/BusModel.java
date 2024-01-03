@@ -16,13 +16,14 @@ public class BusModel extends BlockModel{
     }
 
     /**
-     *
-     * @param dataElement
+     * Returns the data the view needs to display.
+     * @return the data the view needs to display
      */
     @Override
-    public void writeDataRequest(IDataElement dataElement) {
+    public IDataElement getData() {
         //ToDo Asks the BusSystemModel for data and visualisation
         belongsToSystem.getActiveVisualization(getPosition());
+        return null;
     }
 
     public void setBelongingBusSystemModel(BusSystemModel belongsToSystem) {

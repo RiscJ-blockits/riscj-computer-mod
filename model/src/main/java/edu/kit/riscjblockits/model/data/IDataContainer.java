@@ -1,5 +1,7 @@
 package edu.kit.riscjblockits.model.data;
 
+import java.util.Set;
+
 public interface IDataContainer extends IDataElement {
     @Override
     default boolean isContainer(){
@@ -28,18 +30,9 @@ public interface IDataContainer extends IDataElement {
     void set(String key, IDataElement value);
 
     /**
-     * Will add a new container under the given key.
+     * Will return a set of all keys stored in this container.
      *
-     * @param key the key the container is to be stored under
-     * @return the new container
+     * @return a set of all keys stored in this container
      */
-    IDataContainer putContainer(String key);
-
-    /**
-     * Will add a new String entry under the given key.
-     *
-     * @param key the key the String entry is to be stored under
-     * @return the new String entry
-     */
-    IDataStringEntry putString(String key);
+    Set<String> getKeys();
 }

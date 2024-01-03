@@ -31,8 +31,8 @@ public class SystemClockModel extends BlockModel implements IObserveable {
     }
 
     @Override
-    public void writeDataRequest(IDataElement dataElement) {
-
+    public IDataElement getData() {
+        return null;
     }
 
 

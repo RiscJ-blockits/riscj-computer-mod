@@ -21,8 +21,8 @@ public class ControlUnitModel extends BlockModel{
     }
 
     @Override
-    public void writeDataRequest(IDataElement dataElement) {
-
+    public IDataElement getData() {
+        return null;
     }
 
 

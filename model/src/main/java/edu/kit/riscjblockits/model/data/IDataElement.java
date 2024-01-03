@@ -14,4 +14,10 @@ public interface IDataElement {
      * @return true if this element is an entry
      */
     boolean isEntry();
+
+    /**
+     * Will receive a visitor.
+     * @param visitor The visitor to be visited.
+     */
+    void receive(IDataVisitor visitor);
 }
