@@ -38,7 +38,7 @@ test:
     - shell
   stage: test
   script:
-    - ./gradlew test
+    - ./gradlew test --continue
   artifacts:
     reports:
       junit:
