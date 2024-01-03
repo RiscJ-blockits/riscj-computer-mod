@@ -13,6 +13,10 @@ public class BusSystemModel implements IQuerybleBusSystem {
 
     private Map<BlockPosition, List<BlockPosition>> adjPositions;
 
+    private Value presentData;
+    private String from;
+    private String to;
+
     public BusSystemModel() {
         adjPositions = new HashMap<>();
     }

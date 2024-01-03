@@ -4,6 +4,12 @@ import edu.kit.riscjblockits.model.BusSystemModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
 public class BusModel extends BlockModel{
+
+    /**
+     * The bus system this bus belongs to.
+     */
+    private BusSystemModel belongsToSystem;
+
     @Override
     public boolean hasUnqueriedStateChange() {
         return false;

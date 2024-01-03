@@ -4,6 +4,8 @@ import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
+import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.blocks.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import net.minecraft.block.BlockState;
@@ -33,7 +35,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             ((ComputerBlockController)entity.getController()).tick();
         }
     }
-    private BlockModel model;
+    private IQueryableBlockModel model;
     public ComputerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         setType(EntityType.CONNECTABLE);
@@ -66,7 +68,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         return neigbhours;
     }
 
-    public void setBlockModel(BlockModel model) {
+    public void setBlockModel(IQueryableBlockModel model) {
         this.model = model;
     }
 
@@ -80,6 +82,10 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     @Override
     public Text getGoggleText() {
         return Text.empty();
+    }
+
+    public IDataElement getBlockEntityData() {
+        return null;
     }
 
 }

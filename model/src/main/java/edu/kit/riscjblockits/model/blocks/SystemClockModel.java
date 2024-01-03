@@ -14,8 +14,11 @@ public class SystemClockModel extends BlockModel implements IObserveable {
     private int clockSpeed;
     private ClockMode mode;
 
+    private boolean activeTick;
+
     public SystemClockModel() {
         modeObservers = new ArrayList<>();
+        activeTick = false;
         //ToDo remove Test Code
         clockSpeed = 1;
         mode = ClockMode.MC_TICK;

@@ -18,5 +18,17 @@ public class InstructionSetItem extends Item {
 
     public InstructionSetItem(Settings settings, InputStream inputStream) {
         super(settings);
+        defaultInstructionSetJson = new BufferedReader(
+                new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n"));
     }
+
+    @Override
+    public void onCraft(ItemStack stack, World world, PlayerEntity player) {
+        super.onCraft(stack, world, player);
+
+        stack.setSubNbt("riskjblockits.instructionSet", NbtString.of(defaultInstructionSetJson));
+    }
+
 }

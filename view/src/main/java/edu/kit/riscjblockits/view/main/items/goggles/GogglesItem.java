@@ -8,4 +8,9 @@ public class GogglesItem extends Item implements Equipment {
     public GogglesItem(Settings settings) {
         super(settings);
     }
+
+    @Override
+    public EquipmentSlot getSlotType() {
+        return EquipmentSlot.HEAD;
+    }
 }

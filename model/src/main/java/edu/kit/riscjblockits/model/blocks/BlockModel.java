@@ -1,9 +1,10 @@
 package edu.kit.riscjblockits.model.blocks;
 
+import edu.kit.riscjblockits.model.data.IDataElement;
+
 public abstract class BlockModel implements IControllerQueryableBlockModel, IViewQueryableBlockModel {
 
     private boolean hasUnqueriedStateChange;
-    private byte[] data;
     private ModelType type;
     private BlockPosition position;
 
@@ -18,5 +19,9 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
 
     protected void setType(ModelType type) {
         this.type = type;
+    }
+
+    public BlockPosition getPosition() {
+        return position;
     }
 }

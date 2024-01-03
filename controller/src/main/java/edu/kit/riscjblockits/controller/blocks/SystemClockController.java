@@ -33,6 +33,11 @@ public class SystemClockController extends ComputerBlockController {
         }
     }
 
+    /**
+     * If the block is reloaded a new model is created and it gets set to its old data from its NBT value.
+     * Is also used for setting a new clock mode.
+     * @param data
+     */
     @Override
     public void setData(IDataElement data) {
 

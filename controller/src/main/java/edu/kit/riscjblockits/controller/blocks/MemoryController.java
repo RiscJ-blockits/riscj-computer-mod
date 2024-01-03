@@ -20,4 +20,13 @@ public class MemoryController extends ComputerBlockController {
     public void setData(IDataElement data) {
 
     }
+
+    public Value getValue(Value address) {
+        return null;
+    }
+
+    public void writeMemory(Value address, Value value) {
+
+    }
+
 }

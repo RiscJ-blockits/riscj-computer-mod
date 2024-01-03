@@ -38,6 +38,9 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class RISCJ_blockits implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
@@ -114,7 +117,8 @@ public class RISCJ_blockits implements ModInitializer {
 
 		// register Items
 		Registry.register(Registries.ITEM, new Identifier(MODID, "goggles"), GOGGLES_ITEM);
-		Registry.register(Registries.ITEM, new Identifier(MODID, "instruction_set"), INSTRUCTION_SET_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(MODID, "instruction_set_mima"), INSTRUCTION_SET_ITEM_MIMA);
+		Registry.register(Registries.ITEM, new Identifier(MODID, "instruction_set_riscv"), INSTRUCTION_SET_ITEM_RISCV);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "manual"), MANUAL_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "program"), PROGRAM_ITEM);
 
@@ -149,8 +153,9 @@ public class RISCJ_blockits implements ModInitializer {
 				entries.add(PROGRAMMING_BLOCK_ITEM);
 				entries.add(REGISTER_BLOCK_ITEM);
 				entries.add(SYSTEM_CLOCK_BLOCK_ITEM);
-
-				entries.add(INSTRUCTION_SET_ITEM);
+				//Items
+				entries.add(INSTRUCTION_SET_ITEM_MIMA);
+				entries.add(INSTRUCTION_SET_ITEM_RISCV);
 				entries.add(GOGGLES_ITEM);
 				entries.add(PROGRAM_ITEM);
 				entries.add(MANUAL_ITEM);

@@ -29,6 +29,7 @@ public class RegisterController extends ComputerBlockController {
         ((RegisterModel)getModel()).setValue(value);
     }
 
+
     @Override
     public void setData(IDataElement data) {
 

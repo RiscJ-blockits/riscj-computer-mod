@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.controller.computerhandler.ClusterHandler;
+import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
@@ -10,7 +11,10 @@ import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
 import java.util.List;
 
 public abstract class ComputerBlockController extends BlockController implements IUserInputReceivableComputerController, IQueryableSimController {
-    private final BlockModel blockModel;
+
+    //private final BlockModel blockModel;
+    //ToDo
+    private final IControllerQueryableBlockModel blockModel;
     private final IConnectableComputerBlockEntity blockEntity;
     private ClusterHandler clusterHandler;
     private BlockPosition pos;
@@ -22,7 +26,8 @@ public abstract class ComputerBlockController extends BlockController implements
         pos = blockEntity.getBlockPosition();
         this.blockEntity = blockEntity;
         this.blockModel = createBlockModel();
-        blockEntity.setBlockModel(this.blockModel);
+        //FixMe cast sehr unschön
+        blockEntity.setBlockModel((IQueryableBlockModel) this.blockModel);
         blockModel.setPosition(getBlockPosition());
         new ClusterHandler(this);
         clusterHandler.checkFinished();
@@ -55,7 +60,8 @@ public abstract class ComputerBlockController extends BlockController implements
     }
 
     public IQueryableBlockModel getModel() {
-        return blockModel;
+        //FixMe cast sehr unschön
+        return (IQueryableBlockModel) blockModel;
     }
 
     public BlockPosition getBlockPosition() {
