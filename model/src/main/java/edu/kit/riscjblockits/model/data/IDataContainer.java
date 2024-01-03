@@ -1,4 +1,4 @@
-package edu.kit.riscjblockits.controller.data;
+package edu.kit.riscjblockits.model.data;
 
 public interface IDataContainer extends IDataElement {
     @Override
@@ -14,4 +14,8 @@ public interface IDataContainer extends IDataElement {
     IDataElement get(String key);
 
     void set(String key, IDataElement value);
+
+    IDataContainer putContainer(String key);
+
+    IDataStringEntry putString(String key);
 }

@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.controller.blocks;
 
-import edu.kit.riscjblockits.controller.data.IDataElement;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.blocks.AluModel;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;

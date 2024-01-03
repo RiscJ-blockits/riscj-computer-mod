@@ -1,5 +1,7 @@
 package edu.kit.riscjblockits.model;
 
+import edu.kit.riscjblockits.model.data.IDataContainer;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,14 @@ private final Map<Value, Value> memory = new HashMap<>();
 
     public void setValue(Value address, Value value) {
         memory.put(address, value);
+    }
+
+    public static Memory fromData(IDataContainer data) {
+        return null;
+    }
+
+    public void writeToData(IDataContainer data) {
+
     }
 
 

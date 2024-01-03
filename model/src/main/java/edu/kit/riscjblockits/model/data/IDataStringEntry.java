@@ -1,4 +1,4 @@
-package edu.kit.riscjblockits.controller.data;
+package edu.kit.riscjblockits.model.data;
 
 public interface IDataStringEntry extends IDataEntry {
     String getContent();

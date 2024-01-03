@@ -197,6 +197,15 @@ public class Assembler {
     }
 
     /**
+     * writes the instruction-set's register addresses to the arguments
+     *
+     * @param arguments array of arguments that may have registers, in need to be replaced
+     */
+    private void writeRegistersToArguments(String[] arguments) {
+
+    }
+
+    /**
      * Gets the {@link Memory} that was written to if code was assembled
      * @return the memory that was written to
      */

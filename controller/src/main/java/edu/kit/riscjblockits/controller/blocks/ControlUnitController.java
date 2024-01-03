@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
 public class ControlUnitController extends ComputerBlockController{
@@ -22,5 +23,10 @@ public class ControlUnitController extends ComputerBlockController{
 
     public InstructionSetModel getInstructionSetModel() {
         return ((ControlUnitModel)getModel()).getIstModel();
+    }
+
+    @Override
+    public void setData(IDataElement data) {
+
     }
 }

@@ -1,7 +1,7 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.controller.assembler.AssemblyException;
-import edu.kit.riscjblockits.controller.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataContainer;
 
 //Zugriff vom Programmier Entity auf den Controller
 public interface IAssemblerController extends IUserInputReceivableController {
