@@ -63,6 +63,16 @@ public class Value {
     }
 
     /**
+     * Creates a value from a floating point decimal string
+     * @param s the float string
+     * @param length the length of the value in bytes
+     * @return the value
+     */
+    public static Value fromFloat(String s, int length) {
+        return null;
+    }
+
+    /**
      * Constructor for a value
      * @param initial the initial value as byte array
      */
@@ -105,6 +115,13 @@ public class Value {
         }
 
         return stringBuilder.toString();
+    }
+
+    /**
+     * @return the value as floating point decimal string
+     */
+    public String getFloatValue() {
+        return null;
     }
 
     /**

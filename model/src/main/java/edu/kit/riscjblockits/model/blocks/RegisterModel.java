@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.model.blocks;
 
 import edu.kit.riscjblockits.model.Value;
+import edu.kit.riscjblockits.model.data.IDataElement;
 
 public class RegisterModel extends BlockModel {
 
@@ -13,8 +14,17 @@ public class RegisterModel extends BlockModel {
     }
 
     @Override
-    public boolean getHasUnqueriedStateChange() {
+    public boolean hasUnqueriedStateChange() {
         return false;
+    }
+
+    @Override
+    public void writeDataRequest(IDataElement dataElement) {
+
+    }
+
+    public void setWordLength(int wordLength){
+        this.wordLength = wordLength;
     }
 
     public String getRegisterType() {
@@ -32,4 +42,5 @@ public class RegisterModel extends BlockModel {
     public void setValue(Value value) {
         this.value = value;
     }
+
 }

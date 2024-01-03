@@ -3,9 +3,11 @@ package edu.kit.riscjblockits.view.main.blocks.controlunit;
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.ImplementedInventory;
 import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntityWithInventory;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -20,11 +22,11 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
-public class ControlUnitBlockEntity extends ComputerBlockEntity implements ImplementedInventory,
+public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory implements ImplementedInventory,
     ExtendedScreenHandlerFactory {
 
     public ControlUnitBlockEntity(BlockPos pos, BlockState state) {
-        super(RISCJ_blockits.CONTROL_UNIT_BLOCK_ENTITY, pos, state);
+        super(RISCJ_blockits.CONTROL_UNIT_BLOCK_ENTITY, pos, state, 1);
     }
 
     @Override
@@ -57,4 +59,5 @@ public class ControlUnitBlockEntity extends ComputerBlockEntity implements Imple
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return null;
     }
+
 }

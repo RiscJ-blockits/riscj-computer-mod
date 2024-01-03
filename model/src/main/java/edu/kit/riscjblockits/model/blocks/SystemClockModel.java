@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.model.blocks;
 import edu.kit.riscjblockits.model.ClockMode;
 import edu.kit.riscjblockits.model.IObserveable;
 import edu.kit.riscjblockits.model.IObserver;
+import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,15 @@ public class SystemClockModel extends BlockModel implements IObserveable {
     }
 
     @Override
-    public boolean getHasUnqueriedStateChange() {
+    public boolean hasUnqueriedStateChange() {
         return false;
     }
+
+    @Override
+    public void writeDataRequest(IDataElement dataElement) {
+
+    }
+
 
     @Override
     public void registerObserver(IObserver observer) {
@@ -48,5 +55,9 @@ public class SystemClockModel extends BlockModel implements IObserveable {
 
     public ClockMode getClockMode() {
         return mode;
+    }
+
+    public void setActiveTick(boolean activeTick) {
+        this.activeTick = activeTick;
     }
 }

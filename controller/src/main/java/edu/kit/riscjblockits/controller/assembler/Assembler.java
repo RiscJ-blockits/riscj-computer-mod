@@ -55,12 +55,6 @@ public class Assembler {
     private final Map<String, Value> labels;
 
     /**
-     * the pattern to identify an address change.
-     * will be read from instruction set
-     */
-    private final Pattern addressChangePattern;
-
-    /**
      * Constructor for an {@link Assembler}
      * will create a new {@link Memory} with the address and word size of the {@link InstructionSetModel}
      * @param instructionSetModel the instruction set model to use for the assembly
@@ -79,7 +73,6 @@ public class Assembler {
             calculatedMemoryWordSize
         );
         currentAddress = new Value(new byte[calculatedMemoryAddressSize]);
-        addressChangePattern = Pattern.compile(instructionSetModel.getAddressChangeRegex());
     }
 
     /**
@@ -97,9 +90,9 @@ public class Assembler {
                 continue;
 
             // check if line is address change
-            Matcher matcher = addressChangePattern.matcher(line);
-            if (matcher.matches()) {
-                String address = matcher.group("address");
+
+            if (instructionSetModel.isAddressChange(line)) {
+                String address = instructionSetModel.getChangedAddress(line);
                 currentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
                 continue;
             }
@@ -162,10 +155,9 @@ public class Assembler {
                 continue;
 
             // check if line is address change
-            Matcher matcher = addressChangePattern.matcher(line);
-            if (matcher.matches()) {
-                String address = matcher.group("address");
-                localCurrentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
+            if (instructionSetModel.isAddressChange(line)) {
+                String address = instructionSetModel.getChangedAddress(line);
+                currentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
                 continue;
             }
 

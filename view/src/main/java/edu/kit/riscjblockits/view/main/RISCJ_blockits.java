@@ -16,6 +16,8 @@ import edu.kit.riscjblockits.view.main.blocks.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.systemclock.SystemClockBlock;
 import edu.kit.riscjblockits.view.main.blocks.systemclock.SystemClockBlockEntity;
 import edu.kit.riscjblockits.view.main.items.goggles.GogglesItem;
+import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
+import edu.kit.riscjblockits.view.main.items.manual.ManualItem;
 import edu.kit.riscjblockits.view.main.items.program.ProgramItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -74,8 +76,12 @@ public class RISCJ_blockits implements ModInitializer {
 	// define Items
 	public static final Item PROGRAM_ITEM = new ProgramItem(new Item.Settings().maxCount(1));
 	public static final Item GOGGLES_ITEM = new GogglesItem(new Item.Settings().maxCount(1));
-	public static final Item INSTRUCTION_SET_ITEM = new GogglesItem(new Item.Settings().maxCount(1));
-	public static final Item MANUAL_ITEM = new GogglesItem(new Item.Settings().maxCount(1));
+	//ToDo right location for .json
+	public static final Item INSTRUCTION_SET_ITEM_MIMA = new InstructionSetItem(new Item.Settings().maxCount(1),
+			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionset/instructionSetMIMA.jsonc"));
+	public static final Item INSTRUCTION_SET_ITEM_RISCV = new InstructionSetItem(new Item.Settings().maxCount(1),
+			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionset/instructionSetMIMA.jsonc"));
+	public static final Item MANUAL_ITEM = new ManualItem(new Item.Settings().maxCount(1));
 
 
 	public static ScreenHandlerType<ProgrammingScreenHandler> PROGRAMMING_SCREEN_HANDLER;

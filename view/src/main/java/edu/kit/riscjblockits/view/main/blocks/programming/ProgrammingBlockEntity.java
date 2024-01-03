@@ -49,13 +49,13 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
 
     @Override
     public Text getDisplayName() {
-        return null;
+        return Text.of("Test");
     }
 
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return null;
+        return new ProgrammingScreenHandler(syncId, playerInventory, this,this);
     }
 
     public void assemble() throws AssemblyException {

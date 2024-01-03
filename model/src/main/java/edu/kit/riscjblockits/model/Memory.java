@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Memory {
 
-private final Map<Value, Value> memory = new HashMap<>();
+    private final Map<Value, Value> memory = new HashMap<>();
     private final int memoryLength;
     private final int addressLength;
 

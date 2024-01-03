@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.model.instructionset;
 
 import com.google.gson.annotations.SerializedName;
+import edu.kit.riscjblockits.model.Value;
 
 import java.util.HashMap;
 public class InstructionSetModel implements IQueryableInstructionSetModel {
@@ -29,6 +30,9 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
         this.instructionSetMemory = null;
         this.instructionSetRegisters = null;
         this.opcodeHashMap = null;
+        this.addressChangeHashMap = null;
+        this.programStartLabel = null;
+        this.dataStorageKeywords = null;
     }
 
     public InstructionSetModel(String name, int instructionLength, InstructionSetRegisters instructionSetRegisters, InstructionSetMemory instructionSetMemory, String[] aluActions, HashMap<String, Instruction> commandHashMap, HashMap<String, Instruction> opcodeHashMap) {
@@ -75,8 +79,31 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
         return commandHashMap.get(s);
     }
 
-    public String getAddressChangeRegex() {
-        // TODO: implement
-        return " *\\* *=  *(?<address>\\w+) *";
+    public boolean isAddressChange(String s) {
+        return false;
+    }
+
+    public String getChangedAddress(String s) {
+        return null;
+    }
+
+    public String getProgramStartLabel() {
+        return programStartLabel;
+    }
+
+    public boolean isDataStorageCommand(String s) {
+        return false;
+    }
+
+    public String getStorageCommandData(String s) {
+        return null;
+    }
+
+    public int getFetchPhaseLength() {
+        return fetchPhase.length;
+    }
+
+    public MicroInstruction getFetchPhaseStep(int index) {
+        return fetchPhase[index];
     }
 }

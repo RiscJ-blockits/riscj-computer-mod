@@ -5,6 +5,7 @@ import edu.kit.riscjblockits.controller.blocks.AluController;
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BusController;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntity;

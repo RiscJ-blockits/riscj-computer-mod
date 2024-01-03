@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.controller.blocks;
 
+import edu.kit.riscjblockits.model.Value;
 import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.model.blocks.MemoryModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
