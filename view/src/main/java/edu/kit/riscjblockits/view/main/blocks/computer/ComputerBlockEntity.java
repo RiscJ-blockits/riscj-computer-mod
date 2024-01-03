@@ -19,32 +19,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * Blocks that connect with a bus or are a bus. They have a controller.
- * @author ujiqk
- * @version 1.0 */
+/** BlockEntity for all @link ComputerBlocks.
+ * Every {@link ComputerBlock} has its own unique ComputerBlockEntity during runtime.
+ */
 public abstract class ComputerBlockEntity extends ModBlockEntity implements IConnectableComputerBlockEntity,
     IGoggleQueryable {
 
+    /**
+     * TODO javadoc - Ask Nils what this does
+     * @return
+     */
     public abstract String getInfo();
 
     protected abstract IUserInputReceivableComputerController createController();
 
+    /**
+     * TODO javadoc - Ask Nils/Leon what this does
+     * @return
+     */
     public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
         if (!world.isClient && entity.getController() != null) {
             ((ComputerBlockController)entity.getController()).tick();
         }
     }
+    /**
+     * The block's representation in the model holds the block's data.
+     */
     private IQueryableBlockModel model;
+
+    /**
+     * Creates a new ComputerBlockEntity with the given settings.
+     * @param type The type of the block entity.
+     * @param pos The position of the block in the minecraft world.
+     * @param state The state of the minecraft block.
+     */
     public ComputerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         setType(EntityType.CONNECTABLE);
     }
 
     /**
-     * Get the neighbours of this block that are bus blocks.
-     * The Bus Entity needs to overwrite this method to return all neighbour computer blocks.
-     * @return
+     * Get the {@link BlockController} of this block's neighbours, which are {@link edu.kit.riscjblockits.view.main.blocks.bus.BusBlock}.
+     * @return all BlockControllers of this block's neighbours, which are BusBlocks.
      */
     public List<ComputerBlockController> getComputerNeighbours() {
         List<ComputerBlockController> neigbhours = new ArrayList<>();
@@ -68,10 +84,17 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         return neigbhours;
     }
 
+    /**
+     * Sets the model for this block.
+     * @param model
+     */
     public void setBlockModel(IQueryableBlockModel model) {
         this.model = model;
     }
 
+    /**
+     * Passes the onBroken call to the {@link BlockController}, for the {@link BlockController} to handle it.
+     */
     public void onBroken() {
         if (!world.isClient) {
             ((ComputerBlockController)getController()).onBroken();

@@ -8,14 +8,27 @@ import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntityWithInventory;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
 
+/**
+ * This class represents a memory entity from our mod in the game.
+ * Every memory block has its own unique MemoryBlockEntity while it is loaded.
+ */
 public class MemoryBlockEntity extends ComputerBlockEntityWithInventory {
+
+    /**
+     * Creates a new MemoryBlockEntity with the given settings.
+     * @param pos The position of the block in the minecraft world.
+     * @param state The state of the minecraft block.
+     */
     public MemoryBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.MEMORY_BLOCK_ENTITY, pos, state, 1);
     }
 
+    /**
+     * Every entity needs its own controller.
+     * @return An MemoryController bound to this entity.
+     */
     @Override
     public String getInfo() {
         return null;
@@ -25,5 +38,4 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory {
     protected ComputerBlockController createController() {
         return new MemoryController(this);
     }
-
 }

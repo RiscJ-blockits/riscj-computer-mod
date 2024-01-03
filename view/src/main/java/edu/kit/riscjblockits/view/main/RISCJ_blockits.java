@@ -21,7 +21,6 @@ import edu.kit.riscjblockits.view.main.items.manual.ManualItem;
 import edu.kit.riscjblockits.view.main.items.program.ProgramItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
@@ -37,60 +36,162 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * This class is the main class of the mod.
+ * It is used to register all blocks, items, block-entities and item-groups.
+ * [JavaDoc in this class partially generated with GitHub Copilot]
+ */
 public class RISCJ_blockits implements ModInitializer {
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
-    public static final Logger LOGGER = LoggerFactory.getLogger("riscj_blockits");
+
+	/**
+	 * The mod-id of this mod. It is used by Minecraft and Fabric Loom to correctly identify parts of this mod.
+	 */
 	public static final String MODID = "riscj_blockits";
-	private static final float BLOCK_STRENGTH = 1.0f;
+	/**
+	 * Logger for writing text to the console and the log file.
+	 */
+	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 
 	// define Blocks
-	public static final Block ALU_BLOCK = new AluBlock(FabricBlockSettings.create().strength(BLOCK_STRENGTH));
-	public static final Block BUS_BLOCK = new BusBlock(FabricBlockSettings.create().strength(BLOCK_STRENGTH));
-	public static final Block CONTROL_UNIT_BLOCK = new ControlUnitBlock(FabricBlockSettings.create().strength(BLOCK_STRENGTH));
-	public static final Block MEMORY_BLOCK = new MemoryBlock(FabricBlockSettings.create().strength(BLOCK_STRENGTH));
-	public static final Block PROGRAMMING_BLOCK = new ProgrammingBlock(FabricBlockSettings.create().strength(BLOCK_STRENGTH));
-	public static final Block REGISTER_BLOCK = new RegisterBlock(FabricBlockSettings.create().strength(BLOCK_STRENGTH));
-	public static final Block SYSTEM_CLOCK_BLOCK = new SystemClockBlock(FabricBlockSettings.create().strength(BLOCK_STRENGTH));
+	/**
+	 * This attribute defines all ALU blocks.
+	 * An ALU-Block with default settings.
+	 */
+	public static final Block ALU_BLOCK = new AluBlock();
+	/**
+	 * This attribute defines all Bus blocks.
+	 * A Bus-Block with default settings.
+	 */
+	public static final Block BUS_BLOCK = new BusBlock();
+	/**
+	 * This attribute defines all Control-Unit blocks.
+	 * A Control-Unit-Block with default settings.
+	 */
+	public static final Block CONTROL_UNIT_BLOCK = new ControlUnitBlock();
+	/**
+	 * This attribute defines all Memory blocks.
+	 * A Memory-Block with default settings.
+	 */
+	public static final Block MEMORY_BLOCK = new MemoryBlock();
+	/**
+	 * This attribute defines all Programming blocks.
+	 * A Programming-Block with default settings.
+	 */
+	public static final Block PROGRAMMING_BLOCK = new ProgrammingBlock();
+	/**
+	 * This attribute defines all Register blocks.
+	 * A Register-Block with default settings.
+	 */
+	public static final Block REGISTER_BLOCK = new RegisterBlock();
+	/**
+	 * This attribute defines all System-Clock blocks.
+	 * A System-Clock-Block with default settings.
+	 */
+	public static final Block SYSTEM_CLOCK_BLOCK = new SystemClockBlock();
 
 	// define Block-Items
+	/**
+	 * This attribute defines all ALU items.
+	 * An ALU-Block-Item with the default settings for block items.
+	 */
 	public static final BlockItem ALU_BLOCK_ITEM = new BlockItem(ALU_BLOCK, new Item.Settings());
+	/**
+	 * This attribute defines all Bus items.
+	 * A Bus-Block-Item with the default settings for block items.
+	 */
 	public static final BlockItem BUS_BLOCK_ITEM = new BlockItem(BUS_BLOCK, new Item.Settings());
+	/**
+	 * This attribute defines all Control-Unit items.
+	 * A Control-Unit-Block-Item with the default settings for block items.
+	 */
 	public static final BlockItem CONTROL_UNIT_BLOCK_ITEM = new BlockItem(CONTROL_UNIT_BLOCK, new Item.Settings());
+	/**
+	 * This attribute defines all Memory items.
+	 * A Memory-Block-Item with the default settings for block items.
+	 */
 	public static final BlockItem MEMORY_BLOCK_ITEM = new BlockItem(MEMORY_BLOCK, new Item.Settings());
+	/**
+	 * This attribute defines all Programming items.
+	 * A Programming-Block-Item with the default settings for block items.
+	 */
 	public static final BlockItem PROGRAMMING_BLOCK_ITEM = new BlockItem(PROGRAMMING_BLOCK, new Item.Settings());
+	/**
+	 * This attribute defines all Register items.
+	 * A Register-Block-Item with the default settings for block items.
+	 */
 	public static final BlockItem REGISTER_BLOCK_ITEM = new BlockItem(REGISTER_BLOCK, new Item.Settings());
+	/**
+	 * This attribute defines all System-Clock items.
+	 * A System-Clock-Block-Item with the default settings for block items.
+	 */
 	public static final BlockItem SYSTEM_CLOCK_BLOCK_ITEM = new BlockItem(SYSTEM_CLOCK_BLOCK, new Item.Settings());
 
-	// define Block-Entities
+	// Define Block-Entities. Every placed block from the mod has its own unique block-entity.
+	/**
+	 * The Type of the ALU-Block-Entity. Every ALU-Block gets its own ALU-Block-Entity when it is placed.
+	 */
 	public static BlockEntityType<AluBlockEntity> ALU_BLOCK_ENTITY;
+	/**
+	 * The Type of the Bus-Block-Entity. Every Bus-Block gets its own Bus-Block-Entity when it is placed.
+	 */
 	public static BlockEntityType<BusBlockEntity> BUS_BLOCK_ENTITY;
+	/**
+	 * The Type of the Control-Unit-Block-Entity.
+	 * Every Control-Unit-Block gets its own Control-Unit-Block-Entity when it is placed.
+	 */
 	public static BlockEntityType<ControlUnitBlockEntity> CONTROL_UNIT_BLOCK_ENTITY;
+	/**
+	 * The Type of the Memory-Block-Entity. Every Memory-Block gets its own Memory-Block-Entity when it is placed.
+	 */
 	public static BlockEntityType<MemoryBlockEntity> MEMORY_BLOCK_ENTITY;
+	/**
+	 * The Type of the Programming-Block-Entity.
+	 * Every Programming-Block gets its own Programming-Block-Entity when it is placed.
+	 */
 	public static BlockEntityType<ProgrammingBlockEntity> PROGRAMMING_BLOCK_ENTITY;
+	/**
+	 * The Type of the Register-Block-Entity. Every Register-Block gets its own Register-Block-Entity when it is placed.
+	 */
 	public static BlockEntityType<RegisterBlockEntity> REGISTER_BLOCK_ENTITY;
+	/**
+	 * The Type of the System-Clock-Block-Entity.
+	 * Every System-Clock-Block gets its own System-Clock-Block-Entity when it is placed.
+	 */
 	public static BlockEntityType<SystemClockBlockEntity> SYSTEM_CLOCK_BLOCK_ENTITY;
 
 	// define Items
+	/**
+	 * This attribute defines all Program items.
+	 * A Program-Item with the default settings for items but only stackable up to 1.
+	 */
 	public static final Item PROGRAM_ITEM = new ProgramItem(new Item.Settings().maxCount(1));
+	/**
+	 * This attribute defines all Goggles items.
+	 * A Goggles-Item with the default settings for items but only stackable up to 1.
+	 */
 	public static final Item GOGGLES_ITEM = new GogglesItem(new Item.Settings().maxCount(1));
 	//ToDo right location for .json
 	public static final Item INSTRUCTION_SET_ITEM_MIMA = new InstructionSetItem(new Item.Settings().maxCount(1),
 			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionset/instructionSetMIMA.jsonc"));
 	public static final Item INSTRUCTION_SET_ITEM_RISCV = new InstructionSetItem(new Item.Settings().maxCount(1),
 			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionset/instructionSetMIMA.jsonc"));
-	public static final Item MANUAL_ITEM = new ManualItem(new Item.Settings().maxCount(1));
+    /**
+     * This attribute defines all Manual items.
+     * A Manual-Item with the default settings for items but only stackable up to 1.
+     */
+    public static final Item MANUAL_ITEM = new ManualItem(new Item.Settings().maxCount(1));
 
 
 	public static ScreenHandlerType<ProgrammingScreenHandler> PROGRAMMING_SCREEN_HANDLER;
 
-
-
+	/**
+	 * This method is called when the mod is initialized.
+	 * The call happens while the game is loading a world.
+	 * It registers all blocks, items, block-entities and item-groups.
+	 */
 	@Override
 	public void onInitialize() {
 		// register ScreenHandlers
@@ -142,6 +243,10 @@ public class RISCJ_blockits implements ModInitializer {
 		Registry.register(Registries.ITEM_GROUP, new Identifier(MODID, "computer_components"), ITEM_GROUP);
 	}
 
+	/**
+	 * This attribute defines the item-group for all items and blocks of this mod.
+	 * The item-group is used to group items and blocks in the creative inventory.
+	 */
 	private static final ItemGroup ITEM_GROUP = FabricItemGroup.builder()
 			.icon(() -> new ItemStack(ALU_BLOCK_ITEM))
 			.displayName(Text.translatable("itemGroup.riscj_blockits.computer_components"))

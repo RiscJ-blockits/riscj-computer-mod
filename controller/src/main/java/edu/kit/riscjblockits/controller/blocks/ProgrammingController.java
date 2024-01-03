@@ -14,12 +14,11 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-
+/**
+ * The controller for a Programming block entity.
+ * [JavaDoc in this class partially generated with GitHub Copilot]
+ */
 public class ProgrammingController extends BlockController implements IAssemblerController {
-
-    public ProgrammingController() {
-
-    }
 
     public void assemble(String code, IDataContainer instructionSetData, IDataContainer memoryData)
         throws AssemblyException {
@@ -50,4 +49,5 @@ public class ProgrammingController extends BlockController implements IAssembler
     public void setData(IDataElement data) {
 
     }
+
 }

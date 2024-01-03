@@ -4,19 +4,45 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Model for the memory of the instruction set.
+ * [JavaDoc in this class with minor support by GitHub Copilot]
+ */
 public class InstructionSetMemory {
+
+    /**
+     * Length of a word in bits.
+     */
     @SerializedName(value = "word_length")
     int wordLength;
+
+    /**
+     * Length of an address in bits.
+     */
     @SerializedName(value = "address_length")
     int addressLenght;
+
+    /**
+     * Access delay in ticks.
+     */
     @SerializedName(value = "access_delay")
     int accessDelay;
+
+    /**
+     * Byte order of the memory.
+     */
     @SerializedName(value = "byte_order")
     String byteOrder;
-    
+
+    /**
+     * List of possible opcode lengths in bits.
+     */
     @SerializedName(value = "possible_opcode_lengths")
     List<Integer> possibleOpcodeLengths;
-    
+
+    /**
+     * Position of the opcode in the instruction.
+     */
     @SerializedName(value = "opcode_position")
     String opcodePosition;
 

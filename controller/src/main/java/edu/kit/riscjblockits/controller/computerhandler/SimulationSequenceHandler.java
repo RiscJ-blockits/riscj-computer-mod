@@ -6,25 +6,64 @@ import edu.kit.riscjblockits.model.instructionset.*;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Handles the fetching and execution of the instructions. Gets called by the {@link SimulationTimeHandler} whenever
+ * the next simulation tick is supposed to be executed.
+ * [JavaDoc in this class with minor support by GitHub Copilot]
+ */
 public class SimulationSequenceHandler implements Runnable {
 
+    /**
+     * Counts the number of executed instructions in the current phase.
+     */
     private int phaseCounter;
+
+    /**
+     * Defines the current phase of the instruction execution, including fetching the instruction and
+     * executing its microinstructions.
+     */
     private RunPhase runPhase;
+    /**
+     * Contains the microinstructions of the current instruction.
+     */
     private MicroInstruction[] microInstructions;
+    /**
+     * Contains the block controllers of the associated computer blocks.
+     */
     private List<ComputerBlockController> blockControllers;
+    /**
+     * Instruction set model that holds all information on how to execute code based on the instruction set.
+     */
     private InstructionSetModel instructionSetModel;
+    /**
+     * Controller of the program counter register.
+     */
     private RegisterController programCounterController;
-    private RegisterController irController;
+    /**
+     * Controller of the instruction register.
+     */
+    private RegisterController iarController;
+    /**
+     * Controller of the memory.
+     */
     private MemoryController memoryController;
+    /**
+     * Executor for the microinstructions.
+     */
     private Executor executor;
 
+    /**
+     * Constructor. Initializes the {@link BlockController}s list, hands it over to the executor, sets the first
+     * run phase to FETCH and the counter to zero and initializes the instruction set model and the memory controller.
+     * @param blockControllers Controllers of the associated computer blocks.
+     */
     public SimulationSequenceHandler(List<ComputerBlockController> blockControllers) {
         this.blockControllers = blockControllers;
         this.executor = new Executor(blockControllers);
         phaseCounter = 0;
         runPhase = RunPhase.FETCH;
         for(BlockController blockController: blockControllers) {
-            if ((blockController.getControllerType()) == BlockControllerType.CONTROLL_UNIT) {
+            if ((blockController.getControllerType()) == BlockControllerType.CONTROL_UNIT) {
                 instructionSetModel = ((ControlUnitController) blockController).getInstructionSetModel();
             }
             if ((blockController.getControllerType()) == BlockControllerType.MEMORY) {
@@ -44,6 +83,12 @@ public class SimulationSequenceHandler implements Runnable {
 
     }
 
+    /**
+     * Runs the execution of the current instruction. Gets called by the {@link SimulationTimeHandler} whenever the next
+     * simulation tick is executed. During the first call of execution of a new instruction fills the MicroInstructions
+     * array with the necessary microinstructions.
+     * Then runs the next microinstruction of the current instruction.
+     */
     @Override
     public void run() {
         System.out.println("run test");
@@ -61,11 +106,13 @@ public class SimulationSequenceHandler implements Runnable {
     }
 
     /**
-     * Needs multiple steps defined as MicroInstructions as it is different in every instruction set
-     * multiple phases: multiple MicoInstructions defined in InstructionSet
+     * Executes one step of the fetch phase of the instruction execution. The fetch phase needs multiple steps
+     * represented as microinstructions which are defined in the instruction set.
+     * If the last step of the fetch phase is executed, the execution phase is entered.
      */
     private void fetch(){
-        //get fetch Instruction from InstructionSet
+        //ToDo: Rethink if fetch instructions could be a class attribute set in the constructor.
+        //ToDo: Check if an instruction initialization method might be useful.
         MicroInstruction[] fetchInstructions = null; // = instructionSetModel.     ;           //ToDo get fetch Instruction
         executeMicroInstruction(fetchInstructions[phaseCounter]);
         phaseCounter++;
@@ -79,11 +126,12 @@ public class SimulationSequenceHandler implements Runnable {
 
 
     /**
-     * Gets its steps from the loaded instruction and executes them.
-     * multiple phases: One MicroInstruction = one phase
+     * Gets the current microinstruction from the loaded instruction and executes it.
+     * For every microinstruction, a cue from the simulation time handler is necessary. Each microinstruction
+     * therefore is executed individually.
      */
     private void execute(){
-        //Instructions for this phase are now microInstructions
+        //One full instruction consists of multiple microinstructions
         executeMicroInstruction(microInstructions[phaseCounter]);
         phaseCounter++;
         if (phaseCounter > microInstructions.length) {
@@ -93,8 +141,8 @@ public class SimulationSequenceHandler implements Runnable {
     }
 
     /**
-     * Execute Instruction using a visitor pattern.
-     * @param instruction
+     * Execute microinstruction using a visitor pattern.
+     * @param instruction Microinstruction to execute.
      */
     private void executeMicroInstruction(MicroInstruction instruction) {
         //ToDo
@@ -106,10 +154,9 @@ public class SimulationSequenceHandler implements Runnable {
 
     }
 
-
-
-
-
+    /**
+     * Defines the two phases of the instruction execution.
+     */
     private enum RunPhase{
         FETCH,
         EXECUTE

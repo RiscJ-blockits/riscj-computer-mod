@@ -16,17 +16,39 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
+/**
+ * All {@link ModBlock} that are needed to build a computer.
+ * These Blocks can connect via or are a {@link edu.kit.riscjblockits.view.main.blocks.bus.BusBlock} to form a functioning computer.
+ * Every ComputerBlock has a unique ComputerBlockEntity during runtime.
+ */
 public abstract class ComputerBlock extends ModBlock {
-    public ComputerBlock(AbstractBlock.Settings settings) {
+
+    /**
+     * Creates a new ComputerBlock with the given settings.
+     * @param settings the settings for the block.
+     */
+    protected ComputerBlock(AbstractBlock.Settings settings) {
         super(settings);
     }
 
-    @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        super.onPlaced(world, pos, state, placer, itemStack);
-        // Connection Logic
+    /**
+     * Creates a new ComputerBlock with default settings.
+     */
+    protected ComputerBlock() {
+        super();
     }
 
+    /**
+     * Called on every block state change.
+     * Used to update the block entity, prior to its destruction after the block has been broken.
+     *
+     * @param state the old block state.
+     * @param world the minecraft world the block is placed in.
+     * @param pos the position of the block.
+     * @param newState the new block state.
+     * @param moved true if the block was moved, false otherwise.
+     *
+     */
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         //check if the block has been broken
@@ -39,6 +61,14 @@ public abstract class ComputerBlock extends ModBlock {
         super.onStateReplaced(state, world, pos, newState, moved);
     }
 
+    /** TODO Javadoc - Get help from Nils
+     *
+     * @param world the minecraft world the block is placed in.
+     * @param state the state of the block.
+     * @param type the type of the block entity.
+     * @return
+     * @param <T>
+     */
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return (world1, pos, state1, be) -> ComputerBlockEntity.tick(world1, pos, state1, (ComputerBlockEntity) be);
