@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.model;
 
 import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,12 +72,10 @@ public class Memory {
     }
 
     /**
-     * write the memory to a data container.
-     * @param data the data container to write to
+     * Saves the memory to a {@link IDataElement}.
+     * @return the saved memory
      */
-    public void writeToData(IDataContainer data) {
-
+    public IDataElement getData() {
+        return null;
     }
-
-
 }

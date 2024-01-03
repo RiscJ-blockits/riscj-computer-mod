@@ -32,8 +32,8 @@ public class AluModel extends BlockModel{
     }
 
     @Override
-    public void writeDataRequest(IDataElement dataElement) {
-
+    public IDataElement getData() {
+        return null;
     }
 
     public void setOperation(String operation) {

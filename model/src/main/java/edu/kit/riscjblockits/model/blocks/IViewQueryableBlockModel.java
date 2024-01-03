@@ -11,8 +11,8 @@ public interface IViewQueryableBlockModel extends IQueryableBlockModel {
 
     /**
      * Returns the data the view needs to display.
-     * @return
+     * @return the data
      */
-    void writeDataRequest(IDataElement dataElement);
+    IDataElement getData();
 
 }

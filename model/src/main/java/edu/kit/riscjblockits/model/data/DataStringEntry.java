@@ -1,14 +1,12 @@
-package edu.kit.riscjblockits.view.main.data;
+package edu.kit.riscjblockits.model.data;
 
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtString;
 
 /**
  * This class represents a string entry in the data tree.
  * Allows for conversion to NBT.
  */
-public class DataStringEntry implements IDataStringEntry, IDataNBTConvertable {
+public class DataStringEntry implements IDataStringEntry {
 
     /**
      * The content of this string entry.
@@ -43,11 +41,11 @@ public class DataStringEntry implements IDataStringEntry, IDataNBTConvertable {
     }
 
     /**
-     * Converts this string entry to a NBT element.
-     * @return The NBT element.
+     * Receives a {@link IDataVisitor} and calls the visit method on it.
+     * @param visitor The visitor to be visited.
      */
     @Override
-    public NbtElement toNbt() {
-        return NbtString.of(content);
+    public void receive(IDataVisitor visitor) {
+        visitor.visit(this);
     }
 }
