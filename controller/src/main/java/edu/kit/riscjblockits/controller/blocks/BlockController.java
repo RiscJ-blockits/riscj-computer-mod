@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataElement;
 
 public abstract class BlockController {
 
@@ -11,7 +12,7 @@ public abstract class BlockController {
 
     }
 
-    public void setData(IDataContainer data) {
+    public void setData(IDataElement data) {
         //
     }
 
