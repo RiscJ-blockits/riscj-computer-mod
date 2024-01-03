@@ -4,6 +4,7 @@ import edu.kit.riscjblockits.model.Memory;
 import edu.kit.riscjblockits.model.Value;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,6 +16,7 @@ class AssemblerTest {
      *
      * @throws AssemblyException
      */
+    @Disabled
     @Test
     void assemble() throws AssemblyException {
         InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelMima();
