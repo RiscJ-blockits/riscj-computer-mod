@@ -42,10 +42,18 @@ public class Instruction implements IQueryableInstruction {
     }
 
 
+    /**
+     * Getter for the binary translation of the instruction.
+     * @return The binary translation of the instruction as a string array.
+     */
     public String[] getTranslation() {
         return translation;
     }
 
+    /**
+     * Getter for the arguments of the instruction.
+     * @return The arguments of the instruction as a string array.
+     */
     public String[] getArguments() {
         return arguments;
     }

@@ -40,15 +40,27 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
     @SerializedName(value = "alu_operations")
     private final String[] aluActions;
 
+    /**
+     * Specification of the fetch phase for the instruction set.
+     */
     @SerializedName(value = "fetch")
     private final MicroInstruction[] fetchPhase;
 
+    /**
+     * Options for changing the address where specific parts of a program will be stored.
+     */
     @SerializedName(value = "address_change")
     private final HashMap<String, String> addressChangeHashMap;
 
+    /**
+     * Label where the program should be started by default.
+     */
     @SerializedName(value = "program_start_label")
     private final String programStartLabel;
 
+    /**
+     * Keywords to specify data storage.
+     */
     @SerializedName(value = "data_storage_keywords")
     private final HashMap<String, String> dataStorageKeywords;
 
@@ -138,42 +150,88 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
         return instructionSetRegisters.getProgramCounter();
     }
 
+    /**
+     * Getter for the word size of the instruction set memory.
+     * @return Word size of the instruction set memory.
+     */
     public int getMemoryWordSize() {
         return instructionSetMemory.getWordSize();
     }
 
+    /**
+     * Getter for the address size of the instruction set memory.
+     * @return Address size of the instruction set memory.
+     */
     public int getMemoryAddressSize() {
         return instructionSetMemory.getAddressSize();
     }
 
+    /**
+     * Getter for an instruction specified by its command keyword.
+     * @param s Command keyword of the instruction.
+     * @return Instruction matching the command keyword.
+     */
     public Instruction getInstruction(String s) {
         return commandHashMap.get(s);
     }
 
+    /**
+     * Checks if a string is the address change specification of the instruction set.
+     * @param s String to check.
+     * @return True if the string is the address change specification of the instruction set, false otherwise.
+     */
     public boolean isAddressChange(String s) {
         return false;
     }
 
+    /**
+     * Resolves an address change label to an address.
+     * @param s The address change label.
+     * @return The address matching the label.
+     */
     public String getChangedAddress(String s) {
         return null;
     }
 
+    /**
+     * Getter for the program start label.
+     * @return The program start label.
+     */
     public String getProgramStartLabel() {
         return programStartLabel;
     }
 
+    /**
+     * Checks if a string is a data storage command.
+     * @param s The string to check.
+     * @return True if the string is a data storage command, false otherwise.
+     */
     public boolean isDataStorageCommand(String s) {
         return false;
     }
 
+    /**
+     * Resolves a data storage command to the data that shall be stored in the needed format.
+     * @param s The data storage command.
+     * @return The data to be stored.
+     */
     public String getStorageCommandData(String s) {
         return null;
     }
 
+    /**
+     * Getter for the fetch phase length of the instruction set.
+     * @return Fetch phase length of the instruction set.
+     */
     public int getFetchPhaseLength() {
         return fetchPhase.length;
     }
 
+    /**
+     * Getter for a microinstruction of the fetch phase of the instruction set.
+     * @param index Index of the microinstruction in the fetch phase.
+     * @return The microinstruction at the specified index.
+     */
     public MicroInstruction getFetchPhaseStep(int index) {
         return fetchPhase[index];
     }

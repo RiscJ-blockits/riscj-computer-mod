@@ -54,10 +54,18 @@ public class InstructionSetMemory {
     }
 
 
+    /**
+     * Getter for the word size.
+     * @return The word size in bits.
+     */
     public int getWordSize() {
         return wordLength;
     }
 
+    /**
+     * Getter for the address size.
+     * @return The address size in bits.
+     */
     public int getAddressSize() {
         return addressLenght;
     }
