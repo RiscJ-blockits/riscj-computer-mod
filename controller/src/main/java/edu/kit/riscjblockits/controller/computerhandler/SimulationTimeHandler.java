@@ -3,10 +3,8 @@ package edu.kit.riscjblockits.controller.computerhandler;
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
-import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.model.ClockMode;
-import edu.kit.riscjblockits.model.IObserver;
-import edu.kit.riscjblockits.model.blocks.BlockModel;
+import edu.kit.riscjblockits.model.ISimulationTimingObserver;
 import edu.kit.riscjblockits.model.blocks.SystemClockModel;
 
 import java.util.List;
@@ -19,7 +17,7 @@ import java.util.concurrent.Executors;
  *  the necessary wait time for the next execution is decreased by one step.
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
-public class SimulationTimeHandler implements IObserver {
+public class SimulationTimeHandler implements ISimulationTimingObserver {
 
     /**
      * Executor service for the simulation sequence handler to run tick execution in a new thread.

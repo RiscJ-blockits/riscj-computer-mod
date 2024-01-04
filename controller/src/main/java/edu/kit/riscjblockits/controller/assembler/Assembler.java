@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.assembler;
 
 import edu.kit.riscjblockits.model.Memory;
 import edu.kit.riscjblockits.model.Value;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
 import edu.kit.riscjblockits.model.instructionset.Instruction;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
@@ -198,11 +199,10 @@ public class Assembler {
     }
 
     /**
-     * Gets the {@link Memory} that was written to if code was assembled
+     * Gets Data of the {@link Memory} that was written to if code was assembled
      * @return the memory that was written to
      */
-    public Memory getMemory() {
-        return memory;
+    public IDataElement getMemoryData() {
+        return memory.getData();
     }
-
 }

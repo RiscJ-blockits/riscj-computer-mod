@@ -37,7 +37,7 @@ public class ProgrammingController extends BlockController implements IAssembler
             throw new AssemblyException("Instruction set is not readable");
         }
         assembler.assemble(code);
-        return assembler.getMemory().getData();
+        return assembler.getMemoryData();
     }
 
     private InputStream getInputStream(IDataElement instructionSetElement) throws AssemblyException {

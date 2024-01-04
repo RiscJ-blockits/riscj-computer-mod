@@ -1,5 +1,5 @@
 package edu.kit.riscjblockits.model;
 
-public interface IObserver {
+public interface ISimulationTimingObserver {
     void updateObservedState();
 }

@@ -1,16 +1,16 @@
 package edu.kit.riscjblockits.model.blocks;
 
 import edu.kit.riscjblockits.model.ClockMode;
-import edu.kit.riscjblockits.model.IObserveable;
-import edu.kit.riscjblockits.model.IObserver;
+import edu.kit.riscjblockits.model.ISimulationTimingObserveable;
+import edu.kit.riscjblockits.model.ISimulationTimingObserver;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SystemClockModel extends BlockModel implements IObserveable {
+public class SystemClockModel extends BlockModel implements ISimulationTimingObserveable {
 
-    private List<IObserver> modeObservers;
+    private List<ISimulationTimingObserver> modeObservers;
     private int clockSpeed;
     private ClockMode mode;
 
@@ -36,18 +36,18 @@ public class SystemClockModel extends BlockModel implements IObserveable {
     }
 
     @Override
-    public void registerObserver(IObserver observer) {
+    public void registerObserver(ISimulationTimingObserver observer) {
         modeObservers.add(observer);
     }
 
     @Override
-    public void unregisterObserver(IObserver observer) {
+    public void unregisterObserver(ISimulationTimingObserver observer) {
         modeObservers.remove(observer);
     }
 
     @Override
     public void notifyObservers() {
-        for (IObserver observer: modeObservers) {
+        for (ISimulationTimingObserver observer: modeObservers) {
             observer.updateObservedState();
         }
     }
