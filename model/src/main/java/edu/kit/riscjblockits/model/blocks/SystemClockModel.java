@@ -35,7 +35,6 @@ public class SystemClockModel extends BlockModel implements IObserveable {
         return null;
     }
 
-
     @Override
     public void registerObserver(IObserver observer) {
         modeObservers.add(observer);
@@ -64,4 +63,10 @@ public class SystemClockModel extends BlockModel implements IObserveable {
     public void setActiveTick(boolean activeTick) {
         this.activeTick = activeTick;
     }
+
+    public void setClockMode(ClockMode mode) {
+        this.mode = mode;
+        notifyObservers();
+    }
+
 }

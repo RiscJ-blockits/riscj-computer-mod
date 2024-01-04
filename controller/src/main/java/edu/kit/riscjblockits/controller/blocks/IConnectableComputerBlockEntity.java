@@ -31,7 +31,7 @@ public interface IConnectableComputerBlockEntity {
     BlockPosition getBlockPosition();
 
     /**
-     * The Controllers can get initial Data from NBT
+     * The Controllers can get initial Data from NBT.
      * @return
      */
     IDataElement getBlockEntityData();

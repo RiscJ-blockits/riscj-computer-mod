@@ -7,7 +7,6 @@ import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.ImplementedInventory;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntityWithInventory;
-import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.view.main.data.DataNbtConverter;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -31,7 +30,7 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
 
     /**
      * The code that is currently in the programming block.
-     * might not be up-to-date with the code in the clients programming screen.
+     * Might not be up-to-date with the code in the client's programming screen.
      */
     private String code;
 
@@ -54,7 +53,7 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
     }
 
     /**
-     * Will write the data that is needed to open the screen to the packet buffer.
+     * Will write the data needed to open the screen to the packet buffer.
      *
      * @param player the player that is opening the screen
      * @param buf    the packet buffer to write to
@@ -90,18 +89,18 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
 
     /**
      * Will assemble the code in the programming block.
-     * code will have to be synced before calling this method.
+     * Code will have to be synced before calling this method.
      *
-     * @throws AssemblyException if the code cant be assembled
+     * @throws AssemblyException if the code can't be assembled
      */
     public void assemble() throws AssemblyException {
 
         ItemStack instructionSetStack = getStack(0);
         ItemStack memoryStack = getStack(1);
 
-        IDataElement instructionSetData = new NbtDataConverter(instructionSetStack.getOrCreateSubNbt("riskjblockits.instruction_set")).getData();
+        IDataElement instructionSetData = new NbtDataConverter(instructionSetStack.getOrCreateSubNbt("riscj_blockits.instruction_set")).getData();
         IDataElement memoryData = ((ProgrammingController) getController()).assemble(code, instructionSetData);
-        memoryStack.setSubNbt("riskjblockits.memory", new DataNbtConverter(memoryData).getNbtElement());
+        memoryStack.setSubNbt("riscj_blockits.memory", new DataNbtConverter(memoryData).getNbtElement());
     }
 
     /**
@@ -121,4 +120,5 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
     public String getCode() {
         return code;
     }
+
 }

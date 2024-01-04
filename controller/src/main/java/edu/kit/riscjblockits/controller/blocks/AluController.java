@@ -35,6 +35,7 @@ public class AluController extends ComputerBlockController {
     @Override
     public void setData(IDataElement data) {
         //ToDo
+        ((AluModel) getModel()).setOperation(null);
     }
 
     /**
@@ -46,6 +47,7 @@ public class AluController extends ComputerBlockController {
         switch (operation) {
             case "ADD":
                 //ToDo
+                ((AluModel) getModel()).setResult(null);
                 break;
         }
     }

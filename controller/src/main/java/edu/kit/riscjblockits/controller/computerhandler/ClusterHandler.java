@@ -203,7 +203,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     public void checkFinished() {
         System.out.println("Blocks: " + blocks.size() + " | BusBlocks: " + busBlocks.size());
-        ClusterArchitectureHandler.checkArchitecture(null);
+        ClusterArchitectureHandler.checkArchitecture(null, this);
         //ToDo remove test code and implement method
         if (blocks.size() == 13) {
             System.out.println("Simulation Start [Cluster Handler]");

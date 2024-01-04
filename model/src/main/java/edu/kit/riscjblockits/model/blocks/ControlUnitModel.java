@@ -10,7 +10,7 @@ public class ControlUnitModel extends BlockModel{
 
     public ControlUnitModel() {
         super();
-        setType(ModelType.CONTROLL_UNIT);
+        setType(ModelType.CONTROL_UNIT);
         //ToDo remove Test Code
         istModel = InstructionSetBuilder.buildInstructionSetModelMima();
     }
@@ -28,6 +28,10 @@ public class ControlUnitModel extends BlockModel{
 
     public InstructionSetModel getIstModel() {
         return istModel;
+    }
+
+    public void setIstModel(InstructionSetModel istModel) {
+        this.istModel = istModel;
     }
 
 }

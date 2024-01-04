@@ -31,7 +31,7 @@ public class InstructionSetItem extends Item {
     public void onCraft(ItemStack stack, World world, PlayerEntity player) {
         super.onCraft(stack, world, player);
 
-        stack.setSubNbt("riskjblockits.instructionSet", NbtString.of(defaultInstructionSetJson));
+        stack.setSubNbt("riscj_blockits.instructionSet", NbtString.of(defaultInstructionSetJson));
     }
 
 }

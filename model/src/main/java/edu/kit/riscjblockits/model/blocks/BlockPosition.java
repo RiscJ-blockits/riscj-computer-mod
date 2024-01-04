@@ -1,5 +1,8 @@
 package edu.kit.riscjblockits.model.blocks;
-//records
+
+/**
+ * Custom Class to save a position inside a minecraft world.
+ */
 public class BlockPosition {
 
     private double x;
@@ -9,7 +12,10 @@ public class BlockPosition {
     private boolean isBus;
 
     public BlockPosition() {
-
+        x = 0;
+        y = 0;
+        z = 0;
+        isBus = false;
     }
 
     public BlockPosition(double x, double y, double z) {

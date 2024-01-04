@@ -61,6 +61,7 @@ public class RegisterController extends ComputerBlockController {
     @Override
     public void setData(IDataElement data) {
         //ToDo
+        ((RegisterModel)getModel()).setRegisterType(null);
     }
 
 }

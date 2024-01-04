@@ -2,9 +2,7 @@ package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.controller.computerhandler.ClusterHandler;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
-import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
-import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
 
@@ -46,6 +44,9 @@ public abstract class ComputerBlockController extends BlockController implements
      */
     protected ComputerBlockController(IConnectableComputerBlockEntity blockEntity) {
         super();
+        //ToDo Testcode
+        blockEntity.getBlockEntityData();
+
         pos = blockEntity.getBlockPosition();
         this.blockEntity = blockEntity;
         this.blockModel = createBlockModel();

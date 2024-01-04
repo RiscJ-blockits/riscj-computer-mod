@@ -71,6 +71,7 @@ public class SystemClockController extends ComputerBlockController {
     @Override
     public void setData(IDataElement data) {
         //ToDo
+        ((SystemClockModel) getModel()).setClockMode(null);
     }
 
 }

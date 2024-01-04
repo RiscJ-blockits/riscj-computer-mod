@@ -30,12 +30,8 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory {
      * @return An MemoryController bound to this entity.
      */
     @Override
-    public String getInfo() {
-        return null;
-    }
-
-    @Override
     protected ComputerBlockController createController() {
         return new MemoryController(this);
     }
+
 }

@@ -2,7 +2,6 @@ package edu.kit.riscjblockits.view.main.blocks.systemclock;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.SystemClockController;
-import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.computer.ComputerBlockEntity;
 import net.minecraft.block.BlockState;
@@ -28,12 +27,8 @@ public class SystemClockBlockEntity extends ComputerBlockEntity {
      * @return An SystemClockController bound to this entity.
      */
     @Override
-    public String getInfo() {
-        return null;
-    }
-
-    @Override
     protected ComputerBlockController createController() {
         return new SystemClockController(this);
     }
+
 }

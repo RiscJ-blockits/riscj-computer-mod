@@ -3,6 +3,11 @@ package edu.kit.riscjblockits.model.blocks;
 //FixMe vereinheitliche Enums
 
 public enum ModelType {
-    CONTROLL_UNIT,
+    CONTROL_UNIT,
     CLOCK,
+    ALU,
+    MEMORY,
+    REGISTER,
+    BUS,
+
 }

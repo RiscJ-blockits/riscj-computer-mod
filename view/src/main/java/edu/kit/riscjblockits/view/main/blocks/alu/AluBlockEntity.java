@@ -28,12 +28,8 @@ public class AluBlockEntity extends ComputerBlockEntity {
      * @return An {@link AluController} bound to this entity.
      */
     @Override
-    public String getInfo() {
-        return null;
-    }
-
-    @Override
     protected IUserInputReceivableComputerController createController() {
         return new AluController(this);
     }
+
 }

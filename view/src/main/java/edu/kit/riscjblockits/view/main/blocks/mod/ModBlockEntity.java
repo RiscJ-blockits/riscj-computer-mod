@@ -2,7 +2,6 @@ package edu.kit.riscjblockits.view.main.blocks.mod;
 
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
-import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.view.main.blocks.EntityType;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.minecraft.block.BlockState;

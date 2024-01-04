@@ -11,6 +11,7 @@ public class RegisterModel extends BlockModel {
 
     public RegisterModel() {
         value = new Value();
+        setType(ModelType.REGISTER);
     }
 
     @Override

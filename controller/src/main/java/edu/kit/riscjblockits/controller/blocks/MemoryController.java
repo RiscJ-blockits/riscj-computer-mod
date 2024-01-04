@@ -36,6 +36,7 @@ public class MemoryController extends ComputerBlockController {
     @Override
     public void setData(IDataElement data) {
         //ToDo
+        ((MemoryModel) getModel()).setMemory(null);
     }
 
     /**
@@ -45,7 +46,7 @@ public class MemoryController extends ComputerBlockController {
      */
     public Value getValue(Value address) {
         //ToDo
-        return null;
+        return ((MemoryModel) getModel()).getMemoryAt(address);
     }
 
     /**
@@ -55,6 +56,7 @@ public class MemoryController extends ComputerBlockController {
      */
     public void writeMemory(Value address, Value value) {
         //ToDo
+        ((MemoryModel) getModel()).setMemoryAt(address, value);
     }
 
 }

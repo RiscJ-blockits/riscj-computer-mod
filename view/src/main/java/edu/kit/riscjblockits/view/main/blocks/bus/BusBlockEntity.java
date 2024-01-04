@@ -31,11 +31,6 @@ public class BusBlockEntity extends ComputerBlockEntity {
         setType(EntityType.BUS);
     }
 
-    @Override
-    public String getInfo() {
-        return null;
-    }
-
     /**
      * Every entity needs its own controller.
      * @return An BusController bound to this entity.

@@ -8,6 +8,10 @@ public class MemoryModel extends BlockModel {
 
     private Memory memory;
 
+    public MemoryModel() {
+        setType(ModelType.MEMORY);
+    }
+
     @Override
     public boolean hasUnqueriedStateChange() {
         return false;

@@ -25,6 +25,9 @@ public class AluModel extends BlockModel{
      */
     private Value result;
 
+    public AluModel() {
+        setType(ModelType.ALU);
+    }
 
     @Override
     public boolean hasUnqueriedStateChange() {
@@ -55,4 +58,5 @@ public class AluModel extends BlockModel{
     public void setResult(Value result) {
         this.result = result;
     }
+
 }

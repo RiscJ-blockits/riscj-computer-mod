@@ -1,9 +1,12 @@
 package edu.kit.riscjblockits.controller.computerhandler;
 
+import edu.kit.riscjblockits.controller.blocks.AluController;
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
+import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.model.Value;
 import edu.kit.riscjblockits.model.instructionset.*;
 
 import java.util.HashMap;
@@ -37,7 +40,7 @@ public class Executor implements IExecutor {
         this.blockControllers = blockControllers;
         registerControllerMap = new HashMap<>();
 
-        for (BlockController blockController : blockControllers) {
+        for (ComputerBlockController blockController : blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.REGISTER) {
                 RegisterController registerController = (RegisterController) blockController;
                 registerControllerMap.put(registerController.getRegisterType(), registerController);
@@ -52,6 +55,12 @@ public class Executor implements IExecutor {
      */
     public void execute(MemoryInstruction memoryInstruction){
         //ToDo
+        for (ComputerBlockController blockController : blockControllers) {
+            if (blockController.getControllerType() == BlockControllerType.MEMORY) {
+                Value value = ((MemoryController) blockController).getValue(null);
+                registerControllerMap.get(null).setNewValue(value);
+            }
+        }
     }
 
     /**
@@ -59,7 +68,8 @@ public class Executor implements IExecutor {
      * @param conditionedInstruction Conditioned instruction to be executed.
      */
     public void execute(ConditionedInstruction conditionedInstruction) {
-
+        //ToDo
+        registerControllerMap.get(null).setNewValue(null);
     }
 
     /**
@@ -67,7 +77,12 @@ public class Executor implements IExecutor {
      * @param aluInstruction Alu instruction to be executed.
      */
     public void execute(AluInstruction aluInstruction) {
-
+        //ToDo
+        for (ComputerBlockController blockController : blockControllers) {
+            if (blockController.getControllerType() == BlockControllerType.ALU) {
+                ((AluController) blockController).executeAluOperation(null);
+            }
+        }
     }
 
     /**
@@ -75,6 +90,8 @@ public class Executor implements IExecutor {
      * @param dataMovementInstruction Data movement instruction to be executed.
      */
     public void execute(DataMovementInstruction dataMovementInstruction) {
-
+        //ToDo
+        registerControllerMap.get(null).setNewValue(null);
     }
+
 }

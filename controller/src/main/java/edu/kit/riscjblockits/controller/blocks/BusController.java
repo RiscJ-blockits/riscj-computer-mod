@@ -35,6 +35,7 @@ public class BusController extends ComputerBlockController{
     @Override
     public void setData(IDataElement data) {
         //ToDo
+        ((BusModel) getModel()).setBelongingBusSystemModel(null);
     }
 
 }

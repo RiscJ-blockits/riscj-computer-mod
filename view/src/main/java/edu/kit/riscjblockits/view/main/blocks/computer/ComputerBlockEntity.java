@@ -4,7 +4,6 @@ import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
-import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.blocks.EntityType;
@@ -19,7 +18,6 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /** BlockEntity for all @link ComputerBlocks.
  * Every {@link ComputerBlock} has its own unique ComputerBlockEntity during runtime.
  */
@@ -30,8 +28,6 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * TODO javadoc - Ask Nils what this does
      * @return
      */
-    public abstract String getInfo();
-
     protected abstract IUserInputReceivableComputerController createController();
 
     /**

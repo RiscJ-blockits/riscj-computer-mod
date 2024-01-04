@@ -10,6 +10,10 @@ public class BusModel extends BlockModel{
      */
     private BusSystemModel belongsToSystem;
 
+    public BusModel() {
+        setType(ModelType.BUS);
+    }
+
     @Override
     public boolean hasUnqueriedStateChange() {
         return false;
@@ -29,4 +33,5 @@ public class BusModel extends BlockModel{
     public void setBelongingBusSystemModel(BusSystemModel belongsToSystem) {
         this.belongsToSystem = belongsToSystem;
     }
+
 }
