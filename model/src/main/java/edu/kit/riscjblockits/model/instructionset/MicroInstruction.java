@@ -9,12 +9,12 @@ public abstract class MicroInstruction implements IQueryableMicroInstruction {
     /**
      * The register(s) to read from.
      */
-    String[] from;
+    private final String[] from;
 
     /**
      * The register to write to.
      */
-    String to;
+    private final String to;
 
     public MicroInstruction(String[] from, String to) {
         this.from = from;

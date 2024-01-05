@@ -9,21 +9,46 @@ public class InstructionCondition {
     /**
      * The comparing oparator.
      */
-    String comparator;
+    private final String comparator;
 
     /**
      * The first value to compare.
      */
-    String compare1;
+    private final String compare1;
 
     /**
      * The second value to compare.
      */
-    String compare2;
+    private final String compare2;
 
     public InstructionCondition(String comparator, String compare1, String compare2) {
         this.comparator = comparator;
         this.compare1 = compare1;
         this.compare2 = compare2;
+    }
+
+
+    /**
+     * Getter for the comparing operator.
+     * @return The comparing operator as a string.
+     */
+    public String getComparator() {
+        return comparator;
+    }
+
+    /**
+     * Getter for the first value to compare.
+     * @return The first value to compare as a string.
+     */
+    public String getCompare1() {
+        return compare1;
+    }
+
+    /**
+     * Getter for the second value to compare.
+     * @return The second value to compare as a string.
+     */
+    public String getCompare2() {
+        return compare2;
     }
 }

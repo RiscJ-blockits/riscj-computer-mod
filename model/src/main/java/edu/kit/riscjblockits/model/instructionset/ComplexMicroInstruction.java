@@ -12,12 +12,12 @@ public abstract class ComplexMicroInstruction extends MicroInstruction{
     /**
      * Memory flag for type of memory access.
      */
-    String memoryFlag;
+    private final String memoryFlag;
 
     /**
      * Memory instruction for parallel memory access.
      */
-    MemoryInstruction memoryInstruction;
+    private final MemoryInstruction memoryInstruction;
 
     public ComplexMicroInstruction(String[] from, String to, String memoryFlag, MemoryInstruction memoryInstruction) {
         super(from, to);

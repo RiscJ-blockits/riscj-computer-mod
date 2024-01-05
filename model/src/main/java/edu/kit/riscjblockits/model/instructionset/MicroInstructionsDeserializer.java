@@ -69,8 +69,8 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
     }
 
     /**
-     * Generate MemoryInstruction from json of form [from, to]
-     * @param jsonElement ["[from]", "[to]"]
+     * Generate MemoryInstruction from json of form [destination, origin]
+     * @param jsonElement ["[destination]", "[origin]"]
      * @return MemoryInstruction
      */
     private MemoryInstruction parseMemoryInstruction(JsonElement jsonElement) {
@@ -108,7 +108,7 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
 
     /**
      * Generate ConditionedInstruction from json of form
-     * ["IF", ["[comparator1]", "[comparator2]", "comparing_operation"], [then_from, then_to], "memory_flag", "storage_operation"]
+     * ["IF", ["[comparator1]", "[comparator2]", "comparing_operation"], [then_to, then_from], "memory_flag", "storage_operation"]
      * @param jsonArray ["IF", ["[comparator1]", "[comparator2]", "comparing_operation"], [then_to, then_from], "memory_flag", "storage_operation"]
      * @return ConditionedInstruction
      */

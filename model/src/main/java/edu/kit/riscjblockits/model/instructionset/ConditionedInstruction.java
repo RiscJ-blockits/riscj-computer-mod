@@ -9,7 +9,7 @@ public class ConditionedInstruction extends ComplexMicroInstruction {
     /**
      * Condition of the instruction.
      */
-    InstructionCondition condition;
+    private final InstructionCondition condition;
 
     public ConditionedInstruction(String[] from, String to, String memoryFlag,
                                   MemoryInstruction memoryInstruction, InstructionCondition condition) {
@@ -23,5 +23,13 @@ public class ConditionedInstruction extends ComplexMicroInstruction {
     @Override
     public void execute(IExecutor executor) {
         executor.execute(this);
+    }
+
+    /**
+     * Getter for the condition of the instruction.
+     * @return The condition of the instruction.
+     */
+    public InstructionCondition getCondition() {
+        return condition;
     }
 }

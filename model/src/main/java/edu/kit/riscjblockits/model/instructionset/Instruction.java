@@ -9,22 +9,22 @@ public class Instruction implements IQueryableInstruction {
     /**
      * The arguments of the instruction.
      */
-    private String[] arguments;
+    private final String[] arguments;
 
     /**
      * The opcode of the instruction.
      */
-    private String opcode;
+    private final String opcode;
 
     /**
      * The execution of the instruction as a sequence of micro instructions.
      */
-    private MicroInstruction[] execution;
+    private final MicroInstruction[] execution;
 
     /**
      * The translation of the instruction to binary.
      */
-    private String[] translation;
+    private final String[] translation;
 
     public Instruction(String[] arguments, String opcode, MicroInstruction[] execution, String[] translation) {
         this.arguments = arguments;
@@ -56,5 +56,13 @@ public class Instruction implements IQueryableInstruction {
      */
     public String[] getArguments() {
         return arguments;
+    }
+
+    /**
+     * Getter for the execution of the instruction.
+     * @return The execution of the instruction as a sequence of micro instructions.
+     */
+    public MicroInstruction[] getExecution() {
+        return execution;
     }
 }

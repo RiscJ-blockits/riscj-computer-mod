@@ -9,7 +9,7 @@ public class AluInstruction extends ComplexMicroInstruction {
     /**
      * Alu action of the instruction.
      */
-    String action;
+    private final String action;
 
     public AluInstruction(String[] from, String to, String memoryFlag, MemoryInstruction memoryInstruction, String action) {
         super(from, to, memoryFlag, memoryInstruction);
