@@ -37,10 +37,6 @@ public abstract class MicroInstruction implements IExecutableMicroInstruction {
         return to;
     }
 
-    /**
-     * Abstract method to execute the micro instruction as part of a visitor pattern.
-     * @param executor The executor to execute the micro instruction on.
-     */
-    public abstract void execute(IExecutor executor);
+
 
 }

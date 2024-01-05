@@ -108,4 +108,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         return Text.empty();
     }
 
+    @Override
+    public IDataElement getBlockEntityData() {
+        return null;
+    }
 }
