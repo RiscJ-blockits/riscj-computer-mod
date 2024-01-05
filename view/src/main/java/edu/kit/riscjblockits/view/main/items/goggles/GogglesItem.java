@@ -16,6 +16,11 @@ public class GogglesItem extends Item implements Equipment {
         super(settings);
     }
 
+    /**
+     * Returns the slot type of the goggles item.
+     * This will tell Minecraft where the Item is equip-able
+     * @return The slot type of the goggles item.
+     */
     @Override
     public EquipmentSlot getSlotType() {
         return EquipmentSlot.HEAD;

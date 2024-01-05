@@ -44,9 +44,6 @@ public abstract class ComputerBlockController extends BlockController implements
      */
     protected ComputerBlockController(IConnectableComputerBlockEntity blockEntity) {
         super();
-        //ToDo Testcode
-        blockEntity.getBlockEntityData();
-
         pos = blockEntity.getBlockPosition();
         this.blockEntity = blockEntity;
         this.blockModel = createBlockModel();

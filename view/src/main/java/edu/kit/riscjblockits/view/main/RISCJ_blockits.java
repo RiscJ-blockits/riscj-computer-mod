@@ -21,9 +21,11 @@ import edu.kit.riscjblockits.view.main.items.manual.ManualItem;
 import edu.kit.riscjblockits.view.main.items.program.ProgramItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -174,8 +176,16 @@ public class RISCJ_blockits implements ModInitializer {
 	 */
 	public static final Item GOGGLES_ITEM = new GogglesItem(new Item.Settings().maxCount(1));
 	//ToDo right location for .json
+	/**
+	 * This attribute defines all MiMa instruction set items.
+	 * these are linked to the instruction set file for MiMa.
+	 */
 	public static final Item INSTRUCTION_SET_ITEM_MIMA = new InstructionSetItem(new Item.Settings().maxCount(1),
 			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionset/instructionSetMIMA.jsonc"));
+	/**
+	 * This attribute defines all RISC-V instruction set items.
+	 * these are linked to the instruction set file for RISC-V.
+	 */
 	public static final Item INSTRUCTION_SET_ITEM_RISCV = new InstructionSetItem(new Item.Settings().maxCount(1),
 			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionset/instructionSetMIMA.jsonc"));
     /**
@@ -184,7 +194,9 @@ public class RISCJ_blockits implements ModInitializer {
      */
     public static final Item MANUAL_ITEM = new ManualItem(new Item.Settings().maxCount(1));
 
-
+	/**
+	 * This attribute defines the ScreenHandlerType for the ProgrammingScreenHandler.
+	 */
 	public static ScreenHandlerType<ProgrammingScreenHandler> PROGRAMMING_SCREEN_HANDLER;
 
 	/**

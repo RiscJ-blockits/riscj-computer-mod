@@ -17,8 +17,16 @@ import java.util.stream.Collectors;
  */
 public class InstructionSetItem extends Item {
 
+    /**
+     * The default instruction set json.
+     */
     private final String defaultInstructionSetJson;
 
+    /**
+     * Creates a new instruction set item with the given settings.
+     * @param settings The settings for the item as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
+     * @param inputStream The input stream to read the default instruction set json from.
+     */
     public InstructionSetItem(Settings settings, InputStream inputStream) {
         super(settings);
         defaultInstructionSetJson = new BufferedReader(
@@ -27,6 +35,13 @@ public class InstructionSetItem extends Item {
                 .collect(Collectors.joining("\n"));
     }
 
+    /**
+     * Called when the item is obtained.
+     * will set the default instruction set json to the item stack.
+     * @param stack The item stack.
+     * @param world The world.
+     * @param player The player.
+     */
     @Override
     public void onCraft(ItemStack stack, World world, PlayerEntity player) {
         super.onCraft(stack, world, player);

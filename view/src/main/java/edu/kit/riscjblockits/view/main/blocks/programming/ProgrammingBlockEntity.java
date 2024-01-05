@@ -96,6 +96,7 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
     public void assemble() throws AssemblyException {
 
         ItemStack instructionSetStack = getStack(0);
+
         ItemStack memoryStack = getStack(1);
 
         IDataElement instructionSetData = new NbtDataConverter(instructionSetStack.getOrCreateSubNbt("riscj_blockits.instruction_set")).getData();

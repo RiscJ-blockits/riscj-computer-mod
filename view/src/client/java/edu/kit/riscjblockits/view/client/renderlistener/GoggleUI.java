@@ -12,14 +12,29 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 
+
+/**
+ * This class is responsible for rendering the UI when the player is looking at a block that implements {@link IGoggleQueryable}.
+ */
 public class GoggleUI {
     boolean visible = true;
     private final TextRenderer textRenderer;
     private final MinecraftClient minecraft;
+
+    /**
+     * Creates a new GoggleUI.
+     * will save the minecraft instance and the text renderer instance.
+     */
     public GoggleUI() {
         minecraft = MinecraftClient.getInstance();
         textRenderer = minecraft.textRenderer;
     }
+
+    /**
+     * Method that will be called every frame.
+     * Will render the UI if the player is looking at a block that implements {@link IGoggleQueryable}.
+     * @param context the drawing context
+     */
     public void onRenderGameOverlay(DrawContext context) {
         HitResult crosshairTarget = minecraft.crosshairTarget;
 
@@ -42,6 +57,12 @@ public class GoggleUI {
         drawUI(context, goggleQueriable.getGoggleText(), block.asItem().getDefaultStack());
     }
 
+    /**
+     * Draws the UI.
+     * @param context the drawing context
+     * @param text the text to draw
+     * @param stack the Item-stack to draw
+     */
     private void drawUI(DrawContext context, Text text, ItemStack stack) {
         int textHeight = textRenderer.fontHeight;
         int width = context.drawText(textRenderer, text, 30, 10, 0xFF17FF77, false);

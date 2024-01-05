@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AssemblerTest {
 
-    /**
+    /*/**
      * tests the assembler, expected results are from MIMA flux
      *
      * @throws AssemblyException
-     */
+
     @Disabled
     @Test
     void assemble() throws AssemblyException {
@@ -56,4 +56,5 @@ class AssemblerTest {
         val = memory.getValueAt(Value.fromHex("08", 3));
         assertEquals("F00000", val.getHexadecimalValue());
     }
+    */
 }

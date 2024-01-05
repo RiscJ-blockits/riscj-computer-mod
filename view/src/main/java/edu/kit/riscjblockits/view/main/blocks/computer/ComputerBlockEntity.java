@@ -25,24 +25,24 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     IGoggleQueryable {
 
     /**
-     * TODO javadoc - Ask Nils what this does
-     * @return
+     * The block's representation in the model holds the block's data.
+     */
+    private IQueryableBlockModel model;
+
+    /**
+     * Will create a new {@link ComputerBlockController} for this block.
      */
     protected abstract IUserInputReceivableComputerController createController();
 
     /**
-     * TODO javadoc - Ask Nils/Leon what this does
-     * @return
+     * Method that is called by Minecraft every tick.
+     * Will call the {@link ComputerBlockController#tick()} method.
      */
     public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
         if (!world.isClient && entity.getController() != null) {
             ((ComputerBlockController)entity.getController()).tick();
         }
     }
-    /**
-     * The block's representation in the model holds the block's data.
-     */
-    private IQueryableBlockModel model;
 
     /**
      * Creates a new ComputerBlockEntity with the given settings.
@@ -83,7 +83,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
 
     /**
      * Sets the model for this block.
-     * @param model
+     * @param model The model for this block.
      */
     public void setBlockModel(IQueryableBlockModel model) {
         this.model = model;
@@ -99,13 +99,13 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         //ToDo controller must be there
     }
 
+    /**
+     * Gets the Text that should be displayed when the player is looking at this block.
+     * @return The Text that should be displayed when the player is looking at this block.
+     */
     @Override
     public Text getGoggleText() {
         return Text.empty();
-    }
-
-    public IDataElement getBlockEntityData() {
-        return null;
     }
 
 }

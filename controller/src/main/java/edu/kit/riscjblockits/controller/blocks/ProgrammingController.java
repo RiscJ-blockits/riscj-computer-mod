@@ -25,11 +25,9 @@ public class ProgrammingController extends BlockController implements IAssembler
      */
     public IDataElement assemble(String code, IDataElement instructionSetData)
         throws AssemblyException {
-        if (!instructionSetData.isContainer()) {
-            throw new AssemblyException("Instruction set data is not a container");
-        }
-        IDataElement instructionSetElement = ((IDataContainer) instructionSetData).get("instructionSetJSON");
-        InputStream instructionSetStream = getInputStream(instructionSetElement);
+
+
+        InputStream instructionSetStream = getInputStream(instructionSetData);
         Assembler assembler;
         try {
             assembler = new Assembler(InstructionSetBuilder.buildInstructionSetModel(instructionSetStream));
@@ -40,7 +38,12 @@ public class ProgrammingController extends BlockController implements IAssembler
         return assembler.getMemoryData();
     }
 
-    private InputStream getInputStream(IDataElement instructionSetElement) throws AssemblyException {
+    private InputStream getInputStream(IDataElement instructionSetData) throws AssemblyException {
+        if (!instructionSetData.isContainer()) {
+            throw new AssemblyException("Instruction set data is not a container");
+        }
+        IDataElement instructionSetElement = ((IDataContainer) instructionSetData).get("instructionSetJSON");
+
         if (!instructionSetElement.isEntry()) {
             throw new AssemblyException("Instruction set data does not contain instructionSetJSON");
         }
