@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.model.instructionset;
 
 //zwischen Simulation und InstructionSet
-public interface IQueryableMicroInstruction {
-
+public interface IExecutableMicroInstruction {
+    void execute(IExecutor executor);
 }

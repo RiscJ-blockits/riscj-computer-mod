@@ -4,7 +4,7 @@ package edu.kit.riscjblockits.model.instructionset;
  * Abstract class for common attributes and functionality of micro instructions.
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
-public abstract class MicroInstruction implements IQueryableMicroInstruction {
+public abstract class MicroInstruction implements IExecutableMicroInstruction {
 
     /**
      * The register(s) to read from.
