@@ -14,25 +14,25 @@ public class InstructionSetRegisters {
      * Program counter register name.
      */
     @SerializedName(value = "program_counter")
-    String programCounter;
+    private final String programCounter;
 
     /**
      * ALU register names.
      */
     @SerializedName(value = "alu")
-    String[] aluRegs;
+    private final String[] aluRegs;
 
     /**
      * Floating point register mapping of addresses and names.
      */
     @SerializedName(value = "float")
-    HashMap<String, Integer> floatRegs;
+    private final HashMap<String, Integer> floatRegs;
 
     /**
      * Integer register mapping of addresses and names.
      */
     @SerializedName(value = "integer")
-    HashMap<String, Integer> intRegs;
+    private final HashMap<String, Integer> intRegs;
 
     public InstructionSetRegisters(String programCounter, String[] aluRegs, HashMap<String, Integer> floatRegs, HashMap<String, Integer> intRegs) {
         this.programCounter = programCounter;
@@ -65,5 +65,13 @@ public class InstructionSetRegisters {
      */
     public String getProgramCounter() {
         return programCounter;
+    }
+
+    /**
+     * Getter for the ALU registers.
+     * @return ALU registers.
+     */
+    public String[] getAluRegs() {
+        return aluRegs;
     }
 }

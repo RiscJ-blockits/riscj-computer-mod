@@ -122,7 +122,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @return Registers of the instruction set.
      */
     public String[] getAluRegisters() {
-        return instructionSetRegisters.aluRegs;
+        return instructionSetRegisters.getAluRegs();
     }
 
     /**
