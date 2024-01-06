@@ -26,7 +26,7 @@ public class SimulationSequenceHandler implements Runnable {
     /**
      * Contains the microinstructions of the current instruction.
      */
-    private MicroInstruction[] microInstructions;
+    private IExecutableMicroInstruction[] microInstructions;
     /**
      * Contains the block controllers of the associated computer blocks.
      */
@@ -113,7 +113,7 @@ public class SimulationSequenceHandler implements Runnable {
     private void fetch(){
         //ToDo: Rethink if fetch instructions could be a class attribute set in the constructor.
         //ToDo: Check if an instruction initialization method might be useful.
-        MicroInstruction[] fetchInstructions = null; // = instructionSetModel.     ;           //ToDo get fetch Instruction
+        IExecutableMicroInstruction[] fetchInstructions = null; // = instructionSetModel.     ;           //ToDo get fetch Instruction
         executeMicroInstruction(fetchInstructions[phaseCounter]);
         phaseCounter++;
         if (phaseCounter > fetchInstructions.length) {
@@ -144,13 +144,10 @@ public class SimulationSequenceHandler implements Runnable {
      * Execute microinstruction using a visitor pattern.
      * @param instruction Microinstruction to execute.
      */
-    private void executeMicroInstruction(MicroInstruction instruction) {
+    private void executeMicroInstruction(IExecutableMicroInstruction instruction) {
         //ToDo
 
         instruction.execute(executor);
-
-
-
 
     }
 
