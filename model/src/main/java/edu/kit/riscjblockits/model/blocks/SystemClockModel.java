@@ -1,8 +1,5 @@
 package edu.kit.riscjblockits.model.blocks;
 
-import edu.kit.riscjblockits.model.ClockMode;
-import edu.kit.riscjblockits.model.ISimulationTimingObserveable;
-import edu.kit.riscjblockits.model.ISimulationTimingObserver;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.ArrayList;

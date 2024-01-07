@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.controller.blocks;
 
-import edu.kit.riscjblockits.controller.computerhandler.ClusterHandler;
+import edu.kit.riscjblockits.controller.clustering.ClusterHandler;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
@@ -13,7 +13,7 @@ import java.util.List;
  * Every Computer block Entity has a ComputerBlockController.
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
-public abstract class ComputerBlockController extends BlockController implements IUserInputReceivableComputerController, IQueryableSimController {
+public abstract class ComputerBlockController extends BlockController implements IUserInputReceivableComputerController, IQueryableClusterController, IQueryableSimController {
 
     /**
      * The model of the block. Every computer controller stores a model to keep the data of the block.

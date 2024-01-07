@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.model.blocks;
 
-import edu.kit.riscjblockits.model.BusSystemModel;
+import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
 public class BusModel extends BlockModel{

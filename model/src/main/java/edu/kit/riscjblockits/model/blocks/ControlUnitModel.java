@@ -1,12 +1,12 @@
 package edu.kit.riscjblockits.model.blocks;
 
 import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
-import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
 public class ControlUnitModel extends BlockModel{
 
-    private InstructionSetModel istModel;
+    private IQueryableInstructionSetModel istModel;
 
     public ControlUnitModel() {
         super();
@@ -26,11 +26,11 @@ public class ControlUnitModel extends BlockModel{
     }
 
 
-    public InstructionSetModel getIstModel() {
+    public IQueryableInstructionSetModel getIstModel() {
         return istModel;
     }
 
-    public void setIstModel(InstructionSetModel istModel) {
+    public void setIstModel(IQueryableInstructionSetModel istModel) {
         this.istModel = istModel;
     }
 

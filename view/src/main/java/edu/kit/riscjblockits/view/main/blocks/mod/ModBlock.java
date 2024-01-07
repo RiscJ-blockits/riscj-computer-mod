@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.view.main.blocks.mod;
 
-import edu.kit.riscjblockits.view.main.blocks.ImplementedInventory;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;

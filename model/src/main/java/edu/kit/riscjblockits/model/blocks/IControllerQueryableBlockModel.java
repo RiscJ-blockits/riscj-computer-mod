@@ -3,7 +3,7 @@ package edu.kit.riscjblockits.model.blocks;
 /**
  * Defines all models that can be queried or updated by a controller.
  */
-public interface IControllerQueryableBlockModel {
+public interface IControllerQueryableBlockModel extends IQueryableBlockModel {
 
     /**
      * Sets the position of the block.

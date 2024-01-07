@@ -1,7 +1,7 @@
 package edu.kit.riscjblockits.model.blocks;
 
-import edu.kit.riscjblockits.model.Memory;
-import edu.kit.riscjblockits.model.Value;
+import edu.kit.riscjblockits.model.memoryRepresentation.Memory;
+import edu.kit.riscjblockits.model.memoryRepresentation.Value;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
 public class MemoryModel extends BlockModel {

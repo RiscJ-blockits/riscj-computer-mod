@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.model;
 
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
+import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

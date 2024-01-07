@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.controller.assembler;
 
-import edu.kit.riscjblockits.model.Value;
+import edu.kit.riscjblockits.model.memoryRepresentation.Value;
 
 import java.util.regex.Pattern;
 

@@ -4,6 +4,7 @@ import edu.kit.riscjblockits.model.blocks.BlockModel;
 import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
 /**
@@ -30,11 +31,11 @@ public class ControlUnitController extends ComputerBlockController{
         return new ControlUnitModel();
     }
 
-    /** ToDo mit Interface kapseln?
+    /**
      * Returns the instruction set model inside the inventory of the block entity.
      * @return An {@link InstructionSetModel} object.
      */
-    public InstructionSetModel getInstructionSetModel() {
+    public IQueryableInstructionSetModel getInstructionSetModel() {
         return ((ControlUnitModel)getModel()).getIstModel();
     }
 

@@ -1,31 +1,29 @@
 package edu.kit.riscjblockits.view.main;
 
-import edu.kit.riscjblockits.view.main.blocks.alu.AluBlock;
-import edu.kit.riscjblockits.view.main.blocks.alu.AluBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.bus.BusBlock;
-import edu.kit.riscjblockits.view.main.blocks.bus.BusBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.controlunit.ControlUnitBlock;
-import edu.kit.riscjblockits.view.main.blocks.controlunit.ControlUnitBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.memory.MemoryBlock;
-import edu.kit.riscjblockits.view.main.blocks.memory.MemoryBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.programming.ProgrammingBlock;
-import edu.kit.riscjblockits.view.main.blocks.programming.ProgrammingBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.programming.ProgrammingScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.register.RegisterBlock;
-import edu.kit.riscjblockits.view.main.blocks.register.RegisterBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.systemclock.SystemClockBlock;
-import edu.kit.riscjblockits.view.main.blocks.systemclock.SystemClockBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.alu.AluBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.alu.AluBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlockEntity;
 import edu.kit.riscjblockits.view.main.items.goggles.GogglesItem;
 import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
 import edu.kit.riscjblockits.view.main.items.manual.ManualItem;
 import edu.kit.riscjblockits.view.main.items.program.ProgramItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -38,8 +36,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * This class is the main class of the mod.

@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.view.client.renderlistener;
 
-import edu.kit.riscjblockits.view.main.blocks.computer.IGoggleQueryable;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.IGoggleQueryable;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;

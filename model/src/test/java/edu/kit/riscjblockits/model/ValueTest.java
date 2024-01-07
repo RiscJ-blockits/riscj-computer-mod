@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.model;
 
+import edu.kit.riscjblockits.model.memoryRepresentation.Value;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

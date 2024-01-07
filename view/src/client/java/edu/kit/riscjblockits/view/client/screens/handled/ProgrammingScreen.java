@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
-import edu.kit.riscjblockits.view.main.blocks.programming.ProgrammingScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;

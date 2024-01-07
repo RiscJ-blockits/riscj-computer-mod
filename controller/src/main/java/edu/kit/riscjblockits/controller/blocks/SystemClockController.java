@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.controller.blocks;
 
-import edu.kit.riscjblockits.controller.computerhandler.SimulationTimeHandler;
+import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.SystemClockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;

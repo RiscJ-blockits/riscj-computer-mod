@@ -1,7 +1,6 @@
 package edu.kit.riscjblockits.model.instructionset;
 
 import com.google.gson.annotations.SerializedName;
-import edu.kit.riscjblockits.model.Value;
 
 import java.util.HashMap;
 

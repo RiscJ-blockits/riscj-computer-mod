@@ -1,8 +1,7 @@
 package edu.kit.riscjblockits.controller.assembler;
 
-import edu.kit.riscjblockits.model.Value;
+import edu.kit.riscjblockits.model.memoryRepresentation.Value;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
-import edu.kit.riscjblockits.model.instructionset.Instruction;
 
 import java.util.HashMap;
 import java.util.Map;

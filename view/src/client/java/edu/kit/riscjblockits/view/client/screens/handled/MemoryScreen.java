@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
-import edu.kit.riscjblockits.view.main.blocks.memory.MemoryScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHandler;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;

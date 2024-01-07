@@ -1,11 +1,11 @@
 package edu.kit.riscjblockits.controller.assembler;
 
-import edu.kit.riscjblockits.model.Memory;
-import edu.kit.riscjblockits.model.Value;
+import edu.kit.riscjblockits.model.memoryRepresentation.Memory;
+import edu.kit.riscjblockits.model.memoryRepresentation.Value;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
-import edu.kit.riscjblockits.model.instructionset.Instruction;
-import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
+import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
+
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class Assembler {
     /**
      * the {@link InstructionSetModel} that is used for the assembly
      */
-    private final InstructionSetModel instructionSetModel;
+    private final IQueryableInstructionSetModel instructionSetModel;
 
 
     /**
@@ -60,7 +60,7 @@ public class Assembler {
      * will create a new {@link Memory} with the address and word size of the {@link InstructionSetModel}
      * @param instructionSetModel the instruction set model to use for the assembly
      */
-    public Assembler(InstructionSetModel instructionSetModel) {
+    public Assembler(IQueryableInstructionSetModel instructionSetModel) {
         labels = new HashMap<>();
         this.instructionSetModel = instructionSetModel;
         int memoryAddressSize = instructionSetModel.getMemoryAddressSize();
