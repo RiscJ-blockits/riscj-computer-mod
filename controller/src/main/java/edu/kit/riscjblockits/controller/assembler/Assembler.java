@@ -25,7 +25,7 @@ public class Assembler {
     private static final Pattern LABEL_COMMAND_PATTERN = Pattern.compile(" *(?:(?<label>\\w+):)? *(?<command>\\w.*)? *");
 
     /**
-     * the {@link InstructionSetModel} that is used for the assembly
+     * the {@link IQueryableInstructionSetModel} that is used for the assembly
      */
     private final IQueryableInstructionSetModel instructionSetModel;
 
@@ -57,7 +57,7 @@ public class Assembler {
 
     /**
      * Constructor for an {@link Assembler}
-     * will create a new {@link Memory} with the address and word size of the {@link InstructionSetModel}
+     * will create a new {@link Memory} with the address and word size of the {@link IQueryableInstructionSetModel}
      * @param instructionSetModel the instruction set model to use for the assembly
      */
     public Assembler(IQueryableInstructionSetModel instructionSetModel) {
