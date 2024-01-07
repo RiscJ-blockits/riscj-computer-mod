@@ -26,7 +26,7 @@ public interface IQueryableClusterController extends IQueryableComputerControlle
      * Returns an empty list if the block is not a computer block. ToDo not implemented yet.
      * @return List of neighbors.
      */
-    List<ComputerBlockController> getNeighbours();
+    List<IQueryableClusterController> getNeighbours();
 
     /**
      * Getter for the position of the block in the minecraft world.

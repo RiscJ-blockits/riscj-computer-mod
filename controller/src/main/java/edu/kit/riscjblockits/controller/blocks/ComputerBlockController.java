@@ -95,8 +95,8 @@ public abstract class ComputerBlockController extends BlockController implements
      * Returns an empty list if the block is not a computer block. ToDo not implemented yet.
      * @return List of neighbors.
      */
-    public List<ComputerBlockController> getNeighbours() {
-        return blockEntity.getComputerNeighbours();
+    public List<IQueryableClusterController> getNeighbours() {
+        return blockEntity.getComputerNeighbours().stream().map(IQueryableClusterController.class::cast).toList();
     }
 
     /**

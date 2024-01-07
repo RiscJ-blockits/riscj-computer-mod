@@ -80,7 +80,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * @param blockController BlockController to combine
      */
     private void combineToNeighbours(IQueryableClusterController blockController) {
-        List<ComputerBlockController> neighbourBlockControllers = blockController.getNeighbours();
+        List<IQueryableClusterController> neighbourBlockControllers = blockController.getNeighbours();
         ClusterHandler actualCluster = this;
         for (IQueryableClusterController neighbourBlock: neighbourBlockControllers) {
             neighbourBlock.getClusterHandler().combine(neighbourBlock, blockController, actualCluster);
