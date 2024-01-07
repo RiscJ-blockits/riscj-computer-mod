@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 /**
  * This class is responsible for rendering the UI when the player is looking at a block that implements {@link IGoggleQueryable}.
  */
-public class GoggleUI {
+public final class GoggleUI {
     boolean visible = true;
     private final TextRenderer textRenderer;
     private final MinecraftClient minecraft;
