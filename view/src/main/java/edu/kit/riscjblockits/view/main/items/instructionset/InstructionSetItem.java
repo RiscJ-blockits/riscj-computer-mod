@@ -1,9 +1,9 @@
 package edu.kit.riscjblockits.view.main.items.instructionset;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtString;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
 import java.io.BufferedReader;
@@ -35,18 +35,13 @@ public class InstructionSetItem extends Item {
                 .collect(Collectors.joining("\n"));
     }
 
-    /**
-     * Called when the item is obtained.
-     * will set the default instruction set json to the item stack.
-     * @param stack The item stack.
-     * @param world The world.
-     * @param player The player.
-     */
     @Override
-    public void onCraft(ItemStack stack, World world, PlayerEntity player) {
-        super.onCraft(stack, world, player);
-
-        stack.setSubNbt("riscj_blockits.instructionSet", NbtString.of(defaultInstructionSetJson));
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        NbtCompound nbt = stack.getOrCreateNbt();
+        if (nbt.get("riscj_blockits.instructionSet") == null) {
+            nbt.putString("riscj_blockits.instructionSet", defaultInstructionSetJson);
+            stack.setNbt(nbt);
+        }
+        super.inventoryTick(stack, world, entity, slot, selected);
     }
-
 }

@@ -1,4 +1,4 @@
-package edu.kit.riscjblockits.model.memoryRepresentation;
+package edu.kit.riscjblockits.model.memoryrepresentation;
 
 import java.math.BigInteger;
 import java.util.Arrays;

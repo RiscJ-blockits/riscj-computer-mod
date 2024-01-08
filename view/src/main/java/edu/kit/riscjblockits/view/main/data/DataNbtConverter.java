@@ -1,6 +1,10 @@
 package edu.kit.riscjblockits.view.main.data;
 
-import edu.kit.riscjblockits.model.data.*;
+
+import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.data.IDataVisitor;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtString;

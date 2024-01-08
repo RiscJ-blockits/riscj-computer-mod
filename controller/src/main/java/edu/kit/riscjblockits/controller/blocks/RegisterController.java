@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.controller.blocks;
 
-import edu.kit.riscjblockits.model.memoryRepresentation.Value;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
@@ -62,6 +62,8 @@ public class RegisterController extends ComputerBlockController {
     public void setData(IDataElement data) {
         //ToDo
         ((RegisterModel)getModel()).setRegisterType(null);
+
+        setNewValue(null);
     }
 
 }

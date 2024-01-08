@@ -1,4 +1,4 @@
-package edu.kit.riscjblockits.model.memoryRepresentation;
+package edu.kit.riscjblockits.model.memoryrepresentation;
 
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;

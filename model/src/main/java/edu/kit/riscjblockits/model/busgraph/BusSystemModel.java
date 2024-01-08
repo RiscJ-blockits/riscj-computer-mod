@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.model.busgraph;
 
-import edu.kit.riscjblockits.model.memoryRepresentation.Value;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 
 import java.util.ArrayList;

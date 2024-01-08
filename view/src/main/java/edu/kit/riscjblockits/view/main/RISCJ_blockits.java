@@ -183,7 +183,7 @@ public class RISCJ_blockits implements ModInitializer {
 	 * these are linked to the instruction set file for RISC-V.
 	 */
 	public static final Item INSTRUCTION_SET_ITEM_RISCV = new InstructionSetItem(new Item.Settings().maxCount(1),
-			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionset/instructionSetMIMA.jsonc"));
+			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionset/instructionSetRiscV.jsonc"));
     /**
      * This attribute defines all Manual items.
      * A Manual-Item with the default settings for items but only stackable up to 1.

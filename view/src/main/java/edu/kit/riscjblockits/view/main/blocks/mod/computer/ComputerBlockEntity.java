@@ -9,7 +9,6 @@ import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.blocks.mod.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlock;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.IGoggleQueryable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;

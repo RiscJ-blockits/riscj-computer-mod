@@ -1,7 +1,7 @@
 package edu.kit.riscjblockits.model;
 
-import edu.kit.riscjblockits.model.memoryRepresentation.Memory;
-import edu.kit.riscjblockits.model.memoryRepresentation.Value;
+import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;

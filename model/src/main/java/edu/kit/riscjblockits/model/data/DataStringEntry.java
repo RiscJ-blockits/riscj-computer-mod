@@ -1,10 +1,8 @@
 package edu.kit.riscjblockits.model.data;
 
-import edu.kit.riscjblockits.model.data.IDataStringEntry;
 
 /**
  * This class represents a string entry in the data tree.
- * Allows for conversion to NBT.
  */
 public class DataStringEntry implements IDataStringEntry {
 

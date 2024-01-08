@@ -2,7 +2,11 @@ package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.controller.assembler.Assembler;
 import edu.kit.riscjblockits.controller.assembler.AssemblyException;
-import edu.kit.riscjblockits.model.data.*;
+import edu.kit.riscjblockits.model.data.DataType;
+import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.data.IDataEntry;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 
 import java.io.ByteArrayInputStream;

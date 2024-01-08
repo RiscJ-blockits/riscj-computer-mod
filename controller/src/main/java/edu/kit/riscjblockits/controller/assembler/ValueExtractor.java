@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.controller.assembler;
 
-import edu.kit.riscjblockits.model.memoryRepresentation.Value;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.util.regex.Pattern;
 
@@ -20,6 +20,12 @@ public class ValueExtractor {
      * regex pattern to match binary values
      */
     private static final Pattern BIN_VALUE_PATTERN = Pattern.compile("0b[01]+");
+
+    //TODO: add support for float values
+    /**
+     * regex pattern to match float values
+     */
+    private static final Pattern FLOAT_VALUE_PATTERN = Pattern.compile("0b[01]+");
 
     /**
      * Extracts a value from a string.

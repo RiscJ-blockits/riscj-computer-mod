@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.model.blocks;
 
-import edu.kit.riscjblockits.model.data.IDataElement;
 
 public abstract class BlockModel implements IControllerQueryableBlockModel, IViewQueryableBlockModel {
 

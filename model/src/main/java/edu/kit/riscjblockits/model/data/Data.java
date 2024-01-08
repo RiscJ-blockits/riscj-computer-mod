@@ -13,7 +13,7 @@ public class Data implements IDataContainer {
 
     /**
      * The contents of this data container.
-     * The key Map's key is the key the data is stored under.
+     * The Map's key is the key the data is stored under.
      * The value is the {@link IDataElement} itself.
      */
     private final Map<String, IDataElement> contents = new HashMap<>();

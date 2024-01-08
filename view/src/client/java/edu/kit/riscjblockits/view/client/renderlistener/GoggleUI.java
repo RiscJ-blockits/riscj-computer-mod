@@ -6,7 +6,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.ItemStack;
+
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -54,19 +54,17 @@ public final class GoggleUI {
             return;
         }
 
-        drawUI(context, goggleQueriable.getGoggleText(), block.asItem().getDefaultStack());
+        drawUI(context, goggleQueriable.getGoggleText());
     }
 
     /**
      * Draws the UI.
      * @param context the drawing context
      * @param text the text to draw
-     * @param stack the Item-stack to draw
      */
-    private void drawUI(DrawContext context, Text text, ItemStack stack) {
+    private void drawUI(DrawContext context, Text text) {
         int textHeight = textRenderer.fontHeight;
         int width = context.drawText(textRenderer, text, 30, 10, 0xFF17FF77, false);
-        context.drawItem(stack, 8, 5);
         context.drawBorder(7, 5, width, textHeight, 0xFFFF7700);
         context.fill(7, 5, 7 + width, 8 + textHeight, 0x77FF7700);
 
