@@ -45,15 +45,15 @@ public class SimulationSequenceHandler implements Runnable {
     /**
      * Controller of the program counter register.
      */
-    private IQueryableSimController programCounterController;
+    private RegisterController programCounterController;
     /**
      * Controller of the instruction register.
      */
-    private IQueryableSimController iarController;
+    private RegisterController iarController;
     /**
      * Controller of the memory.
      */
-    private IQueryableSimController memoryController;
+    private MemoryController memoryController;
     /**
      * Executor for the microinstructions.
      */

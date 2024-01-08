@@ -7,7 +7,7 @@ import edu.kit.riscjblockits.model.data.IDataElement;
  * Every Mod block Entity has a Controller.
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
-public abstract class BlockController {
+public abstract class BlockController implements IUserInputReceivableController {
 
     /**
      * Type of the controller.
