@@ -50,3 +50,9 @@ test:
       - model/build/reports/tests/
       - view/build/reports/tests/
     when: always
+
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+variables:
+  SEARCH_MAX_DEPTH: 15
