@@ -53,6 +53,5 @@ test:
 
 include:
   - template: Jobs/SAST.gitlab-ci.yml
-  - template: Security/Dependency-Scanning.gitlab-ci.yml
 variables:
   SEARCH_MAX_DEPTH: 15
