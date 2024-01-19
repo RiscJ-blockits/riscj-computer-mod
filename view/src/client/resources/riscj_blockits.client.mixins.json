@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "edu.kit.riscjblockits.view.client.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "ExampleClientMixin",
+    "RenderMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}
