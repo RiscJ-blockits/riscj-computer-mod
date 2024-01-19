@@ -158,7 +158,7 @@ public class Assembler {
             // check if line is address change
             if (instructionSetModel.isAddressChange(line)) {
                 String address = instructionSetModel.getChangedAddress(line);
-                currentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
+                localCurrentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
                 continue;
             }
 
@@ -183,6 +183,7 @@ public class Assembler {
     private void writeLabelsToArguments(String[] arguments) {
         for (int i = 0; i < arguments.length; i++) {
             String argument = arguments[i];
+            // check if argument is a label --> replace with address
             if (labels.containsKey(argument)) {
                 arguments[i] = "0x" + labels.get(argument).getHexadecimalValue();
             }
@@ -195,7 +196,21 @@ public class Assembler {
      * @param arguments array of arguments that may have registers, in need to be replaced
      */
     private void writeRegistersToArguments(String[] arguments) {
-
+        // for each argument:
+        for (int i = 0; i < arguments.length; i++) {
+            String argument = arguments[i];
+            // check if argument is an Integer register --> replace with address
+            Integer register = instructionSetModel.getIntegerRegister(argument);
+            if (register != null) {
+                arguments[i] = "0x" + Integer.toHexString(register);
+                continue;
+            }
+            // check if argument is a Float register --> replace with address
+            register = instructionSetModel.getFloatRegister(argument);
+            if (register != null) {
+                arguments[i] = "0x" + Integer.toHexString(register);
+            }
+        }
     }
 
     /**

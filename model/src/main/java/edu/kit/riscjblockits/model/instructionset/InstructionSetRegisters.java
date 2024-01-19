@@ -47,6 +47,9 @@ public class InstructionSetRegisters {
      * @return Address of the register.
      */
     public Integer getFloatRegister(String name) {
+        if (!intRegs.containsKey(name)) {
+            return null;
+        }
         return floatRegs.get(name);
     }
 
@@ -56,6 +59,9 @@ public class InstructionSetRegisters {
      * @return Address of the register.
      */
     public Integer getIntegerRegister(String name) {
+        if (!intRegs.containsKey(name)) {
+            return null;
+        }
         return intRegs.get(name);
     }
 

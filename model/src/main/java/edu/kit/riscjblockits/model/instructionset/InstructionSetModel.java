@@ -3,6 +3,8 @@ package edu.kit.riscjblockits.model.instructionset;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Model of an instruction set. Contains all information on how to execute code based on the instruction set.
@@ -138,7 +140,22 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @return Integer register matching the key.
      */
     public Integer getIntegerRegister(String key) {
+        // no register object -> no registers
+        if (instructionSetRegisters == null) return null;
+        // get register Address
         return instructionSetRegisters.getIntegerRegister(key);
+    }
+
+    /**
+     * Getter for the float registers of the instruction set.
+     * @param key Key of the register.
+     * @return float register matching the key.
+     */
+    public Integer getFloatRegister(String key) {
+        // no register object -> no registers
+        if (instructionSetRegisters == null) return null;
+        // get register Address
+        return instructionSetRegisters.getFloatRegister(key);
     }
 
     /**
@@ -180,6 +197,12 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @return True if the string is the address change specification of the instruction set, false otherwise.
      */
     public boolean isAddressChange(String s) {
+        for (String key : addressChangeHashMap.keySet()) {
+            Pattern p = Pattern.compile(key);
+            if (p.matcher(s).matches()) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -189,6 +212,22 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @return The address matching the label.
      */
     public String getChangedAddress(String s) {
+        for (String key : addressChangeHashMap.keySet()) {
+            Pattern p = Pattern.compile(key);
+            Matcher m = p.matcher(s);
+            if (m.matches()) {
+                // check if address change needs dynamic replacing
+                Pattern groupPattern = Pattern.compile("\\[(?<name>\\w+)]");
+                Matcher groupMatcher = groupPattern.matcher(addressChangeHashMap.get(key));
+                if (groupMatcher.matches()) {
+                    String groupName = groupMatcher.group("name");
+                    return m.group(groupName);
+                }
+
+                // return constant address otherwise
+                return addressChangeHashMap.get(key);
+            }
+        }
         return null;
     }
 
