@@ -85,7 +85,7 @@ public abstract class ComputerBlockController extends BlockController implements
      */
 
     public BlockPosition getBlockPosition() {
-        return blockEntity.getBlockPosition();
+        return pos;
     }
 
     /**
