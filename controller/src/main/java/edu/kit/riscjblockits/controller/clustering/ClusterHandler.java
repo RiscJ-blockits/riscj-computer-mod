@@ -76,10 +76,10 @@ public class ClusterHandler implements IArchitectureCheckable {
      * @param busSystemModel BusSystemModel to start the cluster with
      */
     public ClusterHandler(IQueryableBusSystem busSystemModel) {
-        buildingFinished = false;
         blocks = new ArrayList<>();
         busBlocks = new ArrayList<>();
         this.busSystemModel = busSystemModel;
+
         //ToDo remove test code
         istModel = InstructionSetBuilder.buildInstructionSetModelMima();
     }
@@ -94,16 +94,6 @@ public class ClusterHandler implements IArchitectureCheckable {
         for (IQueryableClusterController neighbourBlock: neighbourBlockControllers) {
             neighbourBlock.getClusterHandler().combine(neighbourBlock, blockController, actualCluster);
             actualCluster = neighbourBlock.getClusterHandler();
-            //busSystemModel.combineGraph(blockController.getBlockPosition(), neighbourBlock.getBlockPosition(), neighbourBlock.getClusterHandler().getBusSystemModel());
-            //blocks.addAll(neighbourBlock.getClusterHandler().getBlocks());
-            //for (BlockController newBlock: (neighbourBlock.getClusterHandler().getBlocks())) {
-            //    newBlock.setClusterHandler(this);
-            //}
-            //busBlocks.addAll(neighbourBlock.getClusterHandler().getBusBlocks());
-            //for (BlockController newBlock: (neighbourBlock.getClusterHandler().getBusBlocks())) {
-            //    newBlock.setClusterHandler(this);
-            //}
-            //System.out.println("combine");
         }
     }
 
@@ -115,13 +105,17 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     public void combine(IQueryableClusterController ownBlock,IQueryableClusterController neighbourBlock, ClusterHandler oldCluster) {
         busSystemModel.combineGraph(ownBlock.getBlockPosition(), neighbourBlock.getBlockPosition(), oldCluster.getBusSystemModel());
-        blocks.addAll(oldCluster.getBlocks());
-        for (IQueryableClusterController newBlock: (oldCluster.getBlocks())) {
-            newBlock.setClusterHandler(this);
-        }
-        busBlocks.addAll(oldCluster.getBusBlocks());
-        for (IQueryableClusterController newBlock: (oldCluster.getBusBlocks())) {
-            newBlock.setClusterHandler(this);
+
+        if (oldCluster != this) {
+            blocks.addAll(oldCluster.getBlocks());
+            for (IQueryableClusterController newBlock: (oldCluster.getBlocks())) {
+                newBlock.setClusterHandler(this);
+            }
+            busBlocks.addAll(oldCluster.getBusBlocks());
+            for (IQueryableClusterController newBlock: (oldCluster.getBusBlocks())) {
+                newBlock.setClusterHandler(this);
+            }
+            System.out.println("combine with other cluster");
         }
         System.out.println("combine");
     }
@@ -133,19 +127,20 @@ public class ClusterHandler implements IArchitectureCheckable {
     public void blockDestroyed(IQueryableClusterController destroyedBlockController) {
         //Remove Block from BusSystemModel
         List<IQueryableBusSystem> newBusSystemModels = busSystemModel.splitBusSystemModel(destroyedBlockController.getBlockPosition());
-        //System.out.println(newBusSystemModels.size());
+
        //Remove Block from ClusterHandler Lists
         if (destroyedBlockController.getControllerType() == BlockControllerType.BUS) {
             busBlocks.remove(destroyedBlockController);
         } else {
             blocks.remove(destroyedBlockController);
         }
+
         //Create new ClusterHandler for fragmented BusSystemModels
         List<ClusterHandler> newClusterHandlers = new ArrayList<>();
         for (IQueryableBusSystem newBusSystemModel: newBusSystemModels) {
             newClusterHandlers.add(new ClusterHandler(newBusSystemModel));
         }
-        System.out.println(newClusterHandlers.size());
+        System.out.println("Anzahl neuer Cluster: " + newClusterHandlers.size());
         //finish the new ClusterHandlers
         for (IQueryableClusterController blockController: blocks) {
             for (ClusterHandler clusterHandler: newClusterHandlers) {
