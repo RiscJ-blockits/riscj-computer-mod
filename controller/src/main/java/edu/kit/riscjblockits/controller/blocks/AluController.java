@@ -1,13 +1,11 @@
 package edu.kit.riscjblockits.controller.blocks;
 
+import edu.kit.riscjblockits.model.blocks.AluModel;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
-import edu.kit.riscjblockits.model.blocks.AluModel;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.math.BigInteger;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 /**
  * The controller for an ALU block entity.
@@ -94,7 +92,7 @@ public class AluController extends ComputerBlockController {
                 result = add(operand1, operand2);
                 break;
             case "SUB":
-                result = sub(operand1, neg(operand2, null));
+                result = sub(operand1, operand2);
                 break;
             case "RR":
                 result = rr(operand1, operand2);
@@ -194,6 +192,10 @@ public class AluController extends ComputerBlockController {
 
         byte[] array2 = operand2.getByteValue();
         BigInteger bigInt2 = new BigInteger(array2);
+
+        if (bigInt2.equals(BigInteger.ZERO)) {
+            return Value.fromHex("FF".repeat(array1.length), array1.length);
+        }
 
         BigInteger result = bigInt1.divide(bigInt2);
 
@@ -311,7 +313,15 @@ public class AluController extends ComputerBlockController {
         if(resultArray.length > originalLength){
             System.arraycopy(resultArray, resultArray.length-originalLength, trimmedResult, 0, originalLength);
         } else {
+
             System.arraycopy(resultArray, 0, trimmedResult, originalLength-resultArray.length, resultArray.length);
+
+            // final result needs to be filled with ones, if the result is negative
+            if (result.compareTo(BigInteger.ZERO) < 0) {
+                for (int i = 0; i < originalLength-resultArray.length; i++) {
+                    trimmedResult[i] = (byte) 0xFF;
+                }
+            }
         }
 
         return new Value(trimmedResult);
