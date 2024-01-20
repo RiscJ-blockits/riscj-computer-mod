@@ -7,7 +7,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 /**
  * This class represents a block entity from our mod in the game.
@@ -54,7 +56,8 @@ public abstract class ModBlockEntity extends BlockEntity {
      * It creates the controller for the block if it is called from the server context.
      */
     public void setController() {
-        if (!world.isClient) {
+        assert world != null;
+        if (!world.isClient && controller == null) {
             controller = createController();
         }
     }

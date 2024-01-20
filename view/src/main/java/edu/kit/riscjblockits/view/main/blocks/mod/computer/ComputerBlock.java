@@ -45,6 +45,7 @@ public abstract class ComputerBlock extends ModBlock {
      */
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        super.onStateReplaced(state, world, pos, newState, moved);
         //check if the block has been broken
         if (!world.isClient && state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
@@ -52,7 +53,6 @@ public abstract class ComputerBlock extends ModBlock {
                 ((ComputerBlockEntity) blockEntity).onBroken();
             }
         }
-        super.onStateReplaced(state, world, pos, newState, moved);
     }
 
     /** TODO Javadoc - Get help from Nils
@@ -67,4 +67,5 @@ public abstract class ComputerBlock extends ModBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return (world1, pos, state1, be) -> ComputerBlockEntity.tick(world1, pos, state1, (ComputerBlockEntity) be);
     }
+
 }
