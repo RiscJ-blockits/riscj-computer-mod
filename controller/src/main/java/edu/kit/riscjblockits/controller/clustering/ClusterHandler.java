@@ -146,40 +146,42 @@ public class ClusterHandler implements IArchitectureCheckable {
      * @param destroyedBlockController BlockController of the destroyed block
      */
     public void blockDestroyed(IQueryableClusterController destroyedBlockController) {
-        //Remove Block from BusSystemModel
-        List<IQueryableBusSystem> newBusSystemModels = busSystemModel.splitBusSystemModel(destroyedBlockController.getBlockPosition());
-
+        System.out.println("Block wird zerstört");
        //Remove Block from ClusterHandler Lists
-        if (destroyedBlockController.getControllerType() == BlockControllerType.BUS) {
-            busBlocks.remove(destroyedBlockController);
-        } else {
+        if (destroyedBlockController.getControllerType() != BlockControllerType.BUS) {
             blocks.remove(destroyedBlockController);
-        }
-
-        //Create new ClusterHandler for fragmented BusSystemModels
-        List<ClusterHandler> newClusterHandlers = new ArrayList<>();
-        for (IQueryableBusSystem newBusSystemModel: newBusSystemModels) {
-            newClusterHandlers.add(new ClusterHandler(newBusSystemModel));
-        }
-        System.out.println("Anzahl neuer Cluster: " + newClusterHandlers.size());
-        //finish the new ClusterHandlers
-        for (IQueryableClusterController blockController: blocks) {
+            busSystemModel.removeNode(destroyedBlockController.getBlockPosition());
+            System.out.println("No BusBlock destroyed");
+        } else {
+            System.out.println("BusBlock destroyed");
+            busBlocks.remove(destroyedBlockController);
+            List<IQueryableBusSystem> newBusSystemModels =
+                    busSystemModel.splitBusSystemModel(destroyedBlockController.getBlockPosition());
+            List<ClusterHandler> newClusterHandlers = new ArrayList<>();
+            for (IQueryableBusSystem newBusSystemModel: newBusSystemModels) {
+                newClusterHandlers.add(new ClusterHandler(newBusSystemModel));
+            }
+            //finish the new ClusterHandlers
+            for (IQueryableClusterController blockController: blocks) {
+                for (ClusterHandler clusterHandler: newClusterHandlers) {
+                    if (clusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
+                        clusterHandler.addBlocks(blockController);
+                        blockController.setClusterHandler(clusterHandler);
+                    }
+                }
+            }
+            for (IQueryableClusterController blockController: busBlocks) {
+                for (ClusterHandler newclusterHandler: newClusterHandlers) {
+                    if (newclusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
+                        newclusterHandler.addBusBlocks(blockController);
+                        blockController.setClusterHandler(newclusterHandler);
+                    }
+                }
+            }
             for (ClusterHandler clusterHandler: newClusterHandlers) {
-                if (clusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
-                    clusterHandler.addBlocks(blockController);
-                    blockController.setClusterHandler(clusterHandler);
-                }
+                clusterHandler.checkFinished();
             }
         }
-        for (IQueryableClusterController blockController: busBlocks) {
-            for (ClusterHandler newclusterHandler: newClusterHandlers) {
-                if (newclusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
-                    newclusterHandler.addBusBlocks(blockController);
-                    blockController.setClusterHandler(newclusterHandler);
-                }
-            }
-        }
-        //ToDo stop Simulation if architecture invalid
     }
 
     /**
@@ -226,6 +228,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * method to check whether the cluster is finished building
      */
     public void checkFinished() {
+        System.out.println("Check finished");
         System.out.println("Blocks: " + blocks.size() + " | BusBlocks: " + busBlocks.size());
         buildingFinished = ClusterArchitectureHandler.checkArchitecture(null, this);
         //ToDo remove test code and implement method

@@ -45,14 +45,15 @@ public abstract class ComputerBlock extends ModBlock {
      */
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        super.onStateReplaced(state, world, pos, newState, moved);
         //check if the block has been broken
         if (!world.isClient && state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
+            //TODO: instanceof entfernen
             if (blockEntity instanceof ComputerBlockEntity) {
                 ((ComputerBlockEntity) blockEntity).onBroken();
             }
         }
+        super.onStateReplaced(state, world, pos, newState, moved);
     }
 
     /** TODO Javadoc - Get help from Nils
