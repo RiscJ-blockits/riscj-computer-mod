@@ -43,6 +43,7 @@ public abstract class ModBlockEntity extends BlockEntity {
         super(type, pos, state);
         entitytype = EntityType.UNCONNECTABLE;
         //FixMe Controller needs to get created when reload
+        markDirty();
     }
 
     /**
@@ -62,6 +63,11 @@ public abstract class ModBlockEntity extends BlockEntity {
         }
     }
 
+    //ToDo nicht im Entwurf
+    public void setController(IUserInputReceivableController c) {
+        controller = c;
+    }
+
     /**
      * ToDo
      * @param nbt
@@ -69,7 +75,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        controller.setData(new NbtDataConverter(nbt).getData());
+        //controller.setData(new NbtDataConverter(nbt).getData());
     }
 
     public BlockPosition getBlockPosition() {
@@ -101,5 +107,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     public void setType(EntityType type) {
         this.entitytype = type;
     }
+
+
 
 }

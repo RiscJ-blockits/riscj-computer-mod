@@ -49,6 +49,7 @@ public abstract class ComputerBlockController extends BlockController implements
         this.blockModel = createBlockModel();
         //FixMe cast sehr unschön
         blockEntity.setBlockModel((IQueryableBlockModel) this.blockModel);
+        blockEntity.setController(this);
         blockModel.setPosition(getBlockPosition());
         //Create a new Cluster and check if it is complete. This check can trigger a simulation start.
         new ClusterHandler(this);

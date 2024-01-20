@@ -2,6 +2,11 @@ plugins {
     id("java")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 group = "edu.kit.riscjblockits"
 version = "1.0.0"
 

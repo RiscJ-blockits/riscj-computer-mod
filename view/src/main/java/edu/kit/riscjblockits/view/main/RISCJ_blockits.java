@@ -20,6 +20,9 @@ import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
 import edu.kit.riscjblockits.view.main.items.manual.ManualItem;
 import edu.kit.riscjblockits.view.main.items.program.ProgramItem;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.*;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerBlockEntityEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
@@ -249,6 +252,27 @@ public class RISCJ_blockits implements ModInitializer {
 
 		// register the Item-Group
 		Registry.register(Registries.ITEM_GROUP, new Identifier(MODID, "computer_components"), ITEM_GROUP);
+
+		//Register Events
+		ServerBlockEntityEvents.BLOCK_ENTITY_LOAD.register((blockEntity, world) -> {
+			// Your code here. This will be executed when a BlockEntity is loaded.
+			System.out.println("BlockEntity " + blockEntity + " loaded in " + world);
+		});
+
+//		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+//			// Your code here. This will be executed when the Minecraft client starts.
+//
+//
+//		});
+
+		ClientBlockEntityEvents.BLOCK_ENTITY_LOAD.register((blockEntity, world) -> {
+			// Your code here. This will be executed when a BlockEntity is loaded.
+			System.out.println("Client: BlockEntity " + blockEntity + " loaded in " + world);
+		});
+
+
+
+
 	}
 
 	/**
