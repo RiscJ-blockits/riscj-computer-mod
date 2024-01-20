@@ -35,8 +35,7 @@
         "AND",
         "OR",
         "XOR",
-        "NEG",
-        "JMN"
+        "NEG"
     ],
     "fetch": [
         ["SAR", "IAR", "r", ["<mem_addr>", "SAR"]],
