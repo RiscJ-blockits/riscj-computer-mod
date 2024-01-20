@@ -1,5 +1,8 @@
 package edu.kit.riscjblockits.controller.blocks;
 
+import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.data.IDataVisitor;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
@@ -60,7 +63,17 @@ public class RegisterController extends ComputerBlockController {
     @Override
     public void setData(IDataElement data) {
         //ToDo
-        ((RegisterModel)getModel()).setRegisterType(null);
+        IDataVisitor visitor = new IDataVisitor() {
+            @Override
+            public void visit(IDataContainer dataContainer) {
+
+            }
+            @Override
+            public void visit(IDataStringEntry dataStringEntry) {
+                ((RegisterModel) getModel()).setRegisterType(dataStringEntry.getContent());
+            }
+        };
+        data.receive(visitor);
 
         setNewValue(null);
     }

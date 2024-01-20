@@ -68,7 +68,6 @@ public class ClusterHandler implements IArchitectureCheckable {
 
         //ToDo remove test code
         istModel = InstructionSetBuilder.buildInstructionSetModelMima();
-        System.out.println("Model ready");
     }
 
     /**
@@ -188,7 +187,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * method to add a block to the cluster
      * @param blockController BlockController to add
      */
-    public void addBlocks(IQueryableClusterController blockController) {
+    private void addBlocks(IQueryableClusterController blockController) {
         blocks.add(blockController);
     }
 
@@ -196,7 +195,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * method to add a bus block to the cluster
      * @param blockController BlockController to add
      */
-    public void addBusBlocks(IQueryableClusterController blockController) {
+    private void addBusBlocks(IQueryableClusterController blockController) {
         busBlocks.add(blockController);
     }
 
@@ -228,13 +227,12 @@ public class ClusterHandler implements IArchitectureCheckable {
      * method to check whether the cluster is finished building
      */
     public void checkFinished() {
-        System.out.println("Check finished");
         System.out.println("Blocks: " + blocks.size() + " | BusBlocks: " + busBlocks.size());
-        buildingFinished = ClusterArchitectureHandler.checkArchitecture(null, this);
-        //ToDo remove test code and implement method
-        if (blocks.size() == 13) {
+        if (istModel != null) {
+            buildingFinished = ClusterArchitectureHandler.checkArchitecture(istModel, this);
+        }
+        if (buildingFinished) {
             System.out.println("Simulation Start [Cluster Handler]");
-            buildingFinished = true;
             startSimulation();
         }
     }
@@ -242,7 +240,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     /**
      * start the simulation using the current cluster
      */
-    public void startSimulation() {
+    private void startSimulation() {
         // TODO check cast
         List<IQueryableSimController> simControllers = blocks.stream().map(IQueryableSimController.class::cast).toList();
         SimulationTimeHandler sim = new SimulationTimeHandler(simControllers);
