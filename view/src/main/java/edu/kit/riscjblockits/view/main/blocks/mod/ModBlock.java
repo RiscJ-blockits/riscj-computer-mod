@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.view.main.blocks.mod;
 
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -61,6 +62,10 @@ public abstract class ModBlock extends BlockWithEntity {
     @Deprecated(forRemoval = false)
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        //ToDo Leon: check if this is needed
+        //Controller must be there when block is clicked
+//        world.getBlockEntity(pos).setWorld(world);
+//        ((ModBlockEntity)world.getBlockEntity(pos)).setController();
         // open Gui if a Screenhandlerfactory is present for the block
         if (!world.isClient) {
             //This will call the createScreenHandlerFactory method from BlockWithEntity, which will return our blockEntity casted to
@@ -97,6 +102,15 @@ public abstract class ModBlock extends BlockWithEntity {
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }
+        //ToDo Leon: check if this is needed
+        //Controller must be there when block is broken
+//        if (!world.isClient && state.getBlock() != newState.getBlock()) {
+//            BlockEntity blockEntity = world.getBlockEntity(pos);
+//            if (blockEntity instanceof ComputerBlockEntity) {
+//                world.getBlockEntity(pos).setWorld(world);
+//                ((ModBlockEntity)world.getBlockEntity(pos)).setController();
+//            }
+//        }
     }
 
     /**

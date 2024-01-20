@@ -43,6 +43,10 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (!world.isClient && entity.getController() != null) {
             ((IUserInputReceivableComputerController)entity.getController()).tick();
         }
+        //ToDo for all modblocks
+        if (entity.getController() == null && !world.isClient) {
+            entity.setController();
+        }
     }
 
     /**
