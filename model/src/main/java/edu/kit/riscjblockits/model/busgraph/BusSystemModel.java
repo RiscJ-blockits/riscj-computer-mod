@@ -21,8 +21,8 @@ public class BusSystemModel implements IQueryableBusSystem {
     private Map<BlockPosition, List<BlockPosition>> adjPositions;
 
     private Value presentData;
-    private String from;
-    private String to;
+    private BlockPosition from;
+    private BlockPosition to;
 
     /**
      * creates an empty BusSystemModel
