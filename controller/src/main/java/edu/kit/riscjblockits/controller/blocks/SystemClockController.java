@@ -27,8 +27,7 @@ public class SystemClockController extends ComputerBlockController {
      * @param blockEntity The block entity that the controller is responsible for.
      */
     public SystemClockController(IConnectableComputerBlockEntity blockEntity) {
-        super(blockEntity);
-        setControllerType(BlockControllerType.CLOCK);
+        super(blockEntity, BlockControllerType.CLOCK);
         simStarted = false;
     }
 

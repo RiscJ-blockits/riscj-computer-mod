@@ -17,8 +17,7 @@ public class ControlUnitController extends ComputerBlockController{
      * @param blockEntity The block entity that the controller is responsible for.
      */
     public ControlUnitController(IConnectableComputerBlockEntity blockEntity) {
-        super(blockEntity);
-        setControllerType(BlockControllerType.CONTROL_UNIT);
+        super(blockEntity, BlockControllerType.CONTROL_UNIT);
     }
 
     /**

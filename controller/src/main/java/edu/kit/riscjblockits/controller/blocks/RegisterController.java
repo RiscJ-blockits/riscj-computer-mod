@@ -16,8 +16,7 @@ public class RegisterController extends ComputerBlockController {
      * @param blockEntity The block entity that the controller is responsible for.
      */
     public RegisterController(IConnectableComputerBlockEntity blockEntity) {
-        super(blockEntity);
-        setControllerType(BlockControllerType.REGISTER);
+        super(blockEntity, BlockControllerType.REGISTER);
     }
 
     /**

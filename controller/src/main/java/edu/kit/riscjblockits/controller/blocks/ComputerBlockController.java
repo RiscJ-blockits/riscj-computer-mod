@@ -42,8 +42,8 @@ public abstract class ComputerBlockController extends BlockController implements
      * Also begins the simulation if the computer is completely built.
      * @param blockEntity The block entity that the controller is responsible for.
      */
-    protected ComputerBlockController(IConnectableComputerBlockEntity blockEntity) {
-        super();
+    protected ComputerBlockController(IConnectableComputerBlockEntity blockEntity, BlockControllerType controllerType) {
+        super(controllerType);
         pos = blockEntity.getBlockPosition();
         this.blockEntity = blockEntity;
         this.blockModel = createBlockModel();

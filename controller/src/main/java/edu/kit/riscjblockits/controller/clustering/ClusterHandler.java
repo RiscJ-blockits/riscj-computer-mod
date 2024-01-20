@@ -50,18 +50,22 @@ public class ClusterHandler implements IArchitectureCheckable {
      * @param blockController BlockController to start the cluster with
      */
     public ClusterHandler(IQueryableClusterController blockController) {
-        buildingFinished = false;
-        blockController.setClusterHandler(this);
         blocks = new ArrayList<>();
         busBlocks = new ArrayList<>();
+        blockController.setClusterHandler(this);
+        busSystemModel = new BusSystemModel(blockController.getBlockPosition());
+
         if (blockController.getControllerType() == BlockControllerType.BUS) {
             busBlocks.add(blockController);
+            System.out.println("BusBlock");
         } else {
             blocks.add(blockController);
+            System.out.println("No BusBlock");
         }
-        busSystemModel = new BusSystemModel(blockController.getBlockPosition());
+
         System.out.println("Start combine");
         combineToNeighbours(blockController);
+
         //ToDo remove test code
         istModel = InstructionSetBuilder.buildInstructionSetModelMima();
         System.out.println("Model ready");
@@ -207,7 +211,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     public void checkFinished() {
         System.out.println("Blocks: " + blocks.size() + " | BusBlocks: " + busBlocks.size());
-        ClusterArchitectureHandler.checkArchitecture(null, this);
+        buildingFinished = ClusterArchitectureHandler.checkArchitecture(null, this);
         //ToDo remove test code and implement method
         if (blocks.size() == 13) {
             System.out.println("Simulation Start [Cluster Handler]");
