@@ -58,23 +58,24 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
 
     /**
      * Get the {@link BlockController} of this block's neighbours, which are {@link BusBlock}.
+     * Method is only overwritten in the BusEntity.
      * @return all BlockControllers of this block's neighbours, which are BusBlocks.
      */
     public List<ComputerBlockController> getComputerNeighbours() {
         List<ComputerBlockController> neigbhours = new ArrayList<>();
         List<BlockEntity> blockEntities = new ArrayList<>();
         World world = getWorld();
+        assert world != null;       //because controllers only exist in the server, this is always true.
         blockEntities.add(world.getBlockEntity(getPos().down()));
         blockEntities.add(world.getBlockEntity(getPos().up()));
         blockEntities.add(world.getBlockEntity(getPos().south()));
         blockEntities.add(world.getBlockEntity(getPos().north()));
         blockEntities.add(world.getBlockEntity(getPos().east()));
         blockEntities.add(world.getBlockEntity(getPos().west()));
-        //test blocks
+        //
         for (BlockEntity entity:blockEntities) {
-            if (entity instanceof ComputerBlockEntity) {               //FixMe instanceof schöner machen
+            if (entity instanceof ComputerBlockEntity) {               //FixMe instanceof schöner machen (geht das)
                 if (((ComputerBlockEntity) entity).getModblockType() == EntityType.BUS) {
-                    //ToDo cast entfernen
                     neigbhours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
                 }
             }

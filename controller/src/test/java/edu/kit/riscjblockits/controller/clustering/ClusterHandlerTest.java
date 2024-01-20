@@ -66,12 +66,12 @@ class ClusterHandlerTest {
 
         block3.onBroken();
         ClusterHandler ch2 = block1.getClusterHandler();
-        assertEquals(1, ch.getBlocks().size());
-        assertEquals(0, ch.getBusBlocks().size());
+        assertEquals(1, ch2.getBlocks().size());
+        assertEquals(0, ch2.getBusBlocks().size());
 
-        ClusterHandler ch3 = block1.getClusterHandler();
-        assertEquals(1, ch.getBlocks().size());
-        assertEquals(1, ch.getBusBlocks().size());
+        ClusterHandler ch3 = block2.getClusterHandler();
+        assertEquals(1, ch3.getBlocks().size());
+        assertEquals(1, ch3.getBusBlocks().size());
     }
 
 }
