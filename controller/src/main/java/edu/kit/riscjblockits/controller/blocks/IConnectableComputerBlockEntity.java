@@ -36,6 +36,4 @@ public interface IConnectableComputerBlockEntity {
      */
     IDataElement getBlockEntityData();
 
-    //ToDo nicht im Entwurf
-    void setController(IUserInputReceivableController c);
 }

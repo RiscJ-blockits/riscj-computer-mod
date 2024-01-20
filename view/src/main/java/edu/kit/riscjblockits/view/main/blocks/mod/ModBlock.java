@@ -63,10 +63,6 @@ public abstract class ModBlock extends BlockWithEntity {
     @Deprecated(forRemoval = false)
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        //ToDo Leon: check if this is needed
-        //Controller must be there when block is clicked
-//        world.getBlockEntity(pos).setWorld(world);
-//        ((ModBlockEntity)world.getBlockEntity(pos)).setController();
         // open Gui if a Screenhandlerfactory is present for the block
         if (!world.isClient) {
             //This will call the createScreenHandlerFactory method from BlockWithEntity, which will return our blockEntity casted to
@@ -103,15 +99,6 @@ public abstract class ModBlock extends BlockWithEntity {
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }
-        //ToDo Leon: check if this is needed
-        //Controller must be there when block is broken
-//        if (!world.isClient && state.getBlock() != newState.getBlock()) {
-//            BlockEntity blockEntity = world.getBlockEntity(pos);
-//            if (blockEntity instanceof ComputerBlockEntity) {
-//                world.getBlockEntity(pos).setWorld(world);
-//                ((ModBlockEntity)world.getBlockEntity(pos)).setController();
-//            }
-//        }
     }
 
     /**
@@ -145,15 +132,5 @@ public abstract class ModBlock extends BlockWithEntity {
         ((ModBlockEntity)world.getBlockEntity(pos)).setController();
     }
 
-//    //ToDo nicht im entwurf
-//    @Override
-//    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos,
-//                               boolean notify) {
-//        super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
-//        if (!world.isClient) {
-//            world.getBlockEntity(pos).setWorld(world);
-//            ((ModBlockEntity) world.getBlockEntity(pos)).setController();
-//        }
-//    }
 
 }

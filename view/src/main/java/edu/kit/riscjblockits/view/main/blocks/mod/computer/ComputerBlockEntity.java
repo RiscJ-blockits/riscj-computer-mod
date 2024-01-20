@@ -40,14 +40,12 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Will call the {@link ComputerBlockController#tick()} method.
      */
     public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
+        if(!world.isClient) {               //used to make sure we always have a controller
+            entity.setController();         //this could eat a lot of performance
+        }
         if (!world.isClient && entity.getController() != null) {
             ((IUserInputReceivableComputerController)entity.getController()).tick();
         }
-//        //ToDo for all modblocks
-//        if (entity.getController() == null && !world.isClient) {
-//            entity.setController();
-//            System.out.println("Set Tick Controller: " + entity.getModblockType());
-//        }
     }
 
     /**
@@ -81,7 +79,12 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         for (BlockEntity entity:blockEntities) {
             if (entity instanceof ComputerBlockEntity) {               //FixMe instanceof schöner machen (geht das)
                 if (((ComputerBlockEntity) entity).getModblockType() == EntityType.CONNECTABLE) {
-                    neigbhours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
+                    if (((ComputerBlockEntity) entity).getController() == null                //don't start clustering too early when chunk is still loading
+                        ||((ComputerBlockController) ((ComputerBlockEntity) entity).getController()).getClusterHandler() == null) {
+                        //do nothing
+                    } else {
+                        neigbhours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
+                    }
                 }
             }
         }
@@ -103,7 +106,6 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (!world.isClient) {
             ((IUserInputReceivableComputerController)getController()).onBroken();
         }
-        //ToDo controller must be there
     }
 
     /**
@@ -119,4 +121,5 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     public IDataElement getBlockEntityData() {
         return null;
     }
+
 }

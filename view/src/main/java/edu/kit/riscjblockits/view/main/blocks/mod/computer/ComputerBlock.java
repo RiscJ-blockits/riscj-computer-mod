@@ -71,12 +71,4 @@ public abstract class ComputerBlock extends ModBlock {
         return (world1, pos, state1, be) -> ComputerBlockEntity.tick(world1, pos, state1, (ComputerBlockEntity) be);
     }
 
-//    @Override
-//    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-//        super.scheduledTick(state, world, pos, random);
-//        if (!world.isClient) {
-//            ComputerBlockEntity.tick(world,pos,state, (ComputerBlockEntity) world.getBlockEntity(pos));
-//        }
-//    }
-
 }

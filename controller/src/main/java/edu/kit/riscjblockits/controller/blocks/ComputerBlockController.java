@@ -35,7 +35,7 @@ public abstract class ComputerBlockController extends BlockController implements
     /**
      * The position of the block in the minecraft world.
      */
-    private final BlockPosition pos;
+    private BlockPosition pos;
 
     /**
      * Creates a new BlockController.
@@ -44,12 +44,14 @@ public abstract class ComputerBlockController extends BlockController implements
      */
     protected ComputerBlockController(IConnectableComputerBlockEntity blockEntity, BlockControllerType controllerType) {
         super(controllerType);
-        pos = blockEntity.getBlockPosition();
         this.blockEntity = blockEntity;
         this.blockModel = createBlockModel();
-        //FixMe cast sehr unschön
-        blockEntity.setBlockModel((IQueryableBlockModel) this.blockModel);
-        blockEntity.setController(this);
+        blockEntity.setBlockModel((IQueryableBlockModel) this.blockModel);      //FixMe cast sehr unschön
+    }
+
+    //ToDo nicht im entwurf
+    public void startClustering(BlockPosition pos) {
+        this.pos = pos;
         blockModel.setPosition(getBlockPosition());
         //Create a new Cluster and check if it is complete. This check can trigger a simulation start.
         new ClusterHandler(this);
