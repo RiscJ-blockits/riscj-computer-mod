@@ -79,7 +79,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         //
         for (BlockEntity entity:blockEntities) {
             if (entity instanceof ComputerBlockEntity) {               //FixMe instanceof schöner machen (geht das)
-                if (((ComputerBlockEntity) entity).getModblockType() == EntityType.BUS) {
+                if (((ComputerBlockEntity) entity).getModblockType() == EntityType.CONNECTABLE) {
                     neigbhours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
                 }
             }
