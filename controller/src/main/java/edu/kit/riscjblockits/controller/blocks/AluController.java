@@ -152,50 +152,207 @@ public class AluController extends ComputerBlockController {
         ((AluModel) getModel()).setResult(result);
     }
 
+    /**
+     * Remainder of two values
+     * @param operand1 first value, unsigned
+     * @param operand2 second value, unsigned
+     * @return remainder of operand1 and operand2
+     */
     private Value remu(Value operand1, Value operand2) {
         return null;
     }
 
+    /**
+     * Remainder of two values
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return remainder of operand1 and operand2
+     */
     private Value rem(Value operand1, Value operand2) {
         return null;
     }
 
+    /**
+     * Divide two values
+     * @param operand1 first value, unsigned
+     * @param operand2 second value, unsigned
+     * @return quotient of operand1 and operand2
+     */
     private Value divu(Value operand1, Value operand2) {
         return null;
     }
 
+    /**
+     * Divide two values
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return quotient of operand1 and operand2
+     */
     private Value div(Value operand1, Value operand2) {
-        return null;
+        byte[] array1 = operand1.getByteValue();
+        BigInteger bigInt1 = new BigInteger(array1);
+
+        byte[] array2 = operand2.getByteValue();
+        BigInteger bigInt2 = new BigInteger(array2);
+
+        BigInteger result = bigInt1.divide(bigInt2);
+
+        return reconvertToByteArrayOfOriginalLength(array1.length, result);
     }
 
+    /**
+     * Multiply two values and return the high bits of the result
+     * @param operand1 first value, unsigned
+     * @param operand2 second value, unsigned
+     * @return product of operand1 and operand2
+     */
     private Value mulhu(Value operand1, Value operand2) {
-        return null;
+        byte[] array1signed = operand1.getByteValue();
+        byte[] array1unsigned = new byte[array1signed.length + 1];
+        System.arraycopy(array1signed, 0, array1unsigned, 1, array1signed.length);
+        BigInteger bigInt1 = new BigInteger(array1signed);
+
+
+        byte[] array2signed = operand2.getByteValue();
+        byte[] array2unsigned = new byte[array2signed.length + 1];
+        System.arraycopy(array2signed, 0, array2unsigned, 1, array2signed.length);
+        BigInteger bigInt2 = new BigInteger(array2unsigned);
+
+        BigInteger result = bigInt1.multiply(bigInt2);
+
+        Value resultValue = reconvertToByteArrayOfOriginalLength(array1signed.length/2, result);
+        byte[] resultArray = resultValue.getByteValue();
+        byte[] fullLengthResultArray = new byte[array1signed.length];
+
+        System.arraycopy(resultArray, 0, fullLengthResultArray, array1signed.length/2, array1signed.length/2);
+
+        return new Value(fullLengthResultArray);
     }
 
+    /**
+     * Multiply two values and return the high bits of the result
+     * @param operand1 first value, signed
+     * @param operand2 second value, unsigned
+     * @return product of operand1 and operand2
+     */
     private Value mulhsu(Value operand1, Value operand2) {
-        return null;
+        byte[] array1signed = operand1.getByteValue();
+        BigInteger bigInt1 = new BigInteger(array1signed);
+
+
+        byte[] array2signed = operand2.getByteValue();
+        byte[] array2unsigned = new byte[array2signed.length + 1];
+        System.arraycopy(array2signed, 0, array2unsigned, 1, array2signed.length);
+        BigInteger bigInt2 = new BigInteger(array2unsigned);
+
+        BigInteger result = bigInt1.multiply(bigInt2);
+
+        Value resultValue = reconvertToByteArrayOfOriginalLength(array1signed.length/2, result);
+        byte[] resultArray = resultValue.getByteValue();
+        byte[] fullLengthResultArray = new byte[array1signed.length];
+
+        System.arraycopy(resultArray, 0, fullLengthResultArray, array1signed.length/2, array1signed.length/2);
+
+        return new Value(fullLengthResultArray);
     }
 
+    /**
+     * Multiply two values and return the high bits of the result
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return product of operand1 and operand2
+     */
     private Value mulh(Value operand1, Value operand2) {
-        return null;
+        byte[] array1 = operand1.getByteValue();
+        BigInteger bigInt1 = new BigInteger(array1);
+
+        byte[] array2 = operand2.getByteValue();
+        BigInteger bigInt2 = new BigInteger(array2);
+
+        BigInteger result = bigInt1.multiply(bigInt2);
+
+        Value resultValue = reconvertToByteArrayOfOriginalLength(array1.length/2, result);
+        byte[] resultArray = resultValue.getByteValue();
+        byte[] fullLengthResultArray = new byte[array1.length];
+
+        System.arraycopy(resultArray, 0, fullLengthResultArray, array1.length/2, array1.length/2);
+
+        return new Value(fullLengthResultArray);
     }
 
+    /**
+     * Multiply two values
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return product of operand1 and operand2
+     */
     private Value mul(Value operand1, Value operand2) {
-        return null;
+        byte[] array1 = operand1.getByteValue();
+        BigInteger bigInt1 = new BigInteger(array1);
+
+        byte[] array2 = operand2.getByteValue();
+        BigInteger bigInt2 = new BigInteger(array2);
+
+        BigInteger result = bigInt1.multiply(bigInt2);
+
+        return reconvertToByteArrayOfOriginalLength(array1.length, result);
     }
 
+    /**
+     * Reconverts a BigInteger to a byte array of the original length for the creation of values
+     * @param originalLength original length of the byte array
+     * @param result BigInteger to convert
+     * @return byte array of original length
+     */
+    private Value reconvertToByteArrayOfOriginalLength(int originalLength, BigInteger result) {
+        byte[] resultArray = result.toByteArray();
+        byte[] trimmedResult = new byte[originalLength];
+
+        if(resultArray.length > originalLength){
+            System.arraycopy(resultArray, resultArray.length-originalLength, trimmedResult, 0, originalLength);
+        } else {
+            System.arraycopy(resultArray, 0, trimmedResult, originalLength-resultArray.length, resultArray.length);
+        }
+
+        return new Value(trimmedResult);
+    }
+
+    /**
+     * Shift first value right arithmetically by one
+     * @param operand1 first value
+     * @param operand2 second value, unused
+     * @return shifted operand1
+     */
     private Value sra(Value operand1, Value operand2) {
         return null;
     }
 
+    /**
+     * Shift first value right logically by one
+     * @param operand1 first value
+     * @param operand2 second value, unused
+     * @return shifted operand1
+     */
     private Value srl(Value operand1, Value operand2) {
         return null;
     }
 
+    /**
+     * Shift first value left logically by one
+     * @param operand1 first value
+     * @param operand2 second value, unused
+     * @return shifted operand1
+     */
     private Value sll(Value operand1, Value operand2) {
         return null;
     }
 
+    /**
+     * Subtract two values
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return difference of operand1 and operand2
+     */
     private Value sub(Value operand1, Value operand2) {
         byte[] array1 = operand1.getByteValue();
         BigInteger bigInt1 = new BigInteger(array1);
@@ -205,7 +362,7 @@ public class AluController extends ComputerBlockController {
 
         BigInteger result = bigInt1.subtract(bigInt2);
 
-        return new Value(result.toByteArray());
+        return reconvertToByteArrayOfOriginalLength(array1.length, result);
     }
 
     /**
