@@ -90,8 +90,29 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     private void combineToNeighbours(IQueryableClusterController blockController) {
         List<IQueryableClusterController> neighbourBlockControllers = blockController.getNeighbours();
+        List<IQueryableClusterController> neighbourBusControllers = new ArrayList<>();
+        List<IQueryableClusterController> neighbourControllersToCombine = new ArrayList<>();
+
+        if (blockController.getControllerType() == BlockControllerType.BUS) {
+            neighbourControllersToCombine.addAll(neighbourBlockControllers);
+        } else {
+            for (IQueryableClusterController neighbourBlock: neighbourBlockControllers) {
+                if (neighbourBlock.getControllerType() == BlockControllerType.BUS) {
+                    neighbourBusControllers.add(neighbourBlock);
+                }
+            }
+            if(!neighbourBusControllers.isEmpty()) {
+                ClusterHandler neighbourCluster = neighbourBusControllers.get(0).getClusterHandler();
+                for (IQueryableClusterController neighbourBlock: neighbourBusControllers) {
+                    if (neighbourBlock.getClusterHandler() == neighbourCluster) {
+                        neighbourControllersToCombine.add(neighbourBlock);
+                    }
+                }
+            }
+        }
+
         ClusterHandler actualCluster = this;
-        for (IQueryableClusterController neighbourBlock: neighbourBlockControllers) {
+        for (IQueryableClusterController neighbourBlock: neighbourControllersToCombine) {
             neighbourBlock.getClusterHandler().combine(neighbourBlock, blockController, actualCluster);
             actualCluster = neighbourBlock.getClusterHandler();
         }
