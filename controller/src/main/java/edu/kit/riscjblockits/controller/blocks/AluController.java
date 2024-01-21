@@ -354,63 +354,78 @@ public class AluController extends ComputerBlockController {
     }
 
     /**
-     * Shift first value right arithmetically by one
+     * Shift first value right arithmetically by second value, cropped to 5 bit
      * @param operand1 first value
      * @param operand2 second value, unused
      * @return shifted operand1
      */
     private Value sra(Value operand1, Value operand2) {
+
+        //convert to big int
         byte[] array1 = operand1.getByteValue();
-        byte[] array2 = operand2.getByteValue();
         BigInteger bigInteger = new BigInteger(array1);
+
+        //get shift value
+        byte[] array2 = operand2.getByteValue();
         int shift = new BigInteger(array2).intValue();
-        bigInteger = bigInteger.shiftRight(Math.min(shift, 32));
+
+        //crop to 5 bit
+        shift = shift & 31;
+
+        bigInteger = bigInteger.shiftRight(shift);
+
+
         return reconvertToByteArrayOfOriginalLength(array1.length, bigInteger);
     }
 
     /**
-     * Shift first value right logically by second value (max. 32)
+     * Shift first value right logically by second value, cropped to 5 bit
      * @param operand1 first value
      * @param operand2 second value
      * @return shifted operand1
      */
     private Value srl(Value operand1, Value operand2) {
 
+        //convert to unsigned big int
         byte[] array1signed = operand1.getByteValue();
         byte[] array1unsigned = new byte[array1signed.length + 1];
-        byte[] array2 = operand2.getByteValue();
         System.arraycopy(array1signed, 0, array1unsigned, 1, array1signed.length);
         BigInteger bigInt = new BigInteger(array1unsigned);
 
+        //get shift value
+        byte[] array2 = operand2.getByteValue();
         int shift = new BigInteger(array2).intValue();
-        bigInt = bigInt.shiftRight(Math.min(shift, 32));
+
+        //crop to 5 bit
+        shift = shift & 31;
+
+        bigInt = bigInt.shiftRight(shift);
 
         return reconvertToByteArrayOfOriginalLength(array1signed.length, bigInt);
     }
 
     /**
-     * Shift first value left logically by second value (max. 32)
+     * Shift first value left logically by second value, cropped to 5 bit
      * @param operand1 first value
      * @param operand2 second value
      * @return shifted operand1
      */
     private Value sll(Value operand1, Value operand2) {
+
+        //convert to big int
         byte[] array1 = operand1.getByteValue();
-        byte[] array2 = operand2.getByteValue();
         BigInteger bigInteger = new BigInteger(array1);
+
+        //get shift value
+        byte[] array2 = operand2.getByteValue();
         int shift = new BigInteger(array2).intValue();
-        bigInteger = bigInteger.shiftLeft(Math.min(shift, 32));
 
-        byte[] resultArray = bigInteger.toByteArray();
-        byte[] trimmedResult = new byte[array1.length];
+        //crop to 5 bit
+        shift = shift & 31;
 
-        if(resultArray.length > array1.length){
-            System.arraycopy(resultArray, resultArray.length-array1.length, trimmedResult, 0, array1.length);
-        } else {
-            System.arraycopy(resultArray, 0, trimmedResult, array1.length-resultArray.length, resultArray.length);
-        }
+        bigInteger = bigInteger.shiftLeft(shift);
 
-        return new Value(trimmedResult);
+        return reconvertToByteArrayOfOriginalLength(array1.length, bigInteger);
 
     }
 
