@@ -10,8 +10,17 @@ import java.util.List;
 public class ArchiCheckStub_Entity implements IConnectableComputerBlockEntity {
 
     private final BlockPosition pos;
-    public ArchiCheckStub_Entity(BlockPosition position) {
+
+    List<ComputerBlockController> neighbours;
+
+    public ArchiCheckStub_Entity(BlockPosition position, List<ComputerBlockController> neighbours) {
         pos = position;
+        this.neighbours = neighbours;
+    }
+
+    public ArchiCheckStub_Entity() {
+        pos = new BlockPosition(0,0,0);
+        neighbours = new ArrayList<>();
     }
 
     @Override
@@ -21,7 +30,7 @@ public class ArchiCheckStub_Entity implements IConnectableComputerBlockEntity {
 
     @Override
     public List<ComputerBlockController> getComputerNeighbours() {
-        return new ArrayList<>();
+        return neighbours;
     }
 
     @Override
