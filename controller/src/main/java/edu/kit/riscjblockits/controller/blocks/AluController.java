@@ -157,7 +157,14 @@ public class AluController extends ComputerBlockController {
      * @return remainder of operand1 and operand2
      */
     private Value remu(Value operand1, Value operand2) {
-        return null;
+        byte[] array1signed = operand1.getByteValue();
+
+        BigInteger bigInt1 = getUnsignedBigInteger(operand1);
+        BigInteger bigInt2 = getUnsignedBigInteger(operand2);
+
+        BigInteger result = bigInt1.remainder(bigInt2);
+
+        return reconvertToByteArrayOfOriginalLength(array1signed.length, result);
     }
 
     /**
@@ -167,7 +174,22 @@ public class AluController extends ComputerBlockController {
      * @return remainder of operand1 and operand2
      */
     private Value rem(Value operand1, Value operand2) {
-        return null;
+        byte[] array1 = operand1.getByteValue();
+        BigInteger bigInt1 = new BigInteger(array1);
+
+        byte[] array2 = operand2.getByteValue();
+        BigInteger bigInt2 = new BigInteger(array2);
+
+        BigInteger result = bigInt1.remainder(bigInt2);
+
+        return reconvertToByteArrayOfOriginalLength(array1.length, result);
+    }
+
+    private BigInteger getUnsignedBigInteger(Value value) {
+        byte[] array1signed = value.getByteValue();
+        byte[] array1unsigned = new byte[array1signed.length + 1];
+        System.arraycopy(array1signed, 0, array1unsigned, 1, array1signed.length);
+        return new BigInteger(array1unsigned);
     }
 
     /**
@@ -177,7 +199,20 @@ public class AluController extends ComputerBlockController {
      * @return quotient of operand1 and operand2
      */
     private Value divu(Value operand1, Value operand2) {
-        return null;
+
+        byte[] array1 = operand1.getByteValue();
+
+        BigInteger bigInt1 = getUnsignedBigInteger(operand1);
+        BigInteger bigInt2 = getUnsignedBigInteger(operand2);
+
+        //ToDo: Put basis for explosion of computer here
+        if (bigInt2.equals(BigInteger.ZERO)) {
+            return Value.fromHex("FF".repeat(array1.length), array1.length);
+        }
+
+        BigInteger result = bigInt1.divide(bigInt2);
+
+        return reconvertToByteArrayOfOriginalLength(array1.length, result);
     }
 
     /**
@@ -193,6 +228,7 @@ public class AluController extends ComputerBlockController {
         byte[] array2 = operand2.getByteValue();
         BigInteger bigInt2 = new BigInteger(array2);
 
+        //ToDo: Put basis for explosion of computer here
         if (bigInt2.equals(BigInteger.ZERO)) {
             return Value.fromHex("FF".repeat(array1.length), array1.length);
         }
@@ -210,15 +246,9 @@ public class AluController extends ComputerBlockController {
      */
     private Value mulhu(Value operand1, Value operand2) {
         byte[] array1signed = operand1.getByteValue();
-        byte[] array1unsigned = new byte[array1signed.length + 1];
-        System.arraycopy(array1signed, 0, array1unsigned, 1, array1signed.length);
-        BigInteger bigInt1 = new BigInteger(array1signed);
 
-
-        byte[] array2signed = operand2.getByteValue();
-        byte[] array2unsigned = new byte[array2signed.length + 1];
-        System.arraycopy(array2signed, 0, array2unsigned, 1, array2signed.length);
-        BigInteger bigInt2 = new BigInteger(array2unsigned);
+        BigInteger bigInt1 = getUnsignedBigInteger(operand1);
+        BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
         BigInteger result = bigInt1.multiply(bigInt2);
 
@@ -241,11 +271,7 @@ public class AluController extends ComputerBlockController {
         byte[] array1signed = operand1.getByteValue();
         BigInteger bigInt1 = new BigInteger(array1signed);
 
-
-        byte[] array2signed = operand2.getByteValue();
-        byte[] array2unsigned = new byte[array2signed.length + 1];
-        System.arraycopy(array2signed, 0, array2unsigned, 1, array2signed.length);
-        BigInteger bigInt2 = new BigInteger(array2unsigned);
+        BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
         BigInteger result = bigInt1.multiply(bigInt2);
 
@@ -334,27 +360,58 @@ public class AluController extends ComputerBlockController {
      * @return shifted operand1
      */
     private Value sra(Value operand1, Value operand2) {
-        return null;
+        byte[] array1 = operand1.getByteValue();
+        byte[] array2 = operand2.getByteValue();
+        BigInteger bigInteger = new BigInteger(array1);
+        int shift = new BigInteger(array2).intValue();
+        bigInteger = bigInteger.shiftRight(Math.min(shift, 32));
+        return reconvertToByteArrayOfOriginalLength(array1.length, bigInteger);
     }
 
     /**
-     * Shift first value right logically by one
+     * Shift first value right logically by second value (max. 32)
      * @param operand1 first value
-     * @param operand2 second value, unused
+     * @param operand2 second value
      * @return shifted operand1
      */
     private Value srl(Value operand1, Value operand2) {
-        return null;
+
+        byte[] array1signed = operand1.getByteValue();
+        byte[] array1unsigned = new byte[array1signed.length + 1];
+        byte[] array2 = operand2.getByteValue();
+        System.arraycopy(array1signed, 0, array1unsigned, 1, array1signed.length);
+        BigInteger bigInt = new BigInteger(array1unsigned);
+
+        int shift = new BigInteger(array2).intValue();
+        bigInt = bigInt.shiftRight(Math.min(shift, 32));
+
+        return reconvertToByteArrayOfOriginalLength(array1signed.length, bigInt);
     }
 
     /**
-     * Shift first value left logically by one
+     * Shift first value left logically by second value (max. 32)
      * @param operand1 first value
-     * @param operand2 second value, unused
+     * @param operand2 second value
      * @return shifted operand1
      */
     private Value sll(Value operand1, Value operand2) {
-        return null;
+        byte[] array1 = operand1.getByteValue();
+        byte[] array2 = operand2.getByteValue();
+        BigInteger bigInteger = new BigInteger(array1);
+        int shift = new BigInteger(array2).intValue();
+        bigInteger = bigInteger.shiftLeft(Math.min(shift, 32));
+
+        byte[] resultArray = bigInteger.toByteArray();
+        byte[] trimmedResult = new byte[array1.length];
+
+        if(resultArray.length > array1.length){
+            System.arraycopy(resultArray, resultArray.length-array1.length, trimmedResult, 0, array1.length);
+        } else {
+            System.arraycopy(resultArray, 0, trimmedResult, array1.length-resultArray.length, resultArray.length);
+        }
+
+        return new Value(trimmedResult);
+
     }
 
     /**
