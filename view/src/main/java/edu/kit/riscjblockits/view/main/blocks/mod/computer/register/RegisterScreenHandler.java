@@ -25,6 +25,8 @@ public class RegisterScreenHandler extends ScreenHandler {
 
     @Override
     public boolean canUse(PlayerEntity player) {
+
+
         return true;
     }
 }
