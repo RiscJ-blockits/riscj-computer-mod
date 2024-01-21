@@ -38,6 +38,8 @@ public interface ImplementedInventory extends Inventory {
      */
     @Override
     default int size() {
+        if (getItems() == null)
+            return 0;
         return getItems().size();
     }
 

@@ -5,6 +5,7 @@ import edu.kit.riscjblockits.controller.blocks.ArchiCheckStub_RegisterController
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
+import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import org.junit.jupiter.api.Disabled;
@@ -25,7 +26,9 @@ class ClusterArchitectureHandlerTest {
     @Test
     void verySimpleCheckArchitectureWithRegister() {
         RegisterController block1 = new RegisterController(new ArchiCheckStub_Entity(new BlockPosition(0,0,0)));
-        block1.setData(new DataStringEntry("IAR"));
+        Data rData = new Data();
+        rData.set("type", new DataStringEntry("IAR"));
+        block1.setData(rData);
         block1.startClustering(new BlockPosition(0,0,0));
         ClusterHandler ch = block1.getClusterHandler();
         //ch.checkFinished();

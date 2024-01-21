@@ -2,11 +2,12 @@ package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
-import edu.kit.riscjblockits.model.data.IDataVisitor;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
+
+import java.util.Set;
 
 /**
  * The controller for a register block entity.
@@ -62,20 +63,24 @@ public class RegisterController extends ComputerBlockController {
      */
     @Override
     public void setData(IDataElement data) {
-        //ToDo
-        IDataVisitor visitor = new IDataVisitor() {
-            @Override
-            public void visit(IDataContainer dataContainer) {
+        /* Data Format: key: "type", value: "registerType"
+        *               key: "registers", value: container
+        *                                  container:   key: "missing", value: string space-separated register names
+        *                                               key: "found", value: string with space-separated register names
+        */
+        if (!data.isContainer()) {
+            return;
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals("type")) {
+                String type =((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+                ((RegisterModel) getModel()).setRegisterType(type);
+            } else if (s.equals("registers")) {
+                //ToDo set missing/available registers
 
             }
-            @Override
-            public void visit(IDataStringEntry dataStringEntry) {
-                ((RegisterModel) getModel()).setRegisterType(dataStringEntry.getContent());
-            }
-        };
-        data.receive(visitor);
-
-        setNewValue(null);
+            //ToDo set value from view
+        }
     }
 
 }

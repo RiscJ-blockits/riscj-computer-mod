@@ -97,7 +97,7 @@ public class ClusterArchitectureHandler {
             cucData.set("clustering", clusterignData);
             controlUnitController.setData(cucData);
         }
-        System.out.println("CheckArchitecture: " + correctArchitecture);
+        System.out.println("CheckArchitecture: " + correctArchitecture + " Missing Registers: " + listToString(requiredRegisters));
         return correctArchitecture;
     }
 

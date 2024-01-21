@@ -10,8 +10,10 @@ public class RegisterModel extends BlockModel {
     private Value value;
 
     public RegisterModel() {
+        super();
         value = new Value();
         setType(ModelType.REGISTER);
+        registerType = "[NOT ASSIGNED]";
     }
 
     @Override

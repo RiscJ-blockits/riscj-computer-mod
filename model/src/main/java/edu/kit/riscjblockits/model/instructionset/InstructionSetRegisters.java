@@ -85,6 +85,7 @@ public class InstructionSetRegisters {
     public List<String> getRegisterNames() {
         //ToDo assert: no two registers have the same name
         //ToDo assert: no register names have spaces in them
+        //ToDo [NOT ASSIGNED] is not a valid register name
         List<String> names = new ArrayList<>(Arrays.asList(aluRegs));
         names.add(programCounter);
         names.addAll(intRegs.keySet());
