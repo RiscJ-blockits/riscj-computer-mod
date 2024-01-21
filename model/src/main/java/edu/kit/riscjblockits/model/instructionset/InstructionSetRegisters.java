@@ -83,11 +83,13 @@ public class InstructionSetRegisters {
      * @return Returns the names of all registers.
      */
     public List<String> getRegisterNames() {
-        //ToDo assert: no two integers have the same name
+        //ToDo assert: no two registers have the same name
+        //ToDo assert: no register names have spaces in them
         List<String> names = new ArrayList<>(Arrays.asList(aluRegs));
         names.add(programCounter);
         names.addAll(intRegs.keySet());
         names.addAll(floatRegs.keySet());
         return names;
     }
+
 }

@@ -44,7 +44,7 @@ public class ControlUnitController extends ComputerBlockController{
     @Override
     public void setData(IDataElement data) {
         //ToDo
-        ((ControlUnitModel)getModel()).setIstModel(null);       //ToDo? alle aufrufe dieser Art überall nicht gekapselt
+        ((ControlUnitModel)getModel()).setIstModel(null);
     }
 
 }
