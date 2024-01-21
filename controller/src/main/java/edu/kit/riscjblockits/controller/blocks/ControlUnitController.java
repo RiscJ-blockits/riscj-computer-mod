@@ -2,7 +2,10 @@ package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
+import edu.kit.riscjblockits.model.blocks.RegisterModel;
+import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
@@ -43,8 +46,24 @@ public class ControlUnitController extends ComputerBlockController{
      */
     @Override
     public void setData(IDataElement data) {
-        //ToDo
-        ((ControlUnitModel)getModel()).setIstModel(null);
+        /* Data Format: key: "clustering", value: container
+         *                                  key: "missingRegisters", value: string space-separated register names
+         *                                  key: "foundRegisters", value: string space-separated register names
+         *                                  key: "foundMemory", value: string with number of memory blocks
+         *                                  key: "foundAlu", value: string with number of alu blocks
+         *                                  key: "foundControlUnit", value: string with number of control unit blocks
+         *                                  key: "foundControlUnit", value: string with number of control unit blocks
+         */
+        if (!data.isContainer()) {
+            return;
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals("clustering")) {
+                ((ControlUnitModel) getModel()).setClusteringData(((IDataContainer) data).get(s));
+            }
+            //ToDo add method to update Ist Model
+        }
+
     }
 
 }

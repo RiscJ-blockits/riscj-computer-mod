@@ -76,6 +76,7 @@ public class RegisterController extends ComputerBlockController {
                 String type =((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
                 ((RegisterModel) getModel()).setRegisterType(type);
             } else if (s.equals("registers")) {
+                IDataContainer registers = (IDataContainer) ((IDataContainer) data).get(s);
                 //ToDo set missing/available registers
 
             }
