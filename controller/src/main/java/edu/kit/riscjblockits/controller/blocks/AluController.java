@@ -7,6 +7,8 @@ import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.math.BigInteger;
 
+import static java.lang.Math.max;
+
 /**
  * The controller for an ALU block entity.
  * [JavaDoc in this class with minor support by GitHub Copilot]
@@ -250,13 +252,13 @@ public class AluController extends ComputerBlockController {
         BigInteger bigInt1 = getUnsignedBigInteger(operand1);
         BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
-        BigInteger result = bigInt1.multiply(bigInt2);
+        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1signed.length);
 
-        Value resultValue = reconvertToByteArrayOfOriginalLength(array1signed.length/2, result);
-        byte[] resultArray = resultValue.getByteValue();
         byte[] fullLengthResultArray = new byte[array1signed.length];
 
-        System.arraycopy(resultArray, 0, fullLengthResultArray, array1signed.length/2, array1signed.length/2);
+        System.arraycopy(result, 0, fullLengthResultArray,
+                array1signed.length/2,
+                array1signed.length/2);
 
         return new Value(fullLengthResultArray);
     }
@@ -273,13 +275,13 @@ public class AluController extends ComputerBlockController {
 
         BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
-        BigInteger result = bigInt1.multiply(bigInt2);
+        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1signed.length);
 
-        Value resultValue = reconvertToByteArrayOfOriginalLength(array1signed.length/2, result);
-        byte[] resultArray = resultValue.getByteValue();
         byte[] fullLengthResultArray = new byte[array1signed.length];
 
-        System.arraycopy(resultArray, 0, fullLengthResultArray, array1signed.length/2, array1signed.length/2);
+        System.arraycopy(result, 0, fullLengthResultArray,
+                array1signed.length/2,
+                array1signed.length/2);
 
         return new Value(fullLengthResultArray);
     }
@@ -297,15 +299,29 @@ public class AluController extends ComputerBlockController {
         byte[] array2 = operand2.getByteValue();
         BigInteger bigInt2 = new BigInteger(array2);
 
-        BigInteger result = bigInt1.multiply(bigInt2);
+        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1.length);
 
-        Value resultValue = reconvertToByteArrayOfOriginalLength(array1.length/2, result);
-        byte[] resultArray = resultValue.getByteValue();
         byte[] fullLengthResultArray = new byte[array1.length];
 
-        System.arraycopy(resultArray, 0, fullLengthResultArray, array1.length/2, array1.length/2);
+        System.arraycopy(result, 0, fullLengthResultArray,
+                array1.length/2,
+                array1.length/2);
 
         return new Value(fullLengthResultArray);
+    }
+
+    // wrote by github Copilot
+    private byte[] signExtend(byte[] array, int length) {
+        byte[] result = new byte[length];
+        if (array.length >= length) {
+            System.arraycopy(array, array.length - length, result, 0, length);
+        } else {
+            System.arraycopy(array, 0, result, length - array.length, array.length);
+            for (int i = 0; i < length - array.length; i++) {
+                result[i] = (byte) (array[0] < 0 ? 0xFF : 0x00);
+            }
+        }
+        return result;
     }
 
     /**
@@ -459,7 +475,7 @@ public class AluController extends ComputerBlockController {
         byte[] array2 = operand2.getByteValue();
 
         //Algorithm by Copilot Chat
-        int maxLength = Math.max(array1.length, array2.length);
+        int maxLength = max(array1.length, array2.length);
         byte[] result = new byte[maxLength]; // +1 for possible carry-over
 
         int carry = 0;
@@ -510,7 +526,7 @@ public class AluController extends ComputerBlockController {
         byte[] array1 = operand1.getByteValue();
         byte[] array2 = operand2.getByteValue();
 
-        byte[] result = new byte[Math.max(array1.length, array2.length)];
+        byte[] result = new byte[max(array1.length, array2.length)];
 
         for (int i = 0; i < Math.min(array1.length, array2.length); i++) {
             result[i] = (byte) (array1[i] & array2[i]);
@@ -529,7 +545,7 @@ public class AluController extends ComputerBlockController {
         byte[] array1 = operand1.getByteValue();
         byte[] array2 = operand2.getByteValue();
 
-        byte[] result = new byte[Math.max(array1.length, array2.length)];
+        byte[] result = new byte[max(array1.length, array2.length)];
 
         for (int i = 0; i < Math.min(array1.length, array2.length); i++) {
             result[i] = (byte) (array1[i] | array2[i]);
@@ -548,7 +564,7 @@ public class AluController extends ComputerBlockController {
         byte[] array1 = operand1.getByteValue();
         byte[] array2 = operand2.getByteValue();
 
-        byte[] result = new byte[Math.max(array1.length, array2.length)];
+        byte[] result = new byte[max(array1.length, array2.length)];
 
         for (int i = 0; i < Math.min(array1.length, array2.length); i++) {
             result[i] = (byte) (array1[i] ^ array2[i]);
