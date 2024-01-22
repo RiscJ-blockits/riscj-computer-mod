@@ -22,22 +22,18 @@ import org.apache.commons.compress.utils.Lists;
 import java.util.List;
 
 public class RegSelectWidget implements Drawable, Element, Selectable {
-    public static final Identifier TEXTURE = new Identifier("riscj_blockits:textures/gui/register/reg_select_test");
-    public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier("textures/gui/register/button"), new Identifier("textures/gui/register/button_highlighted"));
+    public static final Identifier TEXTURE = new Identifier("riscj_blockits:textures/gui/register/recipe_book.png");
+    public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier("riscj_blockits:textures/gui/register/button"), new Identifier("riscj_blockits:textures/gui/register/button_highlighted")); //path does not work fsr!!! :( TODO fix path
     private int parentWidth;
     private int parentHeight;
     private final List<ButtonWidget> regButtons = Lists.newArrayList();
     private ToggleButtonWidget toggleNeededButton; // future implementation
     private RegisterScreenHandler registerScreenHandler;
     private MinecraftClient client;
-    private TextFieldWidget searchField; //future implementation
-    private String searchText = ""; //future implementation
-    private boolean searching; //future implementation
     private boolean open;
     private boolean narrow;
     private int leftOffset;
-    private static final Text SEARCH_HINT_TEXT = Text.literal("Search").formatted(Formatting.ITALIC).formatted(Formatting.GRAY);
-
+    private int cachedInvChangeCount;
     public RegSelectWidget() {
     }
 
@@ -48,6 +44,7 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         this.narrow = narrow;
         this.registerScreenHandler = registerScreenHandler;
         client.player.currentScreenHandler = registerScreenHandler;
+        this.cachedInvChangeCount = client.player.getInventory().getChangeCount();
         this.open = false;
         if(this.open) {
             this.reset();
@@ -73,13 +70,6 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         this.leftOffset = this.narrow ? 0 : 86;
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
         int j = (this.parentHeight - 166) / 2;
-        String string = this.searchField != null ? this.searchField.getText() : "";
-        this.searchField = new TextFieldWidget(this.client.textRenderer, i + 25, j + 13, 81, this.client.textRenderer.fontHeight + 5, (Text)Text.translatable((String)"itemGroup.search"));
-        this.searchField.setMaxLength(50);
-        this.searchField.setVisible(true);
-        this.searchField.setEditableColor(0xFFFFFF);
-        this.searchField.setText(string);
-        this.searchField.setPlaceholder(SEARCH_HINT_TEXT);
         //loop through registers and add buttons
     }
 
@@ -100,7 +90,6 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
         int j = (this.parentHeight - 166) / 2;
         context.drawTexture(TEXTURE, i, j, 1, 1, 147, 166);
-        this.searchField.render(context, mouseX, mouseY, delta);
         //loop through registers and render buttons
     }
 
@@ -127,4 +116,14 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
     public boolean isOpen() {
         return this.open;
     }
+
+    public void update(){
+        if (!this.open) {
+            return;
+        }
+        if (this.cachedInvChangeCount != this.client.player.getInventory().getChangeCount()) {
+            this.cachedInvChangeCount = this.client.player.getInventory().getChangeCount();
+        }
+    }
+
 }

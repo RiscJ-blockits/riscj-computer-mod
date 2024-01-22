@@ -61,5 +61,9 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
         drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
-
+    @Override
+    public void handledScreenTick() {
+        super.handledScreenTick();
+        this.regSelectWidget.update();
+    }
 }
