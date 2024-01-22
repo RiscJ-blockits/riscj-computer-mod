@@ -27,7 +27,7 @@ import java.util.List;
 public class RegSelectWidget implements Drawable, Element, Selectable {
     public static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID,"textures/gui/register/recipe_book.png");
     public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier(RISCJ_blockits.MODID,
-        "textures/gui/register/button"), new Identifier(RISCJ_blockits.MODID,"textures/gui/register/button_highlighted")); //path does not work fsr!!! :( TODO fix path
+        "textures/gui/register/button.png"), new Identifier(RISCJ_blockits.MODID,"textures/gui/register/button_highlighted.png")); //path does not work fsr!!! :( TODO fix path
     private int parentWidth;
     private int parentHeight;
     private final List<ButtonWidget> regButtons = Lists.newArrayList();
@@ -40,6 +40,10 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
     private int cachedInvChangeCount;
 
     private ScrollableWidget registerList;
+    private static final int SCROLLBAR_WIDTH = 12;
+    private static final int SCROLLBAR_HEIGHT = 15;
+    private float scrollPosition;
+    private boolean scrolling;
     public RegSelectWidget() {
     }
 
@@ -51,6 +55,11 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         this.registerScreenHandler = registerScreenHandler;
         client.player.currentScreenHandler = registerScreenHandler;
         this.cachedInvChangeCount = client.player.getInventory().getChangeCount();
+
+        int i = (this.parentWidth - 147) / 2 - this.leftOffset + 14;
+        int j = (this.parentHeight - 166) / 2 + 14;
+        //this.registerList = new ScrollableWidget(i, j, 140, 158, Text.literal("Register List"));
+
         this.open = false;
         if(this.open) {
             this.reset();

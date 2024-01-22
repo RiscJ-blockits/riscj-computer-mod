@@ -6,6 +6,7 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
@@ -200,6 +201,10 @@ public class RISCJ_blockits implements ModInitializer {
 	public static  ScreenHandlerType<RegisterScreenHandler> REGISTER_SCREEN_HANDLER =
 		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "register_screen"),
 			new ExtendedScreenHandlerType<>(RegisterScreenHandler::new));
+
+	public static  ScreenHandlerType<ControlUnitScreenHandler> CONTROL_UNIT_SCREEN_HANDLER =
+		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "control_unit_screen"),
+			new ExtendedScreenHandlerType<>(ControlUnitScreenHandler::new));
 
 
 	/**
