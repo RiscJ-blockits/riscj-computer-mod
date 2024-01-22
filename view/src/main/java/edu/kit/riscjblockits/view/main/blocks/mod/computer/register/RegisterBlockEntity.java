@@ -61,6 +61,6 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new RegisterScreenHandler(RISCJ_blockits.REGISTER_SCREEN_HANDLER, syncId);
+        return new RegisterScreenHandler(syncId, playerInventory);
     }
 }

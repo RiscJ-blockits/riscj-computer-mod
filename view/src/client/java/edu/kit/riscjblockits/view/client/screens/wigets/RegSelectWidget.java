@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.client.screens.wigets;
 
 import edu.kit.riscjblockits.view.client.screens.handled.RegisterScreen;
+import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -11,7 +12,9 @@ import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.recipebook.RecipeGroupButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.ScrollableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.client.gui.widget.ToggleButtonWidget;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -22,8 +25,9 @@ import org.apache.commons.compress.utils.Lists;
 import java.util.List;
 
 public class RegSelectWidget implements Drawable, Element, Selectable {
-    public static final Identifier TEXTURE = new Identifier("riscj_blockits:textures/gui/register/recipe_book.png");
-    public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier("riscj_blockits:textures/gui/register/button"), new Identifier("riscj_blockits:textures/gui/register/button_highlighted")); //path does not work fsr!!! :( TODO fix path
+    public static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID,"textures/gui/register/recipe_book.png");
+    public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier(RISCJ_blockits.MODID,
+        "textures/gui/register/button"), new Identifier(RISCJ_blockits.MODID,"textures/gui/register/button_highlighted")); //path does not work fsr!!! :( TODO fix path
     private int parentWidth;
     private int parentHeight;
     private final List<ButtonWidget> regButtons = Lists.newArrayList();
@@ -34,6 +38,8 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
     private boolean narrow;
     private int leftOffset;
     private int cachedInvChangeCount;
+
+    private ScrollableWidget registerList;
     public RegSelectWidget() {
     }
 
@@ -87,10 +93,13 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         if (!this.isOpen()) {
             return;
         }
+        context.getMatrices().push();
+        context.getMatrices().translate(0.0f, 0.0f, 100.0f);
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
         int j = (this.parentHeight - 166) / 2;
         context.drawTexture(TEXTURE, i, j, 1, 1, 147, 166);
         //loop through registers and render buttons
+        context.getMatrices().pop();
     }
 
     @Override
