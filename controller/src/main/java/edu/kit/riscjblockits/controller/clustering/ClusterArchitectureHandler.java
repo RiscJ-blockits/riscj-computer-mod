@@ -54,6 +54,7 @@ public class ClusterArchitectureHandler {
         choseData.set("found", new DataStringEntry(listToString(availableRegisters)));
         Data rData = new Data();
         rData.set("registers", choseData);
+        rData.set("word", new DataStringEntry(String.valueOf(istModel.getMemoryWordSize())));       //ToDo vielleicht wäre hier ein Int Data Element besser
         for (IQueryableClusterController block : blocks) {
             if (block.getControllerType() == BlockControllerType.REGISTER) {
                 ((RegisterController) block).setData(rData);

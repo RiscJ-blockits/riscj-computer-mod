@@ -67,6 +67,7 @@ public class RegisterController extends ComputerBlockController {
         *               key: "registers", value: container
         *                                  container:   key: "missing", value: string space-separated register names
         *                                               key: "found", value: string with space-separated register names
+        *               key: "word", value: string with word length
         */
         if (!data.isContainer()) {
             return;
@@ -77,8 +78,13 @@ public class RegisterController extends ComputerBlockController {
                 ((RegisterModel) getModel()).setRegisterType(type);
             } else if (s.equals("registers")) {
                 IDataContainer registers = (IDataContainer) ((IDataContainer) data).get(s);
-                //ToDo set missing/available registers
-
+                String[] missingAvailableRegisters = new String[2];
+                missingAvailableRegisters[0] = ((IDataStringEntry) registers.get("missing")).getContent();
+                missingAvailableRegisters[1] = ((IDataStringEntry) registers.get("found")).getContent();
+                ((RegisterModel) getModel()).setMissingAvailableRegisters(missingAvailableRegisters);
+            } else if (s.equals("word")) {
+                int wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
+                ((RegisterModel) getModel()).setWordLength(wordLength);
             }
             //ToDo set value from view
         }

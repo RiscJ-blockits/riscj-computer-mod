@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.model.blocks;
 
+import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
@@ -9,6 +10,10 @@ public class ControlUnitModel extends BlockModel{
 
     private IQueryableInstructionSetModel istModel;
 
+    /** ToDo nicht im Entwurf
+     * Holds the Data which blocks are missing for a valid architecture.
+     * Is used to display the information in the view.
+     */
     private IDataContainer clusteringData;
 
     public ControlUnitModel() {
@@ -23,11 +28,25 @@ public class ControlUnitModel extends BlockModel{
         return false;
     }
 
+    /**
+     * Getter for the data the view needs for ui.
+     * @return Data Format: key: "clustering", value: container
+     *                                          key: "missingRegisters", value: string space-separated register names
+     *                                          key: "foundRegisters", value: string space-separated register names
+     *                                          key: "foundMemory", value: string with number of memory blocks
+     *                                          key: "foundAlu", value: string with number of alu blocks
+     *                                          key: "foundControlUnit", value: string with number of control unit blocks
+     *                                          key: "foundControlUnit", value: string with number of control unit blocks
+     *                      key: "istModel", value: ToDo
+     */
     @Override
     public IDataElement getData() {
-        //ToDo check if clusteringData is not null if we return it.
-
-        return null;
+        Data cuData = new Data();
+        if (clusteringData != null) {
+            cuData.set("clustering", clusteringData);
+        }
+        //ToDo return IstModel
+        return cuData;
     }
 
 
@@ -39,6 +58,10 @@ public class ControlUnitModel extends BlockModel{
         this.istModel = istModel;
     }
 
+    /**
+     * Setter for the clustering data.
+     * @param clusteringData a Data container formatted as described in {@link #getData()}
+     */
     public void setClusteringData(IDataElement clusteringData) {
         this.clusteringData = (IDataContainer) clusteringData;
     }
