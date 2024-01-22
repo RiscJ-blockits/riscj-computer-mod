@@ -1,11 +1,10 @@
 package edu.kit.riscjblockits.controller.assembler;
 
-import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
-import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
-
+import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,6 +22,7 @@ public class Assembler {
      * regex pattern to separate a lines label and command
      */
     private static final Pattern LABEL_COMMAND_PATTERN = Pattern.compile(" *(?:(?<label>\\w+):)? *(?<command>\\w.*)? *");
+    private static final Pattern ARGUMENT_REGISTER_PATTERN = Pattern.compile("-?\\d*\\((?<register>\\w+)\\)");
 
     /**
      * the {@link IQueryableInstructionSetModel} that is used for the assembly
@@ -130,13 +130,14 @@ public class Assembler {
             labels.put(label, currentAddress);
         }
 
-        String[] cmd = command.split(" +,?");
+        String[] cmd = command.split(" *,? +");
         IQueryableInstruction instruction = instructionSetModel.getInstruction(cmd[0]);
         if (instruction == null) {
             throw new AssemblyException("Unknown instruction");
         }
         String[] arguments = Arrays.copyOfRange(cmd, 1, cmd.length);
         writeLabelsToArguments(arguments);
+        writeRegistersToArguments(arguments);
         return new Command(instruction, arguments);
     }
 
@@ -199,16 +200,28 @@ public class Assembler {
         // for each argument:
         for (int i = 0; i < arguments.length; i++) {
             String argument = arguments[i];
-            // check if argument is an Integer register --> replace with address
-            Integer register = instructionSetModel.getIntegerRegister(argument);
-            if (register != null) {
-                arguments[i] = "0x" + Integer.toHexString(register);
+            // check if argument is a register with offset --> replace register with address, fill with leading zeros to match even hex length
+            Matcher matcher = ARGUMENT_REGISTER_PATTERN.matcher(argument);
+            if (matcher.matches()) {
+                String register = matcher.group("register");
+                Integer registerInt = instructionSetModel.getIntegerRegister(register);
+                String hex = Integer.toHexString(registerInt);
+                arguments[i] = argument.replaceFirst("\\(\\w+\\)", "(0x" + "0".repeat(hex.length()%2) + hex + ")");
                 continue;
             }
-            // check if argument is a Float register --> replace with address
+            // check if argument is an Integer register --> replace with address, fill with leading zeros to match even hex length
+            Integer register = instructionSetModel.getIntegerRegister(argument);
+            if (register != null) {
+                String hex = Integer.toHexString(register);
+                arguments[i] = "0x" + "0".repeat(hex.length()%2) + hex;
+                continue;
+            }
+            // check if argument is a Float register --> replace with address, fill with leading zeros to match even hex length
             register = instructionSetModel.getFloatRegister(argument);
             if (register != null) {
-                arguments[i] = "0x" + Integer.toHexString(register);
+                String hex = Integer.toHexString(register);
+                arguments[i] = "0x" + "0".repeat(hex.length()%2) + hex;
+                continue;
             }
         }
     }

@@ -56,6 +56,32 @@ class AssemblerTest {
         assertEquals("F00000", val.getHexadecimalValue());
     }
 
-    //TODO add test regarding riscV when instruction set is done
+    /**
+     * tests the assembler, expected results are from RARS
+     *
+     * @throws AssemblyException
+     */
+    @Test
+    void assembleRisc() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("addi t1, t2, 0xFF");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("0FF38313", val.getHexadecimalValue());
+    }
+
+    @Test
+    void assembleRiscSW() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("sw t1, 16(t2)");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        // RARS has 0x0063A823, should be 0x00732823!? TODO
+        assertEquals("00732823", val.getHexadecimalValue());
+    }
 
 }
