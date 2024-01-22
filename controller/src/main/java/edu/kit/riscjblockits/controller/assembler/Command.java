@@ -87,7 +87,7 @@ public class Command {
                 throw new AssemblyException("Argument " + argument + " not found --> invalid Instruction-Set");
             }
             // extract value from argument
-            Value argumentValueObject = ValueExtractor.extractValue(argumentValue, to - from);
+            Value argumentValueObject = ValueExtractor.extractValue(argumentValue, to);
             if (argumentValueObject == null) {
                 throw new AssemblyException("Argument " + argument + " has invalid value");
             }

@@ -80,8 +80,53 @@ class AssemblerTest {
         assembler.assemble("sw t1, 16(t2)");
         Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
         Value val = memory.getValueAt(Value.fromHex("00", 4));
-        // RARS has 0x0063A823, should be 0x00732823!? TODO
-        assertEquals("00732823", val.getHexadecimalValue());
+        assertEquals("0063A823", val.getHexadecimalValue());
     }
+
+    @Test
+    void assembleRiscSLLI() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("slli t1, t2, 0x12");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("01239313", val.getHexadecimalValue());
+    }
+
+    @Test
+    void assembleRiscSLL() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("sll t1, t2, t3");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("01C39333", val.getHexadecimalValue());
+    }
+
+    //TODO seems like discrepancy between RARS and RISC-V
+    @Test
+    void assembleRiscLUI() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("lui t1, 0x021234");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("00021337", val.getHexadecimalValue());
+    }
+
+    @Test
+    void assembleRiscJAL() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("jal t1, 0x1234");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("2340136F", val.getHexadecimalValue());
+    }
+    // TODO B type
 
 }

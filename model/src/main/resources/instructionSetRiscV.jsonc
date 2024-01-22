@@ -232,11 +232,38 @@
             ],
             "translation": [
                 "[const]<11:5>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
-                "[t2]<5>",
                 "[t1]<5>",
+                "[t2]<5>",
                 "010",
                 "[const]<4:0>",
                 "0100011"
+            ]
+        },
+
+        "lui": {
+            "arguments": ["[t1]", "[const]"],
+            "execution": [
+                //TODO
+            ],
+            "translation": [
+                "[const]<31:12>",
+                "[t1]<5>",
+                "0110111"
+            ]
+        },
+
+        "jal": {
+            "arguments": ["[t1]", "[const]"],
+            "execution": [
+                //TODO
+            ],
+            "translation": [
+                "[const]<20:20>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
+                "[const]<10:1>",
+                "[const]<11:11>",
+                "[const]<19:12>",
+                "[t1]<5>",
+                "1101111"
             ]
         }
     }
