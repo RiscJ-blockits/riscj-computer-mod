@@ -8,6 +8,7 @@ import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
 /**
@@ -63,8 +64,17 @@ public class ControlUnitController extends ComputerBlockController{
             if (s.equals("clustering")) {
                 ((ControlUnitModel) getModel()).setClusteringData(((IDataContainer) data).get(s));
             } else if (s.equals("istModel")) {
+                InstructionSetModel istModel;
                 //ToDo add method to update Ist Model
+                istModel = InstructionSetBuilder.buildInstructionSetModelMima();
 
+
+                ((ControlUnitModel) getModel()).setIstModel(istModel);
+                if (getClusterHandler() != null && istModel != null) {
+                    getClusterHandler().setIstModel(istModel);
+                } else if (getClusterHandler() != null) {
+                    getClusterHandler().removeIstModel();
+                }
             }
         }
     }
