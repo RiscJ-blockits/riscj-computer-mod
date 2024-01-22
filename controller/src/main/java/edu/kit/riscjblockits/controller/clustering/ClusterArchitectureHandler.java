@@ -36,14 +36,40 @@ public class ClusterArchitectureHandler {
         List<IQueryableClusterController> blocks = clusterHandler.getBlocks();
         boolean correctArchitecture = true;
         List<ControlUnitController> controlUnit = new ArrayList<>();
+        //we could count all blocks first for better performance
 
-        //check Registers
+        //check Blocks
+        int foundMemory = 0;
+        int foundALU = 0;
+        int foundSystemClock = 0;
+        int foundControlUnit = 0;
+
         List<String> availableRegisters = new ArrayList<>();
         for (IQueryableClusterController block : blocks) {
-            if (block.getControllerType() == BlockControllerType.REGISTER) {
-                availableRegisters.add(((RegisterController) block).getRegisterType());
+            switch (block.getControllerType()) {
+                case MEMORY:
+                    foundMemory++;
+                    break;
+                case REGISTER:
+                    availableRegisters.add(((RegisterController) block).getRegisterType());
+                    break;
+                case ALU:
+                    foundALU++;
+                    break;
+                case CONTROL_UNIT:
+                    foundControlUnit++;
+                    assert block instanceof ControlUnitController;
+                    controlUnit.add((ControlUnitController) block);
+                    break;
+                case CLOCK:
+                    foundSystemClock++;
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + block.getControllerType());
             }
         }
+        //check Registers
+        boolean rightAmountOfRegisters = availableRegisters.size() == istModel.getRegisterNames().size();
         Collections.sort(availableRegisters);
         List<String> requiredRegisters = istModel.getRegisterNames();
         Collections.sort(requiredRegisters);
@@ -61,27 +87,9 @@ public class ClusterArchitectureHandler {
             }
         }
 
-        //check Memory
-        int foundMemory = countBlocksOfType(blocks, BlockControllerType.MEMORY);
-
-        //check ALU
-        int foundALU = countBlocksOfType(blocks, BlockControllerType.ALU);
-
-        //check ControlUnit
-        int foundControlUnit = 0;
-        for (IQueryableClusterController block : blocks) {
-            if (block.getControllerType() == BlockControllerType.CONTROL_UNIT) {
-                foundControlUnit++;
-                controlUnit.add((ControlUnitController) block);
-            }
-        }
-
-        //check SystemClock
-        int foundSystemClock = countBlocksOfType(blocks, BlockControllerType.CLOCK);
-
         //check if everything is correct
         if (foundControlUnit != 1 || foundALU != 1 || foundMemory != 1
-            ||!requiredRegisters.isEmpty() || foundSystemClock != 1){      //we only allow one block
+            ||!requiredRegisters.isEmpty() || foundSystemClock != 1 || !rightAmountOfRegisters){      //we only allow one block
             correctArchitecture = false;
         }
 
@@ -108,6 +116,7 @@ public class ClusterArchitectureHandler {
      * @param blockType
      * @return
      */
+    @Deprecated
     private static int countBlocksOfType(List<IQueryableClusterController> blocks, BlockControllerType blockType) {
         int count = 0;
         for (IQueryableClusterController block : blocks) {

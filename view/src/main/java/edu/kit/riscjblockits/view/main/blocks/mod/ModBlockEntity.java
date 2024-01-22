@@ -83,7 +83,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        //controller.setData(new NbtDataConverter(nbt).getData());
+        controller.setData(new NbtDataConverter(nbt).getData());
         setController();
     }
 

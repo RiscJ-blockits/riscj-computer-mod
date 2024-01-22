@@ -244,4 +244,5 @@ InstructionSetModel implements IQueryableInstructionSetModel {
     public List<String> getRegisterNames() {
         return instructionSetRegisters.getRegisterNames();
     }
+
 }

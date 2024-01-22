@@ -40,7 +40,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     private IQueryableInstructionSetModel istModel;
 
     /**
-     * True, if the cluster is finished building
+     * True, if the cluster is finished building.
      */
     private boolean buildingFinished;
 
@@ -65,9 +65,6 @@ public class ClusterHandler implements IArchitectureCheckable {
 
         System.out.println("Start combine");
         combineToNeighbours(blockController);
-
-        //ToDo remove test code
-        istModel = InstructionSetBuilder.buildInstructionSetModelMima();
     }
 
     /**
@@ -78,9 +75,6 @@ public class ClusterHandler implements IArchitectureCheckable {
         blocks = new ArrayList<>();
         busBlocks = new ArrayList<>();
         this.busSystemModel = busSystemModel;
-
-        //ToDo remove test code
-        istModel = InstructionSetBuilder.buildInstructionSetModelMima();
     }
 
     /**
@@ -223,6 +217,27 @@ public class ClusterHandler implements IArchitectureCheckable {
         return busBlocks;
     }
 
+
+    /** ToDo nicht im Entwurf
+     * Sets the given IQueryableInstructionSetModel as the instruction set model for this object.
+     * @param istModel The IQueryableInstructionSetModel to set.
+     * @return true if the set operation was successful, false if there is already an instruction set model set.
+     */
+    public boolean setIstModel(IQueryableInstructionSetModel istModel) {
+        if (this.istModel == null) {
+            this.istModel = istModel;
+            return true;
+        }
+        return false;
+    }
+
+    /** ToDo nicht im Entwurf
+     * Removes the instruction set model from this object.
+     */
+    public void removeIstModel() {
+        istModel = null;
+    }
+
     /**
      * method to check whether the cluster is finished building
      */
@@ -242,6 +257,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     private void startSimulation() {
         // TODO check cast
+        //ToDo stop when blocks are broken
         List<IQueryableSimController> simControllers = blocks.stream().map(IQueryableSimController.class::cast).toList();
         SimulationTimeHandler sim = new SimulationTimeHandler(simControllers);
         for (IQueryableComputerController c : blocks) {
@@ -250,5 +266,6 @@ public class ClusterHandler implements IArchitectureCheckable {
             }
         }
     }
+
 
 }
