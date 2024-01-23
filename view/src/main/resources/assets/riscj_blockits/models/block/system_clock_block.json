@@ -1,4 +1,6 @@
 {
+	"parent": "block/cube",
+
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
 	"textures": {
@@ -475,24 +477,6 @@
 			}
 		}
 	],
-	"display": {
-		"thirdperson_righthand": {
-			"rotation": [90, 0, 0],
-			"translation": [0, 0, 3.25],
-			"scale": [0.5, 0.5, 0.5]
-		},
-		"ground": {
-			"translation": [0, 5, 0]
-		},
-		"gui": {
-			"rotation": [36, 47, 0],
-			"translation": [-0.25, 5, 0]
-		},
-		"fixed": {
-			"rotation": [-90, 90, 0],
-			"translation": [0, 0, -7]
-		}
-	},
 	"groups": [
 		{
 			"name": "core",
