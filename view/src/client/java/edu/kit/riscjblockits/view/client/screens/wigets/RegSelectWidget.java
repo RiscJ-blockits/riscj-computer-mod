@@ -25,7 +25,7 @@ import org.apache.commons.compress.utils.Lists;
 import java.util.List;
 
 public class RegSelectWidget implements Drawable, Element, Selectable {
-    public static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID,"textures/gui/register/recipe_book.png");
+    public static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID,"textures/gui/register/reg_select_widget.png");
     public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier(RISCJ_blockits.MODID,
         "textures/gui/register/button.png"), new Identifier(RISCJ_blockits.MODID,"textures/gui/register/button_highlighted.png")); //path does not work fsr!!! :( TODO fix path
     private int parentWidth;

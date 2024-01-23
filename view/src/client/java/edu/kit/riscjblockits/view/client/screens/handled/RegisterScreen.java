@@ -13,7 +13,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/register/register_test_main.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/register/register_block_gui.png");
     private final RegSelectWidget regSelectWidget = new RegSelectWidget();
     private boolean narrow;
     public RegisterScreen(RegisterScreenHandler handler, PlayerInventory inventory,
