@@ -93,4 +93,6 @@ public interface IQueryableInstructionSetModel {
      * @return The microinstruction at the specified index.
      */
     IExecutableMicroInstruction getFetchPhaseStep(int index);
+
+    IQueryableInstruction getInstructionFromBinary(String binaryValue);
 }

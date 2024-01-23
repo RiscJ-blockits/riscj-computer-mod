@@ -23,6 +23,18 @@ public class MemoryInstruction extends MicroInstruction {
         executor.execute(this);
     }
 
+    @Override
+    public MicroInstruction clone(String[] from, String to) {
+        return new MemoryInstruction(from, to, flag);
+    }
+
+    @Override
+    protected MemoryInstruction clone() {
+        return new MemoryInstruction(getFrom(), getTo(), flag);
+    }
+
+
+
     public String getFlag() {
         return flag;
     }

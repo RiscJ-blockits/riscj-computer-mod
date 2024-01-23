@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.model.instructionset;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Model of an instruction set. Contains all information on how to execute code based on the instruction set.
@@ -233,5 +234,28 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     public MicroInstruction getFetchPhaseStep(int index) {
         return fetchPhase[index];
+    }
+
+    @Override
+    public IQueryableInstruction getInstructionFromBinary(String binaryValue) {
+
+        for (int opCodeLength : instructionSetMemory.getPossibleOpcodeLengths()) {
+            int opCodeStart;
+            if (Objects.equals(instructionSetMemory.getOpcodePosition(), "MOST")) {
+                opCodeStart = 0;
+            } else if (Objects.equals(instructionSetMemory.getOpcodePosition(), "LEAST")) {
+                opCodeStart = instructionSetMemory.getWordSize() - opCodeLength;
+            } else {
+                opCodeStart = 0;
+            }
+            String opCode = binaryValue.substring(opCodeStart, opCodeStart + opCodeLength);
+            // if no instruction is found, the next opcode length is tried
+            if (!opcodeHashMap.containsKey(opCode)) continue;
+            Instruction instruction = opcodeHashMap.get(opCode);
+            if (instruction != null) {
+                return instruction;
+            }
+        }
+        return null;
     }
 }

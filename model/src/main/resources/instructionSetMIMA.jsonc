@@ -200,12 +200,12 @@
             "arguments": ["[addr]"],
             "opcode": "0111",
             "execution": [
-              ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
-              ["X", "AKKU", "r"],
-              ["", "", "r", ["SDR", "<mem_data>"]],
-              ["Y", "SDR", ""],
+              ["SAR", "[addr]", "r", ""],
+              ["X", "AKKU", "r", ["<mem_vis>", "SAR"]],
+              ["", "", "r", ["SDR", "Mem[SAR]"]],
+              ["Y", "SDR", "", ""],
               ["EQ", "Z", "X", "Y", ""],
-              ["AKKU", "Z"]
+              ["AKKU", "Z", "", ""]
             ],
             "translation": [
               "0111",

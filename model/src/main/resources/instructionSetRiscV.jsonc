@@ -218,8 +218,8 @@
                 "execution": [
                     ["A", "[t2]", ""],
                     ["B", "[const]", ""],
-                    ["SLL", "OUT", "A", "B", ""],
-                    ["", "", "", ["MEM[t1]", "OUT"]]
+                    ["ADD", "OUT", "A", "B", ""],
+                    ["", "", "", ["MEM[OUT]", "[t1]"]]
                 ],
                 "translation": [
                     "[const]<11:5>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
