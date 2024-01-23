@@ -11,6 +11,7 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
@@ -210,6 +211,10 @@ public class RISCJ_blockits implements ModInitializer {
 	public static  ScreenHandlerType<MemoryScreenHandler> MEMORY_BLOCK_SCREEN_HANDLER =
 		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "memory_block_screen"),
 			new ExtendedScreenHandlerType<>(MemoryScreenHandler::new));
+
+	public static  ScreenHandlerType<SystemClockScreenHandler> SYSTEM_CLOCK_SCREEN_HANDLER =
+		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "system_clock_screen"),
+			new ExtendedScreenHandlerType<>(SystemClockScreenHandler::new));
 
 
 
