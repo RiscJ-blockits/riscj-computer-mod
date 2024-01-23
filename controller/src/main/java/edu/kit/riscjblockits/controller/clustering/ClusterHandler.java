@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.clustering;
 
 
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
+import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableComputerController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
@@ -224,8 +225,12 @@ public class ClusterHandler implements IArchitectureCheckable {
      * @return true if the set operation was successful, false if there is already an instruction set model set.
      */
     public boolean setIstModel(IQueryableInstructionSetModel istModel) {
+        if (istModel == null)  {
+            return false;
+        }
         if (this.istModel == null) {
             this.istModel = istModel;
+            System.out.println("IstModel in ClusterHandler set");
             return true;
         }
         return false;
@@ -236,6 +241,11 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     public void removeIstModel() {
         istModel = null;
+        for (IQueryableClusterController block: blocks) {
+            if (block.getControllerType() == BlockControllerType.CONTROL_UNIT) {
+                ((ControlUnitController) block).rejectIstModel();
+            }
+        }
     }
 
     /**

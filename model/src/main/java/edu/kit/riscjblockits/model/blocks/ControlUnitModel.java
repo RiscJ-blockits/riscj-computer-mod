@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.model.blocks;
 
 import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
@@ -19,8 +20,6 @@ public class ControlUnitModel extends BlockModel{
     public ControlUnitModel() {
         super();
         setType(ModelType.CONTROL_UNIT);
-        //ToDo remove Test Code
-        istModel = InstructionSetBuilder.buildInstructionSetModelMima();
     }
 
     @Override
@@ -37,7 +36,7 @@ public class ControlUnitModel extends BlockModel{
      *                                          key: "foundAlu", value: string with number of alu blocks
      *                                          key: "foundControlUnit", value: string with number of control unit blocks
      *                                          key: "foundControlUnit", value: string with number of control unit blocks
-     *                      key: "istModel", value: ToDo
+     *                      key: "istModel", value: "true" if istModel is set, "false" if not
      */
     @Override
     public IDataElement getData() {
@@ -45,10 +44,12 @@ public class ControlUnitModel extends BlockModel{
         if (clusteringData != null) {
             cuData.set("clustering", clusteringData);
         }
-        //ToDo return IstModel
+        if (istModel != null) {             //ToDo auch hier wäre boolean besser
+            cuData.set("istModel", new DataStringEntry("true"));
+        } else
+            cuData.set("istModel", new DataStringEntry("false"));
         return cuData;
     }
-
 
     public IQueryableInstructionSetModel getIstModel() {
         return istModel;
@@ -64,6 +65,10 @@ public class ControlUnitModel extends BlockModel{
      */
     public void setClusteringData(IDataElement clusteringData) {
         this.clusteringData = (IDataContainer) clusteringData;
+    }
+
+    public void istModelRejection() {
+        istModel = null;
     }
 
 }

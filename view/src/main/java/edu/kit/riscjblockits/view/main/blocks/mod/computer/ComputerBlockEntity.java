@@ -122,4 +122,12 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         return null;
     }
 
+    /**
+     * Getter for the model of this block.
+     * @return
+     */
+    protected IQueryableBlockModel getModel() {
+        return model;
+    }
+
 }

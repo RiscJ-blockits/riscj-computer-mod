@@ -11,6 +11,8 @@ import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * The controller for the control unit block.
  * [JavaDoc in this class partially generated with GitHub Copilot]
@@ -36,7 +38,7 @@ public class ControlUnitController extends ComputerBlockController{
 
     /**
      * Returns the instruction set model inside the inventory of the block entity.
-     * @return An {@link InstructionSetModel} object.
+     * @return An {@link InstructionSetModel} object. Could be null.
      */
     public IQueryableInstructionSetModel getInstructionSetModel() {
         return ((ControlUnitModel)getModel()).getIstModel();
@@ -64,16 +66,22 @@ public class ControlUnitController extends ComputerBlockController{
             if (s.equals("clustering")) {
                 ((ControlUnitModel) getModel()).setClusteringData(((IDataContainer) data).get(s));
             } else if (s.equals("istModel")) {
-                InstructionSetModel istModel;
-                //ToDo add method to update Ist Model
-                istModel = InstructionSetBuilder.buildInstructionSetModelMima();
-
-
+                if (((IDataContainer) data).get(s) == null) {           //istModel has been removed
+                    ((ControlUnitModel) getModel()).setIstModel(null);
+                    updateClusterHandler();
+                    return;
+                }
+                ((IDataContainer) ((IDataContainer) data).get(s)).get("riscj_blockits.instructionSet");
+                String ist = ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(s)).get("riscj_blockits.instructionSet")).getContent();
+                IQueryableInstructionSetModel istModel = null;
+                try {
+                    istModel = InstructionSetBuilder.buildInstructionSetModel(ist);
+                } catch (UnsupportedEncodingException e) {
+                    return;
+                }
                 ((ControlUnitModel) getModel()).setIstModel(istModel);
-                if (getClusterHandler() != null && istModel != null) {
-                    getClusterHandler().setIstModel(istModel);
-                } else if (getClusterHandler() != null) {
-                    getClusterHandler().removeIstModel();
+                if (getClusterHandler() != null) {
+                    updateClusterHandler();
                 }
             }
         }
@@ -87,8 +95,28 @@ public class ControlUnitController extends ComputerBlockController{
     public void setClusterHandler(ClusterHandler clusterHandler) {
         super.setClusterHandler(clusterHandler);
         //if we have multiple control units, the fastest gets to set the IstModel
-        boolean success =  clusterHandler.setIstModel(((ControlUnitModel) getModel()).getIstModel());
-        //ToDo tell the player if this istModel is not the one that is used
+        updateClusterHandler();
+    }
+
+    /**
+     * Updates the IstModel in the ClusterHandler.
+     */
+    private void updateClusterHandler() {
+        //To Do update if cluster handler is added later (should already work)
+        IQueryableInstructionSetModel istModel = ((ControlUnitModel) getModel()).getIstModel();
+        if (istModel == null) {
+            getClusterHandler().removeIstModel();
+            return;
+        }
+        boolean success = getClusterHandler().setIstModel(((ControlUnitModel) getModel()).getIstModel());
+        if (!success) {
+            ((ControlUnitModel) getModel()).setIstModel(null);      //ToDo schöner machen?
+        }
+    }
+
+
+    public void rejectIstModel() {
+        ((ControlUnitModel) getModel()).setIstModel(null);
     }
 
 }

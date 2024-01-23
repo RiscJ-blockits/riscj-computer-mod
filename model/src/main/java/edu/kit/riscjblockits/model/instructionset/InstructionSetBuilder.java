@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Builds an InstructionSetModel from a json file.
@@ -23,6 +24,17 @@ public class InstructionSetBuilder {
         InstructionSetModel instructionSet = gson.fromJson(reader, InstructionSetModel.class);
         instructionSet.generateOpcodeHashmap();
         return instructionSet;
+    }
+
+    /**
+     * Builds an InstructionSetModel from a given String.
+     * @param s String
+     * @return InstructionSetModel
+     * @throws UnsupportedEncodingException if the character encoding is not supported
+     */
+    public static InstructionSetModel buildInstructionSetModel (String s) throws UnsupportedEncodingException {
+        InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
+        return buildInstructionSetModel(stream);
     }
 
     //Test method

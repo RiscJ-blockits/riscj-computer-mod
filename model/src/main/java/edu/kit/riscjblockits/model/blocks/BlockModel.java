@@ -23,4 +23,5 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
     public BlockPosition getPosition() {
         return position;
     }
+
 }
