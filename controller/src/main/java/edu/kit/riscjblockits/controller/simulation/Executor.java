@@ -60,12 +60,39 @@ public class Executor implements IExecutor {
      */
     public void execute(MemoryInstruction memoryInstruction){
         //ToDo
+
+        //ToDo: check memory flag handling
+        if(memoryInstruction.getFlag().isEmpty()) {
+            return;
+        }
+
         for (IQueryableSimController blockController : blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.MEMORY) {
-                Value value = ((MemoryController) blockController).getValue(null);
-                registerControllerMap.get(null).setNewValue(value);
+
+                if(memoryInstruction.getFlag().equals("r")) {
+                    //ToDo: check format with assembler
+                    String from = memoryInstruction.getFrom()[0];
+                    Value fromAddress = Value.fromBinary(from, from.length());
+                    Value value = ((MemoryController) blockController).getValue(fromAddress);
+
+                    String to = memoryInstruction.getTo();
+                    registerControllerMap.get(to).setNewValue(value);
+                }
+                else if(memoryInstruction.getFlag().equals("w")) {
+
+                    String from = memoryInstruction.getFrom()[0];
+                    Value value = registerControllerMap.get(from).getValue();
+
+                    String to = memoryInstruction.getFrom()[0];
+                    //ToDo: check if binary or hex or other
+                    ((MemoryController) blockController).writeMemory(Value.fromBinary(to, 4), value);
+
+                }
+                //else do nothing, because memory flag is not set properly
             }
         }
+
+        //ToDo Bus-Daten setzen wie und wo?
     }
 
     /**
@@ -75,6 +102,10 @@ public class Executor implements IExecutor {
     public void execute(ConditionedInstruction conditionedInstruction) {
         //ToDo
         registerControllerMap.get(null).setNewValue(null);
+
+
+        //ToDo Bus-Daten setzen wie und wo?
+
     }
 
     /**
@@ -83,11 +114,17 @@ public class Executor implements IExecutor {
      */
     public void execute(AluInstruction aluInstruction) {
         //ToDo
+
         for (IQueryableSimController blockController : blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.ALU) {
-                ((AluController) blockController).executeAluOperation(null);
+                ((AluController) blockController).executeAluOperation(aluInstruction.getAction());
             }
         }
+
+        if (aluInstruction.getMemoryInstruction() != null) {
+            execute(aluInstruction.getMemoryInstruction());
+        }
+
     }
 
     /**
@@ -96,7 +133,15 @@ public class Executor implements IExecutor {
      */
     public void execute(DataMovementInstruction dataMovementInstruction) {
         //ToDo
-        registerControllerMap.get(null).setNewValue(null);
+
+        Value movedValue = registerControllerMap.get(dataMovementInstruction.getFrom()[0]).getValue();
+        registerControllerMap.get(dataMovementInstruction.getTo()).setNewValue(movedValue);
+
+        //ToDo Bus-Daten setzen wie und wo?
+
+        if (dataMovementInstruction.getMemoryInstruction() != null) {
+            execute(dataMovementInstruction.getMemoryInstruction());
+        }
     }
 
 }
