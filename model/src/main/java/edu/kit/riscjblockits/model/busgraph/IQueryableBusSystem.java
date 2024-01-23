@@ -9,7 +9,6 @@ import java.util.*;
 //Wahrscheinlich auch von der Simulation
 //TODO: refactor name, typo
 public interface IQueryableBusSystem {
-
     Value getPresentData();
 
     boolean getActiveVisualization(BlockPosition blockPosition);
@@ -19,6 +18,12 @@ public interface IQueryableBusSystem {
      * @param newBlock is the new node
      */
     void addNode(BlockPosition newBlock);
+
+    /**
+     * returns the number of nodes in the BusSystemModel
+     * @return the number of nodes in the BusSystemModel
+     */
+    int getBusGraphSize();
 
     /**
      * adds an edge between two nodes
