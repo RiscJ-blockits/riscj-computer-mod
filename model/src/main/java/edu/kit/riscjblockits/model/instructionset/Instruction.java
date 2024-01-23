@@ -109,7 +109,7 @@ public class Instruction implements IQueryableInstruction {
                 sb.append(current.substring(l - from));
 
                 argumentsInstructionMap.put(argument, sb.toString());
-                binaryPosition += to - from;
+                binaryPosition += to - from + 1;
                 continue;
             }
             else if (matcher.matches()) {
