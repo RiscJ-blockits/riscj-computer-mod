@@ -67,8 +67,4 @@ public class ControlUnitModel extends BlockModel{
         this.clusteringData = (IDataContainer) clusteringData;
     }
 
-    public void istModelRejection() {
-        istModel = null;
-    }
-
 }

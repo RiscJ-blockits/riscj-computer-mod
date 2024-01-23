@@ -103,18 +103,15 @@ public class ControlUnitController extends ComputerBlockController{
      */
     private void updateClusterHandler() {
         //To Do update if cluster handler is added later (should already work)
-        IQueryableInstructionSetModel istModel = ((ControlUnitModel) getModel()).getIstModel();
-        if (istModel == null) {
-            getClusterHandler().removeIstModel();
-            return;
-        }
         boolean success = getClusterHandler().setIstModel(((ControlUnitModel) getModel()).getIstModel());
         if (!success) {
             ((ControlUnitModel) getModel()).setIstModel(null);      //ToDo schöner machen?
         }
     }
 
-
+    /**
+     * Removes the IstModel from the model.
+     */
     public void rejectIstModel() {
         ((ControlUnitModel) getModel()).setIstModel(null);
     }

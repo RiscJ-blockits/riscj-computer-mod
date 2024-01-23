@@ -46,6 +46,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (!world.isClient && entity.getController() != null) {
             ((IUserInputReceivableComputerController)entity.getController()).tick();
         }
+        entity.updateUI();
     }
 
     /**
@@ -128,6 +129,14 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      */
     protected IQueryableBlockModel getModel() {
         return model;
+    }
+
+    /** Nicht im Entwurf
+     * Gets called every tick.
+     * Used to update ui elements.
+     */
+    public void updateUI() {
+        //do nothing
     }
 
 }

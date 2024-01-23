@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.model.instructionset;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -245,4 +246,32 @@ InstructionSetModel implements IQueryableInstructionSetModel {
         return instructionSetRegisters.getRegisterNames();
     }
 
+    //ToDo
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        InstructionSetModel that = (InstructionSetModel) o;
+
+        if (instructionLength != that.instructionLength) return false;
+        if (!name.equals(that.name)) return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + instructionLength;
+        result = 31 * result + instructionSetRegisters.hashCode();
+        result = 31 * result + instructionSetMemory.hashCode();
+        result = 31 * result + Arrays.hashCode(aluActions);
+        result = 31 * result + Arrays.hashCode(fetchPhase);
+        result = 31 * result + addressChangeHashMap.hashCode();
+        result = 31 * result + programStartLabel.hashCode();
+        result = 31 * result + dataStorageKeywords.hashCode();
+        result = 31 * result + commandHashMap.hashCode();
+        result = 31 * result + opcodeHashMap.hashCode();
+        return result;
+    }
 }

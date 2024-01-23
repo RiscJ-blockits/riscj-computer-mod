@@ -225,15 +225,21 @@ public class ClusterHandler implements IArchitectureCheckable {
      * @return true if the set operation was successful, false if there is already an instruction set model set.
      */
     public boolean setIstModel(IQueryableInstructionSetModel istModel) {
-        if (istModel == null)  {
+        if (istModel == null) {
             return false;
         }
-        if (this.istModel == null) {
-            this.istModel = istModel;
-            System.out.println("IstModel in ClusterHandler set");
-            return true;
+        int cuCount = 0;
+        for (IQueryableClusterController block: blocks) {
+            if (block.getControllerType() == BlockControllerType.CONTROL_UNIT) {
+                cuCount++;
+            }
         }
-        return false;
+        if (cuCount != 1) {
+            removeIstModel();
+            return false;
+        }
+        this.istModel = istModel;
+        return true;
     }
 
     /** ToDo nicht im Entwurf
@@ -249,7 +255,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     }
 
     /**
-     * method to check whether the cluster is finished building
+     * method to check whether the cluster is finished building.
      */
     public void checkFinished() {
         System.out.println("Blocks: " + blocks.size() + " | BusBlocks: " + busBlocks.size());

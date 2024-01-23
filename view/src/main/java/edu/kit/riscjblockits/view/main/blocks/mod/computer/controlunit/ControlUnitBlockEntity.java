@@ -91,12 +91,22 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     }
 
     /**
+     * Reads the items from the given {@link NbtCompound}.
+     * Reads block information from the given {@link NbtCompound}.
+     * @param nbt
+     */
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+    }
+
+    /**
      * When the Instruction Set changes, the controller needs to be notified.
      */
     public void inventoryChanged() {
         if (world != null && !world.isClient) {
             System.out.println("IST Item changed");
-            if (getItems().isEmpty()) {         //Item removed
+            if (getItems().get(0).getCount() == 0) {         //Item removed
                 Data cuData = new Data();
                 cuData.set("istModel", null);
                 getController().setData(cuData);
@@ -106,10 +116,18 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
                 NbtDataConverter converter = new NbtDataConverter(istNbt);
                 cuData.set("istModel", converter.getData());
                 getController().setData(cuData);
-                if ( ((IDataStringEntry) ((IDataContainer) getModel().getData()).get("istModel")).getContent().equals("false")) {
-                    ItemScatterer.spawn(world, pos, (this));        //drop the IstItem if it is rejected
-                }
             }
+        }
+    }
+
+    /** Nicht im Entwurf
+     *
+     */
+    @Override
+    public void updateUI() {
+        if (!getItems().isEmpty() && getModel() != null
+                && ((IDataStringEntry) ((IDataContainer) getModel().getData()).get("istModel")).getContent().equals("false")) {
+            ItemScatterer.spawn(world, pos, (this));        //drop the IstItem if it is rejected
         }
     }
 
