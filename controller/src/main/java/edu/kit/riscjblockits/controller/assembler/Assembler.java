@@ -98,6 +98,28 @@ public class Assembler {
                 continue;
             }
 
+            // check if line is data
+            if (instructionSetModel.isDataStorageCommand(line)) {
+                String unsplitDirtyData = instructionSetModel.getStorageCommandData(line);
+                for (String dirtyData : unsplitDirtyData.split(",")) {
+                    // split data into value and length
+                    String[] data = dirtyData.split("~");
+                    if (data.length != 2) {
+                        throw new AssemblyException("Invalid data");
+                    }
+                    String cleanData = data[0];
+                    int cleanLength = Integer.parseInt(data[1]);
+                    // extract value and trim to length
+                    Value value = ValueExtractor.extractValue(cleanData, calculatedMemoryWordSize);
+                    String valueBinary = value.getBinaryValue();
+                    Value trimmedValue = Value.fromBinary(valueBinary.substring(valueBinary.length() - cleanLength), calculatedMemoryWordSize);
+                    // write trimmed value to memory
+                    memory.setValue(currentAddress, trimmedValue);
+                    currentAddress = currentAddress.getIncrementedValue();
+                }
+                continue;
+            }
+
             // assemble command
             Command command = getCommandForLine(line);
 
@@ -108,6 +130,7 @@ public class Assembler {
             currentAddress = currentAddress.getIncrementedValue();
         }
     }
+
 
     /**
      * Gets the {@link Command} for a given line

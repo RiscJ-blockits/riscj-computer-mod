@@ -122,6 +122,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * Getter for the registers of the instruction set.
      * @return Registers of the instruction set.
      */
+    @Override
     public String[] getAluRegisters() {
         return instructionSetRegisters.getAluRegs();
     }
@@ -130,6 +131,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * Getter for the name of the instruction set.
      * @return Name of the instruction set.
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -139,6 +141,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @param key Key of the register.
      * @return Integer register matching the key.
      */
+    @Override
     public Integer getIntegerRegister(String key) {
         // no register object -> no registers
         if (instructionSetRegisters == null) return null;
@@ -151,6 +154,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @param key Key of the register.
      * @return float register matching the key.
      */
+    @Override
     public Integer getFloatRegister(String key) {
         // no register object -> no registers
         if (instructionSetRegisters == null) return null;
@@ -162,6 +166,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * Getter for the program counter register of the instruction set.
      * @return Program counter register of the instruction set.
      */
+    @Override
     public String getProgramCounter() {
         return instructionSetRegisters.getProgramCounter();
     }
@@ -170,6 +175,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * Getter for the word size of the instruction set memory.
      * @return Word size of the instruction set memory.
      */
+    @Override
     public int getMemoryWordSize() {
         return instructionSetMemory.getWordSize();
     }
@@ -178,6 +184,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * Getter for the address size of the instruction set memory.
      * @return Address size of the instruction set memory.
      */
+    @Override
     public int getMemoryAddressSize() {
         return instructionSetMemory.getAddressSize();
     }
@@ -187,6 +194,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @param s Command keyword of the instruction.
      * @return Instruction matching the command keyword.
      */
+    @Override
     public Instruction getInstruction(String s) {
         return commandHashMap.get(s);
     }
@@ -196,6 +204,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @param s String to check.
      * @return True if the string is the address change specification of the instruction set, false otherwise.
      */
+    @Override
     public boolean isAddressChange(String s) {
         for (String key : addressChangeHashMap.keySet()) {
             Pattern p = Pattern.compile(key);
@@ -211,6 +220,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @param s The address change label.
      * @return The address matching the label.
      */
+    @Override
     public String getChangedAddress(String s) {
         for (String key : addressChangeHashMap.keySet()) {
             Pattern p = Pattern.compile(key);
@@ -235,6 +245,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * Getter for the program start label.
      * @return The program start label.
      */
+    @Override
     public String getProgramStartLabel() {
         return programStartLabel;
     }
@@ -244,7 +255,14 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @param s The string to check.
      * @return True if the string is a data storage command, false otherwise.
      */
+    @Override
     public boolean isDataStorageCommand(String s) {
+        for (String key : dataStorageKeywords.keySet()) {
+            Pattern p = Pattern.compile(key);
+            if (p.matcher(s).matches()) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -253,7 +271,24 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @param s The data storage command.
      * @return The data to be stored.
      */
+    @Override
     public String getStorageCommandData(String s) {
+        for (String key : dataStorageKeywords.keySet()) {
+            Pattern p = Pattern.compile(key);
+            Matcher m = p.matcher(s);
+            if (m.matches()) {
+                // check if data needs dynamic replacing
+                Pattern groupPattern = Pattern.compile("\\[(?<name>\\w+)]<(?<length>\\d+)>");
+                Matcher groupMatcher = groupPattern.matcher(dataStorageKeywords.get(key));
+                if (groupMatcher.matches()) {
+                    String groupName = groupMatcher.group("name");
+                    return m.group(groupName) + "~" + groupMatcher.group("length");
+                }
+
+                // return constant data otherwise
+                return dataStorageKeywords.get(key);
+            }
+        }
         return null;
     }
 
@@ -261,6 +296,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * Getter for the fetch phase length of the instruction set.
      * @return Fetch phase length of the instruction set.
      */
+    @Override
     public int getFetchPhaseLength() {
         return fetchPhase.length;
     }
@@ -270,6 +306,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @param index Index of the microinstruction in the fetch phase.
      * @return The microinstruction at the specified index.
      */
+    @Override
     public MicroInstruction getFetchPhaseStep(int index) {
         return fetchPhase[index];
     }

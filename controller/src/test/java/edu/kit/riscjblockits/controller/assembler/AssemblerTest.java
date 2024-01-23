@@ -56,6 +56,17 @@ class AssemblerTest {
         assertEquals("F00000", val.getHexadecimalValue());
     }
 
+    @Test
+    void assembleMIMADataChange() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelMima();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("DS 0x1234");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 3));
+        assertEquals("001234", val.getHexadecimalValue());
+    }
+
     /**
      * tests the assembler, expected results are from RARS
      *
@@ -114,7 +125,7 @@ class AssemblerTest {
         assembler.assemble("lui t1, 0x021234");
         Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
         Value val = memory.getValueAt(Value.fromHex("00", 4));
-        assertEquals("00021337", val.getHexadecimalValue());
+        assertEquals("21234337", val.getHexadecimalValue());
     }
 
     @Test
