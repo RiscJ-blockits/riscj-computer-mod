@@ -1,5 +1,7 @@
 package edu.kit.riscjblockits.model.blocks;
 
+import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
@@ -34,9 +36,29 @@ public class AluModel extends BlockModel{
         return false;
     }
 
+    /**
+     * Getter for the data the view needs for ui.
+     * @return Data Format: key: "operation", value: "operation"
+     *                      key: "operand1", value: operand1 as String
+     *                      key: "operand2", value: operand2 as String
+     *                      key: "result", value: result as String
+     */
     @Override
     public IDataElement getData() {
-        return null;
+        Data aluData = new Data();
+        if (operation != null) {
+            aluData.set("operation", new DataStringEntry(operation));
+        }
+        if (operand1 != null) {
+            aluData.set("operand1", new DataStringEntry(operand1.getHexadecimalValue()));
+        }
+        if (operand2 != null) {
+            aluData.set("operand2", new DataStringEntry(operand2.getHexadecimalValue()));
+        }
+        if (result != null) {
+            aluData.set("result", new DataStringEntry(result.getHexadecimalValue()));
+        }
+        return aluData;
     }
 
     public void setOperation(String operation) {

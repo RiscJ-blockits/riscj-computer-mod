@@ -1,8 +1,11 @@
 package edu.kit.riscjblockits.controller.blocks;
 
+import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
+import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.blocks.AluModel;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
 
 /**
  * The controller for an ALU block entity.
@@ -30,11 +33,22 @@ public class AluController extends ComputerBlockController {
     /**
      * Used from the view if it wants to update Data in the model.
      * @param data The data that should be set.
+     *             Data Format: key: "operation", value: "operation"
+     *                          key: "operand1", value: operand1 as String
+     *                          key: "operand2", value: operand2 as String
+     *                          key: "result", value: result as String
      */
     @Override
     public void setData(IDataElement data) {
-        //ToDo
-        ((AluModel) getModel()).setOperation(null);
+        if (!data.isContainer()) {
+            return;
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals("operation")) {
+                ((AluModel) getModel()).setOperation(((IDataStringEntry)((IDataContainer) data).get(s)).getContent());
+            }
+            //ToDo sollen wir hier auch die Operanden setzen können?
+        }
     }
 
     /**

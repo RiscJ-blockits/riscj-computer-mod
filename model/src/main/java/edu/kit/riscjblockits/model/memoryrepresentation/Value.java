@@ -169,4 +169,10 @@ public class Value {
     public int hashCode() {
         return Arrays.hashCode(value);
     }
+
+    @Override
+    public String toString() {
+        return getHexadecimalValue();
+    }
+
 }
