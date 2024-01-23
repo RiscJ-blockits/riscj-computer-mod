@@ -1,6 +1,8 @@
 package edu.kit.riscjblockits.model.blocks;
 
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
+import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
 public class BusModel extends BlockModel{
@@ -20,14 +22,20 @@ public class BusModel extends BlockModel{
     }
 
     /**
-     * Returns the data the view needs to display.
-     * @return the data the view needs to display
+     * Getter for the data the view needs for ui.
+     * @return Data Format: key: "active", value: "true" or "false"
+     *                      key: "presentData", value: presentData as Hex String
      */
     @Override
     public IDataElement getData() {
-        //ToDo Asks the BusSystemModel for data and visualisation
-        belongsToSystem.getActiveVisualization(getPosition());
-        return null;
+        Data busData = new Data();
+        if (belongsToSystem.getActiveVisualization(getPosition())) {
+            busData.set("active", new DataStringEntry("true"));
+        } else {
+            busData.set("active", new DataStringEntry("false"));
+        }
+        busData.set("presentData", new DataStringEntry(belongsToSystem.getPresentData().getHexadecimalValue()));
+        return busData;
     }
 
     public void setBelongingBusSystemModel(BusSystemModel belongsToSystem) {
