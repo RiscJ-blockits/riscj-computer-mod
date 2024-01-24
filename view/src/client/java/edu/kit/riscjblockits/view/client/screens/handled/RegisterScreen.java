@@ -16,11 +16,13 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/register/register_block_gui.png");
     private final RegSelectWidget regSelectWidget = new RegSelectWidget();
     private boolean narrow;
+
+    Text registerValue = Text.literal("0");
+
     public RegisterScreen(RegisterScreenHandler handler, PlayerInventory inventory,
                           Text title) {
         super(handler, inventory, title);
     }
-
 
     @Override
     protected void init() {
@@ -57,11 +59,15 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
         }
         this.regSelectWidget.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
+        context.drawCenteredTextWithShadow(textRenderer, registerValue, width / 2, height / 2, 0xffffff);
+
     }
 
     @Override
     public void handledScreenTick() {
         super.handledScreenTick();
         this.regSelectWidget.update();
+        registerValue = Text.literal(handler.getRegisterValue());
     }
+
 }

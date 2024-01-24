@@ -8,6 +8,8 @@ import edu.kit.riscjblockits.model.data.IDataElement;
 public class RegisterModel extends BlockModel {
 
     private int wordLength;
+
+    int i = 0;
     private String registerType;
     private Value value;
 
@@ -43,6 +45,10 @@ public class RegisterModel extends BlockModel {
      */
     @Override
     public IDataElement getData() {
+        i++;
+        value = Value.fromDecimal(Integer.toString(i), 10);
+
+
         Data regData = new Data();
         regData.set("type", new DataStringEntry(registerType));
         regData.set("word", new DataStringEntry(String.valueOf(wordLength)));

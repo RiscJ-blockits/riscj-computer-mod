@@ -2,6 +2,9 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -9,6 +12,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -61,6 +65,19 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new RegisterScreenHandler(syncId, playerInventory);
+        return new RegisterScreenHandler(syncId, playerInventory, this);
     }
+
+    public String getRegisterValue() {
+
+        return "";
+    }
+
+    @Override
+    public void updateUI() {
+
+    }
+
+
+
 }
