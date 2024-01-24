@@ -20,12 +20,6 @@ public interface IQueryableBusSystem {
     void addNode(BlockPosition newBlock);
 
     /**
-     * returns the number of nodes in the BusSystemModel
-     * @return the number of nodes in the BusSystemModel
-     */
-    int getBusGraphSize();
-
-    /**
      * adds an edge between two nodes
      * @param pos1 is the first node of the edge
      * @param pos2 is the second node of the edge

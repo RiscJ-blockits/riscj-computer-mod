@@ -166,7 +166,7 @@ public class ClusterHandler implements IArchitectureCheckable {
             }
         }
         for (ClusterHandler newclusterHandler: newClusterHandlers) {
-            if (newclusterHandler.busSystemModel.getBusGraphSize() == 1 && newclusterHandler.getBlocks().size() == 1) {
+            if (newclusterHandler.getBusBlocks().isEmpty()) {
                 System.out.println("Cluster neu verbinden");
                 IQueryableClusterController neighbourBlockController = newclusterHandler.getBlocks().get(0);
                 newclusterHandler.combineToNeighbours(neighbourBlockController);

@@ -108,15 +108,6 @@ public class BusSystemModel implements IQueryableBusSystem {
     }
 
     /**
-     * TODO: Nicht im Entwurf
-     * returns the size of the graph
-     * @return the size of the graph
-     */
-    public int getBusGraphSize() {
-        return adjPositions.size();
-    }
-
-    /**
      * NewNode and OwnNode are already in their busSystems.
      * @param newNode   The recently added node which triggered a combine. Initially added to busSystemToCombine.
      * @param ownNode   The node of the current Bussystem into which is being merged, that is connected to the newNode.
