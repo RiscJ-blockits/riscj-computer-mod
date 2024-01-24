@@ -53,8 +53,10 @@ public class RegisterModel extends BlockModel {
         regData.set("word", new DataStringEntry(String.valueOf(wordLength)));
         regData.set("value", new DataStringEntry(value.getHexadecimalValue()));
         Data registersData = new Data();
-        registersData.set("missing", new DataStringEntry(missingAvailableRegisters[0]));
-        registersData.set("found", new DataStringEntry(missingAvailableRegisters[1]));
+        if (missingAvailableRegisters != null && missingAvailableRegisters.length == 2) {
+            registersData.set("missing", new DataStringEntry(missingAvailableRegisters[0]));
+            registersData.set("found", new DataStringEntry(missingAvailableRegisters[1]));
+        }
         regData.set("registers", registersData);
         return regData;
     }

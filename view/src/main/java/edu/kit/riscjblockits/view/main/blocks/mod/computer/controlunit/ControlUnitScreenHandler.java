@@ -2,11 +2,13 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit;
 
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
@@ -16,12 +18,13 @@ import org.jetbrains.annotations.Nullable;
 
 public class ControlUnitScreenHandler extends ModScreenHandler {
 
-
     private final Inventory inventory;
 
+    ControlUnitBlockEntity blockEntity;
 
     public ControlUnitScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity) {
         super(RISCJ_blockits.CONTROL_UNIT_SCREEN_HANDLER, syncId);
+        this.blockEntity = (ControlUnitBlockEntity) blockEntity;
 
         checkSize(((Inventory) blockEntity), 1);
         this.inventory = ((Inventory) blockEntity);

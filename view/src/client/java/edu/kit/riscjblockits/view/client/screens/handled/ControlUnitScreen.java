@@ -48,4 +48,11 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         super.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
     }
+
+    @Override
+    public void handledScreenTick() {
+        super.handledScreenTick();
+
+    }
+
 }

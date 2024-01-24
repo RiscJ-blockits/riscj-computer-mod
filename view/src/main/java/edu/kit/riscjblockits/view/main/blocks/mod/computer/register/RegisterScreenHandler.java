@@ -1,13 +1,17 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
+import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
-import net.minecraft.block.entity.BlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
+import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
 public class RegisterScreenHandler extends ModScreenHandler {
@@ -50,7 +54,21 @@ public class RegisterScreenHandler extends ModScreenHandler {
     }
 
     public String getRegisterValue() {
-        return blockEntity.getRegisterValue();
+        NbtCompound nbt = blockEntity.createNbt();
+        blockEntity.writeNbt(nbt);
+        if (!nbt.contains("modData")) {
+            return "";
+        }
+        IDataElement data = new NbtDataConverter(nbt.get("modData")).getData();
+        if (!data.isContainer()) {
+            return "";
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals("value")) {
+                return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+            }
+        }
+        return "";
     }
 
 }

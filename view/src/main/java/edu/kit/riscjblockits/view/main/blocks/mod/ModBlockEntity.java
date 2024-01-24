@@ -82,7 +82,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         setController();
-        // catch client side synchronisation, where there eis no controller
+        // catch client side synchronization, where there is no controller
         if (controller != null) {
             controller.setData(new NbtDataConverter(nbt).getData());
         }

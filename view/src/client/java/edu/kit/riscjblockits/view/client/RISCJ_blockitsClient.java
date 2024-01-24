@@ -36,12 +36,12 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 				// Read packet data on the event loop
 				BlockPos target = buf.readBlockPos();
 				NbtCompound nbt = buf.readNbt();
-				BlockEntity blockEntity = client.world.getBlockEntity(target);
+                assert client.world != null;
+                BlockEntity blockEntity = client.world.getBlockEntity(target);
 				if (blockEntity == null) {
 					return;
 				}
 				blockEntity.readNbt(nbt);
-
 		});
 	}
 }

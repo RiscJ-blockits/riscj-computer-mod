@@ -11,6 +11,8 @@ import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.blocks.mod.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlock;
+import edu.kit.riscjblockits.view.main.data.DataNbtConverter;
+import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
@@ -42,6 +44,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      */
     protected abstract IUserInputReceivableComputerController createController();
 
+    private IDataElement data;
+
     /**
      * Method that is called by Minecraft every tick.
      * Will call the {@link ComputerBlockController#tick()} method.
@@ -56,7 +60,6 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         entity.syncToClient();
         entity.updateUI();
     }
-
 
 
     /**
@@ -146,7 +149,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Used to update ui elements.
      */
     public void updateUI() {
-
+        //do nothing
     }
 
     /**
@@ -167,5 +170,23 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         }
     }
 
+    @Override
+    public void writeNbt(NbtCompound nbt) {
+        if (getModel() != null) {                       //we are in the server, so we send the data in the model
+            nbt.put("modData", new DataNbtConverter(getModel().getData()).getNbtElement());
+        }
+        if (world != null && world.isClient) {          //we are in the client, so we send local data
+            nbt.put("modData", new DataNbtConverter(data).getNbtElement());
+        }
+        super.writeNbt(nbt);
+    }
+
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+        if (world != null && world.isClient &&  nbt.contains("modData")) {     //we are in the client and want to save the data
+            data = new NbtDataConverter(nbt.get("modData")).getData();
+        }
+    }
 
 }
