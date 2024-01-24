@@ -57,7 +57,7 @@ public class ControlUnitController extends ComputerBlockController{
          *                                  key: "foundAlu", value: string with number of alu blocks
          *                                  key: "foundControlUnit", value: string with number of control unit blocks
          *                                  key: "foundSystemClock", value: string with number of system clock blocks
-         *              key: "istModel", value: ToDo
+         *              key: "istModel", value: null, if the ist Item has been removed, .json String if an Item has been inserted
          */
         if (!data.isContainer()) {
             return;

@@ -125,7 +125,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
      */
     @Override
     public void updateUI() {
-        if (!getItems().isEmpty() && getModel() != null
+        if (getItems().get(0).getCount() == 0 && getModel() != null
                 && ((IDataStringEntry) ((IDataContainer) getModel().getData()).get("istModel")).getContent().equals("false")) {
             ItemScatterer.spawn(world, pos, (this));        //drop the IstItem if it is rejected
         }
