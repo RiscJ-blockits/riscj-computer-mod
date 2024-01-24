@@ -28,10 +28,9 @@ public class RegisterModel extends BlockModel {
         wordLength = 0;
     }
 
-    @Deprecated()
     @Override
     public boolean hasUnqueriedStateChange() {
-        return false;
+        return true;
     }
 
     /**
@@ -52,7 +51,7 @@ public class RegisterModel extends BlockModel {
         Data regData = new Data();
         regData.set("type", new DataStringEntry(registerType));
         regData.set("word", new DataStringEntry(String.valueOf(wordLength)));
-        regData.set("value", new DataStringEntry(value.toString()));
+        regData.set("value", new DataStringEntry(value.getHexadecimalValue()));
         Data registersData = new Data();
         registersData.set("missing", new DataStringEntry(missingAvailableRegisters[0]));
         registersData.set("found", new DataStringEntry(missingAvailableRegisters[1]));

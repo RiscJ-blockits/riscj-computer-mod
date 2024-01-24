@@ -8,9 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 /**
  * This class represents a block entity from our mod in the game.
@@ -84,7 +82,10 @@ public abstract class ModBlockEntity extends BlockEntity {
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         setController();
-        controller.setData(new NbtDataConverter(nbt).getData());
+        // catch client side synchronisation, where there eis no controller
+        if (controller != null) {
+            controller.setData(new NbtDataConverter(nbt).getData());
+        }
     }
 
     public BlockPosition getBlockPosition() {

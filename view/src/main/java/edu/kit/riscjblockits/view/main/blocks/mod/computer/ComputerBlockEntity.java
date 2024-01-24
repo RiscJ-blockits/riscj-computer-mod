@@ -5,13 +5,20 @@ import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
 import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
+import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.blocks.mod.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlock;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -28,7 +35,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     /**
      * The block's representation in the model holds the block's data.
      */
-    private IQueryableBlockModel model;
+    private IViewQueryableBlockModel model;
 
     /**
      * Will create a new {@link ComputerBlockController} for this block.
@@ -46,8 +53,11 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (!world.isClient && entity.getController() != null) {
             ((IUserInputReceivableComputerController)entity.getController()).tick();
         }
+        entity.syncToClient();
         entity.updateUI();
     }
+
+
 
     /**
      * Creates a new ComputerBlockEntity with the given settings.
@@ -96,7 +106,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Sets the model for this block.
      * @param model The model for this block.
      */
-    public void setBlockModel(IQueryableBlockModel model) {
+    public void setBlockModel(IViewQueryableBlockModel model) {
         this.model = model;
     }
 
@@ -136,7 +146,26 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Used to update ui elements.
      */
     public void updateUI() {
-        //do nothing
+
     }
+
+    /**
+     * Gets called every tick.
+     * Syncs the block entity nbt data to the client.
+     */
+    private void syncToClient() {
+        if (world == null || world.isClient || model == null)
+            return;
+        if (model.hasUnqueriedStateChange()) {
+            NbtCompound nbt = new NbtCompound();
+            writeNbt(nbt);
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeBlockPos(pos);
+            buf.writeNbt(nbt);
+            world.getPlayers().forEach(player -> ServerPlayNetworking.send((ServerPlayerEntity) player,
+                NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, buf));
+        }
+    }
+
 
 }

@@ -5,7 +5,6 @@ import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
-import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 
 public class ControlUnitModel extends BlockModel{
 
@@ -24,7 +23,7 @@ public class ControlUnitModel extends BlockModel{
 
     @Override
     public boolean hasUnqueriedStateChange() {
-        return false;
+        return true;
     }
 
     /**
