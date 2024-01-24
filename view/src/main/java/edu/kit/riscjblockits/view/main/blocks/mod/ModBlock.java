@@ -37,14 +37,14 @@ public abstract class ModBlock extends BlockWithEntity {
      * @param settings The settings for the block as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
      */
     protected ModBlock(Settings settings) {
-        super(settings);
+        super(settings.nonOpaque());
     }
 
     /**
      * Creates a new ModBlock with default settings.
      */
     protected ModBlock() {
-        super(FabricBlockSettings.create().strength(BLOCK_STRENGTH));
+        super(FabricBlockSettings.create().strength(BLOCK_STRENGTH).nonOpaque());
     }
 
     /**

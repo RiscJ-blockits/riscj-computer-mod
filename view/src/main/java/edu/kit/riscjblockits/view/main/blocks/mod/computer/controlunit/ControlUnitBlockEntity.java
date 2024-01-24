@@ -22,8 +22,13 @@ import org.jetbrains.annotations.Nullable;
  * This class represents a control unit entity from our mod in the game.
  * Every control unit has its own unique ControlUnitBlockEntity while it is loaded.
  */
-public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory implements ImplementedInventory,
+public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory implements
     ExtendedScreenHandlerFactory {
+
+    private static final int INSTRUCTION_SET_SLOT = 0;
+    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
+    private DefaultedList<ComputerBlockController> connectedBlocks;
+    private DefaultedList<ComputerBlockController> missingBlocks;
 
     /**
      * Creates a new ControlUnitBlockEntity with the given settings.
@@ -49,8 +54,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
      */
     @Override
     public DefaultedList<ItemStack> getItems() {
-        //ToDo warum überschreiben wir hier?
-        return null;
+        return inventory;
     }
 
     /**
@@ -60,7 +64,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
      */
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-        //
+        buf.writeBlockPos(this.pos);
     }
 
     /**
@@ -69,7 +73,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
      */
     @Override
     public Text getDisplayName() {
-        return null;
+        return Text.literal("Control Unit");
     }
 
     /**
@@ -82,7 +86,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return null;
+        return new ControlUnitScreenHandler(syncId, playerInventory, this);
     }
 
 }

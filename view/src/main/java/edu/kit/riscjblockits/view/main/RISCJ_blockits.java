@@ -7,8 +7,12 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
@@ -28,6 +32,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -208,6 +213,24 @@ public class RISCJ_blockits implements ModInitializer {
 	 */
 	public static ScreenHandlerType<ProgrammingScreenHandler> PROGRAMMING_SCREEN_HANDLER;
 
+	public static  ScreenHandlerType<RegisterScreenHandler> REGISTER_SCREEN_HANDLER =
+		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "register_screen"),
+			new ExtendedScreenHandlerType<>(RegisterScreenHandler::new));
+
+	public static  ScreenHandlerType<ControlUnitScreenHandler> CONTROL_UNIT_SCREEN_HANDLER =
+		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "control_unit_screen"),
+			new ExtendedScreenHandlerType<>(ControlUnitScreenHandler::new));
+
+	public static  ScreenHandlerType<MemoryScreenHandler> MEMORY_BLOCK_SCREEN_HANDLER =
+		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "memory_block_screen"),
+			new ExtendedScreenHandlerType<>(MemoryScreenHandler::new));
+
+	public static  ScreenHandlerType<SystemClockScreenHandler> SYSTEM_CLOCK_SCREEN_HANDLER =
+		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "system_clock_screen"),
+			new ExtendedScreenHandlerType<>(SystemClockScreenHandler::new));
+
+
+
 	/**
 	 * This method is called when the mod is initialized.
 	 * The call happens while the game is loading a world.
@@ -217,7 +240,6 @@ public class RISCJ_blockits implements ModInitializer {
 	public void onInitialize() {
 		// register ScreenHandlers
 		PROGRAMMING_SCREEN_HANDLER = ScreenHandlerRegistry.registerExtended(new Identifier(MODID, "programming_screen"), ProgrammingScreenHandler::new);
-
 
 		// register Blocks
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "alu_block"), ALU_BLOCK);

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "riscj_blockits:block/control_unit_block"
+    }
+  }
+}
