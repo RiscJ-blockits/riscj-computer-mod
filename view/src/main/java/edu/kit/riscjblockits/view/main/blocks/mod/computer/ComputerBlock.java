@@ -7,7 +7,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 /**
@@ -48,6 +50,7 @@ public abstract class ComputerBlock extends ModBlock {
         //check if the block has been broken
         if (!world.isClient && state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
+            //TODO: instanceof entfernen
             if (blockEntity instanceof ComputerBlockEntity) {
                 ((ComputerBlockEntity) blockEntity).onBroken();
             }
@@ -67,4 +70,5 @@ public abstract class ComputerBlock extends ModBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return (world1, pos, state1, be) -> ComputerBlockEntity.tick(world1, pos, state1, (ComputerBlockEntity) be);
     }
+
 }

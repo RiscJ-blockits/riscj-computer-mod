@@ -21,6 +21,13 @@ import java.nio.charset.StandardCharsets;
 public class ProgrammingController extends BlockController implements IAssemblerController {
 
     /**
+     * Constructor for the ProgrammingController.
+     */
+    public ProgrammingController() {
+        super(BlockControllerType.PROGRAMMING);
+    }
+
+    /**
      * Assembles the given code and stores the result in the given data container.
      * @param code The code that should be assembled.
      * @param instructionSetData  The data container with the instruction set that should be used to assemble the code.
