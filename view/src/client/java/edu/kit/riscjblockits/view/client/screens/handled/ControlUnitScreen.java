@@ -22,12 +22,13 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         super(handler, inventory, title);
         this.backgroundHeight = 256;
         this.backgroundWidth = 176;
+        playerInventoryTitleY += 56;
     }
 
     @Override
     protected void init() {
         super.init();
-        playerInventoryTitleY += 56;
+
         //intit Screen Elements
     }
 

@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
  * This class represents a control unit entity from our mod in the game.
  * Every control unit has its own unique ControlUnitBlockEntity while it is loaded.
  */
-public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory implements ImplementedInventory,
+public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory implements
     ExtendedScreenHandlerFactory {
 
     private static final int INSTRUCTION_SET_SLOT = 1;

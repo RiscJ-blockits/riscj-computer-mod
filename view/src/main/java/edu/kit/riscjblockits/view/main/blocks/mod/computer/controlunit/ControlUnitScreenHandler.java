@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit;
 
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -13,7 +14,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.Nullable;
 
-public class ControlUnitScreenHandler extends ScreenHandler {
+public class ControlUnitScreenHandler extends ModScreenHandler {
 
 
     private final Inventory inventory;

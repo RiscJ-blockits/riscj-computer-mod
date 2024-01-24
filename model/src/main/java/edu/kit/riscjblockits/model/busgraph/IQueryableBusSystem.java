@@ -9,7 +9,6 @@ import java.util.*;
 //Wahrscheinlich auch von der Simulation
 //TODO: refactor name, typo
 public interface IQueryableBusSystem {
-
     Value getPresentData();
 
     boolean getActiveVisualization(BlockPosition blockPosition);

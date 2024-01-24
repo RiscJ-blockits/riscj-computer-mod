@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import net.minecraft.block.entity.BlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -9,7 +10,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
-public class RegisterScreenHandler extends ScreenHandler {
+public class RegisterScreenHandler extends ModScreenHandler {
 
     RegisterBlockEntity blockEntity;
 
@@ -18,6 +19,7 @@ public class RegisterScreenHandler extends ScreenHandler {
         this.blockEntity = (RegisterBlockEntity) blockEntity;
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
+        addPlayerInventorySlots(inventory);
     }
 
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {

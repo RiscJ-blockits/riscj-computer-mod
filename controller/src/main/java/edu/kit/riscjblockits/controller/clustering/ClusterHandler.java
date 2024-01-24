@@ -83,30 +83,30 @@ public class ClusterHandler implements IArchitectureCheckable {
      * @param blockController BlockController to combine
      */
     private void combineToNeighbours(IQueryableClusterController blockController) {
-        List<IQueryableClusterController> neighbourBlockControllers = blockController.getNeighbours();
-        List<IQueryableClusterController> neighbourBusControllers = new ArrayList<>();
-        List<IQueryableClusterController> neighbourControllersToCombine = new ArrayList<>();
-
-        if (blockController.getControllerType() == BlockControllerType.BUS) {
-            neighbourControllersToCombine.addAll(neighbourBlockControllers);
-        } else {
-            for (IQueryableClusterController neighbourBlock: neighbourBlockControllers) {
-                if (neighbourBlock.getControllerType() == BlockControllerType.BUS) {
-                    neighbourBusControllers.add(neighbourBlock);
-                }
+        List<IQueryableClusterController> neighbourBlockControllers = new ArrayList<>();
+        List<IQueryableClusterController> neighboursToCombine = new ArrayList<>();
+        //fill neighbourBlockControllers with all neighbours, which exists in a neighbourCluster
+        for (IQueryableClusterController neighbourBlock: blockController.getNeighbours()) {
+            if (neighbourBlock.getClusterHandler().busSystemModel.isNode(neighbourBlock.getBlockPosition())) {
+                neighbourBlockControllers.add(neighbourBlock);
             }
-            if(!neighbourBusControllers.isEmpty()) {
-                ClusterHandler neighbourCluster = neighbourBusControllers.get(0).getClusterHandler();
-                for (IQueryableClusterController neighbourBlock: neighbourBusControllers) {
-                    if (neighbourBlock.getClusterHandler() == neighbourCluster) {
-                        neighbourControllersToCombine.add(neighbourBlock);
-                    }
+        }
+        //fill neighboursToCombine with all neighbours, which should be combined
+        if (blockController.getControllerType() == BlockControllerType.BUS) {
+            neighboursToCombine.addAll(neighbourBlockControllers);
+        } else {
+            ClusterHandler neighbourCluster = null;
+            for (IQueryableClusterController neighbourBlock: neighbourBlockControllers) {
+                if (neighbourBlock.getControllerType() == BlockControllerType.BUS &&
+                        (neighboursToCombine.isEmpty() || neighbourCluster == neighbourBlock.getClusterHandler())) {
+                    neighboursToCombine.add(neighbourBlock);
+                    neighbourCluster = neighbourBlock.getClusterHandler();
                 }
             }
         }
-
+        //combine all neighbours in neighboursToCombine
         ClusterHandler actualCluster = this;
-        for (IQueryableClusterController neighbourBlock: neighbourControllersToCombine) {
+        for (IQueryableClusterController neighbourBlock: neighboursToCombine) {
             neighbourBlock.getClusterHandler().combine(neighbourBlock, blockController, actualCluster);
             actualCluster = neighbourBlock.getClusterHandler();
         }
@@ -141,42 +141,44 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     public void blockDestroyed(IQueryableClusterController destroyedBlockController) {
         System.out.println("Block wird zerstört");
-       //Remove Block from ClusterHandler Lists
-        if (destroyedBlockController.getControllerType() != BlockControllerType.BUS) {
-            blocks.remove(destroyedBlockController);
-            busSystemModel.removeNode(destroyedBlockController.getBlockPosition());
-            System.out.println("No BusBlock destroyed");
-        } else {
-            System.out.println("BusBlock destroyed");
-            busBlocks.remove(destroyedBlockController);
-            List<IQueryableBusSystem> newBusSystemModels =
-                    busSystemModel.splitBusSystemModel(destroyedBlockController.getBlockPosition());
-            List<ClusterHandler> newClusterHandlers = new ArrayList<>();
-            for (IQueryableBusSystem newBusSystemModel: newBusSystemModels) {
-                newClusterHandlers.add(new ClusterHandler(newBusSystemModel));
-            }
-            //finish the new ClusterHandlers
-            for (IQueryableClusterController blockController: blocks) {
-                for (ClusterHandler clusterHandler: newClusterHandlers) {
-                    if (clusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
-                        clusterHandler.addBlocks(blockController);
-                        blockController.setClusterHandler(clusterHandler);
-                    }
+        //Remove Block from ClusterHandler Lists
+        busBlocks.remove(destroyedBlockController);
+        List<IQueryableBusSystem> newBusSystemModels =
+                busSystemModel.splitBusSystemModel(destroyedBlockController.getBlockPosition());
+        List<ClusterHandler> newClusterHandlers = new ArrayList<>();
+        for (IQueryableBusSystem newBusSystemModel: newBusSystemModels) {
+            newClusterHandlers.add(new ClusterHandler(newBusSystemModel));
+        }
+        //finish the new ClusterHandlers
+        for (IQueryableClusterController blockController: blocks) {
+            for (ClusterHandler newclusterHandler: newClusterHandlers) {
+                if (newclusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
+                    newclusterHandler.addBlocks(blockController);
+                    blockController.setClusterHandler(newclusterHandler);
                 }
             }
-            for (IQueryableClusterController blockController: busBlocks) {
-                for (ClusterHandler newclusterHandler: newClusterHandlers) {
-                    if (newclusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
-                        newclusterHandler.addBusBlocks(blockController);
-                        blockController.setClusterHandler(newclusterHandler);
-                    }
+        }
+        for (IQueryableClusterController blockController: busBlocks) {
+            for (ClusterHandler newclusterHandler: newClusterHandlers) {
+                if (newclusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
+                    newclusterHandler.addBusBlocks(blockController);
+                    blockController.setClusterHandler(newclusterHandler);
                 }
             }
-            for (ClusterHandler clusterHandler: newClusterHandlers) {
-                clusterHandler.checkFinished();
+        }
+        for (ClusterHandler newclusterHandler: newClusterHandlers) {
+            if (newclusterHandler.getBusBlocks().isEmpty()) {
+                System.out.println("Cluster neu verbinden");
+                IQueryableClusterController neighbourBlockController = newclusterHandler.getBlocks().get(0);
+                newclusterHandler.combineToNeighbours(neighbourBlockController);
+                neighbourBlockController.getClusterHandler().checkFinished();
+            } else {
+                newclusterHandler.checkFinished();
             }
         }
     }
+
+
 
     /**
      * method to add a block to the cluster
@@ -265,6 +267,8 @@ public class ClusterHandler implements IArchitectureCheckable {
         if (buildingFinished) {
             System.out.println("Simulation Start [Cluster Handler]");
             startSimulation();
+        } else {
+            //TODO: remove Simulation
         }
     }
 
