@@ -1,5 +1,7 @@
 package edu.kit.riscjblockits.model.instructionset;
 
+import java.util.List;
+
 //zwischen Controller und InstructionSet
 public interface IQueryableInstructionSetModel {
 
@@ -21,6 +23,13 @@ public interface IQueryableInstructionSetModel {
      * @return Integer register matching the key.
      */
     Integer getIntegerRegister(String key);
+
+    /**
+     * Getter for the float registers of the instruction set.
+     * @param key Key of the register.
+     * @return float register matching the key.
+     */
+    Integer getFloatRegister(String key);
 
     /**
      * Getter for the program counter register of the instruction set.
@@ -95,4 +104,11 @@ public interface IQueryableInstructionSetModel {
     IExecutableMicroInstruction getFetchPhaseStep(int index);
 
     IQueryableInstruction getInstructionFromBinary(String binaryValue);
+
+    /**
+     * ToDo nicht im Entwurf
+     * @return Returns the names of all registers.
+     */
+    List<String> getRegisterNames();
+
 }

@@ -46,6 +46,7 @@ public class BusSystemModel implements IQueryableBusSystem {
      */
     private BusSystemModel(Map<BlockPosition, List<BlockPosition>> adjPositions) {
         this.adjPositions = adjPositions;
+        System.out.println("ModelSize: " + adjPositions.size());
     }
 
     public Value getPresentData(){
@@ -118,9 +119,8 @@ public class BusSystemModel implements IQueryableBusSystem {
         if (!busSystemToCombine.equals(this)) {
             adjPositions.putAll(busSystemToCombine.getBusGraph());
         }
-        //adjPositions.putAll(busSystemToCombine.getBusGraph());
-        //System.out.println("Graphsize:" + adjPositions.size());
         addEdge(newNode, ownNode);
+        System.out.println("ModelSize: " + adjPositions.size() );
     }
 
     /**
@@ -135,6 +135,7 @@ public class BusSystemModel implements IQueryableBusSystem {
             BusSystemModel newBusSystem = new BusSystemModel(newGraph);
             newBusSystems.add(newBusSystem);
         }
+        System.out.println("ModelSize: " + adjPositions.size());
         return newBusSystems;
     }
 

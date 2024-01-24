@@ -20,8 +20,7 @@ public class AluController extends ComputerBlockController {
      * @param blockEntity The block entity that the controller is responsible for.
      */
     public AluController(IConnectableComputerBlockEntity blockEntity) {
-        super(blockEntity);
-        setControllerType(BlockControllerType.ALU);
+        super(blockEntity, BlockControllerType.ALU);
     }
 
     /**

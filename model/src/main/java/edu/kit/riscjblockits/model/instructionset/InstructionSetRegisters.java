@@ -2,7 +2,10 @@ package edu.kit.riscjblockits.model.instructionset;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Model of instruction set registers. Contains all information on the registers of the instruction set.
@@ -47,6 +50,9 @@ public class InstructionSetRegisters {
      * @return Address of the register.
      */
     public Integer getFloatRegister(String name) {
+        if (!intRegs.containsKey(name)) {
+            return null;
+        }
         return floatRegs.get(name);
     }
 
@@ -56,6 +62,9 @@ public class InstructionSetRegisters {
      * @return Address of the register.
      */
     public Integer getIntegerRegister(String name) {
+        if (!intRegs.containsKey(name)) {
+            return null;
+        }
         return intRegs.get(name);
     }
 
@@ -74,4 +83,20 @@ public class InstructionSetRegisters {
     public String[] getAluRegs() {
         return aluRegs;
     }
+
+    /**
+     * ToDo nicht im Entwurf
+     * @return Returns the names of all registers.
+     */
+    public List<String> getRegisterNames() {
+        //ToDo assert: no two registers have the same name
+        //ToDo assert: no register names have spaces in them
+        //ToDo [NOT ASSIGNED] is not a valid register name
+        List<String> names = new ArrayList<>(Arrays.asList(aluRegs));
+        names.add(programCounter);
+        names.addAll(intRegs.keySet());
+        names.addAll(floatRegs.keySet());
+        return names;
+    }
+
 }

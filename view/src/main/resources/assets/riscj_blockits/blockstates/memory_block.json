@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "riscj_blockits:block/memory_block" }
+  }
+}
