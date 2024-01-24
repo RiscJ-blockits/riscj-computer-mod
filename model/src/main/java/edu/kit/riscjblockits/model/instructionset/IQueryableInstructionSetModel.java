@@ -25,6 +25,13 @@ public interface IQueryableInstructionSetModel {
     Integer getIntegerRegister(String key);
 
     /**
+     * Getter for the float registers of the instruction set.
+     * @param key Key of the register.
+     * @return float register matching the key.
+     */
+    Integer getFloatRegister(String key);
+
+    /**
      * Getter for the program counter register of the instruction set.
      * @return Program counter register of the instruction set.
      */
