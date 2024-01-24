@@ -106,7 +106,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     public void inventoryChanged() {
         if (world != null && !world.isClient) {
             System.out.println("IST Item changed");
-            if (getItems().get(0).getCount() == 0) {         //Item removed
+            if (getItems().get(0).getCount() == 0) {         //Item is removed when there are zero 'air' items
                 Data cuData = new Data();
                 cuData.set("istModel", null);
                 getController().setData(cuData);
@@ -120,8 +120,9 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
         }
     }
 
-    /** Nicht im Entwurf
-     *
+    /**
+     * Gets called every tick.
+     * Used to update ui elements.
      */
     @Override
     public void updateUI() {
