@@ -44,10 +44,13 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      */
     protected abstract IUserInputReceivableComputerController createController();
 
+    /**
+     * Only exists on the client side. Holds the data displayed on the client.
+     */
     private IDataElement data;
 
     /**
-     * Method that is called by Minecraft every tick.
+     * Method that Minecraft calls every tick.
      * Will call the {@link ComputerBlockController#tick()} method.
      */
     public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
@@ -74,9 +77,9 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     }
 
     /**
-     * Get the {@link BlockController} of this block's neighbours, which are {@link BusBlock}.
+     * Get the {@link BlockController} of this block's neighbors, which are {@link BusBlock}.
      * Method is only overwritten in the BusEntity.
-     * @return all BlockControllers of this block's neighbours, which are BusBlocks.
+     * @return all BlockControllers of this block's neighbors, which are BusBlocks.
      */
     public List<ComputerBlockController> getComputerNeighbours() {
         List<ComputerBlockController> neigbhours = new ArrayList<>();
@@ -170,6 +173,11 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         }
     }
 
+    /**
+     * Method to write block data to a nbt compound.
+     * Does different things on the client and on the server side.
+     * @param nbt The nbt data that should be written to.
+     */
     @Override
     public void writeNbt(NbtCompound nbt) {
         if (getModel() != null) {                       //we are in the server, so we send the data in the model
@@ -181,6 +189,11 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         super.writeNbt(nbt);
     }
 
+    /**
+     * Method to read block data from a nbt compound.
+     * Does different things on the client and on the server side.
+     * @param nbt The nbt data that should be read from.
+     */
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);

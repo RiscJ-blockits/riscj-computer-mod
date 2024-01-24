@@ -71,4 +71,40 @@ public class RegisterScreenHandler extends ModScreenHandler {
         return "";
     }
 
+    public String[] getMissingRegisters() {
+        NbtCompound nbt = blockEntity.createNbt();
+        blockEntity.writeNbt(nbt);
+        if (!nbt.contains("modData")) {
+            return new String[] {""};
+        }
+        IDataElement data = new NbtDataConverter(nbt.get("modData")).getData();
+        if (!data.isContainer()) {
+            return new String[] {""};
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals("missing")) {
+                return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent().split(" ");
+            }
+        }
+        return new String[] {""};
+    }
+
+    public String[] getFoundRegisters() {
+        NbtCompound nbt = blockEntity.createNbt();
+        blockEntity.writeNbt(nbt);
+        if (!nbt.contains("modData")) {
+            return new String[] {""};
+        }
+        IDataElement data = new NbtDataConverter(nbt.get("modData")).getData();
+        if (!data.isContainer()) {
+            return new String[] {""};
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals("found")) {
+                return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent().split(" ");
+            }
+        }
+        return new String[] {""};
+    }
+
 }

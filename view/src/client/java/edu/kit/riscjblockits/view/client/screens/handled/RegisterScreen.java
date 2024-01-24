@@ -17,7 +17,7 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
     private final RegSelectWidget regSelectWidget = new RegSelectWidget();
     private boolean narrow;
 
-    Text registerValue = Text.literal("0");
+    private Text registerValue = Text.literal("0");
 
     public RegisterScreen(RegisterScreenHandler handler, PlayerInventory inventory,
                           Text title) {

@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.view.client.screens.wigets;
 
-import edu.kit.riscjblockits.view.client.screens.handled.RegisterScreen;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
 import net.minecraft.client.MinecraftClient;
@@ -10,15 +9,10 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.screen.recipebook.RecipeGroupButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ScrollableWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.client.gui.widget.ToggleButtonWidget;
-import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.apache.commons.compress.utils.Lists;
 
@@ -46,6 +40,9 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
     private boolean scrolling;
     public RegSelectWidget() {
     }
+
+    private Text textContentFound;
+    private Text textContentMissing;
 
     public void initalize(int parentWidth, int parentHeight, MinecraftClient client, boolean narrow, RegisterScreenHandler registerScreenHandler) {
         this.client = client;
@@ -123,7 +120,7 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
 
     @Override
     public SelectionType getType() {
-        return this.open ? Selectable.SelectionType.HOVERED : Selectable.SelectionType.NONE;
+        return this.open ? SelectionType.HOVERED : SelectionType.NONE;
     }
 
     @Override
@@ -142,6 +139,8 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         if (this.cachedInvChangeCount != this.client.player.getInventory().getChangeCount()) {
             this.cachedInvChangeCount = this.client.player.getInventory().getChangeCount();
         }
+        String[] missing = registerScreenHandler.getMissingRegisters();
+        String[] found = registerScreenHandler.getFoundRegisters();
     }
 
 }
