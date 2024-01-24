@@ -1,5 +1,7 @@
 package edu.kit.riscjblockits.model.instructionset;
 
+import java.util.List;
+
 //zwischen Controller und InstructionSet
 public interface IQueryableInstructionSetModel {
 
@@ -93,4 +95,11 @@ public interface IQueryableInstructionSetModel {
      * @return The microinstruction at the specified index.
      */
     IExecutableMicroInstruction getFetchPhaseStep(int index);
+
+    /**
+     * ToDo nicht im Entwurf
+     * @return Returns the names of all registers.
+     */
+    List<String> getRegisterNames();
+
 }

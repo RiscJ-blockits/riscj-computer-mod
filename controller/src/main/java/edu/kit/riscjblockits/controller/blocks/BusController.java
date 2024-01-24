@@ -15,8 +15,7 @@ public class BusController extends ComputerBlockController{
      * @param blockEntity The block entity that the controller is responsible for.
      */
     public BusController(IConnectableComputerBlockEntity blockEntity) {
-        super(blockEntity);
-        setControllerType(BlockControllerType.BUS);
+        super(blockEntity, BlockControllerType.BUS);
     }
 
     /**

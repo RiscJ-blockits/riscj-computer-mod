@@ -3,12 +3,14 @@ package edu.kit.riscjblockits.model.instructionset;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Model of an instruction set. Contains all information on how to execute code based on the instruction set.
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
-public class InstructionSetModel implements IQueryableInstructionSetModel {
+public class
+InstructionSetModel implements IQueryableInstructionSetModel {
 
     /**
      * Name of the instruction set.
@@ -234,4 +236,13 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
     public MicroInstruction getFetchPhaseStep(int index) {
         return fetchPhase[index];
     }
+
+    /**
+     * ToDo nicht im Entwurf
+     * @return Returns the names of all registers.
+     */
+    public List<String> getRegisterNames() {
+        return instructionSetRegisters.getRegisterNames();
+    }
+
 }

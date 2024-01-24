@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.view.main.blocks.mod;
 
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
@@ -7,7 +8,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 /**
  * This class represents a block entity from our mod in the game.
@@ -40,7 +43,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     protected ModBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         entitytype = EntityType.UNCONNECTABLE;
-        //FixMe Controller needs to get created when reload
+        markDirty();
     }
 
     /**
@@ -51,11 +54,25 @@ public abstract class ModBlockEntity extends BlockEntity {
 
     /**
      * The method is called when the block is placed in the world.
-     * It creates the controller for the block if it is called from the server context.
+     * ToDo anders als Entwurf
+     *
      */
     public void setController() {
-        if (!world.isClient) {
+        //We need the controller when the world is still loading, but the clustering can only start when the world is finished loading.
+        //If we place a new block, both things can happen at the same time.
+        if (world != null && world.isClient) {
+            return;
+        }
+        if (world == null && controller == null) {
             controller = createController();
+        }
+        else if (world != null && controller == null && entitytype == EntityType.CONNECTABLE) {
+            controller = createController();
+            ((ComputerBlockController) controller).startClustering(new BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
+        } else if ((world != null && controller != null
+                    && entitytype == EntityType.CONNECTABLE
+                    && ((ComputerBlockController) controller).getBlockPosition() == null)) {
+            ((ComputerBlockController) controller).startClustering(new BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
         }
     }
 
@@ -67,6 +84,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         controller.setData(new NbtDataConverter(nbt).getData());
+        setController();
     }
 
     public BlockPosition getBlockPosition() {

@@ -18,8 +18,8 @@ public abstract class BlockController implements IUserInputReceivableController 
     /**
      * Default Constructor. Creates an Undefined Controller.
      */
-    protected BlockController() {
-        controllerType = BlockControllerType.UNDEFINED;
+    protected BlockController(BlockControllerType controllerType) {
+        this.controllerType = controllerType;
     }
 
     /**

@@ -40,6 +40,9 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Will call the {@link ComputerBlockController#tick()} method.
      */
     public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
+        if(!world.isClient) {               //used to make sure we always have a controller
+            entity.setController();         //this could eat a lot of performance
+        }
         if (!world.isClient && entity.getController() != null) {
             ((IUserInputReceivableComputerController)entity.getController()).tick();
         }
@@ -58,24 +61,30 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
 
     /**
      * Get the {@link BlockController} of this block's neighbours, which are {@link BusBlock}.
+     * Method is only overwritten in the BusEntity.
      * @return all BlockControllers of this block's neighbours, which are BusBlocks.
      */
     public List<ComputerBlockController> getComputerNeighbours() {
         List<ComputerBlockController> neigbhours = new ArrayList<>();
         List<BlockEntity> blockEntities = new ArrayList<>();
         World world = getWorld();
+        assert world != null;       //because controllers only exist in the server, this is always true.
         blockEntities.add(world.getBlockEntity(getPos().down()));
         blockEntities.add(world.getBlockEntity(getPos().up()));
         blockEntities.add(world.getBlockEntity(getPos().south()));
         blockEntities.add(world.getBlockEntity(getPos().north()));
         blockEntities.add(world.getBlockEntity(getPos().east()));
         blockEntities.add(world.getBlockEntity(getPos().west()));
-        //test blocks
+        //
         for (BlockEntity entity:blockEntities) {
-            if (entity instanceof ComputerBlockEntity) {               //FixMe instanceof schöner machen
-                if (((ComputerBlockEntity) entity).getModblockType() == EntityType.BUS) {
-                    //ToDo cast entfernen
-                    neigbhours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
+            if (entity instanceof ComputerBlockEntity) {               //FixMe instanceof schöner machen (geht das)
+                if (((ComputerBlockEntity) entity).getModblockType() == EntityType.CONNECTABLE) {
+                    if (((ComputerBlockEntity) entity).getController() == null                //don't start clustering too early when chunk is still loading
+                        ||((ComputerBlockController) ((ComputerBlockEntity) entity).getController()).getClusterHandler() == null) {
+                        //do nothing
+                    } else {
+                        neigbhours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
+                    }
                 }
             }
         }
@@ -97,7 +106,6 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (!world.isClient) {
             ((IUserInputReceivableComputerController)getController()).onBroken();
         }
-        //ToDo controller must be there
     }
 
     /**
@@ -113,4 +121,5 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     public IDataElement getBlockEntityData() {
         return null;
     }
+
 }

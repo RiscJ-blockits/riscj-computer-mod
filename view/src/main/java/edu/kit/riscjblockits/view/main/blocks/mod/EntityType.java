@@ -5,10 +5,6 @@ package edu.kit.riscjblockits.view.main.blocks.mod;
  */
 public enum EntityType {
     /**
-     * Is used only for bus blocks.
-     */
-    BUS,
-    /**
      * All blocks of the computer except the bus.
      */
     CONNECTABLE,

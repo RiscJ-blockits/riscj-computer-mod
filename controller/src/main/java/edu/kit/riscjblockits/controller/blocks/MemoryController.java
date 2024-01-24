@@ -16,8 +16,7 @@ public class MemoryController extends ComputerBlockController {
      * @param blockEntity The block entity that the controller is responsible for.
      */
     public MemoryController(IConnectableComputerBlockEntity blockEntity) {
-        super(blockEntity);
-        setControllerType(BlockControllerType.MEMORY);
+        super(blockEntity, BlockControllerType.MEMORY);
     }
 
     /**
