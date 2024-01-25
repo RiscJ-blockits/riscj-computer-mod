@@ -55,7 +55,7 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
 
     @Override
     public Text getDisplayName() {
-        return Text.literal("Register");
+        return Text.translatable("block.riscj_blockits.register_block");
     }
 
     @Nullable

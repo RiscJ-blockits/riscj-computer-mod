@@ -6,6 +6,9 @@ import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_ITEM_PRESENT;
+
 public class ControlUnitModel extends BlockModel{
 
     private IQueryableInstructionSetModel istModel;
@@ -41,12 +44,12 @@ public class ControlUnitModel extends BlockModel{
     public IDataElement getData() {
         Data cuData = new Data();
         if (clusteringData != null) {
-            cuData.set("clustering", clusteringData);
+            cuData.set(CONTROL_CLUSTERING, clusteringData);
         }
         if (istModel != null) {             //ToDo auch hier wäre boolean besser
-            cuData.set("istModelPresent", new DataStringEntry("true"));
+            cuData.set(CONTROL_ITEM_PRESENT, new DataStringEntry("true"));
         } else
-            cuData.set("istModelPresent", new DataStringEntry("false"));
+            cuData.set(CONTROL_ITEM_PRESENT, new DataStringEntry("false"));
         return cuData;
     }
 

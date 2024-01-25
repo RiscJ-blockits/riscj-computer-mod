@@ -7,6 +7,10 @@ import edu.kit.riscjblockits.model.data.IDataElement;
 import java.util.ArrayList;
 import java.util.List;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_ACTIVE;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_MODE;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_SPEED;
+
 public class SystemClockModel extends BlockModel implements ISimulationTimingObserveable {
 
     private List<ISimulationTimingObserver> modeObservers;
@@ -37,12 +41,12 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
     @Override
     public IDataElement getData() {
         Data clockData = new Data();
-        clockData.set("speed", new DataStringEntry(String.valueOf(clockSpeed)));
-        clockData.set("mode", new DataStringEntry(mode.toString()));
+        clockData.set(CLOCK_SPEED, new DataStringEntry(String.valueOf(clockSpeed)));
+        clockData.set(CLOCK_MODE, new DataStringEntry(mode.toString()));
         if (activeTick) {
-            clockData.set("activeTick", new DataStringEntry("true"));         //ToDo hier wäre ein boolean data entry schlau, wollen wir glaub eh nicht speichern
+            clockData.set(CLOCK_ACTIVE, new DataStringEntry("true"));         //ToDo hier wäre ein boolean data entry schlau, wollen wir glaub eh nicht speichern
         } else {
-            clockData.set("activeTick", new DataStringEntry("false"));
+            clockData.set(CLOCK_ACTIVE , new DataStringEntry("false"));
         }
         return clockData;
     }

@@ -28,6 +28,8 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+
 /** BlockEntity for all @link ComputerBlocks.
  * Every {@link ComputerBlock} has its own unique ComputerBlockEntity during runtime.
  */
@@ -182,10 +184,10 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     @Override
     public void writeNbt(NbtCompound nbt) {
         if (getModel() != null) {                       //we are in the server, so we send the data in the model
-            nbt.put("modData", new DataNbtConverter(getModel().getData()).getNbtElement());
+            nbt.put(MOD_DATA, new DataNbtConverter(getModel().getData()).getNbtElement());
         }
         if (world != null && world.isClient && data != null) {          //we are in the client, so we send local data
-            nbt.put("modData", new DataNbtConverter(data).getNbtElement());
+            nbt.put(MOD_DATA, new DataNbtConverter(data).getNbtElement());
         }
         super.writeNbt(nbt);
     }
@@ -198,8 +200,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        if (world != null && world.isClient &&  nbt.contains("modData")) {     //we are in the client and want to save the data
-            data = new NbtDataConverter(nbt.get("modData")).getData();
+        if (world != null && world.isClient &&  nbt.contains(MOD_DATA)) {     //we are in the client and want to save the data
+            data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         }
     }
 

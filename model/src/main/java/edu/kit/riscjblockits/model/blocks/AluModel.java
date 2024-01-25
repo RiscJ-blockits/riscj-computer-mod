@@ -5,6 +5,11 @@ import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.ALU_OPERAND1;
+import static edu.kit.riscjblockits.model.data.DataConstants.ALU_OPERAND2;
+import static edu.kit.riscjblockits.model.data.DataConstants.ALU_OPERATION;
+import static edu.kit.riscjblockits.model.data.DataConstants.ALU_RESULT;
+
 public class AluModel extends BlockModel{
 
     /**
@@ -47,16 +52,16 @@ public class AluModel extends BlockModel{
     public IDataElement getData() {
         Data aluData = new Data();
         if (operation != null) {
-            aluData.set("operation", new DataStringEntry(operation));
+            aluData.set(ALU_OPERATION, new DataStringEntry(operation));
         }
         if (operand1 != null) {
-            aluData.set("operand1", new DataStringEntry(operand1.getHexadecimalValue()));
+            aluData.set(ALU_OPERAND1, new DataStringEntry(operand1.getHexadecimalValue()));
         }
         if (operand2 != null) {
-            aluData.set("operand2", new DataStringEntry(operand2.getHexadecimalValue()));
+            aluData.set(ALU_OPERAND2, new DataStringEntry(operand2.getHexadecimalValue()));
         }
         if (result != null) {
-            aluData.set("result", new DataStringEntry(result.getHexadecimalValue()));
+            aluData.set(ALU_RESULT, new DataStringEntry(result.getHexadecimalValue()));
         }
         return aluData;
     }

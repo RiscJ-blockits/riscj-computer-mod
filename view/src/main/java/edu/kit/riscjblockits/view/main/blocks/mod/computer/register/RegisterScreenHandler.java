@@ -14,6 +14,11 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_FOUND;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_MISSING;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
+
 public class RegisterScreenHandler extends ModScreenHandler {
 
     RegisterBlockEntity blockEntity;
@@ -56,15 +61,15 @@ public class RegisterScreenHandler extends ModScreenHandler {
     public String getRegisterValue() {
         NbtCompound nbt = blockEntity.createNbt();
         blockEntity.writeNbt(nbt);
-        if (!nbt.contains("modData")) {
+        if (!nbt.contains(MOD_DATA)) {
             return "";
         }
-        IDataElement data = new NbtDataConverter(nbt.get("modData")).getData();
+        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         if (!data.isContainer()) {
             return "";
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals("value")) {
+            if (s.equals(REGISTER_VALUE)) {
                 return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
             }
         }
@@ -74,7 +79,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
     public String[] getMissingRegisters() {
         NbtCompound nbt = blockEntity.createNbt();
         blockEntity.writeNbt(nbt);
-        if (!nbt.contains("modData")) {
+        if (!nbt.contains(MOD_DATA)) {
             return new String[] {""};
         }
         IDataElement data = new NbtDataConverter(nbt.get("modData")).getData();
@@ -82,7 +87,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
             return new String[] {""};
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals("missing")) {
+            if (s.equals(REGISTER_MISSING)) {
                 return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent().split(" ");
             }
         }
@@ -92,15 +97,15 @@ public class RegisterScreenHandler extends ModScreenHandler {
     public String[] getFoundRegisters() {
         NbtCompound nbt = blockEntity.createNbt();
         blockEntity.writeNbt(nbt);
-        if (!nbt.contains("modData")) {
+        if (!nbt.contains(MOD_DATA)) {
             return new String[] {""};
         }
-        IDataElement data = new NbtDataConverter(nbt.get("modData")).getData();
+        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         if (!data.isContainer()) {
             return new String[] {""};
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals("found")) {
+            if (s.equals(REGISTER_FOUND)) {
                 return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent().split(" ");
             }
         }

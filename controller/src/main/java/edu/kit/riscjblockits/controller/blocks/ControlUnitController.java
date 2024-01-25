@@ -12,6 +12,10 @@ import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
 import java.io.UnsupportedEncodingException;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_MODEL;
+
 /**
  * The controller for the control unit block.
  * [JavaDoc in this class partially generated with GitHub Copilot]
@@ -62,16 +66,15 @@ public class ControlUnitController extends ComputerBlockController{
             return;
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals("clustering")) {
+            if (s.equals(CONTROL_CLUSTERING)) {
                 ((ControlUnitModel) getModel()).setClusteringData(((IDataContainer) data).get(s));
-            } else if (s.equals("istModel")) {
+            } else if (s.equals(CONTROL_IST_MODEL)) {
                 if (((IDataContainer) data).get(s) == null) {           //istModel has been removed
                     ((ControlUnitModel) getModel()).setIstModel(null);
                     updateClusterHandler();
                     return;
                 }
-                //((IDataContainer) ((IDataContainer) data).get(s)).get("riscj_blockits.instructionSet");
-                String ist = ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(s)).get("riscj_blockits.instructionSet")).getContent();
+                String ist = ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(s)).get(CONTROL_IST_ITEM)).getContent();
                 IQueryableInstructionSetModel istModel = null;
                 try {
                     istModel = InstructionSetBuilder.buildInstructionSetModel(ist);

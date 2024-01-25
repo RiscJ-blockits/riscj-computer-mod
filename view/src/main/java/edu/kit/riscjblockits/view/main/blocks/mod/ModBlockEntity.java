@@ -11,6 +11,8 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+
 /**
  * This class represents a block entity from our mod in the game.
  * Every Block has its own unique BlockEntity while it is loaded.
@@ -84,10 +86,10 @@ public abstract class ModBlockEntity extends BlockEntity {
         super.readNbt(nbt);
         setController();
         if (controller != null) {       //controller is only in the server not null
-            if (!nbt.contains("modData")) {
+            if (!nbt.contains(MOD_DATA)) {
                 return;
             }
-            IDataElement newData = new NbtDataConverter(nbt.get("modData")).getData();
+            IDataElement newData = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
             controller.setData(newData);        //when we are loaded, we get our initial data from the nbt
         }
     }

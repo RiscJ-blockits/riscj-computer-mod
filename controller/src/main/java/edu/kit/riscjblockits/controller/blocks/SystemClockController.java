@@ -8,6 +8,9 @@ import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_MODE;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_SPEED;
+
 /**
  * The controller for a system clock block entity.
  * [JavaDoc in this class partially generated with GitHub Copilot]
@@ -78,11 +81,11 @@ public class SystemClockController extends ComputerBlockController {
             return;
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals("speed")) {
-                String value = ((IDataStringEntry) ((IDataContainer) data).get("speed")).getContent();
-                ((SystemClockModel) getModel()).setClockSpeed(Integer.parseInt(value));          //ToDo error handling hier nötig
-            } else if (s.equals("mode")) {
-                String value = ((IDataStringEntry) ((IDataContainer) data).get("mode")).getContent();
+            if (s.equals(CLOCK_SPEED)) {
+                String value = ((IDataStringEntry) ((IDataContainer) data).get(CLOCK_SPEED)).getContent();
+                ((SystemClockModel) getModel()).setClockSpeed(Integer.parseInt(value));          //ToDo error handling hier nötig?
+            } else if (s.equals(CLOCK_MODE)) {
+                String value = ((IDataStringEntry) ((IDataContainer) data).get(CLOCK_MODE)).getContent();
                 ((SystemClockModel) getModel()).setClockMode(ClockMode.valueOf(value));         //ToDo error handling hier nötig?
             }
         }

@@ -1,11 +1,12 @@
 package edu.kit.riscjblockits.controller.blocks;
 
-import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
+import edu.kit.riscjblockits.model.blocks.AluModel;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
-import edu.kit.riscjblockits.model.blocks.AluModel;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.ALU_OPERATION;
 
 /**
  * The controller for an ALU block entity.
@@ -44,7 +45,7 @@ public class AluController extends ComputerBlockController {
             return;
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals("operation")) {
+            if (s.equals(ALU_OPERATION)) {
                 ((AluModel) getModel()).setOperation(((IDataStringEntry)((IDataContainer) data).get(s)).getContent());
             }
             //ToDo sollen wir hier auch die Operanden setzen können?

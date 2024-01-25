@@ -5,6 +5,9 @@ import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.BUS_ACTIVE;
+import static edu.kit.riscjblockits.model.data.DataConstants.BUS_DATA;
+
 public class BusModel extends BlockModel{
 
     /**
@@ -30,12 +33,12 @@ public class BusModel extends BlockModel{
     public IDataElement getData() {
         Data busData = new Data();
         if (belongsToSystem != null && belongsToSystem.getActiveVisualization(getPosition())) {
-            busData.set("active", new DataStringEntry("true"));         //ToDo hier boolean data entry schlau, wollen wir eh nicht speichern
+            busData.set(BUS_ACTIVE, new DataStringEntry("true"));         //ToDo hier boolean data entry schlau, wollen wir eh nicht speichern
         } else {
-            busData.set("active", new DataStringEntry("false"));
+            busData.set(BUS_ACTIVE, new DataStringEntry("false"));
         }
         if (belongsToSystem != null) {
-            busData.set("presentData", new DataStringEntry(belongsToSystem.getPresentData().getHexadecimalValue()));
+            busData.set(BUS_DATA, new DataStringEntry(belongsToSystem.getPresentData().getHexadecimalValue()));
         }
         return busData;
     }

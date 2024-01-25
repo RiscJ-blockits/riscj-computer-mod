@@ -1,0 +1,9 @@
+{
+  "block.riscj_blockits.bus_block": "Bus",
+  "block.riscj_blockits.register_block": "Register",
+  "block.riscj_blockits.alu_block": "Rechenwerk",
+  "block.riscj_blockits.memory_block": "Hauptspeicher",
+  "block.riscj_blockits.control_unit_block": "Kontrolleinheit",
+  "block.riscj_blockits.system_clock_block": "Taktgeber",
+  "itemGroup.riscj_blockits.computer_components": "Computer Gegenstände"
+}
