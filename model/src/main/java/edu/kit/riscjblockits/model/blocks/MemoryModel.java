@@ -1,8 +1,9 @@
 package edu.kit.riscjblockits.model.blocks;
 
+import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
-import edu.kit.riscjblockits.model.data.IDataElement;
 
 public class MemoryModel extends BlockModel {
 
@@ -19,7 +20,9 @@ public class MemoryModel extends BlockModel {
 
     @Override
     public IDataElement getData() {
-        return null;
+        Data memData = new Data();
+        //ToDo
+        return memData;
     }
 
     public Value getMemoryAt(Value address) {
