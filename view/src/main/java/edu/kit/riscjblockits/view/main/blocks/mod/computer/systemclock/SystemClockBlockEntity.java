@@ -52,6 +52,6 @@ public class SystemClockBlockEntity extends ComputerBlockEntity implements Exten
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new SystemClockScreenHandler(syncId, playerInventory);
+        return new SystemClockScreenHandler(syncId, playerInventory, this);
     }
 }

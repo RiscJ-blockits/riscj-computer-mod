@@ -9,10 +9,13 @@ import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class ModScreenHandler extends ScreenHandler {
-    protected ModScreenHandler(@Nullable ScreenHandlerType<?> type,
-                               int syncId) {
-        super(type, syncId);
 
+    private ModBlockEntity blockEntity;
+
+    protected ModScreenHandler(@Nullable ScreenHandlerType<?> type,
+                               int syncId, ModBlockEntity blockEntity) {
+        super(type, syncId);
+        this.blockEntity = blockEntity;
     }
 
     @Override
@@ -37,4 +40,9 @@ public abstract class ModScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
     }
+
+    public ModBlockEntity getBlockEntity() {
+        return blockEntity;
+    }
+
 }

@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.view.main.blocks.mod.programming;
 
 import edu.kit.riscjblockits.controller.assembler.AssemblyException;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
 import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,7 +45,7 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
      * @param buf the packet buffer, additional information is to be loaded from
      */
     public ProgrammingScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        super(RISCJ_blockits.PROGRAMMING_SCREEN_HANDLER, syncId);
+        super(RISCJ_blockits.PROGRAMMING_SCREEN_HANDLER, syncId, (ModBlockEntity) playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
         this.inventory = new SimpleInventory(1);
         addInstructionSetSlot();
         addProgramSlot();

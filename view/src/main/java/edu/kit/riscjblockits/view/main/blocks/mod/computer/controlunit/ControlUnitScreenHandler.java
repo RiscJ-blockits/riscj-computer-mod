@@ -1,30 +1,23 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit;
 
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-import org.jetbrains.annotations.Nullable;
 
 public class ControlUnitScreenHandler extends ModScreenHandler {
 
     private final Inventory inventory;
 
-    ControlUnitBlockEntity blockEntity;
-
-    public ControlUnitScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity) {
-        super(RISCJ_blockits.CONTROL_UNIT_SCREEN_HANDLER, syncId);
-        this.blockEntity = (ControlUnitBlockEntity) blockEntity;
+    public ControlUnitScreenHandler(int syncId, PlayerInventory playerInventory, ModBlockEntity blockEntity) {
+        super(RISCJ_blockits.CONTROL_UNIT_SCREEN_HANDLER, syncId, blockEntity);
 
         checkSize(((Inventory) blockEntity), 1);
         this.inventory = ((Inventory) blockEntity);
@@ -50,7 +43,7 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
     }
 
     public ControlUnitScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this(syncId,playerInventory, playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
+        this(syncId,playerInventory, (ModBlockEntity) playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
     }
     @Override
     public ItemStack quickMove(PlayerEntity player, int invSlot) {

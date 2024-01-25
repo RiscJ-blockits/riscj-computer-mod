@@ -4,9 +4,9 @@ import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -21,18 +21,15 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 
 public class RegisterScreenHandler extends ModScreenHandler {
 
-    RegisterBlockEntity blockEntity;
-
-    public RegisterScreenHandler(int syncId, PlayerInventory inventory, BlockEntity blockEntity) {
-        super(RISCJ_blockits.REGISTER_SCREEN_HANDLER, syncId);
-        this.blockEntity = (RegisterBlockEntity) blockEntity;
+    public RegisterScreenHandler(int syncId, PlayerInventory inventory, ModBlockEntity blockEntity) {
+        super(RISCJ_blockits.REGISTER_SCREEN_HANDLER, syncId, blockEntity);
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
         addPlayerInventorySlots(inventory);
     }
 
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
-        this(syncId, inventory, inventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
+        this(syncId, inventory, (ModBlockEntity) inventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
     }
     @Override
     public ItemStack quickMove(PlayerEntity player, int slot) {
@@ -59,8 +56,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
     }
 
     public String getRegisterValue() {
-        NbtCompound nbt = blockEntity.createNbt();
-        blockEntity.writeNbt(nbt);
+        NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
             return "";
         }
@@ -77,8 +73,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
     }
 
     public String[] getMissingRegisters() {
-        NbtCompound nbt = blockEntity.createNbt();
-        blockEntity.writeNbt(nbt);
+        NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
             return new String[] {""};
         }
@@ -95,8 +90,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
     }
 
     public String[] getFoundRegisters() {
-        NbtCompound nbt = blockEntity.createNbt();
-        blockEntity.writeNbt(nbt);
+        NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
             return new String[] {""};
         }
