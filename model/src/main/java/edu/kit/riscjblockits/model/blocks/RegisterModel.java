@@ -9,7 +9,6 @@ public class RegisterModel extends BlockModel {
 
     private int wordLength;
 
-    int i = 0;
     private String registerType;
     private Value value;
 
@@ -25,7 +24,7 @@ public class RegisterModel extends BlockModel {
         value = new Value();
         setType(ModelType.REGISTER);
         registerType = "[NOT ASSIGNED]";
-        wordLength = 0;
+        wordLength = 32;
     }
 
     @Override
@@ -44,20 +43,26 @@ public class RegisterModel extends BlockModel {
      */
     @Override
     public IDataElement getData() {
-        i++;
-        value = Value.fromDecimal(Integer.toString(i), 10);
-
+        //ToDo remove Test code
+        if (!value.getHexadecimalValue().equals("")) {
+            long l = Long.parseLong(value.getHexadecimalValue(), 16);
+            l++;
+            value = Value.fromDecimal(Long.toString(l), 10);
+        } else {
+            value = Value.fromDecimal("1", 10);
+        }
 
         Data regData = new Data();
         regData.set("type", new DataStringEntry(registerType));
         regData.set("word", new DataStringEntry(String.valueOf(wordLength)));
         regData.set("value", new DataStringEntry(value.getHexadecimalValue()));
-        Data registersData = new Data();
-        if (missingAvailableRegisters != null && missingAvailableRegisters.length == 2) {
+        if (missingAvailableRegisters != null && missingAvailableRegisters.length == 2
+                && (missingAvailableRegisters[0] != null) && (missingAvailableRegisters[1] != null)) {
+            Data registersData = new Data();
             registersData.set("missing", new DataStringEntry(missingAvailableRegisters[0]));
             registersData.set("found", new DataStringEntry(missingAvailableRegisters[1]));
+            regData.set("registers", registersData);
         }
-        regData.set("registers", registersData);
         return regData;
     }
 

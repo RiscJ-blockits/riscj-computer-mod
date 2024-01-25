@@ -1,13 +1,11 @@
 package edu.kit.riscjblockits.controller.blocks;
 
-import edu.kit.riscjblockits.model.data.IDataContainer;
-import edu.kit.riscjblockits.model.data.IDataStringEntry;
-import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
+import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
-
-import java.util.Set;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 /**
  * The controller for a register block entity.
@@ -68,25 +66,39 @@ public class RegisterController extends ComputerBlockController {
         *                                  container:   key: "missing", value: string space-separated register names
         *                                               key: "found", value: string with space-separated register names
         *               key: "word", value: string with word length
+        *               key: "value", value: string with value
         */
         if (!data.isContainer()) {
             return;
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals("type")) {
-                String type =((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
-                ((RegisterModel) getModel()).setRegisterType(type);
-            } else if (s.equals("registers")) {
-                IDataContainer registers = (IDataContainer) ((IDataContainer) data).get(s);
-                String[] missingAvailableRegisters = new String[2];
-                missingAvailableRegisters[0] = ((IDataStringEntry) registers.get("missing")).getContent();
-                missingAvailableRegisters[1] = ((IDataStringEntry) registers.get("found")).getContent();
-                ((RegisterModel) getModel()).setMissingAvailableRegisters(missingAvailableRegisters);
-            } else if (s.equals("word")) {
-                int wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
-                ((RegisterModel) getModel()).setWordLength(wordLength);
+            switch (s) {
+                case "type" -> {
+                    String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+                    ((RegisterModel) getModel()).setRegisterType(type);
+                }
+                case "registers" -> {
+                    IDataContainer registers = (IDataContainer) ((IDataContainer) data).get(s);
+                    String[] missingAvailableRegisters = new String[2];
+                    missingAvailableRegisters[0] = ((IDataStringEntry) registers.get("missing")).getContent();
+                    missingAvailableRegisters[1] = ((IDataStringEntry) registers.get("found")).getContent();
+                    ((RegisterModel) getModel()).setMissingAvailableRegisters(missingAvailableRegisters);
+                }
+                case "word" -> {
+                    int wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
+                    ((RegisterModel) getModel()).setWordLength(wordLength);
+                }
+                case "value" -> {
+                    int wordLength;
+                    try {
+                        wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get("word")).getContent());
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
+                    Value value = Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
+                    ((RegisterModel) getModel()).setValue(value);
+                }
             }
-            //ToDo set value from view
         }
     }
 

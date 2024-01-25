@@ -120,7 +120,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Passes the onBroken call to the {@link BlockController}, for the {@link BlockController} to handle it.
      */
     public void onBroken() {
-        if (!world.isClient) {
+        assert world != null;
+        if (!world.isClient && getController() != null) {
             ((IUserInputReceivableComputerController)getController()).onBroken();
         }
     }
@@ -183,7 +184,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (getModel() != null) {                       //we are in the server, so we send the data in the model
             nbt.put("modData", new DataNbtConverter(getModel().getData()).getNbtElement());
         }
-        if (world != null && world.isClient) {          //we are in the client, so we send local data
+        if (world != null && world.isClient && data != null) {          //we are in the client, so we send local data
             nbt.put("modData", new DataNbtConverter(data).getNbtElement());
         }
         super.writeNbt(nbt);

@@ -30,8 +30,7 @@ public class BusModel extends BlockModel{
     public IDataElement getData() {
         Data busData = new Data();
         if (belongsToSystem != null && belongsToSystem.getActiveVisualization(getPosition())) {
-            busData.set("active", new DataStringEntry(
-                "true"));         //ToDo hier boolean data entry schlau, wollen wir eh nicht speichern
+            busData.set("active", new DataStringEntry("true"));         //ToDo hier boolean data entry schlau, wollen wir eh nicht speichern
         } else {
             busData.set("active", new DataStringEntry("false"));
         }

@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.view.main.blocks.mod;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -75,16 +76,19 @@ public abstract class ModBlockEntity extends BlockEntity {
     }
 
     /**
-     * ToDo
-     * @param nbt
+     * Method to read block data from a nbt compound.
+     * @param nbt The nbt data that should be read from.
      */
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         setController();
-        // catch client side synchronization, where there is no controller
-        if (controller != null) {
-            controller.setData(new NbtDataConverter(nbt).getData());
+        if (controller != null) {       //controller is only in the server not null
+            if (!nbt.contains("modData")) {
+                return;
+            }
+            IDataElement newData = new NbtDataConverter(nbt.get("modData")).getData();
+            controller.setData(newData);        //when we are loaded, we get our initial data from the nbt
         }
     }
 

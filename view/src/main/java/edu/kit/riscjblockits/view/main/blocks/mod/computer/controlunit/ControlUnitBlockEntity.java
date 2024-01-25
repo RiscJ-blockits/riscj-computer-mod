@@ -2,22 +2,16 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
-import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
-import edu.kit.riscjblockits.view.main.blocks.mod.ImplementedInventory;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntityWithInventory;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
@@ -26,7 +20,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -88,16 +81,6 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new ControlUnitScreenHandler(syncId, playerInventory, this);
-    }
-
-    /**
-     * Reads the items from the given {@link NbtCompound}.
-     * Reads block information from the given {@link NbtCompound}.
-     * @param nbt
-     */
-    @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
     }
 
     /**
