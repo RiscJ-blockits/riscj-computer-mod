@@ -3,7 +3,6 @@ package edu.kit.riscjblockits.controller.blocks;
 import edu.kit.riscjblockits.controller.clustering.ClusterHandler;
 import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
-import edu.kit.riscjblockits.model.blocks.RegisterModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
@@ -71,7 +70,7 @@ public class ControlUnitController extends ComputerBlockController{
                     updateClusterHandler();
                     return;
                 }
-                ((IDataContainer) ((IDataContainer) data).get(s)).get("riscj_blockits.instructionSet");
+                //((IDataContainer) ((IDataContainer) data).get(s)).get("riscj_blockits.instructionSet");
                 String ist = ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(s)).get("riscj_blockits.instructionSet")).getContent();
                 IQueryableInstructionSetModel istModel = null;
                 try {

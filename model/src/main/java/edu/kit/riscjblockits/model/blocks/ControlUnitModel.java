@@ -44,9 +44,9 @@ public class ControlUnitModel extends BlockModel{
             cuData.set("clustering", clusteringData);
         }
         if (istModel != null) {             //ToDo auch hier wäre boolean besser
-            cuData.set("istModel", new DataStringEntry("true"));
+            cuData.set("istModelPresent", new DataStringEntry("true"));
         } else
-            cuData.set("istModel", new DataStringEntry("false"));
+            cuData.set("istModelPresent", new DataStringEntry("false"));
         return cuData;
     }
 
