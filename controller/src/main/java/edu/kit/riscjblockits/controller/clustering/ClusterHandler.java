@@ -11,7 +11,6 @@ import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import edu.kit.riscjblockits.model.busgraph.IQueryableBusSystem;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
-import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -228,6 +227,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     public boolean setIstModel(IQueryableInstructionSetModel istModel) {
         if (istModel == null) {
+            removeIstModel();
             return false;
         }
         int cuCount = 0;
@@ -236,7 +236,7 @@ public class ClusterHandler implements IArchitectureCheckable {
                 cuCount++;
             }
         }
-        if (cuCount != 1) {
+        if (cuCount > 1) {
             removeIstModel();
             return false;
         }

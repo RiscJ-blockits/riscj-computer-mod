@@ -86,10 +86,11 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     /**
      * When the Instruction Set changes, the controller needs to be notified.
      */
+    @Override
     public void inventoryChanged() {
-        if (world != null && !world.isClient) {
+        if (getController() != null) {             //only on the server
             System.out.println("IST Item changed");
-            if (getItems().get(0).getCount() == 0) {         //Item is removed when there are zero 'air' items
+            if (getItems().get(0).getCount() == 0) {        //Item is removed when there are zero 'air' items
                 Data cuData = new Data();
                 cuData.set("istModel", null);
                 getController().setData(cuData);

@@ -85,7 +85,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         setController();
-        if (controller != null) {       //controller is only in the server not null
+        if (controller != null) {               //controller is only in the server not null
             if (!nbt.contains(MOD_DATA)) {
                 return;
             }
@@ -110,7 +110,7 @@ public abstract class ModBlockEntity extends BlockEntity {
      * @return Returns the controller of this block entity. If in client context, it returns null.
      */
     public IUserInputReceivableController getController() {
-        if (world.isClient) {
+        if (world != null && world.isClient) {
             return null;
         }
         return controller;

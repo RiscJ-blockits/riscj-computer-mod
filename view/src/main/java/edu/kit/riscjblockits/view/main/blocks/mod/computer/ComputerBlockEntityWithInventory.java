@@ -49,6 +49,7 @@ public abstract class ComputerBlockEntityWithInventory extends ComputerBlockEnti
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         Inventories.readNbt(nbt, items);
+        inventoryChanged();
     }
 
     /**
@@ -59,6 +60,14 @@ public abstract class ComputerBlockEntityWithInventory extends ComputerBlockEnti
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         Inventories.writeNbt(nbt, items);
+    }
+
+    /**
+     * Must be called by the block-specific screen handler if the inventory has changed.
+     * Is called when the block is loaded.
+     */
+    public void inventoryChanged() {
+        //do nothing
     }
 
 }

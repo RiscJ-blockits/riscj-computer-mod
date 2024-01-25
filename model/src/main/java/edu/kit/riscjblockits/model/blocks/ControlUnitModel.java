@@ -48,8 +48,9 @@ public class ControlUnitModel extends BlockModel{
         }
         if (istModel != null) {             //ToDo auch hier wäre boolean besser
             cuData.set(CONTROL_ITEM_PRESENT, new DataStringEntry("true"));
-        } else
+        } else {
             cuData.set(CONTROL_ITEM_PRESENT, new DataStringEntry("false"));
+        }
         return cuData;
     }
 
