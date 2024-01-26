@@ -39,7 +39,7 @@ public class RegisterModel extends BlockModel {
 
     @Override
     public boolean hasUnqueriedStateChange() {
-        //ToDo
+        //ToDo remove Test code
         return true;
     }
 
@@ -74,11 +74,13 @@ public class RegisterModel extends BlockModel {
             registersData.set(REGISTER_FOUND, new DataStringEntry(missingAvailableRegisters[1]));
             regData.set(REGISTER_REGISTERS, registersData);
         }
+        setUnqueriedStateChange(false);
         return regData;
     }
 
     public void setWordLength(int wordLength){
         this.wordLength = wordLength;
+        setUnqueriedStateChange(true);
     }
 
     public String getRegisterType() {
@@ -87,6 +89,7 @@ public class RegisterModel extends BlockModel {
 
     public void setRegisterType(String registerType) {
         this.registerType = registerType;
+        setUnqueriedStateChange(true);
     }
 
     public Value getValue() {
@@ -95,6 +98,7 @@ public class RegisterModel extends BlockModel {
 
     public void setValue(Value value) {
         this.value = value;
+        setUnqueriedStateChange(true);
     }
 
     /**
@@ -103,6 +107,7 @@ public class RegisterModel extends BlockModel {
      */
     public void setMissingAvailableRegisters(String[] missingAvailableRegisters) {
         this.missingAvailableRegisters = missingAvailableRegisters;
+        setUnqueriedStateChange(true);
     }
 
 }

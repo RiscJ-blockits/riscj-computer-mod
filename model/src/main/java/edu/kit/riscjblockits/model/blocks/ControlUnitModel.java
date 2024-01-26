@@ -26,6 +26,7 @@ public class ControlUnitModel extends BlockModel{
 
     @Override
     public boolean hasUnqueriedStateChange() {
+        //ToDo remove TestCode
         return true;
     }
 
@@ -51,6 +52,7 @@ public class ControlUnitModel extends BlockModel{
         } else {
             cuData.set(CONTROL_ITEM_PRESENT, new DataStringEntry("false"));
         }
+        setUnqueriedStateChange(false);
         return cuData;
     }
 
@@ -60,6 +62,7 @@ public class ControlUnitModel extends BlockModel{
 
     public void setIstModel(IQueryableInstructionSetModel istModel) {
         this.istModel = istModel;
+        setUnqueriedStateChange(true);
     }
 
     /**
@@ -68,6 +71,7 @@ public class ControlUnitModel extends BlockModel{
      */
     public void setClusteringData(IDataElement clusteringData) {
         this.clusteringData = (IDataContainer) clusteringData;
+        setUnqueriedStateChange(true);
     }
 
 }
