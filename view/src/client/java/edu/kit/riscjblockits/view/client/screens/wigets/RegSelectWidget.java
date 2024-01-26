@@ -70,6 +70,7 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         }
     }
 
+
     public void toggleOpen() {
         this.setOpen(!this.open);
     }

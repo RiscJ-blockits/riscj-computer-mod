@@ -14,6 +14,11 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_FOUND;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_MISSING;
@@ -72,38 +77,21 @@ public class RegisterScreenHandler extends ModScreenHandler {
         return "";
     }
 
-    public String[] getMissingRegisters() {
+    public List<String> getRegisters(String key) {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
-            return new String[] {""};
-        }
-        IDataElement data = new NbtDataConverter(nbt.get("modData")).getData();
-        if (!data.isContainer()) {
-            return new String[] {""};
-        }
-        for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals(REGISTER_MISSING)) {
-                return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent().split(" ");
-            }
-        }
-        return new String[] {""};
-    }
-
-    public String[] getFoundRegisters() {
-        NbtCompound nbt = getBlockEntity().createNbt();
-        if (!nbt.contains(MOD_DATA)) {
-            return new String[] {""};
+            return new ArrayList<String>();
         }
         IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         if (!data.isContainer()) {
-            return new String[] {""};
+            return new ArrayList<String>();
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals(REGISTER_FOUND)) {
-                return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent().split(" ");
+            if (s.equals(key)) {
+                return Arrays.asList(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent().split(" "));
             }
         }
-        return new String[] {""};
+        return new ArrayList<String>();
     }
 
 }
