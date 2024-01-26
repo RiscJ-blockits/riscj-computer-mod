@@ -50,18 +50,17 @@ public class ControlUnitController extends ComputerBlockController{
     /**
      * Used from the view if it wants to update Data in the model.
      * @param data The data that should be set.
+     *              Data Format:    key: "clustering", value: container
+     *                                              key: "missingRegisters", value: string space-separated register names
+     *                                              key: "foundRegisters", value: string space-separated register names
+     *                                              key: "foundMemory", value: string with number of memory blocks
+     *                                              key: "foundAlu", value: string with number of alu blocks
+     *                                              key: "foundControlUnit", value: string with number of control unit blocks
+     *                                              key: "foundSystemClock", value: string with number of system clock blocks
+     *                              key: "istModel", value: null, if the ist Item has been removed, .json String if an Item has been inserted
      */
     @Override
     public void setData(IDataElement data) {
-        /* Data Format: key: "clustering", value: container
-         *                                  key: "missingRegisters", value: string space-separated register names
-         *                                  key: "foundRegisters", value: string space-separated register names
-         *                                  key: "foundMemory", value: string with number of memory blocks
-         *                                  key: "foundAlu", value: string with number of alu blocks
-         *                                  key: "foundControlUnit", value: string with number of control unit blocks
-         *                                  key: "foundSystemClock", value: string with number of system clock blocks
-         *              key: "istModel", value: null, if the ist Item has been removed, .json String if an Item has been inserted
-         */
         if (!data.isContainer()) {
             return;
         }
