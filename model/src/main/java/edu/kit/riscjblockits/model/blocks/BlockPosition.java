@@ -11,13 +11,6 @@ public class BlockPosition {
 
     private boolean isBus;
 
-    public BlockPosition() {
-        x = 0;
-        y = 0;
-        z = 0;
-        isBus = false;
-    }
-
     public BlockPosition(double x, double y, double z) {
         this.x = x;
         this.y = y;

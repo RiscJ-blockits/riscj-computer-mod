@@ -12,6 +12,7 @@ public class BusModel extends BlockModel{
 
     public BusModel() {
         setType(ModelType.BUS);
+        getPosition().setBus(true);
     }
 
     @Override
