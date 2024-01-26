@@ -24,8 +24,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implements ExtendedScreenHandlerFactory{
 
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
-
     private static final int PROGRAM_SLOT = 0;
 
     /**

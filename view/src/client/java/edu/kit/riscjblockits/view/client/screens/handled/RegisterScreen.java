@@ -59,7 +59,7 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
         }
         this.regSelectWidget.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
-        context.drawCenteredTextWithShadow(textRenderer, registerValue, width / 2, height / 2, 0xffffff);
+        context.drawText(textRenderer, registerValue, this.x + 64, this.y + 39, 0x555555, false);
 
     }
 
@@ -67,7 +67,8 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
     public void handledScreenTick() {
         super.handledScreenTick();
         this.regSelectWidget.update();
-        registerValue = Text.literal(handler.getRegisterValue());
+        String regValue = handler.getRegisterValue();
+        registerValue = Text.literal(regValue.substring(regValue.length() - 8));
     }
 
 }
