@@ -1,21 +1,27 @@
 package edu.kit.riscjblockits.controller.assembler;
 
+import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
+import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AssemblerTest {
 
-    /*/**
+    /**
      * tests the assembler, expected results are from MIMA flux
      *
      * @throws AssemblyException
-
-    @Disabled
+    */
     @Test
     void assemble() throws AssemblyException {
         InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelMima();
         Assembler assembler = new Assembler(model);
-        assembler.assemble("ADD 0x16");
-        Memory memory = assembler.getMemory();
+        assembler.assemble("\n\nADD 0x16");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
         Value val = memory.getValueAt(Value.fromHex("00", 3));
         assertEquals("300016", val.getHexadecimalValue());
 
@@ -32,7 +38,7 @@ class AssemblerTest {
                                         "\n   " +
                                         "*= 8\n" +
                                         "LABEL: HALT");
-        memory = assembler.getMemory();
+        memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
         val = memory.getValueAt(Value.fromHex("00", 3));
         assertEquals("300016", val.getHexadecimalValue());
         val = memory.getValueAt(Value.fromHex("01", 3));
@@ -49,5 +55,89 @@ class AssemblerTest {
         val = memory.getValueAt(Value.fromHex("08", 3));
         assertEquals("F00000", val.getHexadecimalValue());
     }
-    */
+
+    @Test
+    void assembleMIMADataChange() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelMima();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("DS 0x1234");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 3));
+        assertEquals("001234", val.getHexadecimalValue());
+    }
+
+    /**
+     * tests the assembler, expected results are from RARS
+     *
+     * @throws AssemblyException
+     */
+    @Test
+    void assembleRisc() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("addi t1, t2, 0xFF");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("0FF38313", val.getHexadecimalValue());
+    }
+
+    @Test
+    void assembleRiscSW() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("sw t1, 16(t2)");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("0063A823", val.getHexadecimalValue());
+    }
+
+    @Test
+    void assembleRiscSLLI() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("slli t1, t2, 0x12");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("01239313", val.getHexadecimalValue());
+    }
+
+    @Test
+    void assembleRiscSLL() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("sll t1, t2, t3");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("01C39333", val.getHexadecimalValue());
+    }
+
+    //TODO seems like discrepancy between RARS and RISC-V
+    @Test
+    void assembleRiscLUI() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("lui t1, 0x021234");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("21234337", val.getHexadecimalValue());
+    }
+
+    @Test
+    void assembleRiscJAL() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("jal t1, 0x1234");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("2340136F", val.getHexadecimalValue());
+    }
+    // TODO B type
+
 }
