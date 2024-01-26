@@ -36,7 +36,7 @@ public class NbtDataConverter implements NbtElementVisitor {
      *
      * @param compound The NbtCompound to convert
      */
-    public NbtDataConverter(NbtCompound compound) {
+    public NbtDataConverter(NbtElement compound) {
         this.data = new Data();
         compound.accept(this);
     }
@@ -149,7 +149,7 @@ public class NbtDataConverter implements NbtElementVisitor {
     public void visitCompound(NbtCompound compound) {
         compound.getKeys().forEach(key -> {
             NbtElement element = compound.get(key);
-            IDataElement dataElement = new NbtDataConverter((NbtCompound) element).getData();
+            IDataElement dataElement = new NbtDataConverter(element).getData();
             ((IDataContainer) data).set(key, dataElement);
         });
     }
