@@ -13,7 +13,7 @@ import java.util.Queue;
 /**
  * Holds the BusGraph of a cluster.
  */
-public class BusSystemModel implements IQueryableBusSystem {
+public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
 
     /**
      * Graph of all Blocks in the cluster and their connections.
@@ -46,6 +46,10 @@ public class BusSystemModel implements IQueryableBusSystem {
      */
     private BusSystemModel(Map<BlockPosition, List<BlockPosition>> adjPositions) {
         this.adjPositions = adjPositions;
+    }
+
+    public void setBusDataPath(BlockPosition startPos, BlockPosition endPos, Value presentData){
+        this.presentData = presentData;
     }
 
     public Value getPresentData(){
