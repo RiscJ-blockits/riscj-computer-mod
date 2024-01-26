@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer;
 
+import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -24,22 +25,23 @@ public abstract class ComputerBlock extends ModBlock {
     /**
      * Determines if the register is active or not.
      */
-    public static final BooleanProperty WORKING = BooleanProperty.of("lit");
+    private static final BooleanProperty WORKING = RISCJ_blockits.ACTIVE_STATE_PROPERTY;
 
     /**
      * Creates a new ComputerBlock with the given settings.
      * @param settings the settings for the block.
      */
     protected ComputerBlock(AbstractBlock.Settings settings) {
-        super(settings);
+        super(settings.luminance(state -> state.get(WORKING) ? 15 : 0).nonOpaque());
+        setDefaultState(getDefaultState().with(WORKING, false));
     }
 
     /**
      * Creates a new ComputerBlock with default settings.
      */
     protected ComputerBlock() {
-        super(FabricBlockSettings.create().luminance(state -> state.get(WORKING) ? 15 : 0).nonOpaque());
-        setDefaultState(getDefaultState().with(WORKING, false));
+        this(FabricBlockSettings.create());
+
     }
 
     /**

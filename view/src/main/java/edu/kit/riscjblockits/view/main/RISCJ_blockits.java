@@ -39,6 +39,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -59,6 +60,11 @@ public class RISCJ_blockits implements ModInitializer {
 	 * Logger for writing text to the console and the log file.
 	 */
 	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
+
+	/**
+	 * This attribute defines the active state of a block.
+	 */
+	public static final BooleanProperty ACTIVE_STATE_PROPERTY = BooleanProperty.of("active");
 
 	// define Blocks
 	/**

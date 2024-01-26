@@ -8,7 +8,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
@@ -21,23 +20,22 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BusBlock extends ConnectingComputerBlock {
 
-    private static final BooleanProperty ACTIVE = BooleanProperty.of("active");
+    private static final BooleanProperty ACTIVE = RISCJ_blockits.ACTIVE_STATE_PROPERTY;
 
     /**
      * Creates a new BusBlock with the given settings.
      * @param settings The settings for the block as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
      */
     public BusBlock(Settings settings) {
-        super((float) 3 /16);
+        super((float) 3 /16, settings);
         this.setDefaultState(
                 this.stateManager.getDefaultState()
                     .with(NORTH, false)
                     .with(EAST, false)
                     .with(SOUTH, false)
                     .with(WEST, false)
-                    .with(UP, true)
-                    .with(DOWN, false)
-                    .with(ACTIVE, false));
+                    .with(UP, false)
+                    .with(DOWN, false));
 
     }
 
@@ -46,6 +44,16 @@ public class BusBlock extends ConnectingComputerBlock {
      */
     public BusBlock() {
         super((float) 3 /16);
+        this.setDefaultState(
+                this.stateManager.getDefaultState()
+                        .with(NORTH, false)
+                        .with(EAST, false)
+                        .with(SOUTH, false)
+                        .with(WEST, false)
+                        .with(UP, false)
+                        .with(DOWN, false)
+                        .with(ACTIVE, false));
+
     }
 
     /**
@@ -64,40 +72,65 @@ public class BusBlock extends ConnectingComputerBlock {
         return new BusBlockEntity(pos, state);
     }
 
+    /**
+     * Will get the state of the block when it is placed in the world.
+     * @param ctx
+     * @return
+     */
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         return this.withConnectionProperties(ctx.getWorld(), ctx.getBlockPos());
     }
 
+    /**
+     * Will add the connection properties to the blank block-state.
+     * @param world
+     * @param pos
+     * @return
+     */
     public BlockState withConnectionProperties(BlockView world, BlockPos pos) {
-        BlockState blockState = world.getBlockState(pos.down());
-        BlockState blockState2 = world.getBlockState(pos.up());
-        BlockState blockState3 = world.getBlockState(pos.north());
-        BlockState blockState4 = world.getBlockState(pos.east());
-        BlockState blockState5 = world.getBlockState(pos.south());
-        BlockState blockState6 = world.getBlockState(pos.west());
+        BlockState stateDown = world.getBlockState(pos.down());
+        BlockState stateUp = world.getBlockState(pos.up());
+        BlockState stateNorth = world.getBlockState(pos.north());
+        BlockState stateEast = world.getBlockState(pos.east());
+        BlockState stateSouth = world.getBlockState(pos.south());
+        BlockState stateWest = world.getBlockState(pos.west());
         return this.getDefaultState()
-                .with(DOWN, blockState.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
-                .with(UP, blockState2.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
-                .with(NORTH, blockState3.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
-                .with(EAST, blockState4.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
-                .with(SOUTH, blockState5.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
-                .with(WEST, blockState6.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG));
+                .with(DOWN, stateDown.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
+                .with(UP, stateUp.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
+                .with(NORTH, stateNorth.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
+                .with(EAST, stateEast.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
+                .with(SOUTH, stateSouth.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
+                .with(WEST, stateWest.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG));
     }
 
 
+    /**
+     * Will update the block-state when a neighbor block changes.
+     * @param state the own block state.
+     * @param direction the direction of the neighbor block.
+     * @param neighborState the state of the neighbor block.
+     * @param world the world the block is placed in.
+     * @param pos the position of the block.
+     * @param neighborPos the position of the neighbor block.
+     * @return the updated block-state.
+     */
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (!state.canPlaceAt(world, pos)) {
             world.scheduleBlockTick(pos, this, 1);
             return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
         } else {
             boolean bl = neighborState.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG);
-            return (BlockState)state.with((Property)FACING_PROPERTIES.get(direction), bl);
+            return state.with(FACING_PROPERTIES.get(direction), bl);
         }
     }
 
+    /**
+     * Will append the properties of this block to the given builder.
+     * @param builder {@link net.minecraft.block.Block#appendProperties(StateManager.Builder)} for this block.
+     */
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, ACTIVE);
+        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
         super.appendProperties(builder);
     }
 
