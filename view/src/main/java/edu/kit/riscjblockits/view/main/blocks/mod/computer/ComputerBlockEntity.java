@@ -155,7 +155,14 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Used to update ui elements.
      */
     public void updateUI() {
-        //do nothing
+        //ToDo hasUnqueriedStateChange die richtige Variable um aktivität zu messen?
+        if (world != null && getModel() != null && getModel().hasUnqueriedStateChange()) {
+            if (getModel().hasUnqueriedStateChange()) {
+                world.setBlockState(pos, world.getBlockState(pos).with(ComputerBlock.WORKING , true));
+            } else {
+                world.setBlockState(pos, world.getBlockState(pos).with(ComputerBlock.WORKING, false));
+            }
+        }
     }
 
     /**

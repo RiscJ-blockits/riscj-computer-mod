@@ -28,7 +28,7 @@ public class BusBlock extends ConnectingComputerBlock {
      * @param settings The settings for the block as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
      */
     public BusBlock(Settings settings) {
-        super((float) 3 /16, settings);
+        super((float) 3 /16);
         this.setDefaultState(
                 this.stateManager.getDefaultState()
                     .with(NORTH, false)
@@ -94,8 +94,11 @@ public class BusBlock extends ConnectingComputerBlock {
             return (BlockState)state.with((Property)FACING_PROPERTIES.get(direction), bl);
         }
     }
+
+    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, ACTIVE);
+        super.appendProperties(builder);
     }
 
 }
