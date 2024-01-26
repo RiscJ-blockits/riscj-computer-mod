@@ -64,4 +64,20 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
         return new RegisterScreenHandler(syncId, playerInventory, this);
     }
 
+    /**
+     * Gets called every tick.
+     * Used to update ui elements.
+     */
+    @Override
+    public void updateUI() {
+        //ToDo hasUnqueriedStateChange die richtige Variable um aktivität zu messen?
+        if (world != null && getModel() != null && getModel().hasUnqueriedStateChange()) {
+            if (getModel().hasUnqueriedStateChange()) {
+                world.setBlockState(pos, world.getBlockState(pos).with(RegisterBlock.ACTIVE, true));
+            } else {
+                world.setBlockState(pos, world.getBlockState(pos).with(RegisterBlock.ACTIVE, false));
+            }
+        }
+    }
+
 }

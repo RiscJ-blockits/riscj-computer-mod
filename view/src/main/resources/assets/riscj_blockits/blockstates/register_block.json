@@ -1,7 +1,6 @@
 {
   "variants": {
-    "": {
-      "model": "riscj_blockits:block/register_block"
-    }
+    "lit=true": { "model": "riscj_blockits:block/register_block" },
+    "lit=false": { "model": "riscj_blockits:block/register_block" }
   }
 }

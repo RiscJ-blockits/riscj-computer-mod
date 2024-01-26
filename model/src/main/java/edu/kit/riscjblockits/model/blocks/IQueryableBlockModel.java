@@ -8,4 +8,6 @@ public interface IQueryableBlockModel {
 
     IDataElement getData();
 
+    boolean hasUnqueriedStateChange();
+
 }

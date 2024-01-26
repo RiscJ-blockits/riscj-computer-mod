@@ -39,7 +39,6 @@ public class RegisterModel extends BlockModel {
 
     @Override
     public boolean hasUnqueriedStateChange() {
-        //ToDo remove Test code
         return true;
     }
 

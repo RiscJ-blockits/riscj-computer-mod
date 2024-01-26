@@ -1,15 +1,15 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
-import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlock;
-import net.minecraft.block.BlockRenderType;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -26,13 +26,18 @@ public class RegisterBlock  extends ComputerBlock {
     /**
      * The shape of the RegisterBlock model. Model as in textured cube, not as in MVC.
      */
-    private  static final VoxelShape SHAPE = createCuboidShape(0, 0, 0, 16, 16, 16);
+    private static final VoxelShape SHAPE = createCuboidShape(0, 0, 0, 16, 16, 16);
+
+    /**
+     * Determines if the register is active or not.
+     */
+    public static final BooleanProperty ACTIVE = BooleanProperty.of("lit");
 
     /**
      * Creates a new RegisterBlock with the given settings.
      * @param settings The settings for the block as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
      */
-    public RegisterBlock(Settings settings) {
+    private RegisterBlock(Settings settings) {
         super(settings);
     }
 
@@ -40,7 +45,8 @@ public class RegisterBlock  extends ComputerBlock {
      * Creates a new RegisterBlock with default settings.
      */
     public RegisterBlock() {
-        super();
+        super(FabricBlockSettings.create().luminance(state -> state.get(ACTIVE) ? 15 : 0).nonOpaque());
+        setDefaultState(getDefaultState().with(ACTIVE, false));
     }
 
     /**
@@ -72,7 +78,6 @@ public class RegisterBlock  extends ComputerBlock {
         return SHAPE;
     }
 
-
     /**
      * This method is called when the player right clicks on the block.
      * It will open the screen for the register block.
@@ -94,7 +99,15 @@ public class RegisterBlock  extends ComputerBlock {
                 player.openHandledScreen(screenHandlerFactory);
             }
         }
-
         return ActionResult.SUCCESS;
     }
+
+    /** Is called by minecraft. We add our custom block state.
+     * @param builder
+     */
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(ACTIVE);
+    }
+
 }

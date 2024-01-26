@@ -1,12 +1,11 @@
 package edu.kit.riscjblockits.view.main.blocks.mod;
 
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
@@ -44,7 +43,7 @@ public abstract class ModBlock extends BlockWithEntity {
      * Creates a new ModBlock with default settings.
      */
     protected ModBlock() {
-        super(FabricBlockSettings.create().strength(BLOCK_STRENGTH).nonOpaque());
+        super(FabricBlockSettings.create().strength(BLOCK_STRENGTH).nonOpaque().pistonBehavior(PistonBehavior.IGNORE));
     }
 
     /**
