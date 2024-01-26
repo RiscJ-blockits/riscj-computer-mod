@@ -27,11 +27,6 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
         setType(ModelType.CLOCK);
     }
 
-    @Override
-    public boolean hasUnqueriedStateChange() {
-        return false;
-    }
-
     /**
      * Getter for the data the view needs for ui.
      * @return Data Format: key: "speed", value: clockSpeed as String
@@ -48,6 +43,7 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
         } else {
             clockData.set(CLOCK_ACTIVE , new DataStringEntry("false"));
         }
+        setUnqueriedStateChange(false);
         return clockData;
     }
 
@@ -74,6 +70,7 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
 
     public void setClockSpeed(int clockSpeed) {
         this.clockSpeed = clockSpeed;
+        setUnqueriedStateChange(true);
     }
 
     public ClockMode getClockMode() {
@@ -82,11 +79,13 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
 
     public void setActiveTick(boolean activeTick) {
         this.activeTick = activeTick;
+        setUnqueriedStateChange(true);
     }
 
     public void setClockMode(ClockMode mode) {
         this.mode = mode;
         notifyObservers();
+        setUnqueriedStateChange(true);
     }
 
 }

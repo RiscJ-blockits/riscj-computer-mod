@@ -31,34 +31,94 @@ public class DataConstants {
      * {@link RegisterModel#getData()}
      */
     public static final String REGISTER_VALUE = "value";
+
+    /**
+     * {@link RegisterModel#getData()}
+     */
     public static final String REGISTER_FOUND = "found";
+
+    /**
+     * {@link RegisterModel#getData()}
+     */
     public static final String REGISTER_MISSING = "missing";
+
+    /**
+     * {@link RegisterModel#getData()}
+     */
     public static final String REGISTER_TYPE = "type";
+
+    /**
+     * {@link RegisterModel#getData()}
+     */
     public static final String REGISTER_WORD_LENGTH = "word";
 
     //SystemClock Constants
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.SystemClockModel#getData()}
+     */
     public static final String CLOCK_SPEED = "speed";
+
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.SystemClockModel#getData()}
+     */
     public static final String CLOCK_MODE = "mode";
+
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.SystemClockModel#getData()}
+     */
     public static final String CLOCK_ACTIVE = "activeTick";
 
     //ControlUnit Constants
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.ControlUnitModel#getData()}
+     */
     public static final String CONTROL_CLUSTERING = "clustering";
+
+    /**
+     * {@link edu.kit.riscjblockits.controller.blocks.ControlUnitController#setData(IDataElement)}
+     */
     public static final String CONTROL_IST_MODEL = "istModel";
 
     /**
      * NBT-Tag of the InstructionSet Item.
      */
     public static final String CONTROL_IST_ITEM = "riscj_blockits.instructionSet";  //Don't change this!
+
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.ControlUnitModel#getData()}
+     */
     public static final String CONTROL_ITEM_PRESENT = "istModelPresent";
 
     //Bus Constants
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.BusModel#getData()}
+     */
     public static final String BUS_ACTIVE = "active";
+
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.BusModel#getData()}
+     */
     public static final String BUS_DATA = "presentData";
 
     //Alu Constants
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.AluModel#getData()}
+     */
     public static final String ALU_OPERATION = "operation";
+
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.AluModel#getData()}
+     */
     public static final String ALU_OPERAND1 = "operand1";
+
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.AluModel#getData()}
+     */
     public static final String ALU_OPERAND2 = "operand2";
+
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.AluModel#getData()}
+     */
     public static final String ALU_RESULT = "result";
 
 }

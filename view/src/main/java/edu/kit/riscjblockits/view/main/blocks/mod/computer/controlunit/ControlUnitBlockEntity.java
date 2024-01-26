@@ -114,6 +114,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
                 && ((IDataStringEntry) ((IDataContainer) getModel().getData()).get("istModelPresent")).getContent().equals("false")) {
             ItemScatterer.spawn(world, pos, (this));        //drop the IstItem if it is rejected
         }
+        super.updateUI();
     }
 
 }

@@ -36,11 +36,6 @@ public class AluModel extends BlockModel{
         setType(ModelType.ALU);
     }
 
-    @Override
-    public boolean hasUnqueriedStateChange() {
-        return false;
-    }
-
     /**
      * Getter for the data the view needs for ui.
      * @return Data Format: key: "operation", value: "operation"
@@ -63,19 +58,23 @@ public class AluModel extends BlockModel{
         if (result != null) {
             aluData.set(ALU_RESULT, new DataStringEntry(result.getHexadecimalValue()));
         }
+        setUnqueriedStateChange(false);
         return aluData;
     }
 
     public void setOperation(String operation) {
         this.operation = operation;
+        setUnqueriedStateChange(true);
     }
 
     public void setOperand1(Value operand1) {
         this.operand1 = operand1;
+        setUnqueriedStateChange(true);
     }
 
     public void setOperand2(Value operand2) {
         this.operand2 = operand2;
+        setUnqueriedStateChange(true);
     }
 
     public Value getResult() {
@@ -84,6 +83,7 @@ public class AluModel extends BlockModel{
 
     public void setResult(Value result) {
         this.result = result;
+        setUnqueriedStateChange(true);
     }
 
 }

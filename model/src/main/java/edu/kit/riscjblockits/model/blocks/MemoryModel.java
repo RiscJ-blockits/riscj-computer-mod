@@ -14,14 +14,11 @@ public class MemoryModel extends BlockModel {
     }
 
     @Override
-    public boolean hasUnqueriedStateChange() {
-        return false;
-    }
-
-    @Override
     public IDataElement getData() {
         Data memData = new Data();
         //ToDo
+
+        setUnqueriedStateChange(false);
         return memData;
     }
 
@@ -31,9 +28,11 @@ public class MemoryModel extends BlockModel {
 
     public void setMemoryAt(Value address, Value value) {
         memory.setValue(address, value);
+        setUnqueriedStateChange(true);
     }
     public void setMemory(Memory memory) {
         this.memory = memory;
+        setUnqueriedStateChange(true);
     }
 
 }

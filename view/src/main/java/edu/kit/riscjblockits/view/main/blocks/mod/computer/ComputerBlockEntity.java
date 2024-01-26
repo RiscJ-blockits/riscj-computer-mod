@@ -8,6 +8,7 @@ import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
+import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlock;
@@ -155,7 +156,14 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Used to update ui elements.
      */
     public void updateUI() {
-        //do nothing
+        //ToDo hasUnqueriedStateChange die richtige Variable um aktivität zu messen?
+        if (world != null && getModel() != null && getModel().hasUnqueriedStateChange()) {
+            if (getModel().hasUnqueriedStateChange()) {
+                world.setBlockState(pos, world.getBlockState(pos).with(RISCJ_blockits.ACTIVE_STATE_PROPERTY, true));
+            } else {
+                world.setBlockState(pos, world.getBlockState(pos).with(RISCJ_blockits.ACTIVE_STATE_PROPERTY, false));
+            }
+        }
     }
 
     /**

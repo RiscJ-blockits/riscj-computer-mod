@@ -19,11 +19,6 @@ public class BusModel extends BlockModel{
         setType(ModelType.BUS);
     }
 
-    @Override
-    public boolean hasUnqueriedStateChange() {
-        return false;
-    }
-
     /**
      * Getter for the data the view needs for ui.
      * @return Data Format: key: "active", value: "true" or "false"
@@ -40,6 +35,7 @@ public class BusModel extends BlockModel{
         if (belongsToSystem != null) {
             busData.set(BUS_DATA, new DataStringEntry(belongsToSystem.getPresentData().getHexadecimalValue()));
         }
+        setUnqueriedStateChange(false);
         return busData;
     }
 

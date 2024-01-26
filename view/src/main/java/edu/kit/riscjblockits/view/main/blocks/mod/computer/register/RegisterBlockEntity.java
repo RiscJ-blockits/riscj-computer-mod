@@ -63,5 +63,5 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new RegisterScreenHandler(syncId, playerInventory, this);
     }
-
+    
 }
