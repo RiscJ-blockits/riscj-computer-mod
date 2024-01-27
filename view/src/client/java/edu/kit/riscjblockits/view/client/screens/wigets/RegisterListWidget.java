@@ -43,11 +43,11 @@ public class RegisterListWidget extends ScrollableWidget {
         children = Lists.newArrayList();
         for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING)) {
             this.addEntry(new RegisterEntry(register, true));
-            System.out.println("Added Register");
+            System.out.println("Added Register"); //TODO remove
         }
         for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND)) {
             this.addEntry(new RegisterEntry(register, false));
-            System.out.println("Added Register");
+            System.out.println("Added Register"); //TODO remove
         }
     }
 
@@ -69,6 +69,7 @@ public class RegisterListWidget extends ScrollableWidget {
 
     @Override
     protected int getContentsHeight() {
+        System.out.println("Height: " + this.children.size() * ENTRY_HEIGHT);
         return this.children.size() * ENTRY_HEIGHT;
     }
 
@@ -101,10 +102,9 @@ public class RegisterListWidget extends ScrollableWidget {
         return (this.getScrollY() - this.y) / (this.height  - SCROLLBAR_HEIGHT );
     }
 
-    @Override
+    /*@Override
     public void drawBox(DrawContext context) {
-
-    }
+    }*/
 
     public void update() {
         this.children.clear();
