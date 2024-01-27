@@ -12,25 +12,19 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.slot.Slot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
-import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_FOUND;
-import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_MISSING;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 
 public class RegisterScreenHandler extends ModScreenHandler {
 
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, ModBlockEntity blockEntity) {
         super(RISCJ_blockits.REGISTER_SCREEN_HANDLER, syncId, blockEntity);
-        addPlayerInventory(inventory);
-        addPlayerHotbar(inventory);
-        addPlayerInventorySlots(inventory);
+        addPlayerInventorySlotsLarge(inventory);
     }
 
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
@@ -44,20 +38,6 @@ public class RegisterScreenHandler extends ModScreenHandler {
     @Override
     public boolean canUse(PlayerEntity player) {
         return true;
-    }
-
-    private void addPlayerInventory(PlayerInventory playerInventory) {
-        for(int i = 0; i < 3; ++i) {
-           for(int j = 0; j < 9; ++j) {
-              this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-           }
-        }
-    }
-
-    private void addPlayerHotbar(PlayerInventory playerInventory) {
-        for(int i = 0; i < 9; ++i) {
-           this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
-        }
     }
 
     public String getRegisterValue() {

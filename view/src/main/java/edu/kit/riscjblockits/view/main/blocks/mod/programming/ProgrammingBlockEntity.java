@@ -4,21 +4,26 @@ import edu.kit.riscjblockits.controller.assembler.AssemblyException;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableController;
 import edu.kit.riscjblockits.controller.blocks.ProgrammingController;
 import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ImplementedInventory;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntityWithInventory;
 import edu.kit.riscjblockits.view.main.data.DataNbtConverter;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -32,7 +37,7 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
      * The code that is currently in the programming block.
      * Might not be up-to-date with the code in the client's programming screen.
      */
-    private String code;
+    private String code = "";
 
     /**
      * Creates a new ProgrammingBlockEntity with the given settings.
@@ -40,7 +45,23 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
      * @param state The state of the minecraft block.
      */
     public ProgrammingBlockEntity(BlockPos pos, BlockState state) {
-        super(RISCJ_blockits.PROGRAMMING_BLOCK_ENTITY, pos, state, 2);
+        super(RISCJ_blockits.PROGRAMMING_BLOCK_ENTITY, pos, state, 3);
+        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE, (server, player, handler, buf, responseSender) -> {
+
+            server.execute(() -> {
+                NbtCompound nbt = buf.readNbt();
+                BlockPos blockPos = buf.readBlockPos();
+
+                // TODO check why the blockEntity cant be found
+                String code = nbt.getString("code");
+                World world = player.getServerWorld();
+                BlockEntity be = world.getBlockEntity(blockPos);
+                if (player.getServerWorld().getBlockEntity(blockPos) instanceof ProgrammingBlockEntity blockEntity) {
+                    blockEntity.setCode(code);
+                    System.out.println("Received code: " + code);
+                }
+            });
+        });
     }
 
     /**
@@ -60,7 +81,9 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
      */
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-
+        buf.writeBlockPos(pos);
+        buf.writeString(code);
+        markDirty();
     }
 
     /**
@@ -94,7 +117,9 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
      * @throws AssemblyException if the code can't be assembled
      */
     public void assemble() throws AssemblyException {
-
+        if (code == null || code.isEmpty() || world == null || world.isClient()) {
+            return;
+        }
         ItemStack instructionSetStack = getStack(0);
 
         ItemStack memoryStack = getStack(1);
@@ -122,4 +147,15 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
         return code;
     }
 
+    @Override
+    protected void writeNbt(NbtCompound nbt) {
+        super.writeNbt(nbt);
+        nbt.putString("code", code);
+    }
+
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+        code = nbt.getString("code");
+    }
 }

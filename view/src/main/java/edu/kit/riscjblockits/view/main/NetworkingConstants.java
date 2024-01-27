@@ -7,4 +7,5 @@ public class NetworkingConstants {
 
     public static final Identifier SYNC_BLOCK_ENTITY_DATA = new Identifier(RISCJ_blockits.MODID, "sync_block_entity_data");
 
+    public static final Identifier SYNC_PROGRAMMING_CODE = new Identifier(RISCJ_blockits.MODID, "sync_programming_code");
 }
