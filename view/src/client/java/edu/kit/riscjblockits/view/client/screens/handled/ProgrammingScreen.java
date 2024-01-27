@@ -143,6 +143,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         // close the screen if the escape key is pressed
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            syncCode(editBox.getText());
             this.client.player.closeHandledScreen();
         }
         // return true if the edit box is focused or the edit box is focused --> suppress all other key presses (e.g. "e")
