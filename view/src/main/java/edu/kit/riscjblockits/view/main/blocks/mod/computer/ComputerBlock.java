@@ -25,23 +25,23 @@ public abstract class ComputerBlock extends ModBlock {
     /**
      * Determines if the register is active or not.
      */
-    private static final BooleanProperty WORKING = RISCJ_blockits.ACTIVE_STATE_PROPERTY;
+    private static final BooleanProperty ACTIVE = RISCJ_blockits.ACTIVE_STATE_PROPERTY;
 
     /**
      * Creates a new ComputerBlock with the given settings.
      * @param settings the settings for the block.
      */
     protected ComputerBlock(AbstractBlock.Settings settings) {
-        super(settings.luminance(state -> state.get(WORKING) ? 15 : 0).nonOpaque());
-        setDefaultState(getDefaultState().with(WORKING, false));
+        super(settings.luminance(state -> state.get(ACTIVE) ? 15 : 0).nonOpaque());
+        setDefaultState(getDefaultState().with(ACTIVE, false));
     }
 
     /**
      * Creates a new ComputerBlock with default settings.
      */
     protected ComputerBlock() {
-        this(FabricBlockSettings.create());
-
+        super(FabricBlockSettings.create().luminance(state -> state.get(ACTIVE) ? 8 : 0).nonOpaque());
+        setDefaultState(getDefaultState().with(ACTIVE, false));
     }
 
     /**
@@ -86,7 +86,7 @@ public abstract class ComputerBlock extends ModBlock {
      */
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(WORKING);
+        builder.add(ACTIVE);
     }
 
 }

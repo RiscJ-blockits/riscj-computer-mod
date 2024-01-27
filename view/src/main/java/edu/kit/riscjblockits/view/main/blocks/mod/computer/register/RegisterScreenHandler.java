@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 
 public class RegisterScreenHandler extends ModScreenHandler {
@@ -67,10 +68,15 @@ public class RegisterScreenHandler extends ModScreenHandler {
             return new ArrayList<String>();
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals(key)) {
-                List<String> registers = Arrays.asList(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent().split(" "));
-                System.out.println(registers.size()); //TODO remove
-                return registers;
+            if (s.equals(REGISTER_REGISTERS)) {
+                IDataElement regData = ((IDataContainer) data).get(REGISTER_REGISTERS);
+                for (String s2 : ((IDataContainer) regData).getKeys()) {
+                    if (s2.equals(key)) {
+                        List<String> registers =
+                            Arrays.asList(((IDataStringEntry) ((IDataContainer) regData).get(s2)).getContent().split(" "));
+                        return registers;
+                    }
+                }
             }
         }
         return new ArrayList<String>();
