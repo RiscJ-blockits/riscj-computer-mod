@@ -5,5 +5,7 @@
   "block.riscj_blockits.memory_block": "Hauptspeicher",
   "block.riscj_blockits.control_unit_block": "Kontrolleinheit",
   "block.riscj_blockits.system_clock_block": "Taktgeber",
-  "itemGroup.riscj_blockits.computer_components": "Computer Gegenstände"
+  "itemGroup.riscj_blockits.computer_components": "Computer Gegenstände",
+
+  "programming_pretext": "hier könnte ihre Werbung stehen"
 }
