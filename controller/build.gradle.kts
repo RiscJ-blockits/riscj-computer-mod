@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("org.sonarqube") version "4.4.1.3373"
+    id("jacoco")
 }
 
 java {
@@ -22,10 +23,13 @@ tasks.test {
     useJUnitPlatform()
 }
 
-sonar {
-    properties {
-        property ("sonar.projectKey", "kit_tva_pse_ws23_risc-simulator_riscjblockits_AY1K9l9XR63KR32WthiJ")
-        property ("sonar.projectName", "riscjblockits")
-        property ("sonar.qualitygate.wait", true)
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required = true
     }
 }
