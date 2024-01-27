@@ -52,7 +52,7 @@
     "program_start_label":
     "START",
     "data_storage_keywords": {
-        " *DS * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<24>"
+        " *DS * (?<value>(?:(?:0x)|(?:0b))?\\d+)": "[value]<24>"
     },
     "instructions": {
         "LDC": {                    // load constant

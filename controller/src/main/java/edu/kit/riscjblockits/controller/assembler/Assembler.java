@@ -98,9 +98,19 @@ public class Assembler {
                 continue;
             }
 
+            Matcher matcher = LABEL_COMMAND_PATTERN.matcher(line);
+
+            if (!matcher.matches()) {
+                throw new AssemblyException("Invalid line");
+            }
+
+            String label = matcher.group("label");
+            String cmd = matcher.group("command");
+
+
             // check if line is data
-            if (instructionSetModel.isDataStorageCommand(line)) {
-                String unsplitDirtyData = instructionSetModel.getStorageCommandData(line);
+            if (instructionSetModel.isDataStorageCommand(cmd)) {
+                String unsplitDirtyData = instructionSetModel.getStorageCommandData(cmd);
                 for (String dirtyData : unsplitDirtyData.split(",")) {
                     // split data into value and length
                     String[] data = dirtyData.split("~");
@@ -121,7 +131,7 @@ public class Assembler {
             }
 
             // assemble command
-            Command command = getCommandForLine(line);
+            Command command = getCommandForLine(cmd);
 
             // write command to memory
             memory.setValue(currentAddress, command.asValue());
@@ -135,23 +145,11 @@ public class Assembler {
     /**
      * Gets the {@link Command} for a given line
      * will also detect and save labels
-     * @param line the line to get the command for
+     * @param command the line to get the command for
      * @return the command for the given line
      * @throws AssemblyException if the command cant be assembled
      */
-    private Command getCommandForLine(String line) throws AssemblyException {
-        Matcher matcher = LABEL_COMMAND_PATTERN.matcher(line);
-
-        if (!matcher.matches()) {
-            throw new AssemblyException("Invalid line");
-        }
-
-        String label = matcher.group("label");
-        String command = matcher.group("command");
-
-        if (label != null) {
-            labels.put(label, currentAddress);
-        }
+    private Command getCommandForLine(String command) throws AssemblyException {
 
         String[] cmd = command.split(" *,? +");
         IQueryableInstruction instruction = instructionSetModel.getInstruction(cmd[0]);
@@ -183,6 +181,13 @@ public class Assembler {
             if (instructionSetModel.isAddressChange(line)) {
                 String address = instructionSetModel.getChangedAddress(line);
                 localCurrentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
+                continue;
+            }
+            if (instructionSetModel.isDataStorageCommand(line)) {
+                String unsplitDirtyData = instructionSetModel.getStorageCommandData(line);
+                for (String dirtyData : unsplitDirtyData.split(",")) {
+                    localCurrentAddress = localCurrentAddress.getIncrementedValue();
+                }
                 continue;
             }
 
