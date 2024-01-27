@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version '1.4-SNAPSHOT'
 	id 'maven-publish'
+	id "org.sonarqube" version "4.4.1.3373"
 }
 
 version = project.mod_version
@@ -89,5 +90,13 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+	}
+}
+
+sonar {
+	properties {
+		property "sonar.projectKey", "kit_tva_pse_ws23_risc-simulator_riscjblockits_AY1K9l9XR63KR32WthiJ"
+		property "sonar.projectName", "riscjblockits"
+		property "sonar.qualitygate.wait", true
 	}
 }
