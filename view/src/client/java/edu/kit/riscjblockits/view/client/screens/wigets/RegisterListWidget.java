@@ -26,19 +26,25 @@ public class RegisterListWidget extends ScrollableWidget {
     private ToggleButtonWidget toggleNeededButton;
     private int x;
     private int y;
-    private int width;
-    private int height;
+    private final RegisterScreenHandler registerScreenHandler;
 
 
-
-
-    public RegisterListWidget(MinecraftClient minecraftClient, int x, int y, int width, int height) {
+    public RegisterListWidget(int x, int y, int width, int height, RegisterScreenHandler registerScreenHandler) {
         super(x,y,width,height, Text.literal(""));
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.registerScreenHandler = registerScreenHandler;
         children = Lists.newArrayList();
+        for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING)) {
+            this.addEntry(new RegisterEntry(register, true));
+            System.out.println("Added Register");
+        }
+        for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND)) {
+            this.addEntry(new RegisterEntry(register, false));
+            System.out.println("Added Register");
+        }
     }
 
     @Override
@@ -47,10 +53,9 @@ public class RegisterListWidget extends ScrollableWidget {
         context.enableScissor(x, y, x + width, y + height);
         this.renderContents(context, mouseX, mouseY, delta);
         context.disableScissor();
-        //render Scrollbar
-        int x = this.x + 128;
-        int y = this.y - SCROLLBAR_HEIGHT/2 + ((int) this.getScrollAmount()) * (140);
-        context.drawGuiTexture(SCROLLBAR, x, y, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+
+
+        renderButton(context, mouseX, mouseY, delta);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class RegisterListWidget extends ScrollableWidget {
 
     @Override
     protected double getDeltaYPerScroll() {
-        return ENTRY_HEIGHT / 2.0;
+        return (double) 140 / getContentsHeight();
     }
 
     @Override
@@ -74,13 +79,12 @@ public class RegisterListWidget extends ScrollableWidget {
         int endIndex = this.children.size() - 1;
         if(this.children.size() > 7){
             startIndex = (int) (((getContentsHeight() * getScrollAmount()) - 70) / 20);
-            endIndex = (int) (((getContentsHeight() * getScrollAmount()) + 70) % 20);
+            endIndex = (int) (((getContentsHeight() * getScrollAmount()) + 70) / 20);
         }
 
         for (int i = startIndex; i < endIndex; i++) {
-            //TODO check if entry is visible (maybe)
             x = this.x + 8;
-            y = this.y + 19 + i * ENTRY_HEIGHT;
+            y = this.y + 19 + (i - startIndex) * ENTRY_HEIGHT;
             children.get(i).render(context,x, y, mouseX, mouseY, delta); //adjust to be exchangable type
         }
     }
@@ -90,6 +94,22 @@ public class RegisterListWidget extends ScrollableWidget {
     }
 
     private double getScrollAmount(){
-        return (this.getScrollY() - this.y - SCROLLBAR_HEIGHT/2.0) / (this.height - this.y - SCROLLBAR_HEIGHT/2.0);
+        return (this.getScrollY() - this.y) / (this.height  - SCROLLBAR_HEIGHT );
+    }
+
+    @Override
+    public void drawBox(DrawContext context) {
+
+    }
+
+    public void update() {
+        this.children.clear();
+        for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING)) {
+            this.addEntry(new RegisterEntry(register, true));
+            System.out.println("Added Register");
+        for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND)) {
+            this.addEntry(new RegisterEntry(register, false));
+            System.out.println("Added Register");
+        }
     }
 }

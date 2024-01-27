@@ -22,9 +22,10 @@ import java.util.List;
 
 public class RegSelectWidget implements Drawable, Element, Selectable {
     public static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID,"textures/gui/register/reg_select_widget.png");
-    public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier(RISCJ_blockits.MODID,
-        "textures/gui/register/button.png"), new Identifier(RISCJ_blockits.MODID,"textures/gui/register/button_highlighted.png")); //path does not work fsr!!! :( TODO fix path
+    //public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier(RISCJ_blockits.MODID,
+        //"textures/gui/register/button.png"), new Identifier(RISCJ_blockits.MODID,"textures/gui/register/button_highlighted.png")); //path does not work fsr!!! :( TODO fix path
 
+    public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier("recipe_book/button"), new Identifier("recipe_book/button_highlighted"));
     private static final String TO_DO_TEXT = "Select Register";
     private int parentWidth;
     private int parentHeight;
@@ -56,18 +57,15 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         this.missingRegisters = registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING);
         this.configuredRegisters = registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND);
 
-        this.registerList = new RegisterListWidget(client, i, j, 147, 166); //TODO fix values
-        for (String register: this.missingRegisters) {
+        this.registerList = new RegisterListWidget(parentWidth, parentHeight, 113, 140, registerScreenHandler); //TODO fix values
+        /*for (String register: this.missingRegisters) {
             registerList.addEntry(new RegisterEntry(register, true));
         }
         for (String register: this.configuredRegisters) {
             registerList.addEntry(new RegisterEntry(register, false));
-        }
+        }*/
 
         this.open = false;
-        if(this.open) {
-            this.reset();
-        }
     }
 
 
@@ -80,9 +78,6 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
             this.reset();
         }
         this.open = opened;
-        if(!opened) {
-            
-        }
         this.sendSelectDataPacket();
     }
 
@@ -90,7 +85,11 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         this.leftOffset = this.narrow ? 0 : 86;
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
         int j = (this.parentHeight - 166) / 2;
-        //loop through registers and add buttons
+
+        this.missingRegisters = registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING);
+        this.configuredRegisters = registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND);
+
+        this.registerList = new RegisterListWidget(i + 8, j + 18, 113, 140, registerScreenHandler); //TODO fix values
     }
 
     private void sendSelectDataPacket() {
@@ -109,13 +108,17 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         }
         context.getMatrices().push();
         context.getMatrices().translate(0.0f, 0.0f, 100.0f);
+
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
         int j = (this.parentHeight - 166) / 2;
         context.drawTexture(TEXTURE, i, j, 1, 1, 147, 166);
+
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
         TextRenderer textRenderer = minecraftClient.textRenderer;
         context.drawText(textRenderer, Text.literal(TO_DO_TEXT), i + 8, j + 8, 0x555555, false);
-        registerList.render(context, mouseX, mouseY, delta);
+
+        this.registerList.render(context, mouseX, mouseY, delta);
+
         context.getMatrices().pop();
     }
 
@@ -152,6 +155,8 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         }
         this.missingRegisters = registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING);
         this.configuredRegisters = registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND);
+
+        this.registerList.update();
     }
 
 }

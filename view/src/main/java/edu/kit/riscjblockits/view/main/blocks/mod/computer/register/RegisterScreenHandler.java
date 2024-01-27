@@ -88,7 +88,9 @@ public class RegisterScreenHandler extends ModScreenHandler {
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(key)) {
-                return Arrays.asList(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent().split(" "));
+                List<String> registers = Arrays.asList(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent().split(" "));
+                System.out.println(registers.size());
+                return registers;
             }
         }
         return new ArrayList<String>();
