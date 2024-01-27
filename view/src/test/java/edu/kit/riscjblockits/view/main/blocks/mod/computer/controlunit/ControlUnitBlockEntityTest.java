@@ -22,7 +22,7 @@ class ControlUnitBlockEntityTest {
     }
 
     @Test
-    void testControlUnit() {
+    void testControlUnit1() {
         controlUnitBlockEntity = new ControlUnitBlockEntity(new BlockPos(0,0, 0), RISCJ_blockits.CONTROL_UNIT_BLOCK.getDefaultState());
         controlUnitBlockEntity.setController();
         assertEquals(BlockControllerType.CONTROL_UNIT, ((ComputerBlockController) controlUnitBlockEntity.getController()).getControllerType());

@@ -23,8 +23,11 @@ qodana:
     when: always
 
 stages:
-  - build
+  -  build
   - test
+  - sonarqube-check
+  - sonarqube-vulnerability-report
+  - qodana
 
 build:
   tags:
