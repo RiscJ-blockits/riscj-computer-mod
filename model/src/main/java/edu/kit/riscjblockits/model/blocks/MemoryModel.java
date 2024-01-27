@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.model.blocks;
 
-import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
@@ -13,13 +12,16 @@ public class MemoryModel extends BlockModel {
         setType(ModelType.MEMORY);
     }
 
+    /**
+     * Getter for the data the view needs for ui.
+     * @return Data Format: key: memory, value: DataContainer
+     *                                  key: wordSize, value: Memory length as String
+     *                                  key: addressSize, value: Address length as String
+     */
     @Override
     public IDataElement getData() {
-        Data memData = new Data();
-        //ToDo
-
         setUnqueriedStateChange(false);
-        return memData;
+        return memory.getData();
     }
 
     public Value getMemoryAt(Value address) {
