@@ -42,6 +42,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
      */
     private ButtonWidget assembleButton;
 
+    private boolean codeHasChanged = false;
+
 
     /**
      * Creates a new ProgrammingScreen.
@@ -76,10 +78,19 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         // add the button to the screen
         assembleButton = TextIconButtonWidget.builder(Text.of(""), (buttonWidget) -> {
             syncCode(editBox.getText());
-            handler.onButtonClick(null, ProgrammingScreenHandler.ASSEMBLE_BUTTON_ID);
+            client.interactionManager.clickButton(handler.syncId, ProgrammingScreenHandler.ASSEMBLE_BUTTON_ID);
         }, true).texture(ASSEMBLE_BUTTON_TEXTURE, 15, 25).dimension(15, 25).build();
         assembleButton.setPosition(this.x + 151, this.y + 63);
         addDrawableChild(assembleButton);
+        handler.enableSyncing();
+    }
+
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
+
+        // render the tooltip of the button if the mouse is over it
+        drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
     /**
@@ -112,7 +123,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         // set the edit box to focused if the mouse is over it while clicking
         editBox.setFocused(editBox.isMouseOver(mouseX, mouseY));
         // sync the code when the edit box is unfocused
-        if (!editBox.isFocused()) {
+        if (!editBox.isFocused() && codeHasChanged) {
             syncCode(editBox.getText());
         }
         // return the default handling of mouse clicks
@@ -132,10 +143,12 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         // close the screen if the escape key is pressed
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            syncCode(editBox.getText());
             this.client.player.closeHandledScreen();
         }
         // return true if the edit box is focused or the edit box is focused --> suppress all other key presses (e.g. "e")
         if (this.editBox.keyPressed(keyCode, scanCode, modifiers) || this.editBox.isFocused()) {
+            codeHasChanged = true;
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
