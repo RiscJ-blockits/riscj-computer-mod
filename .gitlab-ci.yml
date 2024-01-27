@@ -63,7 +63,7 @@ variables:
 
 sonarqube-check:
   stage: sonarqube-check
-  image: gradle:8.3.0-jdk17-jammy
+  image: gradle:8.5.0-jdk17-jammy
   tags:
     - docker
   variables:
