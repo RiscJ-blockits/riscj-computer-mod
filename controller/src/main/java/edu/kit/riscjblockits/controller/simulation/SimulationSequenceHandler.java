@@ -7,6 +7,7 @@ import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstructionException;
 import edu.kit.riscjblockits.model.instructionset.IExecutableMicroInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
@@ -160,8 +161,12 @@ public class SimulationSequenceHandler implements Runnable {
      */
     private void executeMicroInstruction(IExecutableMicroInstruction instruction) {
         //ToDo
-
-        instruction.execute(executor);
+        //ToDo consider exception handling (stop execution or just keep running the next like it is done now)
+        try {
+            instruction.execute(executor);
+        } catch (NonExecutableMicroInstructionException e) {
+            e.printStackTrace();
+        }
 
     }
 

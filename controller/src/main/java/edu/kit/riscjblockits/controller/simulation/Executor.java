@@ -7,6 +7,7 @@ import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstructionException;
 import edu.kit.riscjblockits.model.instructionset.AluInstruction;
 import edu.kit.riscjblockits.model.instructionset.ConditionedInstruction;
 import edu.kit.riscjblockits.model.instructionset.DataMovementInstruction;
@@ -26,6 +27,9 @@ import java.util.Map;
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
 public class Executor implements IExecutor {
+
+    /* ToDo: model access happens-before relationship by either volatile or synchronized to secure memory consistency
+        in the case of multiple threads accessing the same model due to slow execution*/
 
     /**
      * Contains the block controllers of the associated computer blocks.
@@ -58,10 +62,9 @@ public class Executor implements IExecutor {
      * Executes a memory instruction.
      * @param memoryInstruction Memory instruction to be executed.
      */
-    public void execute(MemoryInstruction memoryInstruction){
+    public void execute(MemoryInstruction memoryInstruction) {
         //ToDo
 
-        //ToDo: check memory flag handling
         if(memoryInstruction.getFlag().isEmpty()) {
             return;
         }
@@ -69,22 +72,26 @@ public class Executor implements IExecutor {
         for (IQueryableSimController blockController : blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.MEMORY) {
 
-                if(memoryInstruction.getFlag().equals("r")) {
-                    //ToDo: check format with assembler
-                    String from = memoryInstruction.getFrom()[0];
+                String from = memoryInstruction.getFrom()[0];
+                String to = memoryInstruction.getTo();
+                String flag = memoryInstruction.getFlag();
+
+                if(from == null || from.isBlank()){
+                    throw new NonExecutableMicroInstructionException("MemoryInstruction has no from value");
+                } else if(to == null || to.isBlank()){
+                    throw new NonExecutableMicroInstructionException("MemoryInstruction has no to value");
+                }
+
+
+                if(flag.equals("r")) {
+
                     Value fromAddress = Value.fromBinary(from, from.length());
                     Value value = ((MemoryController) blockController).getValue(fromAddress);
-
-                    String to = memoryInstruction.getTo();
                     registerControllerMap.get(to).setNewValue(value);
+
                 }
-                else if(memoryInstruction.getFlag().equals("w")) {
-
-                    String from = memoryInstruction.getFrom()[0];
+                else if(flag.equals("w")) {
                     Value value = registerControllerMap.get(from).getValue();
-
-                    String to = memoryInstruction.getFrom()[0];
-                    //ToDo: check if binary or hex or other
                     ((MemoryController) blockController).writeMemory(Value.fromBinary(to, 4), value);
 
                 }
@@ -101,6 +108,10 @@ public class Executor implements IExecutor {
      */
     public void execute(ConditionedInstruction conditionedInstruction) {
         //ToDo
+
+
+
+
         registerControllerMap.get(null).setNewValue(null);
 
 
@@ -142,6 +153,19 @@ public class Executor implements IExecutor {
         if (dataMovementInstruction.getMemoryInstruction() != null) {
             execute(dataMovementInstruction.getMemoryInstruction());
         }
+    }
+
+    private boolean checkCondition(String condition, Value comparator1, Value comparator2) {
+        return switch (condition) {
+            case "==" -> comparator1.equals(comparator2);
+            case "!=" -> !comparator1.equals(comparator2);
+            case "<=" -> comparator1.lowerThan(comparator2) || comparator1.equals(comparator2);
+            case "<" -> comparator1.lowerThan(comparator2);
+
+            case ">=" -> comparator1.greaterThan(comparator2) || comparator1.equals(comparator2);
+            case ">" -> comparator1.greaterThan(comparator2);
+            default -> false;
+        };
     }
 
 }

@@ -169,4 +169,14 @@ public class Value {
     public int hashCode() {
         return Arrays.hashCode(value);
     }
+
+    public boolean lowerThan(Value comparator) {
+        //TODO implement and think about signed, unsigned and float values
+        return false;
+    }
+
+    public boolean greaterThan(Value comparator) {
+        //TODO implement and think about signed, unsigned and float values
+        return false;
+    }
 }
