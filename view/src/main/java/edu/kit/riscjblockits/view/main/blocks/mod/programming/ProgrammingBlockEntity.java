@@ -10,21 +10,23 @@ import edu.kit.riscjblockits.view.main.blocks.mod.ImplementedInventory;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntityWithInventory;
 import edu.kit.riscjblockits.view.main.data.DataNbtConverter;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
 
 /**
  * This class represents a programming block entity from our mod in the game.
@@ -52,13 +54,27 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
                 NbtCompound nbt = buf.readNbt();
                 BlockPos blockPos = buf.readBlockPos();
 
-                // TODO check why the blockEntity cant be found
                 String code = nbt.getString("code");
-                World world = player.getServerWorld();
-                BlockEntity be = world.getBlockEntity(blockPos);
                 if (player.getServerWorld().getBlockEntity(blockPos) instanceof ProgrammingBlockEntity blockEntity) {
                     blockEntity.setCode(code);
-                    System.out.println("Received code: " + code);
+                }
+            });
+        });
+
+        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.ASSEMBLE_PROGRAMMING_CODE, (server, player, handler, buf, responseSender) -> {
+
+            server.execute(() -> {
+                BlockPos blockPos = buf.readBlockPos();
+
+                if (player.getServerWorld().getBlockEntity(blockPos) instanceof ProgrammingBlockEntity blockEntity) {
+                    try {
+                        blockEntity.assemble();
+                    } catch (AssemblyException e) {
+                        PacketByteBuf packetByteBuf = PacketByteBufs.create();
+                        packetByteBuf.writeBlockPos(blockPos);
+                        packetByteBuf.writeString(e.getMessage());
+                        responseSender.sendPacket((Packet<?>) packetByteBuf);
+                    }
                 }
             });
         });
@@ -121,12 +137,25 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
             return;
         }
         ItemStack instructionSetStack = getStack(0);
+        if (instructionSetStack.isEmpty()) {
+            return;
+        }
 
         ItemStack memoryStack = getStack(1);
-
-        IDataElement instructionSetData = new NbtDataConverter(instructionSetStack.getOrCreateSubNbt("riscj_blockits.instruction_set")).getData();
+        if (memoryStack.isEmpty()) {
+            return;
+        }
+        // cant assemble if output slot is not empty
+        ItemStack outputStack = getStack(2);
+        if (!outputStack.isEmpty()) {
+            return;
+        }
+        NbtCompound nbt = instructionSetStack.getOrCreateNbt();
+        IDataElement instructionSetData = new NbtDataConverter(nbt.get(CONTROL_IST_ITEM)).getData();
         IDataElement memoryData = ((ProgrammingController) getController()).assemble(code, instructionSetData);
         memoryStack.setSubNbt("riscj_blockits.memory", new DataNbtConverter(memoryData).getNbtElement());
+        setStack(2, memoryStack);
+        setStack(1, ItemStack.EMPTY);
     }
 
     /**
@@ -148,7 +177,7 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         nbt.putString("code", code);
     }

@@ -1,9 +1,9 @@
 {
-//FixMe: some micro Instructions are still producing null elements
+    //FixMe: some micro Instructions are still producing null elements
 
     "name": "MIMA",             // declare name
     "instruction_length": 24,   // declade instruction length
-    
+
     "registers": {                  // define existing (required) registers
         "program_counter": "IAR",   // register containing the current program address
         "alu": [                    // alu specific registers
@@ -50,9 +50,9 @@
         " *\\* *=  *(?<address>\\w+) *": "[address]"
     },
     "program_start_label":
-        "START",
+    "START",
     "data_storage_keywords": {
-        " *DS * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]"
+        " *DS * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<24>"
     },
     "instructions": {
         "LDC": {                    // load constant
@@ -95,8 +95,8 @@
                 ["AKKU", "SDR", ""]
             ],
             "translation": [
-              "0001",
-              "[addr]<20>"
+                "0001",
+                "[addr]<20>"
             ]
         },
         "STV": {
@@ -108,8 +108,8 @@
                 ["", "", "w", ["<mem_data>", "SDR"]]
             ],
             "translation": [
-              "0010",
-              "[addr]<20>"
+                "0010",
+                "[addr]<20>"
             ]
         },
         "AND": {
@@ -124,8 +124,8 @@
                 ["AKKU", "Z", ""]
             ],
             "translation": [
-              "0100",
-              "[addr]<20>"
+                "0100",
+                "[addr]<20>"
             ]
         },
         "OR": {
@@ -140,8 +140,8 @@
                 ["AKKU", "Z", ""]
             ],
             "translation": [
-              "0101",
-              "[addr]<20>"
+                "0101",
+                "[addr]<20>"
             ]
         },
         "XOR": {
@@ -156,8 +156,8 @@
                 ["AKKU", "Z", ""]
             ],
             "translation": [
-              "0110",
-              "[addr]<20>"
+                "0110",
+                "[addr]<20>"
             ]
         },
         "HALT": {
@@ -167,8 +167,8 @@
                 ["PAUSE"]
             ],
             "translation": [
-              "11110000",
-              "0000000000000000"
+                "11110000",
+                "0000000000000000"
             ]
         },
         "NOT": {
@@ -178,10 +178,10 @@
                 ["X", "AKKU", ""],
                 ["NEG", "Z", "X", "", ""],
                 ["AKKU", "Z", ""]
-                        ],
+            ],
             "translation": [
-              "11110001",
-              "0000000000000000"
+                "11110001",
+                "0000000000000000"
             ]
         },
         "RAR": {
@@ -191,51 +191,51 @@
                 ["X", "AKKU", ""],
                 ["RR", "Z", "X", "", ""],
                 ["AKKU", "Z", ""]
-                        ],
+            ],
             "translation": [
-              "11110010",
-              "0000000000000000"
+                "11110010",
+                "0000000000000000"
             ]
         },
         "EQL [addr]": {
             "arguments": ["[addr]"],
             "opcode": "0111",
             "execution": [
-              ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
-              ["X", "AKKU", "r"],
-              ["", "", "r", ["SDR", "<mem_data>"]],
-              ["Y", "SDR", ""],
-              ["EQ", "Z", "X", "Y", ""],
-              ["AKKU", "Z"]
+                ["SAR", "[addr]", "r", ["<mem_addr>", "SAR"]],
+                ["X", "AKKU", "r"],
+                ["", "", "r", ["SDR", "<mem_data>"]],
+                ["Y", "SDR", ""],
+                ["EQ", "Z", "X", "Y", ""],
+                ["AKKU", "Z"]
             ],
             "translation": [
-              "0111",
-              "[addr]<20>"
+                "0111",
+                "[addr]<20>"
             ]
         },
         "JMP": {
             "arguments": ["[addr]"],
             "opcode": "1000",
             "execution": [
-              ["IAR", "[addr]", ""]
+                ["IAR", "[addr]", ""]
             ],
             "translation": [
-              "1000",
-              "[addr]<20>"
+                "1000",
+                "[addr]<20>"
             ]
         },
         "JMN": {
             "arguments": ["[addr]"],
             "opcode": "1001",
             "execution": [
-              ["X", "AKKU", ""],
-              ["Y", "[addr]", ""],
-              ["IF", ["X", "0", "<"], ["PC", "[addr]"], "", ""]
-              //if  cond  then
+                ["X", "AKKU", ""],
+                ["Y", "[addr]", ""],
+                ["IF", ["X", "0", "<"], ["PC", "[addr]"], "", ""]
+                //if  cond  then
             ],
             "translation": [
-              "1001",
-              "[addr]<20>"
+                "1001",
+                "[addr]<20>"
             ]
         }
     }

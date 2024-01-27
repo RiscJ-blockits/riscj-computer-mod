@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
+
 /**
  * This class defines the instruction set item in the game.
  */
@@ -38,8 +40,8 @@ public class InstructionSetItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         NbtCompound nbt = stack.getOrCreateNbt();
-        if (nbt.get("riscj_blockits.instructionSet") == null) {
-            nbt.putString("riscj_blockits.instructionSet", defaultInstructionSetJson);
+        if (nbt.get(CONTROL_IST_ITEM) == null) {
+            nbt.putString(CONTROL_IST_ITEM, defaultInstructionSetJson);
             stack.setNbt(nbt);
         }
         super.inventoryTick(stack, world, entity, slot, selected);
