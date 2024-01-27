@@ -1,7 +1,9 @@
 package edu.kit.riscjblockits.view.client.screens.wigets;
 
 import com.google.common.collect.Lists;
+import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -20,6 +22,8 @@ public class RegisterListWidget extends ScrollableWidget {
 
     private static final int SCROLLBAR_WIDTH = 12;
     private static final int SCROLLBAR_HEIGHT = 15;
+
+
     private static final int ENTRY_HEIGHT = 20;
     private final List<RegisterEntry> children; //Adjust to be exchangable type
     private static final int maxScrollPosition = 159;
@@ -107,6 +111,7 @@ public class RegisterListWidget extends ScrollableWidget {
         for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING)) {
             this.addEntry(new RegisterEntry(register, true));
             System.out.println("Added Register");
+        }
         for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND)) {
             this.addEntry(new RegisterEntry(register, false));
             System.out.println("Added Register");
