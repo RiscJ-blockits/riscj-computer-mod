@@ -8,11 +8,7 @@ import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstructionException;
-import edu.kit.riscjblockits.model.instructionset.AluInstruction;
-import edu.kit.riscjblockits.model.instructionset.ConditionedInstruction;
-import edu.kit.riscjblockits.model.instructionset.DataMovementInstruction;
-import edu.kit.riscjblockits.model.instructionset.IExecutor;
-import edu.kit.riscjblockits.model.instructionset.MemoryInstruction;
+import edu.kit.riscjblockits.model.instructionset.*;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.util.HashMap;
@@ -109,10 +105,25 @@ public class Executor implements IExecutor {
     public void execute(ConditionedInstruction conditionedInstruction) {
         //ToDo
 
+        String from = conditionedInstruction.getFrom()[0];
+        String to = conditionedInstruction.getTo();
 
+        if(from == null || from.isBlank()){
+            throw new NonExecutableMicroInstructionException("MemoryInstruction has no from value");
+        } else if(to == null || to.isBlank()){
+            throw new NonExecutableMicroInstructionException("MemoryInstruction has no to value");
+        }
 
+        InstructionCondition condition = conditionedInstruction.getCondition();
 
-        registerControllerMap.get(null).setNewValue(null);
+        if(checkCondition(condition)) {
+            Value movedValue = registerControllerMap.get(from).getValue();
+            registerControllerMap.get(to).setNewValue(movedValue);
+
+            if(conditionedInstruction.getMemoryInstruction() != null) {
+                execute(conditionedInstruction.getMemoryInstruction());
+            }
+        }
 
 
         //ToDo Bus-Daten setzen wie und wo?
@@ -144,9 +155,17 @@ public class Executor implements IExecutor {
      */
     public void execute(DataMovementInstruction dataMovementInstruction) {
         //ToDo
+        String from = dataMovementInstruction.getFrom()[0];
+        String to = dataMovementInstruction.getTo();
 
-        Value movedValue = registerControllerMap.get(dataMovementInstruction.getFrom()[0]).getValue();
-        registerControllerMap.get(dataMovementInstruction.getTo()).setNewValue(movedValue);
+        if(from == null || from.isBlank()){
+            throw new NonExecutableMicroInstructionException("MemoryInstruction has no from value");
+        } else if(to == null || to.isBlank()){
+            throw new NonExecutableMicroInstructionException("MemoryInstruction has no to value");
+        }
+
+        Value movedValue = registerControllerMap.get(from).getValue();
+        registerControllerMap.get(to).setNewValue(movedValue);
 
         //ToDo Bus-Daten setzen wie und wo?
 
@@ -155,8 +174,13 @@ public class Executor implements IExecutor {
         }
     }
 
-    private boolean checkCondition(String condition, Value comparator1, Value comparator2) {
-        return switch (condition) {
+    private boolean checkCondition(InstructionCondition condition) {
+
+        String comparisonCondition = condition.getComparator();
+        Value comparator1 = registerControllerMap.get(condition.getCompare1()).getValue();
+        Value comparator2 = registerControllerMap.get(condition.getCompare2()).getValue();
+
+        return switch (comparisonCondition) {
             case "==" -> comparator1.equals(comparator2);
             case "!=" -> !comparator1.equals(comparator2);
             case "<=" -> comparator1.lowerThan(comparator2) || comparator1.equals(comparator2);
