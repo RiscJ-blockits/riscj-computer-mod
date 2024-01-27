@@ -25,7 +25,7 @@ public class Value {
      */
     public static Value fromHex(String s, int length) {
         byte[] bytes = new byte[length];
-        byte[] hexBytes = HexFormat.of().parseHex(s);
+        byte[] hexBytes = HexFormat.of().parseHex(s); //Todo fill with zeros if length is not a multiple of 2
         int offset = length - hexBytes.length;
         for (int i = 0; i < hexBytes.length; i++) {
             bytes[i + offset] = hexBytes[i];

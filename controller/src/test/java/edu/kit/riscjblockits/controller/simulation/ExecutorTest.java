@@ -1,12 +1,11 @@
 package edu.kit.riscjblockits.controller.simulation;
 
 import edu.kit.riscjblockits.controller.blocks.*;
-import edu.kit.riscjblockits.model.blocks.BlockPosition;
-import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
-import edu.kit.riscjblockits.model.blocks.RegisterModel;
+import edu.kit.riscjblockits.model.blocks.*;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.AluInstruction;
 import edu.kit.riscjblockits.model.instructionset.MemoryInstruction;
+import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,17 +55,20 @@ class ExecutorTest {
     void setUp() {
 
         MemoryController memoryController = new MemoryController(getBlockEntityMock());
-        memoryController.writeMemory(Value.fromHex("0x0", 4), Value.fromHex("0x456", 12));
+        ((MemoryModel) (memoryController.getModel())).setMemory(new Memory(4, 12));
+        memoryController.writeMemory(Value.fromHex("00", 4), Value.fromHex("0456", 12));
         AluController aluController = new AluController(getBlockEntityMock());
+        ((AluModel) aluController.getModel()).setOperand1(Value.fromHex("0100", 12));
+        ((AluModel) aluController.getModel()).setOperand2(Value.fromHex("0023", 12));
         RegisterController registerController1 = new RegisterController(getBlockEntityMock());
         ((RegisterModel) registerController1.getModel()).setRegisterType("R1");
-        registerController1.setNewValue(Value.fromHex("0x100", 12));
+        registerController1.setNewValue(Value.fromHex("0100", 12));
         RegisterController registerController2 = new RegisterController(getBlockEntityMock());
         ((RegisterModel) registerController2.getModel()).setRegisterType("R2");
-        registerController2.setNewValue(Value.fromHex("0x023", 12));
+        registerController2.setNewValue(Value.fromHex("0023", 12));
         RegisterController registerController3 = new RegisterController(getBlockEntityMock());
         ((RegisterModel) registerController3.getModel()).setRegisterType("R2");
-        registerController3.setNewValue(Value.fromHex("0x345", 12));
+        registerController3.setNewValue(Value.fromHex("0345", 12));
 
         List<IQueryableSimController> blockControllers = new LinkedList<>();
         blockControllers.add(memoryController);
@@ -90,35 +92,37 @@ class ExecutorTest {
     @Test
     void executeAluInstructionBaseCase() {
 
-        assertEquals(Value.fromHex("0x100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0x023", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0x345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
+        assertEquals(Value.fromHex("0023", 12), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
 
         AluInstruction aluInstruction = new AluInstruction(new String[]{"R1", "R2"}, "R2", "r", null, "ADD");
 
         executor.execute(aluInstruction);
 
-        assertEquals(Value.fromHex("0x123", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0x023", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0x345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
+        //TODO ALU-Register not implemented yet (which one is the ALU-Register? how does the ALU know?)
+        //TODO Deserializer has to check correct usage of ALU registers
+        assertEquals(Value.fromHex("0123", 12), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
 
     }
 
     @Test
     void executeAluInstructionWithMemoryInstruction() {
 
-        assertEquals(Value.fromHex("0x456", 12), memoryController.getValue(Value.fromHex("0x0", 4)));
-        assertEquals(Value.fromHex("0x100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0x023", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0x345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0456", 12), memoryController.getValue(Value.fromHex("00", 4)));
+        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
+        assertEquals(Value.fromHex("0023", 12), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
 
-        MemoryInstruction memoryInstruction = new MemoryInstruction(new String[]{"0x0"}, "R3", "r");
+        MemoryInstruction memoryInstruction = new MemoryInstruction(new String[]{"00"}, "R3", "r");
         AluInstruction aluInstruction = new AluInstruction(new String[]{"R1", "R2"}, "R2", "r", memoryInstruction, "ADD");
 
         executor.execute(aluInstruction);
 
-        assertEquals(Value.fromHex("0x123", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("ox456", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0123", 12), registerController1.getValue());
+        assertEquals(Value.fromHex("0456", 12), registerController3.getValue());
 
 
     }
