@@ -1,4 +1,4 @@
-package edu.kit.riscjblockits.view.client.screens.wigets;
+package edu.kit.riscjblockits.view.client.screens.widgets;
 
 import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
@@ -11,13 +11,11 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.ToggleButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.apache.commons.compress.utils.Lists;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RegSelectWidget implements Drawable, Element, Selectable {
@@ -50,22 +48,26 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         this.registerScreenHandler = registerScreenHandler;
         client.player.currentScreenHandler = registerScreenHandler;
         this.cachedInvChangeCount = client.player.getInventory().getChangeCount();
+        this.leftOffset = this.narrow ? 0 : 86;
 
         int i = (this.parentWidth - 147) / 2 - this.leftOffset + 14;
         int j = (this.parentHeight - 166) / 2 + 14;
 
-        this.missingRegisters = registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING);
-        this.configuredRegisters = registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND);
 
-        this.registerList = new RegisterListWidget(parentWidth, parentHeight, 113, 140, registerScreenHandler); //TODO fix values
-        /*for (String register: this.missingRegisters) {
-            registerList.addEntry(new RegisterEntry(register, true));
-        }
-        for (String register: this.configuredRegisters) {
-            registerList.addEntry(new RegisterEntry(register, false));
-        }*/
 
+        this.registerList = new RegisterListWidget(getEntries(), i+ 8, j + 18, 113, 140);
         this.open = false;
+    }
+
+    private List<RegisterEntry> getEntries() {
+        List<RegisterEntry> entries = new ArrayList<>();
+        for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING)) {
+            entries.add(new RegisterEntry(register, true));
+        }
+        for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND)) {
+            entries.add(new RegisterEntry(register, false));
+        }
+        return entries;
     }
 
 
@@ -85,11 +87,7 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         this.leftOffset = this.narrow ? 0 : 86;
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
         int j = (this.parentHeight - 166) / 2;
-
-        this.missingRegisters = registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING);
-        this.configuredRegisters = registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND);
-
-        this.registerList = new RegisterListWidget(i + 8, j + 18, 113, 140, registerScreenHandler); //TODO fix values
+        registerList.setPosition(i +8, j+ 18);
     }
 
     private void sendSelectDataPacket() {
@@ -117,6 +115,7 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         TextRenderer textRenderer = minecraftClient.textRenderer;
         context.drawText(textRenderer, Text.literal(TO_DO_TEXT), i + 8, j + 8, 0x555555, false);
 
+        //this.registerList.setPosition(i + 8, j + 18);
         this.registerList.render(context, mouseX, mouseY, delta);
 
         context.getMatrices().pop();
@@ -153,10 +152,5 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         if (this.cachedInvChangeCount != this.client.player.getInventory().getChangeCount()) {
             this.cachedInvChangeCount = this.client.player.getInventory().getChangeCount();
         }
-        this.missingRegisters = registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING);
-        this.configuredRegisters = registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND);
-
-        this.registerList.update();
     }
-
 }

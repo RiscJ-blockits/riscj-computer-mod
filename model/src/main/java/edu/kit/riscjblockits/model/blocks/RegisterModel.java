@@ -15,7 +15,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGT
 
 public class RegisterModel extends BlockModel {
 
-    public static final String DEFAULT_REGISTER = "[NOT ASSIGNED]";
+    public static final String DEFAULT_REGISTER = "[NOT_ASSIGNED]";
     private int wordLength;
 
     private String registerType;

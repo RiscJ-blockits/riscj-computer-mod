@@ -1,5 +1,7 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
+import edu.kit.riscjblockits.model.blocks.RegisterModel;
+import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
@@ -25,7 +27,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
 
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, ModBlockEntity blockEntity) {
         super(RISCJ_blockits.REGISTER_SCREEN_HANDLER, syncId, blockEntity);
-        addPlayerInventorySlotsLarge(inventory);
+        addPlayerInventorySlots(inventory);
     }
 
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
@@ -72,8 +74,16 @@ public class RegisterScreenHandler extends ModScreenHandler {
                 IDataElement regData = ((IDataContainer) data).get(REGISTER_REGISTERS);
                 for (String s2 : ((IDataContainer) regData).getKeys()) {
                     if (s2.equals(key)) {
-                        List<String> registers =
-                            Arrays.asList(((IDataStringEntry) ((IDataContainer) regData).get(s2)).getContent().split(" "));
+                        List<String> registers = new ArrayList<>(List.of(
+                            ((IDataStringEntry) ((IDataContainer) regData).get(s2)).getContent().split(" ")));
+                        int i = 0;
+                        while( i < registers.size()) {
+                            if (registers.get(i).equals(RegisterModel.DEFAULT_REGISTER)) {
+                                registers.remove(i);
+                            }else {
+                                i++;
+                            }
+                        }
                         return registers;
                     }
                 }
