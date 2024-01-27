@@ -1,6 +1,10 @@
 package edu.kit.riscjblockits.model.blocks;
 
-
+/**
+ * Represents one block.
+ * Holds the data needed for the view and the controller.
+ * Every computer block has a model.
+ */
 public abstract class BlockModel implements IControllerQueryableBlockModel, IViewQueryableBlockModel {
 
     /**
@@ -9,7 +13,15 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
      * (every sent change is a network packet)
      */
     private boolean hasUnqueriedStateChange;
+
+    /**
+     * Type of the block. Used th distinguish between different models.
+     */
     private ModelType type;
+
+    /**
+     * Position of the block that holds this model in the minecraft world.
+     */
     private BlockPosition position;
 
     /**
@@ -19,18 +31,30 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
         hasUnqueriedStateChange = true;
     }
 
+    /**
+     * @param position The position of the associated block in the minecraft world.
+     */
     public void setPosition(BlockPosition position) {
         this.position = position;
     }
 
+    /**
+     * @return The type of the block. Used to distinguish between different model types.
+     */
     public ModelType getType() {
         return type;
     }
 
+    /**
+     * @param type The type of the block. Used to distinguish between different model types.
+     */
     protected void setType(ModelType type) {
         this.type = type;
     }
 
+    /**
+     * @return The position of the associated block in the minecraft world.
+     */
     public BlockPosition getPosition() {
         return position;
     }

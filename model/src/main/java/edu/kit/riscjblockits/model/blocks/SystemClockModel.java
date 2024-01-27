@@ -11,6 +11,9 @@ import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_ACTIVE;
 import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_MODE;
 import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_SPEED;
 
+/**
+ * Represents the data and state of a system clock. Every computer has one.
+ */
 public class SystemClockModel extends BlockModel implements ISimulationTimingObserveable {
 
     private List<ISimulationTimingObserver> modeObservers;
@@ -19,11 +22,15 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
 
     private boolean activeTick;
 
+    /**
+     * Constructor. Returns the model for a system clock.
+     * Initializes attributes. Default clock mode is the Step mode.
+     */
     public SystemClockModel() {
         modeObservers = new ArrayList<>();
         activeTick = false;
         clockSpeed = 0;
-        mode = ClockMode.MC_TICK;
+        mode = ClockMode.STEP;
         setType(ModelType.CLOCK);
     }
 

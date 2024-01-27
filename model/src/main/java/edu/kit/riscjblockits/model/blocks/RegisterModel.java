@@ -12,9 +12,14 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGTH;
 
-
+/**
+ * Represents the data and state of a register. Every register block has one.
+ */
 public class RegisterModel extends BlockModel {
 
+    /**
+     * The default register type. Is displayed in the ui if no register type is set.
+     */
     public static final String DEFAULT_REGISTER = "[NOT ASSIGNED]";
     private int wordLength;
 
@@ -28,6 +33,11 @@ public class RegisterModel extends BlockModel {
      */
     private String[] missingAvailableRegisters;
 
+    /**
+     * Constructor. Returns the model for a register.
+     * Initializes the register type with the default register type.
+     * Initializes the value with a zero value.
+     */
     public RegisterModel() {
         super();
         value = new Value();
@@ -39,6 +49,7 @@ public class RegisterModel extends BlockModel {
 
     @Override
     public boolean hasUnqueriedStateChange() {
+        //ToDo remove Test code
         return true;
     }
 
