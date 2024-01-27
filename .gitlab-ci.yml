@@ -3,7 +3,7 @@ qodana:
     - docker
   stage: qodana
   image:
-    name: jetbrains/qodana-jvm
+    name: jetbrains/qodana-jvm-community
     entrypoint: [""]
   cache:
     - key: qodana-2023.2-$CI_DEFAULT_BRANCH-$CI_COMMIT_REF_SLUG
