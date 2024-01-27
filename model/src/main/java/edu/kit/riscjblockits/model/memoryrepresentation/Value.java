@@ -171,12 +171,44 @@ public class Value {
     }
 
     public boolean lowerThan(Value comparator) {
-        //TODO implement and think about signed, unsigned and float values
+        BigInteger thisValue = new BigInteger(this.getByteValue());
+        BigInteger comparatorValue = new BigInteger(comparator.getByteValue());
+        return thisValue.compareTo(comparatorValue) < 0;
+    }
+
+    public boolean lowerThanUnsigned(Value comparator) {;
+        byte[] valueUnsigned = new byte[value.length + 1];
+        System.arraycopy(value, 0, valueUnsigned, 1, value.length);
+        byte[] compUnsigned = new byte[value.length + 1];
+        System.arraycopy(comparator.getByteValue(), 0, compUnsigned, 1, comparator.getByteValue().length);
+        BigInteger thisValue = new BigInteger(valueUnsigned);
+        BigInteger comparatorValue = new BigInteger(compUnsigned);
+        return thisValue.compareTo(comparatorValue) < 0;
+    }
+
+    public boolean lowerThanFloat(Value comparator) {
+        //TODO implement
         return false;
     }
 
     public boolean greaterThan(Value comparator) {
-        //TODO implement and think about signed, unsigned and float values
+        BigInteger thisValue = new BigInteger(this.getByteValue());
+        BigInteger comparatorValue = new BigInteger(comparator.getByteValue());
+        return thisValue.compareTo(comparatorValue) > 0;
+    }
+
+    public boolean greaterThanUnsigned(Value comparator) {
+        byte[] valueUnsigned = new byte[value.length + 1];
+        System.arraycopy(value, 0, valueUnsigned, 1, value.length);
+        byte[] compUnsigned = new byte[value.length + 1];
+        System.arraycopy(comparator.getByteValue(), 0, compUnsigned, 1, comparator.getByteValue().length);
+        BigInteger thisValue = new BigInteger(valueUnsigned);
+        BigInteger comparatorValue = new BigInteger(compUnsigned);
+        return thisValue.compareTo(comparatorValue) > 0;
+    }
+
+    public boolean greaterThanFloat(Value comparator) {
+        //TODO implement
         return false;
     }
 }
