@@ -1,7 +1,7 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import edu.kit.riscjblockits.view.client.screens.wigets.RegSelectWidget;
+import edu.kit.riscjblockits.view.client.screens.widgets.RegSelectWidget;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
 import net.minecraft.client.gui.DrawContext;

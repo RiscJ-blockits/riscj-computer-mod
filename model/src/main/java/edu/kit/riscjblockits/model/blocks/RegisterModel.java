@@ -20,7 +20,7 @@ public class RegisterModel extends BlockModel {
     /**
      * The default register type. Is displayed in the ui if no register type is set.
      */
-    public static final String DEFAULT_REGISTER = "[NOT ASSIGNED]";
+    public static final String DEFAULT_REGISTER = "[NOT_ASSIGNED]";
     private int wordLength;
 
     private String registerType;

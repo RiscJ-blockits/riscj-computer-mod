@@ -1,17 +1,12 @@
-package edu.kit.riscjblockits.view.client.screens.wigets;
+package edu.kit.riscjblockits.view.client.screens.widgets;
 
-import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
+import net.minecraft.client.gui.Drawable;
 import net.minecraft.text.Text;
-import edu.kit.riscjblockits.view.client.screens.wigets.TextIconToggleWidget;
 
-import java.util.List;
+public class RegisterEntry extends ListEntry {
 
-public class RegisterEntry { //implement Interfaces
+    public static final int ENTRY_HEIGHT = 20;
     private final TextIconToggleWidget selectButton;
     private boolean missing;
     private String name;
@@ -24,14 +19,25 @@ public class RegisterEntry { //implement Interfaces
             ((TextIconToggleWidget) button).toggleSelected(this.missing);
             //TODO set other Button missing
         });
+
+
     }
 
-    public void render(DrawContext context,int x, int y, int mouseX,
-                       int mouseY, float tickDelta) {
-        this.selectButton.setX(x);
-        this.selectButton.setY(y);
-        this.selectButton.render(context, mouseX, mouseY, tickDelta);
+    @Override
+    public void render(DrawContext context, int mouseX,
+                       int mouseY, float delta) {
+        selectButton.setX(this.getX());
+        selectButton.setY(this.getY());
+        this.selectButton.render(context, mouseX, mouseY, delta);
     }
+
+    @Override
+    public int getHeight() {
+       return ENTRY_HEIGHT;
+
+
+    }
+
 
     public void update() {
         //TODO set Button inactive when selcted for current Register       this.selectButton.active = ;
