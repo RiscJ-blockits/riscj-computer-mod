@@ -18,6 +18,7 @@ qodana:
     - qodana --save-report --results-dir=$CI_PROJECT_DIR/.qodana/results
       --cache-dir=$CI_PROJECT_DIR/.qodana/cache
   artifacts:
+    expire_in: 5 day
     paths:
       - qodana/report/
     expose_as: 'Qodana report'
@@ -91,7 +92,7 @@ sonarqube-vulnerability-report:
     - main
     - implementation
   artifacts:
-    expire_in: 1 day
+    expire_in: 5 day
     reports:
       sast: gl-sast-sonar-report.json
   dependencies:
