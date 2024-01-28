@@ -24,18 +24,15 @@ import java.util.Map;
  */
 public class Executor implements IExecutor {
 
-    /* ToDo: model access happens-before relationship by either volatile or synchronized to secure memory consistency
-        in the case of multiple threads accessing the same model due to slow execution*/
-
     /**
      * Contains the block controllers of the associated computer blocks.
      */
-    private List<IQueryableSimController> blockControllers;
+    private final List<IQueryableSimController> blockControllers;
 
     /**
      * Map of the register controllers for faster access and resolving string references.
      */
-    private Map<String, RegisterController> registerControllerMap;
+    private final Map<String, RegisterController> registerControllerMap;
 
     /**
      * Constructor. Initializes the {@link BlockController}s list and the {@link RegisterController}s map.
@@ -59,7 +56,6 @@ public class Executor implements IExecutor {
      * @param memoryInstruction Memory instruction to be executed.
      */
     public void execute(MemoryInstruction memoryInstruction) {
-        //ToDo
 
         if(memoryInstruction.getFlag().isEmpty()) {
             return;
@@ -80,15 +76,15 @@ public class Executor implements IExecutor {
 
 
                 if(flag.equals("r")) {
-
-                    Value fromAddress = Value.fromBinary(from, from.length());
+                    //ToDo: check if from is a valid address
+                    Value fromAddress = Value.fromBinary(from, (from.length()/4 + ((from.length()%4 == 0) ? 0 : 1)));
                     Value value = ((MemoryController) blockController).getValue(fromAddress);
                     registerControllerMap.get(to).setNewValue(value);
 
                 }
                 else if(flag.equals("w")) {
                     Value value = registerControllerMap.get(from).getValue();
-                    ((MemoryController) blockController).writeMemory(Value.fromBinary(to, 4), value);
+                    ((MemoryController) blockController).writeMemory(Value.fromBinary(to, (to.length()/4 + ((to.length()%4 == 0) ? 0 : 1))), value);
 
                 }
                 //else do nothing, because memory flag is not set properly
@@ -103,7 +99,6 @@ public class Executor implements IExecutor {
      * @param conditionedInstruction Conditioned instruction to be executed.
      */
     public void execute(ConditionedInstruction conditionedInstruction) {
-        //ToDo
 
         String from = conditionedInstruction.getFrom()[0];
         String to = conditionedInstruction.getTo();
@@ -135,11 +130,29 @@ public class Executor implements IExecutor {
      * @param aluInstruction Alu instruction to be executed.
      */
     public void execute(AluInstruction aluInstruction) {
-        //ToDo
 
         for (IQueryableSimController blockController : blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.ALU) {
-                ((AluController) blockController).executeAluOperation(aluInstruction.getAction());
+
+                String from1 = aluInstruction.getFrom()[0];
+                String from2 = aluInstruction.getFrom()[1];
+                String to = aluInstruction.getTo();
+
+                if(from1 == null || from1.isBlank()){
+                    throw new NonExecutableMicroInstructionException("AluInstruction has no from value");
+                } else if(from2 == null || from2.isBlank()){
+                    throw new NonExecutableMicroInstructionException("AluInstruction has no from value");
+                } else if(to == null || to.isBlank()){
+                    throw new NonExecutableMicroInstructionException("AluInstruction has no to value");
+                }
+
+                AluController aluController = (AluController) blockController;
+                aluController.setOperand1(registerControllerMap.get(from1).getValue());
+                aluController.setOperand2(registerControllerMap.get(from2).getValue());
+
+                Value result = ((AluController) blockController).executeAluOperation(aluInstruction.getAction());
+
+                registerControllerMap.get(to).setNewValue(result);
             }
         }
 
@@ -177,19 +190,52 @@ public class Executor implements IExecutor {
     private boolean checkCondition(InstructionCondition condition) {
 
         String comparisonCondition = condition.getComparator();
-        Value comparator1 = registerControllerMap.get(condition.getCompare1()).getValue();
-        Value comparator2 = registerControllerMap.get(condition.getCompare2()).getValue();
+        Value firstValue = registerControllerMap.get(condition.getCompare1()).getValue();
+        Value secondValue = registerControllerMap.get(condition.getCompare2()).getValue();
 
-        return switch (comparisonCondition) {
-            case "==" -> comparator1.equals(comparator2);
-            case "!=" -> !comparator1.equals(comparator2);
-            case "<=" -> comparator1.lowerThan(comparator2) || comparator1.equals(comparator2);
-            case "<" -> comparator1.lowerThan(comparator2);
+        String comparatorType = comparisonCondition.substring(0, 1);
+        String comparator = comparisonCondition.substring(1);
 
-            case ">=" -> comparator1.greaterThan(comparator2) || comparator1.equals(comparator2);
-            case ">" -> comparator1.greaterThan(comparator2);
-            default -> false;
-        };
+
+        switch (comparatorType) {
+            case "u" -> {
+                return switch (comparator) {
+                    case "==" -> firstValue.equals(secondValue);
+                    case "!=" -> !firstValue.equals(secondValue);
+                    case "<=" -> firstValue.lowerThanUnsigned(secondValue) || firstValue.equals(secondValue);
+                    case "<" -> firstValue.lowerThanUnsigned(secondValue);
+
+                    case ">=" -> firstValue.greaterThanUnsigned(secondValue) || firstValue.equals(secondValue);
+                    case ">" -> firstValue.greaterThanUnsigned(secondValue);
+                    default -> false;
+                };
+            }
+            case "f" -> {
+                return switch (comparator) {
+                    case "==" -> firstValue.equals(secondValue);
+                    case "!=" -> !firstValue.equals(secondValue);
+                    case "<=" -> firstValue.lowerThanFloat(secondValue) || firstValue.equals(secondValue);
+                    case "<" -> firstValue.lowerThanFloat(secondValue);
+
+                    case ">=" -> firstValue.greaterThanFloat(secondValue) || firstValue.equals(secondValue);
+                    case ">" -> firstValue.greaterThanFloat(secondValue);
+                    default -> false;
+                };
+            }
+            //signed comparison is default
+            default -> {
+                return switch (comparator) {
+                    case "==" -> firstValue.equals(secondValue);
+                    case "!=" -> !firstValue.equals(secondValue);
+                    case "<=" -> firstValue.lowerThan(secondValue) || firstValue.equals(secondValue);
+                    case "<" -> firstValue.lowerThan(secondValue);
+
+                    case ">=" -> firstValue.greaterThan(secondValue) || firstValue.equals(secondValue);
+                    case ">" -> firstValue.greaterThan(secondValue);
+                    default -> false;
+                };
+            }
+        }
     }
 
 }
