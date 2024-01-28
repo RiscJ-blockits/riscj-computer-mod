@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.controller.simulation;
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
+import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.model.blocks.ClockMode;
 import edu.kit.riscjblockits.model.blocks.ISimulationTimingObserver;
 import edu.kit.riscjblockits.model.blocks.SystemClockModel;
@@ -55,8 +56,9 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
         //Register us as an SystemClockModel Observer
         for(IQueryableSimController blockController: blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.CLOCK) {
-                systemClockModel = (SystemClockModel) blockController.getModel();
-                systemClockModel.registerObserver(this);
+//                systemClockModel = (SystemClockModel) blockController.getModel();
+//                systemClockModel.registerObserver(this);
+                ((SystemClockController) blockController).registerModelObserver(this);
             }
         }
         updateObservedState();

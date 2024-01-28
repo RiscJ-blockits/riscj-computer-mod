@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
+import edu.kit.riscjblockits.model.blocks.ISimulationTimingObserver;
 import edu.kit.riscjblockits.model.blocks.SystemClockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
@@ -71,6 +72,10 @@ public class SystemClockController extends ComputerBlockController {
     public void setData(IDataElement data) {
         //ToDo
         ((SystemClockModel) getModel()).setClockMode(null);
+    }
+
+    public void registerModelObserver(ISimulationTimingObserver simulationTimingObserver) {
+        ((SystemClockModel) getModel()).registerObserver(simulationTimingObserver);
     }
 
 }
