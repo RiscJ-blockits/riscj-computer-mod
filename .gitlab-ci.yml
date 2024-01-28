@@ -23,7 +23,7 @@ qodana:
     when: always
 
 stages:
-  -  build
+  - build
   - test
   - sonarqube-check
   - sonarqube-vulnerability-report
@@ -49,9 +49,9 @@ test:
         - controller/build/test-results/test/TEST-*.xml
         - view/build/test-results/test/TEST-*.xml
     paths:
-      - controller/build/reports/tests/
-      - model/build/reports/tests/
-      - view/build/reports/tests/
+      - controller/build/reports/
+      - model/build/reports/
+      - view/build/reports/
     when: always
 
 include:
