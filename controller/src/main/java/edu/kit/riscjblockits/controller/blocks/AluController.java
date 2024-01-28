@@ -43,10 +43,34 @@ public class AluController extends ComputerBlockController {
     }
 
     /**
+     * Sets the first operand of the ALU.
+     * @param operand1 The operation to set.
+     */
+    public void setOperand1(Value operand1) {
+        ((AluModel) getModel()).setOperand1(operand1);
+    }
+
+    /**
+     * Sets the second operand of the ALU.
+     * @param operand2 The operation to set.
+     */
+    public void setOperand2(Value operand2) {
+        ((AluModel) getModel()).setOperand2(operand2);
+    }
+
+    /**
+     * Gets the result of the ALU.
+     * @return The result of the ALU.
+     */
+    public Value getResult() {
+        return ((AluModel) getModel()).getResult();
+    }
+
+    /**
      * Executes the alu operation by accessing the model and setting all relevant values
      * @param operation Alu operation to execute
      */
-    public void executeAluOperation(String operation) {
+    public Value executeAluOperation(String operation) {
         //ToDo
         /*
         MIMA:
@@ -149,6 +173,7 @@ public class AluController extends ComputerBlockController {
         }
 
         ((AluModel) getModel()).setResult(result);
+        return result;
     }
 
     /**
