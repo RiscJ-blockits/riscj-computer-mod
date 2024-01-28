@@ -69,6 +69,16 @@ public class SystemClockController extends ComputerBlockController {
     }
 
     /**
+     * Called when the system clock is powered. (0 -> 1)
+     * Used to start the next simulation step. when in step mode
+     */
+    public void onUserTickTriggered() {
+        if (simStarted) {
+            simulationTimeHandler.onUserTickTrigger();
+        }
+    }
+
+    /**
      * If the block is reloaded, a new model is created, and it gets set to its old data from its NBT value.
      * Is also used for setting a new clock mode.
      * @param data  The data that should be set.
