@@ -1,9 +1,13 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock;
 
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -41,6 +45,20 @@ public class SystemClockBlock extends ComputerBlock {
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new SystemClockBlockEntity(pos, state);
+    }
+
+    @Override
+    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        updatePowered(state, world, pos);
+    }
+
+    @Override
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+        updatePowered(state, world, pos);
+    }
+
+    private void updatePowered(BlockState state, World world, BlockPos pos) {
+        ((SystemClockBlockEntity) world.getBlockEntity(pos)).setPowered(world.isReceivingRedstonePower(pos));
     }
 
 }
