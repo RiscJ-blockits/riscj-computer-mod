@@ -37,6 +37,12 @@ public class MemoryModel extends BlockModel {
         return new Data();
     }
 
+    @Override
+    public boolean hasUnqueriedStateChange() {
+        //ToDo remove Test code
+        return true;
+    }
+
     public Value getMemoryAt(Value address) {
         if (memory == null) {
             return new Value();

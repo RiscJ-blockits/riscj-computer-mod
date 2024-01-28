@@ -53,7 +53,6 @@ public class MemoryController extends ComputerBlockController {
                 ((MemoryModel) getModel()).setMemory(memory);
             }
         }
-        ((MemoryModel) getModel()).setMemory(null);
     }
 
     /**
