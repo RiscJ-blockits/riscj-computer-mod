@@ -16,7 +16,7 @@ public class RegisterEntry extends ListEntry {
         this.missing = missing;
         this.selectButton = new TextIconToggleWidget(Text.literal(name), button -> {
             RegisterEntry.this.missing = !RegisterEntry.this.missing;
-            ((TextIconToggleWidget) button).toggleSelected(this.missing);
+            ((TextIconToggleWidget) button).toggleSelected(RegisterEntry.this.missing);
             //TODO set other Button missing
         });
 
