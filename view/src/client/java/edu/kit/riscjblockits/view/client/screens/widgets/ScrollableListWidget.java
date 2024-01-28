@@ -18,6 +18,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
 
     public static final Identifier
         SCROLLBAR = new Identifier(RISCJ_blockits.MODID, "textures/gui/general/scroller.png");
+    public static final Identifier SCROLLBAR_DISABLED = new Identifier(RISCJ_blockits.MODID, "textures/gui/general/scroller_disabled.png");
 
     private static final int SCROLLBAR_WIDTH = 12;
     private static final int SCROLLBAR_HEIGHT = 15;
@@ -30,7 +31,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
     private final int scrollBarOffset;
     private final int scrollTopY;
 
-    private final int entryPadding = 4;
+    private final int entryPadding = 0;
 
     private int scrollPosition;
     private boolean scrolling;
@@ -135,7 +136,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
         if (overflows()) {
             context.drawTexture(SCROLLBAR, this.x + this.width + this.scrollBarOffset, scrollTopY + getScrollbarPosition(), 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
         }else {
-            context.drawTexture(SCROLLBAR, this.x + this.width + this.scrollBarOffset, scrollTopY, 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+            context.drawTexture(SCROLLBAR_DISABLED, this.x + this.width + this.scrollBarOffset, scrollTopY, 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
         }
     }
 
@@ -152,6 +153,10 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        if(button == 0){
+            scrollPosition += (int) deltaY;
+        }
+
         return Element.super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
 

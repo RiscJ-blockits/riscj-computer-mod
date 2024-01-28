@@ -15,7 +15,7 @@ public class RegisterEntry extends ListEntry {
         this.name = name;
         this.missing = missing;
         this.selectButton = new TextIconToggleWidget(Text.literal(name), button -> {
-            this.missing = !this.missing;
+            RegisterEntry.this.missing = !RegisterEntry.this.missing;
             ((TextIconToggleWidget) button).toggleSelected(this.missing);
             //TODO set other Button missing
         });
@@ -34,8 +34,6 @@ public class RegisterEntry extends ListEntry {
     @Override
     public int getHeight() {
        return ENTRY_HEIGHT;
-
-
     }
 
 

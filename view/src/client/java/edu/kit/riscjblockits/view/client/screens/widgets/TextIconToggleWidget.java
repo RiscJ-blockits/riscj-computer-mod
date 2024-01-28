@@ -8,16 +8,16 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextIconButtonWidget;
+import net.minecraft.client.gui.widget.ToggleButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class TextIconToggleWidget extends ButtonWidget {
     public static Identifier TEXTURE_SELECTED = new Identifier(RISCJ_blockits.MODID, "textures/gui/register/reg_select_button.png");
     public static Identifier TEXTURE_UNSELECTED = new Identifier(RISCJ_blockits.MODID, "textures/gui/register/reg_unselect_button.png");
-    public static final int DEFAULT_WIDTH = 150;
+    public static final int DEFAULT_WIDTH = 113;
     public static final int DEFAULT_HEIGHT = 20;
     private boolean selected = false;
-
 
     protected TextIconToggleWidget(Text message,
                                    PressAction onPress) {
@@ -25,19 +25,27 @@ public class TextIconToggleWidget extends ButtonWidget {
     }
 
     @Override
-    public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.renderButton(context, mouseX, mouseY, delta);
+    protected void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
+        //super.renderButton(context, mouseX, mouseY, delta);
         int i = this.getX();
         int j = this.getY();
-        //RenderSystem.disableDepthTest();
+        //RenderSystem.enableBlend();
+        RenderSystem.disableDepthTest();
+
+        context.getMatrices().push();
+        context.getMatrices().translate(0.0f, 0.0f, 100.0f);
+
         if(this.selected) {
-            context.drawTexture(TEXTURE_SELECTED, i, j, 1, 1, this.getWidth(), this.getHeight());
+            context.drawTexture(TEXTURE_SELECTED, i, j, 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
         } else {
-            context.drawTexture(TEXTURE_UNSELECTED, i, j, 1, 1, this.getWidth(), this.getHeight());
+            context.drawTexture(TEXTURE_UNSELECTED, i, j, 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
         }
-        //RenderSystem.enableDepthTest();
+
         MinecraftClient client = MinecraftClient.getInstance();
-        this.drawMessage(context, client.textRenderer,  0x555555);
+        context.drawText(client.textRenderer, this.getMessage(), getX()+5, getY()+7, 0x555555, false);
+
+        context.getMatrices().pop();
+        RenderSystem.enableDepthTest();
     }
 
     @Override
@@ -52,7 +60,8 @@ public class TextIconToggleWidget extends ButtonWidget {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderButton(context, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, delta);
+        //this.renderButton(context, mouseX, mouseY, delta);
     }
 
     public void toggleSelected(boolean selected) {

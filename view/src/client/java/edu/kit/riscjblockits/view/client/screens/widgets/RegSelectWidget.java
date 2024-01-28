@@ -86,7 +86,7 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
     private void reset() {
         this.leftOffset = this.narrow ? 0 : 86;
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
-        int j = (this.parentHeight - 166) / 2;
+        int j = (this.parentHeight - 166) / 2 ;
         registerList.setPosition(i +8, j+ 18);
     }
 
