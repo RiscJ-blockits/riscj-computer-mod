@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
@@ -8,9 +9,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.EditBoxWidget;
-import net.minecraft.client.gui.widget.TextIconButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtCompound;
@@ -40,7 +39,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     /**
      * The button that is used to assemble the code.
      */
-    private ButtonWidget assembleButton;
+    private IconButtonWidget assembleButton;
 
     private boolean codeHasChanged = false;
 
@@ -75,12 +74,18 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
 
+
         // add the button to the screen
-        assembleButton = TextIconButtonWidget.builder(Text.of(""), (buttonWidget) -> {
-            syncCode(editBox.getText());
-            client.interactionManager.clickButton(handler.syncId, ProgrammingScreenHandler.ASSEMBLE_BUTTON_ID);
-        }, true).texture(ASSEMBLE_BUTTON_TEXTURE, 15, 25).dimension(15, 25).build();
-        assembleButton.setPosition(this.x + 151, this.y + 63);
+        assembleButton = new IconButtonWidget(
+                this.x + 151, this.y + 63,
+                15, 25,
+                button -> {
+                    syncCode(editBox.getText());
+                    client.interactionManager.clickButton(handler.syncId, ProgrammingScreenHandler.ASSEMBLE_BUTTON_ID);
+                },
+                ASSEMBLE_BUTTON_TEXTURE
+        );
+
         addDrawableChild(assembleButton);
         handler.enableSyncing();
     }
