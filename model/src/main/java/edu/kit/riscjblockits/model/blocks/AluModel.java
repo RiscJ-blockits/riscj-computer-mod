@@ -10,28 +10,34 @@ import static edu.kit.riscjblockits.model.data.DataConstants.ALU_OPERAND2;
 import static edu.kit.riscjblockits.model.data.DataConstants.ALU_OPERATION;
 import static edu.kit.riscjblockits.model.data.DataConstants.ALU_RESULT;
 
+/**
+ * Represents an alu model. Every alu in the game has one.
+ */
 public class AluModel extends BlockModel{
 
     /**
-     * Current alu operation
+     * Current alu operation.
      */
     private String operation;
 
     /**
-     * First alu operand
+     * First alu operand.
      */
     private Value operand1;
 
     /**
-     * Second alu operand
+     * Second alu operand.
      */
     private Value operand2;
 
     /**
-     * Result of the operation
+     * Result of the operation.
      */
     private Value result;
 
+    /**
+     * Constructor. Return a model for an alu block.
+     */
     public AluModel() {
         setType(ModelType.ALU);
     }
@@ -62,25 +68,40 @@ public class AluModel extends BlockModel{
         return aluData;
     }
 
+    /**
+     * See {@link edu.kit.riscjblockits.controller.blocks.AluController#executeAluOperation(String)} for implemented operations.
+     */
     public void setOperation(String operation) {
         this.operation = operation;
         setUnqueriedStateChange(true);
     }
 
+    /**
+     * @param operand1 First operand of the alu.
+     */
     public void setOperand1(Value operand1) {
         this.operand1 = operand1;
         setUnqueriedStateChange(true);
     }
 
+    /**
+     * @param operand2 Second operand of the alu.
+     */
     public void setOperand2(Value operand2) {
         this.operand2 = operand2;
         setUnqueriedStateChange(true);
     }
 
+    /**
+     * @return The result of the alu operation.
+     */
     public Value getResult() {
         return result;
     }
 
+    /**
+     * @param result The result of the alu operation.
+     */
     public void setResult(Value result) {
         this.result = result;
         setUnqueriedStateChange(true);

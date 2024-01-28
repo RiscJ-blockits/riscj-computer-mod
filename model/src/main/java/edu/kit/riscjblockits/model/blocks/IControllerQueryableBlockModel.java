@@ -11,5 +11,4 @@ public interface IControllerQueryableBlockModel extends IQueryableBlockModel {
      */
     void setPosition(BlockPosition position);
 
-
 }

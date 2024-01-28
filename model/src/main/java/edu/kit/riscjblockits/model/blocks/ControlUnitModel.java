@@ -9,16 +9,27 @@ import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_ITEM_PRESENT;
 
+/**
+ * Represents the data and state of a control unit. Every control unit block has one.
+ */
 public class ControlUnitModel extends BlockModel{
 
+    /**
+     * The Instruction Set Model defines all behavior of the computer.
+     * Is null if no Instruction Set Model Item is inserted in the control unit block.
+     */
     private IQueryableInstructionSetModel istModel;
 
-    /** ToDo nicht im Entwurf
+    /**
      * Holds the Data which blocks are missing for a valid architecture.
      * Is used to display the information in the view.
+     * Can be null if the ClusterHandler has not checked the architecture.
      */
     private IDataContainer clusteringData;
 
+    /**
+     * Constructor. Returns the model for a control unit.
+     */
     public ControlUnitModel() {
         super();
         setType(ModelType.CONTROL_UNIT);

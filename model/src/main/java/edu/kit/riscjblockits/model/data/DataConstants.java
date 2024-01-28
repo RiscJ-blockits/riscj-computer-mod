@@ -121,4 +121,20 @@ public class DataConstants {
      */
     public static final String ALU_RESULT = "result";
 
+    //Memory Constants
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.MemoryModel#getData()}
+     */
+    public static final String MEMORY_MEMORY = "memory";
+
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.MemoryModel#getData()}
+     */
+    public static final String MEMORY_WORD = "wordSize";
+
+    /**
+     * {@link edu.kit.riscjblockits.model.blocks.MemoryModel#getData()}
+     */
+    public static final String MEMORY_ADDRESS = "addressSize";
+
 }
