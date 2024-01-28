@@ -241,6 +241,7 @@ public class ClusterHandler implements IArchitectureCheckable {
             return false;
         }
         this.istModel = istModel;
+        checkFinished();
         return true;
     }
 

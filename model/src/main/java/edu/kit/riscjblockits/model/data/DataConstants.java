@@ -137,4 +137,9 @@ public class DataConstants {
      */
     public static final String MEMORY_ADDRESS = "addressSize";
 
+    /**
+     * NBT-Tag of the Programm Item.
+     */
+    public static final String MEMORY_PROGRAMM_ITEM = "riscj_blockits.memory";  //Don't change this!
+
 }

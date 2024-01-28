@@ -38,6 +38,9 @@ public class MemoryModel extends BlockModel {
     }
 
     public Value getMemoryAt(Value address) {
+        if (memory == null) {
+            return new Value();
+        }
         return memory.getValueAt(address);
     }
 
@@ -49,6 +52,7 @@ public class MemoryModel extends BlockModel {
     public void setMemory(Memory memory) {
         this.memory = memory;
         setUnqueriedStateChange(true);
+        System.out.println("Memory changed");
     }
 
 }

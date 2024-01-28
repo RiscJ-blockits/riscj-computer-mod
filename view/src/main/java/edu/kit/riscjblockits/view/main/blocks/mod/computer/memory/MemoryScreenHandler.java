@@ -5,7 +5,10 @@ import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
 public class MemoryScreenHandler extends ModScreenHandler {
@@ -26,8 +29,20 @@ public class MemoryScreenHandler extends ModScreenHandler {
 
         this.addSlot(new Slot(inventory, 0, 135, 6));
 
-
         addPlayerInventorySlotsLarge(playerInventory);
+
+        addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
+            @Override
+            public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
+                if (slotId == 0) {
+                    ((MemoryBlockEntity) blockEntity).inventoryChanged();
+                }
+            }
+            @Override
+            public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
+                //do nothing
+            }
+        });
     }
 
 }

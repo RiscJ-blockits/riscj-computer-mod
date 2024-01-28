@@ -27,7 +27,6 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
 
         addPlayerInventorySlotsLarge(playerInventory);
 
-
         addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {

@@ -22,6 +22,9 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_MODEL;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_ITEM_PRESENT;
+
 /**
  * This class represents a control unit entity from our mod in the game.
  * Every control unit has its own unique ControlUnitBlockEntity while it is loaded.
@@ -92,13 +95,13 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
             System.out.println("IST Item changed");
             if (getItems().get(0).getCount() == 0) {        //Item is removed when there are zero 'air' items
                 Data cuData = new Data();
-                cuData.set("istModel", null);
+                cuData.set(CONTROL_IST_MODEL, null);
                 getController().setData(cuData);
             } else {
                 NbtCompound istNbt = getItems().get(0).getNbt();
                 Data cuData = new Data();
                 NbtDataConverter converter = new NbtDataConverter(istNbt);
-                cuData.set("istModel", converter.getData());
+                cuData.set(CONTROL_IST_MODEL, converter.getData());
                 getController().setData(cuData);
             }
         }
@@ -111,7 +114,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     @Override
     public void updateUI() {
         if (getItems().get(0).getCount() == 0 && getModel() != null
-                && ((IDataStringEntry) ((IDataContainer) getModel().getData()).get("istModelPresent")).getContent().equals("false")) {
+                && ((IDataStringEntry) ((IDataContainer) getModel().getData()).get(CONTROL_ITEM_PRESENT)).getContent().equals("false")) {
             ItemScatterer.spawn(world, pos, (this));        //drop the IstItem if it is rejected
         }
         super.updateUI();
