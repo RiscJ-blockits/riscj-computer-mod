@@ -2,12 +2,14 @@ package edu.kit.riscjblockits.view.client.screens.widgets;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
+import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.ScreenRect;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.Widget;
 
 import java.util.function.Consumer;
 
-public abstract class ListEntry implements Widget, Drawable {
+public abstract class ListEntry implements Widget, Drawable, Element {
 
     protected int x;
     protected int y;
@@ -43,7 +45,27 @@ public abstract class ListEntry implements Widget, Drawable {
     }
 
     @Override
+    public ScreenRect getNavigationFocus() {
+        return Widget.super.getNavigationFocus();
+    }
+
+    @Override
     public void forEachChild(Consumer<ClickableWidget> consumer) {
 
+    }
+
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+
+    }
+
+    @Override
+    public void setFocused(boolean focused) {
+
+    }
+
+    @Override
+    public boolean isFocused() {
+        return false;
     }
 }

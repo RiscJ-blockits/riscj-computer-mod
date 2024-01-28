@@ -17,7 +17,8 @@ public class RegisterEntry extends ListEntry {
         this.selectButton = new TextIconToggleWidget(Text.literal(name), button -> {
             RegisterEntry.this.missing = !RegisterEntry.this.missing;
             ((TextIconToggleWidget) button).toggleSelected(RegisterEntry.this.missing);
-            //TODO set other Button missing
+            //TODO set other register as [Not_ASSIGNED] if button was selected before
+            //TODO set other button to not selected if this button was not selected before
         });
 
 
@@ -36,9 +37,21 @@ public class RegisterEntry extends ListEntry {
        return ENTRY_HEIGHT;
     }
 
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if(isMouseOver(mouseX, mouseY)){
+            return this.selectButton.mouseClicked(mouseX, mouseY, button);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return this.selectButton.isMouseOver(mouseX, mouseY);
+    }
 
     public void update() {
-        //TODO set Button inactive when selcted for current Register       this.selectButton.active = ;
+        //TODO set Button inactive when selcted for current Register
         this.selectButton.toggleSelected(this.missing);
     }
 }

@@ -4,17 +4,19 @@ import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.gui.ScreenRect;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 
-public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawable, Element{
+public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawable, ParentElement {
 
     public static final Identifier
         SCROLLBAR = new Identifier(RISCJ_blockits.MODID, "textures/gui/general/scroller.png");
@@ -148,24 +150,9 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
 
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return Element.super.mouseClicked(mouseX, mouseY, button);
+    public List<? extends Element> children() {
+        return entries;
     }
-
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return Element.super.mouseReleased(mouseX, mouseY, button);
-    }
-
-    @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        if(button == 0){
-            scrollPosition += (int) deltaY;
-        }
-
-        return Element.super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-    }
-
 
 
     @Override
@@ -176,7 +163,38 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
         } else if (scrollPosition > getContentsHeight() - height){
             scrollPosition = getContentsHeight() - height;
         }
-        return Element.super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+        return ParentElement.super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
+
+    /*@Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        for (ListEntry entry : entries) {
+            if (entry.isMouseOver(mouseX, mouseY)) {
+                return entry.mouseClicked(mouseX, mouseY, button);
+            }
+        }
+        return false;
+    }*/
+
+    @Override
+    public boolean isDragging() {
+        return false;
+    }
+
+    @Override
+    public void setDragging(boolean dragging) {
+
+    }
+
+    @Nullable
+    @Override
+    public Element getFocused() {
+        return null;
+    }
+
+    @Override
+    public void setFocused(@Nullable Element focused) {
+
     }
 
     @Override
