@@ -22,6 +22,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
 
     private static final int SCROLLBAR_WIDTH = 12;
     private static final int SCROLLBAR_HEIGHT = 15;
+    private static final int SCROLL_MULTIPLIER = 4;
     protected List<T> entries;
     private int x;
     private int y;
@@ -31,7 +32,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
     private final int scrollBarOffset;
     private final int scrollTopY;
 
-    private final int entryPadding = 0;
+    private final int entryPadding = 2;
 
     private int scrollPosition;
     private boolean scrolling;
@@ -55,7 +56,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
     }
 
     private int getScrollbarPosition() {
-        return MathHelper.clamp(((scrollPosition / getContentsHeight()) * this.height), 0, this.height - SCROLLBAR_HEIGHT);
+        return MathHelper.clamp(((scrollPosition * height) / (getContentsHeight() - this.height) ), 0, this.height - SCROLLBAR_HEIGHT);
     }
 
     @Override
@@ -104,13 +105,17 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
 
-        //context.enableScissor(x, y, x + width, y + height);
+        context.enableScissor(x, y, x + width, y + height);
+
+        if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) {
+            isFocused = true;
+        }
 
         int currentY = 0;
         for (ListEntry entry : entries) {
             // only draw an entry when it is between top and bottom of scroll widget
             if (currentY + entry.getHeight() > scrollPosition && currentY < scrollPosition + height) {
-                entry.setY(getY() + currentY);
+                entry.setY(getY() + currentY - scrollPosition);
                 entry.render(context, mouseX, mouseY, delta);
             }
             // increment currentY by height of widget + padding
@@ -118,7 +123,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
         }
 
 
-        //context.disableScissor();
+        context.disableScissor();
 
         drawScrollbar(context);
 
@@ -127,16 +132,17 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
     private int getContentsHeight() {
         int totalHeight = 0;
         for (ListEntry entry : entries) {
-            totalHeight += entry.getHeight();
+            totalHeight += entry.getHeight() + entryPadding;
         }
-        return totalHeight;
+        // remove padding from last entry
+        return totalHeight - entryPadding;
     }
 
     private void drawScrollbar(DrawContext context) {
         if (overflows()) {
-            context.drawTexture(SCROLLBAR, this.x + this.width + this.scrollBarOffset, scrollTopY + getScrollbarPosition(), 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+            context.drawTexture(SCROLLBAR, this.x + this.width + this.scrollBarOffset, y + getScrollbarPosition(), 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
         }else {
-            context.drawTexture(SCROLLBAR_DISABLED, this.x + this.width + this.scrollBarOffset, scrollTopY, 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+            context.drawTexture(SCROLLBAR_DISABLED, this.x + this.width + this.scrollBarOffset, y, 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
         }
     }
 
@@ -164,7 +170,12 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        scrollPosition += (int) verticalAmount;
+        scrollPosition -= (int) (SCROLL_MULTIPLIER * verticalAmount);
+        if (scrollPosition < 0) {
+            scrollPosition = 0;
+        } else if (scrollPosition > getContentsHeight() - height){
+            scrollPosition = getContentsHeight() - height;
+        }
         return Element.super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 

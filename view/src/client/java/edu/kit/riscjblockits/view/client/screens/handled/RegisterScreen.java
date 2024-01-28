@@ -71,4 +71,8 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
         registerValue = Text.literal(regValue.substring(regValue.length() - 8));
     }
 
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
 }

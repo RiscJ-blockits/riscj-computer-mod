@@ -37,6 +37,12 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
     private int leftOffset;
     private int cachedInvChangeCount;
     private RegisterListWidget registerList;
+    private int x;
+    private int y;
+    private int width;
+    private int height;
+    private final List<Element> children = new ArrayList<>();
+
     public RegSelectWidget() {
     }
 
@@ -56,6 +62,7 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
 
 
         this.registerList = new RegisterListWidget(getEntries(), i+ 8, j + 18, 113, 140);
+        children.add(registerList);
         this.open = false;
     }
 
@@ -152,5 +159,15 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         if (this.cachedInvChangeCount != this.client.player.getInventory().getChangeCount()) {
             this.cachedInvChangeCount = this.client.player.getInventory().getChangeCount();
         }
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        return registerList.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
+
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return true;//mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 }
