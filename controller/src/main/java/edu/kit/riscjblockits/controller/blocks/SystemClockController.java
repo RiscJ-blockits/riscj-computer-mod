@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
+import edu.kit.riscjblockits.model.blocks.ClockMode;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.ISimulationTimingObserver;
 import edu.kit.riscjblockits.model.blocks.SystemClockModel;
@@ -76,6 +77,14 @@ public class SystemClockController extends ComputerBlockController {
 
     public void registerModelObserver(ISimulationTimingObserver simulationTimingObserver) {
         ((SystemClockModel) getModel()).registerObserver(simulationTimingObserver);
+    }
+
+    public int getClockSpeed() {
+        return ((SystemClockModel) getModel()).getClockSpeed();
+    }
+
+    public ClockMode getClockMode() {
+        return ((SystemClockModel) getModel()).getClockMode();
     }
 
 }

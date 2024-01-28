@@ -27,7 +27,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
     /**
      * The {@link SimulationSequenceHandler} that executes the simulation tick.
      */
-    private SimulationSequenceHandler simulationSequenceHandler;
+    private final SimulationSequenceHandler simulationSequenceHandler;
     /**
      * Clock speed for the Minecraft tick mode to decide waiting time between executions.
      */
@@ -37,9 +37,9 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      */
     private ClockMode clockMode;
     /**
-     * The {@link SystemClockModel} that is observed for changes in the clock state.
+     * The {@link SystemClockController} that is holding the model which is observed for changes in the clock state.
      */
-    private SystemClockModel systemClockModel;              //FixMe: not an Interface, more in this class
+    private SystemClockController systemClockContoller;
     /**
      * Counter for the Minecraft tick mode to decide waiting time between executions.
      */
@@ -109,7 +109,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      */
     @Override
     public void updateObservedState() {
-        clockSpeed = systemClockModel.getClockSpeed();
-        clockMode = systemClockModel.getClockMode();
+        clockSpeed = systemClockContoller.getClockSpeed();
+        clockMode = systemClockContoller.getClockMode();
     }
 }
