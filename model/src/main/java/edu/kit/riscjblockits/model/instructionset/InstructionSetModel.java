@@ -2,12 +2,11 @@ package edu.kit.riscjblockits.model.instructionset;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.List;
 
 /**
  * Model of an instruction set. Contains all information on how to execute code based on the instruction set.
@@ -332,7 +331,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
             if (!opcodeHashMap.containsKey(opCode)) continue;
             Instruction instruction = opcodeHashMap.get(opCode);
             if (instruction != null) {
-                return instruction;
+                return new Instruction(instruction, binaryValue);
             }
         }
         return null;

@@ -58,6 +58,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
             if (blockController.getControllerType() == BlockControllerType.CLOCK) {
 //                systemClockModel = (SystemClockModel) blockController.getModel();
 //                systemClockModel.registerObserver(this);
+                systemClockContoller = (SystemClockController) blockController;
                 ((SystemClockController) blockController).registerModelObserver(this);
             }
         }
