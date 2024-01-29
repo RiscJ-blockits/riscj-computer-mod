@@ -2,21 +2,28 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
+import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
-import edu.kit.riscjblockits.view.main.blocks.mod.ImplementedInventory;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntityWithInventory;
+import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_MODEL;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_ITEM_PRESENT;
 
 /**
  * This class represents a control unit entity from our mod in the game.
@@ -25,8 +32,7 @@ import org.jetbrains.annotations.Nullable;
 public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory implements
     ExtendedScreenHandlerFactory {
 
-    private static final int INSTRUCTION_SET_SLOT = 0;
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
+    private static final int INSTRUCTION_SET_SLOT = 1;
     private DefaultedList<ComputerBlockController> connectedBlocks;
     private DefaultedList<ComputerBlockController> missingBlocks;
 
@@ -36,7 +42,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
      * @param state The state of the minecraft block.
      */
     public ControlUnitBlockEntity(BlockPos pos, BlockState state) {
-        super(RISCJ_blockits.CONTROL_UNIT_BLOCK_ENTITY, pos, state, 1);
+        super(RISCJ_blockits.CONTROL_UNIT_BLOCK_ENTITY, pos, state, INSTRUCTION_SET_SLOT);
     }
 
     /**
@@ -46,15 +52,6 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     @Override
     protected ComputerBlockController createController() {
         return new ControlUnitController(this);
-    }
-
-    /**
-     * ToDo
-     * @return
-     */
-    @Override
-    public DefaultedList<ItemStack> getItems() {
-        return inventory;
     }
 
     /**
@@ -87,6 +84,40 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new ControlUnitScreenHandler(syncId, playerInventory, this);
+    }
+
+    /**
+     * When the Instruction Set changes, the controller needs to be notified.
+     */
+    @Override
+    public void inventoryChanged() {
+        if (getController() != null) {             //only on the server
+            System.out.println("IST Item changed");
+            if (getItems().get(0).getCount() == 0) {        //Item is removed when there are zero 'air' items
+                Data cuData = new Data();
+                cuData.set(CONTROL_IST_MODEL, null);
+                getController().setData(cuData);
+            } else {
+                NbtCompound istNbt = getItems().get(0).getNbt();
+                Data cuData = new Data();
+                NbtDataConverter converter = new NbtDataConverter(istNbt);
+                cuData.set(CONTROL_IST_MODEL, converter.getData());
+                getController().setData(cuData);
+            }
+        }
+    }
+
+    /**
+     * Gets called every tick.
+     * Used to update ui elements.
+     */
+    @Override
+    public void updateUI() {
+        if (getItems().get(0).getCount() == 0 && getModel() != null
+                && ((IDataStringEntry) ((IDataContainer) getModel().getData()).get(CONTROL_ITEM_PRESENT)).getContent().equals("false")) {
+            ItemScatterer.spawn(world, pos, (this));        //drop the IstItem if it is rejected
+        }
+        super.updateUI();
     }
 
 }

@@ -7,15 +7,13 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 
 public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/control_unit_gui.png");
-
+    private Text cu1 = Text.literal("-");        //Testcode
 
     public ControlUnitScreen(ControlUnitScreenHandler handler, PlayerInventory inventory,
                              Text title) {
@@ -47,5 +45,15 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
+        //Testcode
+        context.drawCenteredTextWithShadow(textRenderer, cu1, width / 2, height / 2, 0xffffff);
     }
+
+    @Override
+    public void handledScreenTick() {
+        super.handledScreenTick();
+        //Testcode
+        cu1 = Text.literal(handler.getClusteringData());
+    }
+
 }

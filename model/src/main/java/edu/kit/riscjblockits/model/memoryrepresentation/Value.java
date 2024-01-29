@@ -122,6 +122,7 @@ public class Value {
      * @return the value as floating point decimal string
      */
     public String getFloatValue() {
+        //ToDo
         return null;
     }
 

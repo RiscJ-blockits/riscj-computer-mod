@@ -1,25 +1,33 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.blocks.AluModel;
-import edu.kit.riscjblockits.model.blocks.BlockPosition;
-import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
-import edu.kit.riscjblockits.model.data.IDataElement;
-import edu.kit.riscjblockits.model.memoryrepresentation.Value;
+import edu.kit.riscjblockits.model.blocks.RegisterModel;
+import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.DataStringEntry;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-/**
- * Test class for {@link AluController}
- *
- * results are checked with windows calculator in programmer mode
- * and using RARS for more complex operations
- */
 class AluControllerTest {
+
+    private AluController aluController;
+
+    @BeforeEach
+    void init() {
+        aluController = new AluController(new ArchiCheckStub_Entity());
+    }
+
+    @Test
+    void setData() {
+        Data aluData = new Data();
+        aluData.set("operation", new DataStringEntry("add"));
+        aluController.setData(aluData);
+        AluModel aluModel = (AluModel) aluController.getModel();
+        aluData = (Data) aluModel.getData();
+        assertEquals("add", ((IDataStringEntry) (aluData.get("operation"))).getContent());
+    }
 
     private IConnectableComputerBlockEntity getBlockEntityMock() {
         IConnectableComputerBlockEntity blockEntity = new IConnectableComputerBlockEntity() {

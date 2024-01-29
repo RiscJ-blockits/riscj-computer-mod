@@ -1,7 +1,7 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import edu.kit.riscjblockits.view.client.screens.wigets.RegSelectWidget;
+import edu.kit.riscjblockits.view.client.screens.widgets.RegSelectWidget;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
 import net.minecraft.client.gui.DrawContext;
@@ -16,11 +16,14 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/register/register_block_gui.png");
     private final RegSelectWidget regSelectWidget = new RegSelectWidget();
     private boolean narrow;
+
+    private Text registerValue = Text.literal("0");
+
     public RegisterScreen(RegisterScreenHandler handler, PlayerInventory inventory,
                           Text title) {
         super(handler, inventory, title);
-    }
 
+    }
 
     @Override
     protected void init() {
@@ -57,11 +60,20 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
         }
         this.regSelectWidget.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
+        context.drawText(textRenderer, registerValue, this.x + 64, this.y + 39, 0x555555, false);
+
     }
 
     @Override
     public void handledScreenTick() {
         super.handledScreenTick();
         this.regSelectWidget.update();
+        String regValue = handler.getRegisterValue();
+        registerValue = Text.literal(regValue.substring(Math.max(regValue.length() - 8, 0)));
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 }

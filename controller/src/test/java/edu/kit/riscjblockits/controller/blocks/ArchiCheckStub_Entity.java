@@ -1,7 +1,7 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
-import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
+import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class ArchiCheckStub_Entity implements IConnectableComputerBlockEntity {
     }
 
     @Override
-    public void setBlockModel(IQueryableBlockModel model) {
+    public void setBlockModel(IViewQueryableBlockModel model) {
 
     }
 

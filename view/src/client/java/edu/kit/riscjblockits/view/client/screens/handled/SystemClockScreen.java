@@ -13,6 +13,10 @@ import net.minecraft.util.Identifier;
 public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_gui.png");
+
+    private Text clockSpeed = Text.literal("0");
+    private Text clockMode = Text.literal("");
+
     public SystemClockScreen(SystemClockScreenHandler handler, PlayerInventory inventory,
                              Text title) {
         super(handler, inventory, title);
@@ -40,5 +44,15 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
+        context.drawCenteredTextWithShadow(textRenderer, clockSpeed, width / 2, height / 2, 0xffffff);
+        context.drawCenteredTextWithShadow(textRenderer, clockMode, width / 2, height / 3, 0xffffff);
     }
+
+    @Override
+    public void handledScreenTick() {
+        super.handledScreenTick();
+        clockSpeed = Text.literal(handler.getSystemClockSpeed());
+        clockMode = Text.literal(handler.getSystemClockMode());
+    }
+
 }

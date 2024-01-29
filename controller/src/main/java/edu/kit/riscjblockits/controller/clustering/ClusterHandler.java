@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.clustering;
 
 
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
+import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableComputerController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
@@ -10,7 +11,6 @@ import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import edu.kit.riscjblockits.model.busgraph.IQueryableBusSystem;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
-import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -226,11 +226,23 @@ public class ClusterHandler implements IArchitectureCheckable {
      * @return true if the set operation was successful, false if there is already an instruction set model set.
      */
     public boolean setIstModel(IQueryableInstructionSetModel istModel) {
-        if (this.istModel == null) {
-            this.istModel = istModel;
-            return true;
+        if (istModel == null) {
+            removeIstModel();
+            return false;
         }
-        return false;
+        int cuCount = 0;
+        for (IQueryableClusterController block: blocks) {
+            if (block.getControllerType() == BlockControllerType.CONTROL_UNIT) {
+                cuCount++;
+            }
+        }
+        if (cuCount > 1) {
+            removeIstModel();
+            return false;
+        }
+        this.istModel = istModel;
+        checkFinished();
+        return true;
     }
 
     /** ToDo nicht im Entwurf
@@ -238,10 +250,15 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     public void removeIstModel() {
         istModel = null;
+        for (IQueryableClusterController block: blocks) {
+            if (block.getControllerType() == BlockControllerType.CONTROL_UNIT) {
+                ((ControlUnitController) block).rejectIstModel();
+            }
+        }
     }
 
     /**
-     * method to check whether the cluster is finished building
+     * method to check whether the cluster is finished building.
      */
     public void checkFinished() {
         System.out.println("Blocks: " + blocks.size() + " | BusBlocks: " + busBlocks.size());

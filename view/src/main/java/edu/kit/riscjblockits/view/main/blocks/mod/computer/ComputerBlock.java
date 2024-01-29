@@ -1,15 +1,18 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer;
 
+import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlock;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 /**
@@ -20,18 +23,25 @@ import net.minecraft.world.World;
 public abstract class ComputerBlock extends ModBlock {
 
     /**
+     * Determines if the register is active or not.
+     */
+    private static final BooleanProperty ACTIVE = RISCJ_blockits.ACTIVE_STATE_PROPERTY;
+
+    /**
      * Creates a new ComputerBlock with the given settings.
      * @param settings the settings for the block.
      */
     protected ComputerBlock(AbstractBlock.Settings settings) {
-        super(settings);
+        super(settings.luminance(state -> state.get(ACTIVE) ? 15 : 0).nonOpaque());
+        setDefaultState(getDefaultState().with(ACTIVE, false));
     }
 
     /**
      * Creates a new ComputerBlock with default settings.
      */
     protected ComputerBlock() {
-        super();
+        super(FabricBlockSettings.create().luminance(state -> state.get(ACTIVE) ? 8 : 0).nonOpaque());
+        setDefaultState(getDefaultState().with(ACTIVE, false));
     }
 
     /**
@@ -69,6 +79,14 @@ public abstract class ComputerBlock extends ModBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return (world1, pos, state1, be) -> ComputerBlockEntity.tick(world1, pos, state1, (ComputerBlockEntity) be);
+    }
+
+    /** Is called by minecraft. We add our custom block state.
+     * @param builder {@link net.minecraft.block.Block#appendProperties(StateManager.Builder)} for this block.
+     */
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(ACTIVE);
     }
 
 }

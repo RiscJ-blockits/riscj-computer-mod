@@ -23,17 +23,17 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
     /**
      * The id of the "assemble" button.
      */
-    private static final int ASSEMBLE_BUTTON_ID = 0;
+    public static final int ASSEMBLE_BUTTON_ID = 0;
 
     /**
      * The block entity, that created this screenHandler.
      */
-    private ProgrammingBlockEntity blockEntity = null;
+    private final ProgrammingBlockEntity blockEntity;
 
     /**
      * The inventory of the programming block.
      */
-    private Inventory inventory;
+    private final Inventory inventory;
 
 
     /**
@@ -44,11 +44,11 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
      * @param buf the packet buffer, additional information is to be loaded from
      */
     public ProgrammingScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        super(RISCJ_blockits.PROGRAMMING_SCREEN_HANDLER, syncId);
-        this.inventory = new SimpleInventory(1);
-        addInstructionSetSlot();
-        addProgramSlot();
-        this.addPlayerInventorySlots(playerInventory);
+        this(syncId, playerInventory,
+                new SimpleInventory(3),
+                (ProgrammingBlockEntity) playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
+        // load code from packet buffer
+        blockEntity.setCode(buf.readString());
     }
 
     /**
@@ -60,9 +60,13 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
      * @param blockEntity the block entity that created this screenHandler
      */
     public ProgrammingScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, ProgrammingBlockEntity blockEntity) {
-        this(syncId, playerInventory, (PacketByteBuf) null);
+        super(RISCJ_blockits.PROGRAMMING_SCREEN_HANDLER,syncId, blockEntity);
         this.inventory = inventory;
         this.blockEntity = blockEntity;
+        // add for GUI required Slots
+        addInstructionSetSlot();
+        addProgramSlots();
+        addPlayerInventorySlotsLarge(playerInventory);
     }
 
     /**
@@ -77,8 +81,10 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
         if (id == ASSEMBLE_BUTTON_ID) {
             try {
                 this.blockEntity.assemble();
+                syncState();
                 return true;
             } catch (AssemblyException e) {
+                System.out.println("Assembler-Error: " + e.getMessage());
                 showError(e.getMessage());
             }
         }
@@ -96,10 +102,15 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
     /**
      * will add the slot for the program-Item to the screen.
      */
-    private void addProgramSlot() {
-        this.addSlot(new Slot(this.inventory, 0, 20, 20) {
+    private void addProgramSlots() {
+        this.addSlot(new Slot(this.inventory, 1, 151, 40) {
             public boolean canInsert(ItemStack stack) {
                 return stack.isOf(RISCJ_blockits.PROGRAM_ITEM);
+            }
+        });
+        this.addSlot(new Slot(this.inventory, 2, 151, 93) {
+            public boolean canInsert(ItemStack stack) {
+                return false;
             }
         });
     }
@@ -108,10 +119,16 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
      * will add the slot for the instruction set to the screen.
      */
     private void addInstructionSetSlot() {
-        this.addSlot(new Slot(this.inventory, 0, 20, 20) {
+        this.addSlot(new Slot(this.inventory, 0, 151, 18) {
             public boolean canInsert(ItemStack stack) {
                 return stack.getItem().getClass() == InstructionSetItem.class;
             }
         });
     }
+
+    public String getCode() {
+        return blockEntity.getCode();
+    }
+
+
 }

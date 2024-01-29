@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.view.main;
 
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.alu.AluBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.alu.AluBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlock;
@@ -11,49 +10,48 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUn
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlock;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlock;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlockEntity;
 import edu.kit.riscjblockits.view.main.items.goggles.GogglesItem;
 import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
 import edu.kit.riscjblockits.view.main.items.manual.ManualItem;
 import edu.kit.riscjblockits.view.main.items.program.ProgramItem;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerBlockEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
-
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.fabricmc.fabric.impl.screenhandler.Networking;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.util.math.BlockPos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 
 /**
  * This class is the main class of the mod.
@@ -70,6 +68,11 @@ public class RISCJ_blockits implements ModInitializer {
 	 * Logger for writing text to the console and the log file.
 	 */
 	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
+
+	/**
+	 * This attribute defines the active state of a block.
+	 */
+	public static final BooleanProperty ACTIVE_STATE_PROPERTY = BooleanProperty.of("active");
 
 	// define Blocks
 	/**
@@ -145,7 +148,7 @@ public class RISCJ_blockits implements ModInitializer {
 	 */
 	public static final BlockItem SYSTEM_CLOCK_BLOCK_ITEM = new BlockItem(SYSTEM_CLOCK_BLOCK, new Item.Settings());
 
-	// Define Block-Entities. Every placed block from the mod has its own unique block-entity.
+    // Define Block-Entities. Every placed block from the mod has its own unique block-entity.
 	/**
 	 * The Type of the ALU-Block-Entity. Every ALU-Block gets its own ALU-Block-Entity when it is placed.
 	 */
@@ -212,6 +215,13 @@ public class RISCJ_blockits implements ModInitializer {
 	 * This attribute defines the ScreenHandlerType for the ProgrammingScreenHandler.
 	 */
 	public static ScreenHandlerType<ProgrammingScreenHandler> PROGRAMMING_SCREEN_HANDLER;
+
+
+	/**
+	 * This attribute defines the TagKey to identify computerBlocks
+	 */
+	public static final TagKey<Block> COMPUTER_BLOCK_TAG = new TagKey<>(RegistryKeys.BLOCK,new Identifier(MODID, "computer_blocks"));
+
 
 	public static  ScreenHandlerType<RegisterScreenHandler> REGISTER_SCREEN_HANDLER =
 		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "register_screen"),
@@ -285,6 +295,23 @@ public class RISCJ_blockits implements ModInitializer {
 		// register the Item-Group
 		Registry.register(Registries.ITEM_GROUP, new Identifier(MODID, "computer_components"), ITEM_GROUP);
 
+		ServerPlayNetworking.registerGlobalReceiver(
+			NetworkingConstants.SYNC_REGISTER_SELECTION,
+
+			(server, player, handler, buf, responseSender) -> {
+				BlockPos pos = buf.readBlockPos();
+				String selectedRegister = buf.readString();
+
+				server.execute(() -> {
+					BlockEntity be = player.getWorld().getBlockEntity(pos);
+					NbtCompound nbt = new NbtCompound();
+					((RegisterBlockEntity) be).writeNbt(nbt);
+					NbtCompound subNbt = (NbtCompound) nbt.get(MOD_DATA);
+					subNbt.putString(REGISTER_TYPE, selectedRegister);
+					be.readNbt(nbt);
+				});
+			}
+		);
 	}
 
 	/**

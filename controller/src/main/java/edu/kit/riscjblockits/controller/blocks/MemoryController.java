@@ -1,9 +1,14 @@
 package edu.kit.riscjblockits.controller.blocks;
 
-import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.MemoryModel;
+import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_PROGRAMM_ITEM;
 
 /**
  * The controller for a Memory block entity.
@@ -34,8 +39,20 @@ public class MemoryController extends ComputerBlockController {
      */
     @Override
     public void setData(IDataElement data) {
-        //ToDo
-        ((MemoryModel) getModel()).setMemory(null);
+        if (!data.isContainer()) {
+            return;
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals(MEMORY_MEMORY)) {
+                if (((IDataContainer) data).get(s) == null) {           //programm Item has been removed
+                    ((MemoryModel) getModel()).setMemory(null);
+                    return;
+                }
+                IDataContainer memoryData = (IDataContainer) ((IDataContainer) ((IDataContainer) data).get(s)).get(MEMORY_PROGRAMM_ITEM);
+                Memory memory = Memory.fromData(memoryData);
+                ((MemoryModel) getModel()).setMemory(memory);
+            }
+        }
     }
 
     /**
@@ -44,7 +61,7 @@ public class MemoryController extends ComputerBlockController {
      * @return The value at the given address.
      */
     public Value getValue(Value address) {
-        //ToDo
+        //ToDo do checks?
         return ((MemoryModel) getModel()).getMemoryAt(address);
     }
 
@@ -54,7 +71,7 @@ public class MemoryController extends ComputerBlockController {
      * @param value The value to write.
      */
     public void writeMemory(Value address, Value value) {
-        //ToDo
+        //ToDo do checks?
         ((MemoryModel) getModel()).setMemoryAt(address, value);
     }
 

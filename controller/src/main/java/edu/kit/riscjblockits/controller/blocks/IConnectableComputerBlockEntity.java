@@ -1,7 +1,7 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
-import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
+import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public interface IConnectableComputerBlockEntity {
     /**
      * @param model Sets the model of the block entity, so it can query the model for visualization.
      */
-    void setBlockModel(IQueryableBlockModel model);
+    void setBlockModel(IViewQueryableBlockModel model);
 
     /**
      * Gather the neighbors of the block.

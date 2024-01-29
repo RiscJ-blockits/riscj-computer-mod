@@ -1,26 +1,31 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit;
 
+import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
-import net.minecraft.block.entity.BlockEntity;
+import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
-import org.jetbrains.annotations.Nullable;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
 public class ControlUnitScreenHandler extends ModScreenHandler {
 
-
     private final Inventory inventory;
 
-
-    public ControlUnitScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity) {
-        super(RISCJ_blockits.CONTROL_UNIT_SCREEN_HANDLER, syncId);
+    public ControlUnitScreenHandler(int syncId, PlayerInventory playerInventory, ModBlockEntity blockEntity) {
+        super(RISCJ_blockits.CONTROL_UNIT_SCREEN_HANDLER, syncId, blockEntity);
 
         checkSize(((Inventory) blockEntity), 1);
         this.inventory = ((Inventory) blockEntity);
@@ -28,12 +33,24 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
 
         this.addSlot(new Slot(inventory, 0, 8, 18));
 
-        addPlayerInventory(playerInventory);
-        addPlayerHotbar(playerInventory);
+        addPlayerInventorySlotsLarge(playerInventory);
+
+        addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
+            @Override
+            public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
+                if (slotId == 0) {
+                    ((ControlUnitBlockEntity) blockEntity).inventoryChanged();
+                }
+            }
+            @Override
+            public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
+                //do nothing
+            }
+        });
     }
 
     public ControlUnitScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this(syncId,playerInventory, playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
+        this(syncId,playerInventory, (ModBlockEntity) playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
     }
     @Override
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
@@ -49,14 +66,12 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
             } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
                 return ItemStack.EMPTY;
             }
-
             if (originalStack.isEmpty()) {
                 slot.setStack(ItemStack.EMPTY);
             } else {
                 slot.markDirty();
             }
         }
-
         return newStack;
     }
 
@@ -65,17 +80,21 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
         return true;
     }
 
-    private void addPlayerInventory(PlayerInventory playerInventory) {
-        for(int i = 0; i < 3; ++i) {
-            for(int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 140 + i * 18));
+    public String getClusteringData() {
+        NbtCompound nbt = getBlockEntity().createNbt();
+        if (!nbt.contains(MOD_DATA)) {
+            return "";
+        }
+        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
+        if (!data.isContainer()) {
+            return "";
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals(CONTROL_CLUSTERING)) {
+                return ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(CONTROL_CLUSTERING)).get("missingRegisters")).getContent();
             }
         }
+        return "";
     }
 
-    private void addPlayerHotbar(PlayerInventory playerInventory) {
-        for(int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 198));
-        }
-    }
 }
