@@ -135,7 +135,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      */
     @Override
     public Text getGoggleText() {
-        return Text.empty();
+        return Text.of("Goggle Text " + getPos().toString());
     }
 
     @Override
