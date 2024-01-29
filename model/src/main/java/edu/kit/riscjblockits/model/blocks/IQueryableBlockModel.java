@@ -17,4 +17,6 @@ public interface IQueryableBlockModel {
      */
     boolean hasUnqueriedStateChange();
 
+    void onStateQuery();
+
 }

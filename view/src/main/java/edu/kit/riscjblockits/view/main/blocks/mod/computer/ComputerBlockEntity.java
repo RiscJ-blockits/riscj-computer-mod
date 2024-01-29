@@ -181,6 +181,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             buf.writeNbt(nbt);
             world.getPlayers().forEach(player -> ServerPlayNetworking.send((ServerPlayerEntity) player,
                 NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, buf));
+            model.onStateQuery();
         }
     }
 

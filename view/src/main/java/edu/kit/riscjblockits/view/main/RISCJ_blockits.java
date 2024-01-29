@@ -50,6 +50,9 @@ import net.minecraft.util.math.BlockPos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
+
 /**
  * This class is the main class of the mod.
  * It is used to register all blocks, items, block-entities and item-groups.

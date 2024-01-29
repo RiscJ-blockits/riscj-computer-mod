@@ -73,4 +73,8 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
        this.hasUnqueriedStateChange = hasUnqueriedStateChange;
     }
 
+    @Override
+    public void onStateQuery() {
+        hasUnqueriedStateChange = false;
+    }
 }

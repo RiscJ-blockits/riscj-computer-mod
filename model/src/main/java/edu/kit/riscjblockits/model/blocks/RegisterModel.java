@@ -20,7 +20,7 @@ public class RegisterModel extends BlockModel {
     /**
      * The default register type. Is displayed in the ui if no register type is set.
      */
-    public static final String DEFAULT_REGISTER = "[NOT_ASSIGNED]";
+    public static final String UNASSIGNED_REGISTER = "[NOT_ASSIGNED]";
     private int wordLength;
 
     private String registerType;
@@ -42,7 +42,7 @@ public class RegisterModel extends BlockModel {
         super();
         value = new Value();
         setType(ModelType.REGISTER);
-        registerType = DEFAULT_REGISTER;
+        registerType = UNASSIGNED_REGISTER;
         //ToDo remove Test code
         wordLength = 32;
     }
@@ -69,7 +69,6 @@ public class RegisterModel extends BlockModel {
             registersData.set(REGISTER_FOUND, new DataStringEntry(missingAvailableRegisters[1]));
             regData.set(REGISTER_REGISTERS, registersData);
         }
-        setUnqueriedStateChange(false);
         return regData;
     }
 

@@ -63,23 +63,25 @@ public class RegisterScreenHandler extends ModScreenHandler {
             return new ArrayList<String>();
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals(REGISTER_REGISTERS)) {
-                IDataElement regData = ((IDataContainer) data).get(REGISTER_REGISTERS);
-                for (String s2 : ((IDataContainer) regData).getKeys()) {
-                    if (s2.equals(key)) {
-                        List<String> registers = new ArrayList<>(List.of(
-                            ((IDataStringEntry) ((IDataContainer) regData).get(s2)).getContent().split(" ")));
-                        int i = 0;
-                        while( i < registers.size()) {
-                            if (registers.get(i).equals(RegisterModel.DEFAULT_REGISTER)) {
-                                registers.remove(i);
-                            }else {
-                                i++;
-                            }
-                        }
-                        return registers;
+            if (!s.equals(REGISTER_REGISTERS)) {
+                continue;
+            }
+            IDataElement regData = ((IDataContainer) data).get(REGISTER_REGISTERS);
+            for (String s2 : ((IDataContainer) regData).getKeys()) {
+                if (!s2.equals(key)) {
+                    continue;
+                }
+                List<String> registers = new ArrayList<>(List.of(
+                    ((IDataStringEntry) ((IDataContainer) regData).get(s2)).getContent().split(" ")));
+                int i = 0;
+                while( i < registers.size()) {
+                    if (registers.get(i).equals(RegisterModel.UNASSIGNED_REGISTER)) {
+                        registers.remove(i);
+                    }else {
+                        i++;
                     }
                 }
+                return registers;
             }
         }
         return new ArrayList<String>();
