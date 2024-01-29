@@ -13,12 +13,14 @@ import java.util.Queue;
 /**
  * Holds the BusGraph of a cluster.
  */
-public class BusSystemModel implements IQueryableBusSystem {
+public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
 
     /**
      * Graph of all Blocks in the cluster and their connections.
      */
     private Map<BlockPosition, List<BlockPosition>> adjPositions;
+
+    private Map<BlockPosition, Boolean> activeVisualization;
 
     private Value presentData;
     private BlockPosition from;
@@ -28,6 +30,7 @@ public class BusSystemModel implements IQueryableBusSystem {
      * creates an empty BusSystemModel
      */
     public BusSystemModel() {
+        activeVisualization = new HashMap<>();
         adjPositions = new HashMap<>();
     }
 
@@ -37,6 +40,7 @@ public class BusSystemModel implements IQueryableBusSystem {
      */
     public BusSystemModel(BlockPosition firstBlock) {
         adjPositions = new HashMap<>();
+        activeVisualization = new HashMap<>();
         addNode(firstBlock);
     }
 
@@ -46,16 +50,63 @@ public class BusSystemModel implements IQueryableBusSystem {
      */
     private BusSystemModel(Map<BlockPosition, List<BlockPosition>> adjPositions) {
         this.adjPositions = adjPositions;
+        activeVisualization = new HashMap<>();
         System.out.println("ModelSize: " + adjPositions.size());
     }
 
-    public Value getPresentData(){
+    /**
+     * calculates shortest path between two nodes avoiding Non-Bus-Nodes and setting the presentData
+     * @param startPos is the start node
+     * @param endPos is the end node
+     * @param presentData is the data that is present on the bus
+     */
+    public void setBusDataPath(BlockPosition startPos, BlockPosition endPos, Value presentData){
+        this.presentData = presentData;
+        //BFS
+        List<BlockPosition> discovered = new ArrayList<>();
+        Map<BlockPosition, BlockPosition> path = new HashMap<>();
+        Queue<BlockPosition> queue = new LinkedList<>();
+        queue.add(startPos);
+        while (!queue.isEmpty()) {
+            BlockPosition current = queue.poll();
+            if (current.equals(endPos)) {
+                break;
+            }
+            if (!discovered.contains(current)) {
+                discovered.add(current);
+                for (BlockPosition neighbor : adjPositions.get(current)) {
+                    if (neighbor.isBus() || neighbor.equals(endPos)) {
+                        queue.add(neighbor);
+                        path.computeIfAbsent(neighbor, k -> current);
+                    }
+                }
+            }
+        }
+        //backtrack the BFS to find shortest path and set activeVisualization at nodes on the path
+        BlockPosition current = endPos;
+        while (!current.equals(startPos)) {
+            activeVisualization.put(current, true);
+            current = path.get(current);
+        }
+    }
+
+    /**
+     * returns the present data on the busSystem
+     * @return the present data on the busSystem
+     */
+    public Value getPresentData() {
         return presentData;
     }
 
+    /**
+     * returns if the node with the given position is active in the visualization
+     * @param blockPosition is the position of the node
+     * @return true if the node is active in the visualization
+     */
     public boolean getActiveVisualization(BlockPosition blockPosition) {
-        //ToDo Berechne Pfade
-        return false;
+        boolean active = activeVisualization.get(blockPosition);
+        activeVisualization.put(blockPosition, false);
+        return active;
     }
 
     /**
@@ -64,6 +115,7 @@ public class BusSystemModel implements IQueryableBusSystem {
      */
     public void addNode(BlockPosition newBlock) {
         adjPositions.put(newBlock, new ArrayList<>());
+        activeVisualization.put(newBlock, false);
     }
 
     /**

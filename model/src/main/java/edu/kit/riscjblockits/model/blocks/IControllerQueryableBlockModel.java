@@ -11,5 +11,9 @@ public interface IControllerQueryableBlockModel extends IQueryableBlockModel {
      */
     void setPosition(BlockPosition position);
 
-
+    /**
+     * Getter for the position of the block.
+     * @return An {@link BlockPosition} with the position of the block.
+     */
+    BlockPosition getPosition();
 }
