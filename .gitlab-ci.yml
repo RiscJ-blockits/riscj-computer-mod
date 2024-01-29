@@ -45,6 +45,7 @@ test:
   script:
     - ./gradlew test --continue
   artifacts:
+    expire_in: 5 day
     reports:
       junit:
         - model/build/test-results/test/TEST-*.xml
