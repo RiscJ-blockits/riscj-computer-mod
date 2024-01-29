@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.controller.blocks;
 import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
 import edu.kit.riscjblockits.model.blocks.ClockMode;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
+import edu.kit.riscjblockits.model.blocks.ISimulationTimingObserver;
 import edu.kit.riscjblockits.model.blocks.SystemClockModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
@@ -99,6 +100,18 @@ public class SystemClockController extends ComputerBlockController {
                 ((SystemClockModel) getModel()).setClockMode(ClockMode.valueOf(value));         //ToDo error handling hier nötig?
             }
         }
+    }
+
+    public void registerModelObserver(ISimulationTimingObserver simulationTimingObserver) {
+        ((SystemClockModel) getModel()).registerObserver(simulationTimingObserver);
+    }
+
+    public int getClockSpeed() {
+        return ((SystemClockModel) getModel()).getClockSpeed();
+    }
+
+    public ClockMode getClockMode() {
+        return ((SystemClockModel) getModel()).getClockMode();
     }
 
 }

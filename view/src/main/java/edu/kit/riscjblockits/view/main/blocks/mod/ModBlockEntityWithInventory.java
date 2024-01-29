@@ -29,7 +29,7 @@ public abstract class ModBlockEntityWithInventory extends ModBlockEntity impleme
      * @param state The state of the minecraft block.
      * @param inventorySize The size of the inventory.
      */
-    public ModBlockEntityWithInventory(BlockEntityType<?> type, BlockPos pos, BlockState state, int inventorySize) {
+    protected ModBlockEntityWithInventory(BlockEntityType<?> type, BlockPos pos, BlockState state, int inventorySize) {
         super(type, pos, state);
         items = DefaultedList.ofSize(inventorySize, ItemStack.EMPTY);
     }

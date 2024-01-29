@@ -33,11 +33,6 @@ public abstract class ComputerBlockController extends BlockController implements
     private ClusterHandler clusterHandler;
 
     /**
-     * The position of the block in the minecraft world.
-     */
-    private BlockPosition pos;
-
-    /**
      * Creates a new BlockController.
      * Also begins the simulation if the computer is completely built.
      * @param blockEntity The block entity that the controller is responsible for.
@@ -51,8 +46,7 @@ public abstract class ComputerBlockController extends BlockController implements
 
     //ToDo nicht im entwurf
     public void startClustering(BlockPosition pos) {
-        this.pos = pos;
-        blockModel.setPosition(getBlockPosition());
+        blockModel.setPosition(pos);
         //Create a new Cluster and check if it is complete. This check can trigger a simulation start.
         new ClusterHandler(this);
         clusterHandler.checkFinished();
@@ -88,7 +82,7 @@ public abstract class ComputerBlockController extends BlockController implements
      */
 
     public BlockPosition getBlockPosition() {
-        return pos;
+        return blockModel.getPosition();
     }
 
     /**

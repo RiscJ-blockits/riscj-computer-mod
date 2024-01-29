@@ -16,6 +16,9 @@ import java.util.List;
  */
 public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInstruction> {
 
+    //ToDo: error handling
+    //ToDo: consider alu register checking while parsing alu instructions, but don't know how yet
+
     /**
      * Deserializes a JsonElement to a MicroInstruction.
      * @param jsonElement JsonElement to be deserialized
@@ -67,7 +70,7 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
         String[] from = new String[]{elementList.get(1).toString()};
         String to = elementList.get(0).toString();
         String memoryFlag = elementList.get(2).toString();
-        MemoryInstruction memoryInstruction = parseMemoryInstruction(elementList.get(3));
+        MemoryInstruction memoryInstruction = parseMemoryInstruction(elementList.get(3), memoryFlag);
 
 
         return new DataMovementInstruction(from, to, memoryFlag, memoryInstruction);
@@ -78,15 +81,13 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
      * @param jsonElement ["[destination]", "[origin]"]
      * @return MemoryInstruction
      */
-    private MemoryInstruction parseMemoryInstruction(JsonElement jsonElement) {
-
+    private MemoryInstruction parseMemoryInstruction(JsonElement jsonElement, String flag) {
         if(jsonElement.isJsonArray()){
             JsonArray asJsonArray = jsonElement.getAsJsonArray();
 
             String[] from = new String[]{asJsonArray.get(1).toString()};
             String to = asJsonArray.get(0).toString();
-
-            return new MemoryInstruction(from, to);
+            return new MemoryInstruction(from, to, flag);
         }
         return null;
     }
@@ -104,7 +105,7 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
         String to = elementList.get(1).toString();
         String[] from = new String[]{elementList.get(2).toString(), elementList.get(3).toString()};
         String memoryFlag = elementList.get(4).toString();
-        MemoryInstruction memoryInstruction = parseMemoryInstruction(elementList.get(5));
+        MemoryInstruction memoryInstruction = parseMemoryInstruction(elementList.get(5), memoryFlag);
         String action = elementList.get(0).toString();
 
 
@@ -133,7 +134,7 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
             String thenTo = thenInstructionArray.get(0).toString();
             String[] thenFrom = new String[]{thenInstructionArray.get(1).toString()};
             String memoryFlag = elementList.get(3).toString();
-            MemoryInstruction memoryInstruction = parseMemoryInstruction(elementList.get(4));
+            MemoryInstruction memoryInstruction = parseMemoryInstruction(elementList.get(4), memoryFlag);
 
             return new ConditionedInstruction(thenFrom, thenTo, memoryFlag, memoryInstruction, instructionCondition);
         }

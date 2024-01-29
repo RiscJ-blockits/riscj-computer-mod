@@ -9,8 +9,18 @@ import java.util.*;
 //Wahrscheinlich auch von der Simulation
 //TODO: refactor name, typo
 public interface IQueryableBusSystem {
+
+    /**
+     * returns the present data on the bus
+     * @return the present data on the bus
+     */
     Value getPresentData();
 
+    /**
+     * returns if the node with the given position is active in the visualization
+     * @param blockPosition is the position of the node
+     * @return true if the node is active in the visualization
+     */
     boolean getActiveVisualization(BlockPosition blockPosition);
 
     /**

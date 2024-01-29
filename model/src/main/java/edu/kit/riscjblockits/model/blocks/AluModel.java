@@ -20,6 +20,18 @@ public class AluModel extends BlockModel{
      */
     private String operation;
 
+    public String getOperation() {
+        return operation;
+    }
+
+    public Value getOperand1() {
+        return operand1;
+    }
+
+    public Value getOperand2() {
+        return operand2;
+    }
+
     /**
      * First alu operand.
      */

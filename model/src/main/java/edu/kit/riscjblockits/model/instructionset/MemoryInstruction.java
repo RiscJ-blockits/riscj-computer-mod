@@ -6,8 +6,13 @@ package edu.kit.riscjblockits.model.instructionset;
  */
 public class MemoryInstruction extends MicroInstruction {
 
-    public MemoryInstruction(String[] from, String to) {
+    //ToDo: Check
+
+    private final String flag;
+
+    public MemoryInstruction(String[] from, String to, String flag) {
         super(from, to);
+        this.flag = flag;
     }
 
     /**
@@ -16,5 +21,21 @@ public class MemoryInstruction extends MicroInstruction {
     @Override
     public void execute(IExecutor executor) {
         executor.execute(this);
+    }
+
+    @Override
+    public MicroInstruction clone(String[] from, String to) {
+        return new MemoryInstruction(from, to, flag);
+    }
+
+    @Override
+    protected MemoryInstruction clone() {
+        return new MemoryInstruction(getFrom(), getTo(), flag);
+    }
+
+
+
+    public String getFlag() {
+        return flag;
     }
 }

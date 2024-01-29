@@ -25,7 +25,7 @@ public class Value {
      */
     public static Value fromHex(String s, int length) {
         byte[] bytes = new byte[length];
-        byte[] hexBytes = HexFormat.of().parseHex(s);
+        byte[] hexBytes = HexFormat.of().parseHex(s); //Todo fill with zeros if length is not a multiple of 2
         int offset = length - hexBytes.length;
         for (int i = 0; i < hexBytes.length; i++) {
             bytes[i + offset] = hexBytes[i];
@@ -171,9 +171,45 @@ public class Value {
         return Arrays.hashCode(value);
     }
 
-    @Override
-    public String toString() {
-        return getHexadecimalValue();
+    public boolean lowerThan(Value comparator) {
+        BigInteger thisValue = new BigInteger(this.getByteValue());
+        BigInteger comparatorValue = new BigInteger(comparator.getByteValue());
+        return thisValue.compareTo(comparatorValue) < 0;
     }
 
+    public boolean lowerThanUnsigned(Value comparator) {;
+        byte[] valueUnsigned = new byte[value.length + 1];
+        System.arraycopy(value, 0, valueUnsigned, 1, value.length);
+        byte[] compUnsigned = new byte[value.length + 1];
+        System.arraycopy(comparator.getByteValue(), 0, compUnsigned, 1, comparator.getByteValue().length);
+        BigInteger thisValue = new BigInteger(valueUnsigned);
+        BigInteger comparatorValue = new BigInteger(compUnsigned);
+        return thisValue.compareTo(comparatorValue) < 0;
+    }
+
+    public boolean lowerThanFloat(Value comparator) {
+        //TODO implement
+        return false;
+    }
+
+    public boolean greaterThan(Value comparator) {
+        BigInteger thisValue = new BigInteger(this.getByteValue());
+        BigInteger comparatorValue = new BigInteger(comparator.getByteValue());
+        return thisValue.compareTo(comparatorValue) > 0;
+    }
+
+    public boolean greaterThanUnsigned(Value comparator) {
+        byte[] valueUnsigned = new byte[value.length + 1];
+        System.arraycopy(value, 0, valueUnsigned, 1, value.length);
+        byte[] compUnsigned = new byte[value.length + 1];
+        System.arraycopy(comparator.getByteValue(), 0, compUnsigned, 1, comparator.getByteValue().length);
+        BigInteger thisValue = new BigInteger(valueUnsigned);
+        BigInteger comparatorValue = new BigInteger(compUnsigned);
+        return thisValue.compareTo(comparatorValue) > 0;
+    }
+
+    public boolean greaterThanFloat(Value comparator) {
+        //TODO implement
+        return false;
+    }
 }
