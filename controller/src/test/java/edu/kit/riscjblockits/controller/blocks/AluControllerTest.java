@@ -1,14 +1,21 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.blocks.AluModel;
-import edu.kit.riscjblockits.model.blocks.RegisterModel;
+import edu.kit.riscjblockits.model.blocks.BlockPosition;
+import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.math.BigInteger;
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AluControllerTest {
 
@@ -31,8 +38,9 @@ class AluControllerTest {
 
     private IConnectableComputerBlockEntity getBlockEntityMock() {
         IConnectableComputerBlockEntity blockEntity = new IConnectableComputerBlockEntity() {
+
             @Override
-            public void setBlockModel(IQueryableBlockModel model) {
+            public void setBlockModel(IViewQueryableBlockModel model) {
 
             }
 

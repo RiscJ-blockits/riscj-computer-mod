@@ -31,7 +31,7 @@ class ExecutorTest {
     private IConnectableComputerBlockEntity getBlockEntityMock() {
         IConnectableComputerBlockEntity blockEntity = new IConnectableComputerBlockEntity() {
             @Override
-            public void setBlockModel(IQueryableBlockModel model) {
+            public void setBlockModel(IViewQueryableBlockModel model) {
 
             }
 
