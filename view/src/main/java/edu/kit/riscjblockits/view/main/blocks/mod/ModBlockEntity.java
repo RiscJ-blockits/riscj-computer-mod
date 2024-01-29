@@ -74,6 +74,8 @@ public abstract class ModBlockEntity extends BlockEntity {
                     && entitytype == EntityType.CONNECTABLE
                     && ((ComputerBlockController) controller).getBlockPosition() == null)) {
             ((ComputerBlockController) controller).startClustering(new BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
+        } else if (controller == null) {
+            controller = createController();
         }
     }
 

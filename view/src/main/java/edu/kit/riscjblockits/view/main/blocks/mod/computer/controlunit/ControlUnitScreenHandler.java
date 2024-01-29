@@ -1,16 +1,24 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit;
 
+import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
+import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
 public class ControlUnitScreenHandler extends ModScreenHandler {
 
@@ -26,7 +34,6 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
         this.addSlot(new Slot(inventory, 0, 8, 18));
 
         addPlayerInventorySlotsLarge(playerInventory);
-
 
         addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
             @Override
@@ -59,20 +66,35 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
             } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
                 return ItemStack.EMPTY;
             }
-
             if (originalStack.isEmpty()) {
                 slot.setStack(ItemStack.EMPTY);
             } else {
                 slot.markDirty();
             }
         }
-
         return newStack;
     }
 
     @Override
     public boolean canUse(PlayerEntity player) {
         return true;
+    }
+
+    public String getClusteringData() {
+        NbtCompound nbt = getBlockEntity().createNbt();
+        if (!nbt.contains(MOD_DATA)) {
+            return "";
+        }
+        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
+        if (!data.isContainer()) {
+            return "";
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals(CONTROL_CLUSTERING)) {
+                return ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(CONTROL_CLUSTERING)).get("missingRegisters")).getContent();
+            }
+        }
+        return "";
     }
 
 }

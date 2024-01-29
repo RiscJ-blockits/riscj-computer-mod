@@ -1,7 +1,6 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
-import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
@@ -11,12 +10,10 @@ import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
@@ -32,10 +29,6 @@ public class RegisterScreenHandler extends ModScreenHandler {
 
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
         this(syncId, inventory, (ModBlockEntity) inventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
-    }
-    @Override
-    public ItemStack quickMove(PlayerEntity player, int slot) {
-        return null;
     }
 
     @Override

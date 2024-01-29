@@ -1,6 +1,7 @@
 qodana:
   tags:
     - docker
+  stage: qodana
   image:
     name: jetbrains/qodana-jvm-community
     entrypoint: [""]

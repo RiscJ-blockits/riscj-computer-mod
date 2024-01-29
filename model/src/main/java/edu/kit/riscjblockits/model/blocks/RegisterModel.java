@@ -64,15 +64,6 @@ public class RegisterModel extends BlockModel {
      */
     @Override
     public IDataElement getData() {
-        //ToDo remove Test code
-        if (!value.getHexadecimalValue().equals("")) {
-            long l = Long.parseLong(value.getHexadecimalValue(), 16);
-            l++;
-            value = Value.fromDecimal(Long.toString(l), 10);
-        } else {
-            value = Value.fromDecimal("1", 10);
-        }
-
         Data regData = new Data();
         regData.set(REGISTER_TYPE, new DataStringEntry(registerType));
         regData.set(REGISTER_WORD_LENGTH, new DataStringEntry(String.valueOf(wordLength)));
