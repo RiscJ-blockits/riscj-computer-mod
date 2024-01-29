@@ -8,6 +8,6 @@ import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 public interface IQueryableSimController extends IQueryableComputerController {
     //ToDo
 
-    IControllerQueryableBlockModel getModel();
+    //IControllerQueryableBlockModel getModel();
 
 }

@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.model.instructionset;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.List;
@@ -313,6 +314,29 @@ InstructionSetModel implements IQueryableInstructionSetModel {
         return fetchPhase[index];
     }
 
+    @Override
+    public IQueryableInstruction getInstructionFromBinary(String binaryValue) {
+
+        for (int opCodeLength : instructionSetMemory.getPossibleOpcodeLengths()) {
+            int opCodeStart;
+            if (Objects.equals(instructionSetMemory.getOpcodePosition(), "MOST")) {
+                opCodeStart = 0;
+            } else if (Objects.equals(instructionSetMemory.getOpcodePosition(), "LEAST")) {
+                opCodeStart = instructionSetMemory.getWordSize() - opCodeLength;
+            } else {
+                opCodeStart = 0;
+            }
+            String opCode = binaryValue.substring(opCodeStart, opCodeStart + opCodeLength);
+            // if no instruction is found, the next opcode length is tried
+            if (!opcodeHashMap.containsKey(opCode)) continue;
+            Instruction instruction = opcodeHashMap.get(opCode);
+            if (instruction != null) {
+                return instruction;
+            }
+        }
+        return null;
+    }
+
     /**
      * ToDo nicht im Entwurf
      * @return Returns the names of all registers.
@@ -320,5 +344,4 @@ InstructionSetModel implements IQueryableInstructionSetModel {
     public List<String> getRegisterNames() {
         return instructionSetRegisters.getRegisterNames();
     }
-
 }

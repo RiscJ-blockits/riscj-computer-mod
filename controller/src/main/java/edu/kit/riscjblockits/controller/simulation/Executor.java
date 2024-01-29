@@ -7,11 +7,8 @@ import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
-import edu.kit.riscjblockits.model.instructionset.AluInstruction;
-import edu.kit.riscjblockits.model.instructionset.ConditionedInstruction;
-import edu.kit.riscjblockits.model.instructionset.DataMovementInstruction;
-import edu.kit.riscjblockits.model.instructionset.IExecutor;
-import edu.kit.riscjblockits.model.instructionset.MemoryInstruction;
+import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstructionException;
+import edu.kit.riscjblockits.model.instructionset.*;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.util.HashMap;
@@ -30,12 +27,12 @@ public class Executor implements IExecutor {
     /**
      * Contains the block controllers of the associated computer blocks.
      */
-    private List<IQueryableSimController> blockControllers;
+    private final List<IQueryableSimController> blockControllers;
 
     /**
      * Map of the register controllers for faster access and resolving string references.
      */
-    private Map<String, RegisterController> registerControllerMap;
+    private final Map<String, RegisterController> registerControllerMap;
 
     /**
      * Constructor. Initializes the {@link BlockController}s list and the {@link RegisterController}s map.
@@ -58,14 +55,43 @@ public class Executor implements IExecutor {
      * Executes a memory instruction.
      * @param memoryInstruction Memory instruction to be executed.
      */
-    public void execute(MemoryInstruction memoryInstruction){
-        //ToDo
+    public void execute(MemoryInstruction memoryInstruction) {
+
+        if(memoryInstruction.getFlag().isEmpty()) {
+            return;
+        }
+
         for (IQueryableSimController blockController : blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.MEMORY) {
-                Value value = ((MemoryController) blockController).getValue(null);
-                registerControllerMap.get(null).setNewValue(value);
+
+                String from = memoryInstruction.getFrom()[0];
+                String to = memoryInstruction.getTo();
+                String flag = memoryInstruction.getFlag();
+
+                if(from == null || from.isBlank()){
+                    throw new NonExecutableMicroInstructionException("MemoryInstruction has no from value");
+                } else if(to == null || to.isBlank()){
+                    throw new NonExecutableMicroInstructionException("MemoryInstruction has no to value");
+                }
+
+
+                if(flag.equals("r")) {
+                    //ToDo: check if from is a valid address
+                    Value fromAddress = Value.fromBinary(from, (from.length()/4 + ((from.length()%4 == 0) ? 0 : 1)));
+                    Value value = ((MemoryController) blockController).getValue(fromAddress);
+                    registerControllerMap.get(to).setNewValue(value);
+
+                }
+                else if(flag.equals("w")) {
+                    Value value = registerControllerMap.get(from).getValue();
+                    ((MemoryController) blockController).writeMemory(Value.fromBinary(to, (to.length()/4 + ((to.length()%4 == 0) ? 0 : 1))), value);
+
+                }
+                //else do nothing, because memory flag is not set properly
             }
         }
+
+        //ToDo Bus-Daten setzen wie und wo?
     }
 
     /**
@@ -73,8 +99,30 @@ public class Executor implements IExecutor {
      * @param conditionedInstruction Conditioned instruction to be executed.
      */
     public void execute(ConditionedInstruction conditionedInstruction) {
-        //ToDo
-        registerControllerMap.get(null).setNewValue(null);
+
+        String from = conditionedInstruction.getFrom()[0];
+        String to = conditionedInstruction.getTo();
+
+        if(from == null || from.isBlank()){
+            throw new NonExecutableMicroInstructionException("MemoryInstruction has no from value");
+        } else if(to == null || to.isBlank()){
+            throw new NonExecutableMicroInstructionException("MemoryInstruction has no to value");
+        }
+
+        InstructionCondition condition = conditionedInstruction.getCondition();
+
+        if(checkCondition(condition)) {
+            Value movedValue = registerControllerMap.get(from).getValue();
+            registerControllerMap.get(to).setNewValue(movedValue);
+
+            if(conditionedInstruction.getMemoryInstruction() != null) {
+                execute(conditionedInstruction.getMemoryInstruction());
+            }
+        }
+
+
+        //ToDo Bus-Daten setzen wie und wo?
+
     }
 
     /**
@@ -82,12 +130,36 @@ public class Executor implements IExecutor {
      * @param aluInstruction Alu instruction to be executed.
      */
     public void execute(AluInstruction aluInstruction) {
-        //ToDo
+
         for (IQueryableSimController blockController : blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.ALU) {
-                ((AluController) blockController).executeAluOperation(null);
+
+                String from1 = aluInstruction.getFrom()[0];
+                String from2 = aluInstruction.getFrom()[1];
+                String to = aluInstruction.getTo();
+
+                if(from1 == null || from1.isBlank()){
+                    throw new NonExecutableMicroInstructionException("AluInstruction has no from value");
+                } else if(from2 == null || from2.isBlank()){
+                    throw new NonExecutableMicroInstructionException("AluInstruction has no from value");
+                } else if(to == null || to.isBlank()){
+                    throw new NonExecutableMicroInstructionException("AluInstruction has no to value");
+                }
+
+                AluController aluController = (AluController) blockController;
+                aluController.setOperand1(registerControllerMap.get(from1).getValue());
+                aluController.setOperand2(registerControllerMap.get(from2).getValue());
+
+                Value result = ((AluController) blockController).executeAluOperation(aluInstruction.getAction());
+
+                registerControllerMap.get(to).setNewValue(result);
             }
         }
+
+        if (aluInstruction.getMemoryInstruction() != null) {
+            execute(aluInstruction.getMemoryInstruction());
+        }
+
     }
 
     /**
@@ -96,7 +168,74 @@ public class Executor implements IExecutor {
      */
     public void execute(DataMovementInstruction dataMovementInstruction) {
         //ToDo
-        registerControllerMap.get(null).setNewValue(null);
+        String from = dataMovementInstruction.getFrom()[0];
+        String to = dataMovementInstruction.getTo();
+
+        if(from == null || from.isBlank()){
+            throw new NonExecutableMicroInstructionException("MemoryInstruction has no from value");
+        } else if(to == null || to.isBlank()){
+            throw new NonExecutableMicroInstructionException("MemoryInstruction has no to value");
+        }
+
+        Value movedValue = registerControllerMap.get(from).getValue();
+        registerControllerMap.get(to).setNewValue(movedValue);
+
+        //ToDo Bus-Daten setzen wie und wo?
+
+        if (dataMovementInstruction.getMemoryInstruction() != null) {
+            execute(dataMovementInstruction.getMemoryInstruction());
+        }
+    }
+
+    private boolean checkCondition(InstructionCondition condition) {
+
+        String comparisonCondition = condition.getComparator();
+        Value firstValue = registerControllerMap.get(condition.getCompare1()).getValue();
+        Value secondValue = registerControllerMap.get(condition.getCompare2()).getValue();
+
+        String comparatorType = comparisonCondition.substring(0, 1);
+        String comparator = comparisonCondition.substring(1);
+
+
+        switch (comparatorType) {
+            case "u" -> {
+                return switch (comparator) {
+                    case "==" -> firstValue.equals(secondValue);
+                    case "!=" -> !firstValue.equals(secondValue);
+                    case "<=" -> firstValue.lowerThanUnsigned(secondValue) || firstValue.equals(secondValue);
+                    case "<" -> firstValue.lowerThanUnsigned(secondValue);
+
+                    case ">=" -> firstValue.greaterThanUnsigned(secondValue) || firstValue.equals(secondValue);
+                    case ">" -> firstValue.greaterThanUnsigned(secondValue);
+                    default -> false;
+                };
+            }
+            case "f" -> {
+                return switch (comparator) {
+                    case "==" -> firstValue.equals(secondValue);
+                    case "!=" -> !firstValue.equals(secondValue);
+                    case "<=" -> firstValue.lowerThanFloat(secondValue) || firstValue.equals(secondValue);
+                    case "<" -> firstValue.lowerThanFloat(secondValue);
+
+                    case ">=" -> firstValue.greaterThanFloat(secondValue) || firstValue.equals(secondValue);
+                    case ">" -> firstValue.greaterThanFloat(secondValue);
+                    default -> false;
+                };
+            }
+            //signed comparison is default
+            default -> {
+                return switch (comparator) {
+                    case "==" -> firstValue.equals(secondValue);
+                    case "!=" -> !firstValue.equals(secondValue);
+                    case "<=" -> firstValue.lowerThan(secondValue) || firstValue.equals(secondValue);
+                    case "<" -> firstValue.lowerThan(secondValue);
+
+                    case ">=" -> firstValue.greaterThan(secondValue) || firstValue.equals(secondValue);
+                    case ">" -> firstValue.greaterThan(secondValue);
+                    default -> false;
+                };
+            }
+        }
     }
 
 }
