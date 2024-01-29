@@ -166,6 +166,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         }
     }
 
+
     /**
      * Gets called every tick.
      * Syncs the block entity nbt data to the client.
@@ -174,6 +175,9 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (world == null || world.isClient || model == null)
             return;
         if (model.hasUnqueriedStateChange()) {
+            if (world.getPlayers().isEmpty()) {
+               return;       //we are too early in the loading process
+            }
             NbtCompound nbt = new NbtCompound();
             writeNbt(nbt);
             PacketByteBuf buf = PacketByteBufs.create();
@@ -181,6 +185,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             buf.writeNbt(nbt);
             world.getPlayers().forEach(player -> ServerPlayNetworking.send((ServerPlayerEntity) player,
                 NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, buf));
+
             model.onStateQuery();
         }
     }
