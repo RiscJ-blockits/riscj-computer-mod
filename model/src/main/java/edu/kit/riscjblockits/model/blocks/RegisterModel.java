@@ -47,12 +47,6 @@ public class RegisterModel extends BlockModel {
         wordLength = 32;
     }
 
-    @Override
-    public boolean hasUnqueriedStateChange() {
-        //ToDo remove Test code
-        return true;
-    }
-
     /**
      * Getter for the data the view needs for ui.
      * @return Data Format: key: "type", value: "registerType"

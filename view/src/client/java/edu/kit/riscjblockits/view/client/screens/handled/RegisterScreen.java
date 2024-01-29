@@ -22,6 +22,7 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
     public RegisterScreen(RegisterScreenHandler handler, PlayerInventory inventory,
                           Text title) {
         super(handler, inventory, title);
+
     }
 
     @Override

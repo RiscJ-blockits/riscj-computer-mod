@@ -4,8 +4,11 @@ import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
+
+import static edu.kit.riscjblockits.model.blocks.RegisterModel.UNASSIGNED_REGISTER;
 
 public class RegisterEntry extends ListEntry {
 
@@ -14,9 +17,11 @@ public class RegisterEntry extends ListEntry {
     private boolean missing;
     private boolean currentReg;
     private String name;
+    private BlockPos pos;
 
     public RegisterEntry(String name, boolean missing, boolean currentReg, BlockPos pos) {
         this.name = name;
+        this.pos = pos;
         this.missing = missing;
         this.currentReg = currentReg;
         this.selectButton = new TextIconToggleWidget(Text.literal(name), button -> {

@@ -25,15 +25,19 @@ import edu.kit.riscjblockits.view.main.items.manual.ManualItem;
 import edu.kit.riscjblockits.view.main.items.program.ProgramItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.fabricmc.fabric.impl.screenhandler.Networking;
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
@@ -42,6 +46,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -287,6 +292,23 @@ public class RISCJ_blockits implements ModInitializer {
 		// register the Item-Group
 		Registry.register(Registries.ITEM_GROUP, new Identifier(MODID, "computer_components"), ITEM_GROUP);
 
+		ServerPlayNetworking.registerGlobalReceiver(
+			NetworkingConstants.SYNC_REGISTER_SELECTION,
+
+			(server, player, handler, buf, responseSender) -> {
+				BlockPos pos = buf.readBlockPos();
+				String selectedRegister = buf.readString();
+
+				server.execute(() -> {
+					BlockEntity be = player.getWorld().getBlockEntity(pos);
+					NbtCompound nbt = new NbtCompound();
+					((RegisterBlockEntity) be).writeNbt(nbt);
+					NbtCompound subNbt = (NbtCompound) nbt.get(MOD_DATA);
+					subNbt.putString(REGISTER_TYPE, selectedRegister);
+					be.readNbt(nbt);
+				});
+			}
+		);
 	}
 
 	/**
