@@ -61,7 +61,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      * @param endPos is the end node
      * @param presentData is the data that is present on the bus
      */
-    public void setBusDataPath(BlockPosition startPos, BlockPosition endPos, Value presentData){
+    public void setBusDataPath(BlockPosition startPos, BlockPosition endPos, Value presentData) {
         this.presentData = presentData;
         //BFS
         List<BlockPosition> discovered = new ArrayList<>();
