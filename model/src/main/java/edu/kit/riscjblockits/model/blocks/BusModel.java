@@ -23,8 +23,14 @@ public class BusModel extends BlockModel{
      */
     public BusModel() {
         setType(ModelType.BUS);
-        //getPosition().setBus(true);   //ToDo Thomas zu früh
     }
+
+    @Override
+    public void setPosition(BlockPosition position) {
+        position.setBus(true);
+        super.setPosition(position);
+    }
+
 
     /**
      * Getter for the data the view needs for ui.
