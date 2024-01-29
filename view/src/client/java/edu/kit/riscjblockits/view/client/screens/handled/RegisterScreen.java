@@ -68,7 +68,7 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
         super.handledScreenTick();
         this.regSelectWidget.update();
         String regValue = handler.getRegisterValue();
-        registerValue = Text.literal(regValue.substring(regValue.length() - 8));
+        registerValue = Text.literal(regValue.substring(Math.max(regValue.length() - 8, 0)));
     }
 
     @Override

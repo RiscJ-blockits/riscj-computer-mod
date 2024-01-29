@@ -166,16 +166,6 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
         return ParentElement.super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 
-    /*@Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        for (ListEntry entry : entries) {
-            if (entry.isMouseOver(mouseX, mouseY)) {
-                return entry.mouseClicked(mouseX, mouseY, button);
-            }
-        }
-        return false;
-    }*/
-
     @Override
     public boolean isDragging() {
         return false;

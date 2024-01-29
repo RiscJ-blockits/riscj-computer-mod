@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ToggleButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,12 +69,20 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
     }
 
     private List<RegisterEntry> getEntries() {
+        BlockPos pos = registerScreenHandler.getBlockEntity().getPos();
         List<RegisterEntry> entries = new ArrayList<>();
         for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING)) {
-            entries.add(new RegisterEntry(register, true));
+            RegisterEntry entry = new RegisterEntry(register, true, false, pos);
+            entries.add(entry);
         }
         for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND)) {
-            entries.add(new RegisterEntry(register, false));
+            RegisterEntry entry;
+            if(register.equals(registerScreenHandler.getRegisterValue())){
+                entry = new RegisterEntry(register, false, true, pos);
+            } else {
+                entry = new RegisterEntry(register, false, false, pos);
+            }
+            entries.add(entry);
         }
         return entries;
     }
@@ -88,7 +97,6 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
             this.reset();
         }
         this.open = opened;
-        this.sendSelectDataPacket();
     }
 
     private void reset() {
@@ -96,10 +104,6 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
         int j = (this.parentHeight - 166) / 2 ;
         registerList.setPosition(i +8, j+ 18);
-    }
-
-    private void sendSelectDataPacket() {
-        //TODO implement
     }
 
     public int findLeftEdge(int width, int backgroundWidth) {
@@ -167,7 +171,9 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         if(!this.isOpen()) {
             return false;
         }
-        return registerList.mouseClicked(mouseX, mouseY, button);
+        boolean success = registerList.mouseClicked(mouseX, mouseY, button);
+        registerList.updateEntries(getEntries());
+        return success;
     }
 
     @Override
