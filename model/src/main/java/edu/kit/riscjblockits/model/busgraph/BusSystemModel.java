@@ -20,19 +20,20 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      */
     private Map<BlockPosition, List<BlockPosition>> adjPositions;
 
+    /**
+     * Holds the active nodes in the visualization.
+     */
     private Map<BlockPosition, Boolean> activeVisualization;
 
+    /**
+     * Holds the data that is present on the bus.
+     */
     private Value presentData;
+
+    //TODO: "from", "to" are not used
     private String from;
     private String to;
 
-    /**
-     * creates an empty BusSystemModel
-     */
-    public BusSystemModel() {
-        activeVisualization = new HashMap<>();
-        adjPositions = new HashMap<>();
-    }
 
     /**
      * creates a BusSystemModel with one node
@@ -124,20 +125,12 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      * @param pos2 is the second node of the edge
      */
     public void addEdge(BlockPosition pos1, BlockPosition pos2) {
-        //ToDo kontrollieren ob Knoten da, maybe check if actually adjacent
-        adjPositions.get(pos1).add(pos2);
-        adjPositions.get(pos2).add(pos1);
-    }
-
-    /**
-     * removes an edge between two nodes
-     * @param pos1 is the first node of the edge
-     * @param pos2 is the second node of the edge
-     */
-    public void removeEdge(BlockPosition pos1, BlockPosition pos2) {
-        adjPositions.get(pos1).remove(pos2);
-        adjPositions.get(pos2).remove(pos1);
-        //useless
+        if (isNode(pos1) && isNode(pos2)) {
+            adjPositions.get(pos1).add(pos2);
+            adjPositions.get(pos2).add(pos1);
+        } else {
+            System.out.println("One of the given nodes is not in the BusSystemModel");
+        }
     }
 
     /**
@@ -192,12 +185,11 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * Only PUBLIC cause of JUnit-Test.
      * Removes one Node and his Edges and split Graph when needed.
      * @param deletedNode The Node to remove.
      * @return List of new Graphs.
      */
-    public List<Map<BlockPosition, List<BlockPosition>>> splitGraph(BlockPosition deletedNode) {
+    private List<Map<BlockPosition, List<BlockPosition>>> splitGraph(BlockPosition deletedNode) {
         List<BlockPosition> neighbors = adjPositions.get(deletedNode);
         removeNode(deletedNode);
         //find new connected graphs

@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.model;
 
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
+import edu.kit.riscjblockits.model.busgraph.IQueryableBusSystem;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -11,12 +12,14 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BusSystemModelTest {
-    BusSystemModel system1 = new BusSystemModel();
-    BusSystemModel system2 = new BusSystemModel();
-
-    BusSystemModel system3 = new BusSystemModel();
+    BusSystemModel system1 = new BusSystemModel(new BlockPosition(0,0,0));
+    BusSystemModel system2 = new BusSystemModel(new BlockPosition(0,0,1));
+    BusSystemModel system3 = new BusSystemModel(new BlockPosition(0,1,0));
     @Test
     void combineGraph() {
+        system1.removeNode(new BlockPosition(0,0,0));
+        system2.removeNode(new BlockPosition(0,0,1));
+        system3.removeNode(new BlockPosition(0,1,0));
         //Build result Graph
         system3.addNode(new BlockPosition(0,0,0));
         system3.addNode(new BlockPosition(0,0,1));
@@ -56,7 +59,11 @@ class BusSystemModelTest {
     }
 
     @Test
-    void splitGraph() {
+    void splitBusSystemModel() {
+        system1.removeNode(new BlockPosition(0,0,0));
+        system2.removeNode(new BlockPosition(0,0,1));
+        system3.removeNode(new BlockPosition(0,1,0));
+        //Build result Graph
         system1.addNode(new BlockPosition(0,0,0));
         system1.addNode(new BlockPosition(0,0,1));
         system1.addNode(new BlockPosition(0,1,0));
@@ -73,7 +80,7 @@ class BusSystemModelTest {
         system1.addEdge(new BlockPosition(0,1,1), new BlockPosition(0,1,0));
         system1.addEdge(new BlockPosition(0,1,1), new BlockPosition(1,0,0));
 
-        List<Map<BlockPosition, List<BlockPosition>>> result = system1.splitGraph(new BlockPosition(0,1,1));
+        List<IQueryableBusSystem> results = system1.splitBusSystemModel(new BlockPosition(0,1,1));
 
         //Build third Graph
         system3.addNode(new BlockPosition(0,0,0));
@@ -88,14 +95,11 @@ class BusSystemModelTest {
         system2.addEdge(new BlockPosition(1,0,0), new BlockPosition(1,0,1));
         system2.addEdge(new BlockPosition(1,0,0), new BlockPosition(1,1,0));
         system2.addEdge(new BlockPosition(1,1,0), new BlockPosition(1,0,1));
-        List<Map<BlockPosition, List<BlockPosition>>> check = new ArrayList<>();
-        check.add(system3.getBusGraph());
-        check.add(system2.getBusGraph());
-        assertEquals(result, check);
-    }
+        List<IQueryableBusSystem> check = new ArrayList<>();
+        check.add(system3);
+        check.add(system2);
 
-    @Test
-    void bfs() {
+        assertEquals(results.get(0).getBusGraph(), system3.getBusGraph());
+        assertEquals(results.get(1).getBusGraph(), system2.getBusGraph());
     }
-
 }
