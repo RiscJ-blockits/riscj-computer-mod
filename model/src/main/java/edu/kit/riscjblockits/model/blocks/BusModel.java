@@ -23,7 +23,7 @@ public class BusModel extends BlockModel{
      */
     public BusModel() {
         setType(ModelType.BUS);
-        getPosition().setBus(true);
+        //getPosition().setBus(true);   //ToDo Thomas zu früh
     }
 
     /**
