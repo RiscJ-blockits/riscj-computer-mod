@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_WORD;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
 public class MemoryScreenHandler extends ModScreenHandler {
@@ -110,6 +111,27 @@ public class MemoryScreenHandler extends ModScreenHandler {
             }
         }
         return "";
+    }
+
+
+    /**
+     * @return the size of the memory in adressable units
+     */
+    public int getMemorySize(){
+        NbtCompound nbt = getBlockEntity().createNbt();
+        if (!nbt.contains(MOD_DATA)) {
+            return 0;
+        }
+        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
+        if (!data.isContainer()) {
+            return 0;
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals(MEMORY_WORD)) {
+                return (int) Math.pow(2, Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent()));
+            }
+        }
+        return 0;
     }
 
 }
