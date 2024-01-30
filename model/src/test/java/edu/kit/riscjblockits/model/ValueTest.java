@@ -20,6 +20,9 @@ class ValueTest {
 
         val = new Value(new byte[]{(byte) 255, 16});
         assertEquals("1111111100010000", val.getBinaryValue());
+
+        val = new Value(new byte[]{(byte) 127, 16});
+        assertEquals("0111111100010000", val.getBinaryValue());
     }
 
     @Test
@@ -62,6 +65,9 @@ class ValueTest {
 
         val = Value.fromBinary("11111111", 1);
         assertEquals("FF", val.getHexadecimalValue());
+
+        val = Value.fromBinary("011", 2);
+        assertEquals("0000000000000011", val.getBinaryValue());
     }
 
     @Test

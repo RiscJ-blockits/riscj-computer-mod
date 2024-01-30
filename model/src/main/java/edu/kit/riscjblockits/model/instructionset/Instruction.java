@@ -91,7 +91,7 @@ public class Instruction implements IQueryableInstruction {
 
                 String argument = matcherRange.group("argument");
 
-                String current = "123456700abc";
+                String current = "";
                 if (argumentsInstructionMap.containsKey(argument)) {
                     current = argumentsInstructionMap.get(argument);
                 }

@@ -101,7 +101,6 @@ public class SimulationSequenceHandler implements Runnable {
      */
     @Override
     public void run() {
-        System.out.println("run test");
         //get memory address from IAR
         //Value pcValue = programCounterController.getValue();
         //get content from memory at address
@@ -128,6 +127,7 @@ public class SimulationSequenceHandler implements Runnable {
             microInstructions = instruction.getExecution();
         }
 
+        System.out.println("fetch: " + phaseCounter);
         // execute the current fetch phase step
         executeMicroInstruction(instructionSetModel.getFetchPhaseStep(phaseCounter));
 
@@ -148,6 +148,7 @@ public class SimulationSequenceHandler implements Runnable {
      */
     private void execute(){
         //One full instruction consists of multiple microinstructions
+        System.out.println("execution: " + phaseCounter);
         executeMicroInstruction(microInstructions[phaseCounter]);
         phaseCounter++;
         if (phaseCounter >= microInstructions.length) {

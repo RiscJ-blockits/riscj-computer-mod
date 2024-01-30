@@ -106,7 +106,7 @@
             "arguments": ["[addr]"],
             "opcode": "0010",
             "execution": [
-                ["SAR", "[addr]", "w", "<mem_vis", "SAR"],
+                ["SAR", "[addr]", "w", "<mem_vis>", "SAR"],
                 ["SDR", "AKKU", "w", "", ""],
                 ["", "", "w", "Mem[SAR]", "SDR"]
             ],
