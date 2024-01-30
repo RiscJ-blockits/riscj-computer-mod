@@ -1,6 +1,8 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureEntry;
+import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureListWidget;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitScreenHandler;
 import net.minecraft.client.gui.DrawContext;
@@ -13,6 +15,7 @@ import net.minecraft.util.Identifier;
 public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/control_unit_gui.png");
+    private ArchitectureListWidget architectureList;
     private Text cu1 = Text.literal("-");        //Testcode
 
     public ControlUnitScreen(ControlUnitScreenHandler handler, PlayerInventory inventory,
@@ -26,6 +29,8 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     @Override
     protected void init() {
         super.init();
+        this.architectureList = new ArchitectureListWidget(handler, this.x + 8, this.y + 19, 160, 240, 6); //TODO fix values
+
 
         //intit Screen Elements
     }
@@ -45,8 +50,7 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
-        //Testcode
-        context.drawCenteredTextWithShadow(textRenderer, cu1, width / 2, height / 2, 0xffffff);
+        this.architectureList.render(context, mouseX, mouseY, delta);
     }
 
     @Override
@@ -54,6 +58,12 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         super.handledScreenTick();
         //Testcode
         cu1 = Text.literal(handler.getClusteringData());
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        architectureList.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 
 }

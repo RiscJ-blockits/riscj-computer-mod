@@ -17,6 +17,9 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
@@ -95,6 +98,15 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
             }
         }
         return "";
+    }
+
+    /**
+     * Stub for getting the Blocks needed for the Architecture
+     * @return
+     */
+    public List<String> getArchitecture(String key){
+        //TODO implement
+        return new ArrayList<String> ();
     }
 
 }
