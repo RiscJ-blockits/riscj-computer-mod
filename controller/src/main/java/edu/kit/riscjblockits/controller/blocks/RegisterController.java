@@ -84,7 +84,9 @@ public class RegisterController extends ComputerBlockController {
                 case REGISTER_TYPE -> {
                     String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
                     ((RegisterModel) getModel()).setRegisterType(type);
-                    this.getClusterHandler().checkFinished();
+                    if (getClusterHandler() != null) {
+                        this.getClusterHandler().checkFinished();
+                    }
                 }
                 case REGISTER_REGISTERS -> {
                     IDataContainer registers = (IDataContainer) ((IDataContainer) data).get(s);
