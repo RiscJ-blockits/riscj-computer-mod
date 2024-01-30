@@ -63,11 +63,9 @@ public class Assembler {
     public Assembler(IQueryableInstructionSetModel instructionSetModel) {
         labels = new HashMap<>();
         this.instructionSetModel = instructionSetModel;
-        int memoryAddressSize = instructionSetModel.getMemoryAddressSize();
-        int memoryWordSize = instructionSetModel.getMemoryWordSize();
+        calculatedMemoryAddressSize = instructionSetModel.getMemoryAddressSize();
+        calculatedMemoryWordSize = instructionSetModel.getMemoryWordSize();
 
-        calculatedMemoryAddressSize = memoryAddressSize / 8 + (memoryAddressSize % 8 > 0 ? 1 : 0);
-        calculatedMemoryWordSize = memoryWordSize / 8 + (memoryWordSize % 8 > 0 ? 1 : 0);
 
         memory = new Memory(
             calculatedMemoryAddressSize,

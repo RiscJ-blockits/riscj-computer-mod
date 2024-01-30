@@ -68,7 +68,7 @@ public class SimulationSequenceHandler implements Runnable {
      */
     public SimulationSequenceHandler(List<IQueryableSimController> blockControllers) {
         this.blockControllers = blockControllers;
-        this.executor = new Executor(blockControllers);
+
         phaseCounter = 0;
         runPhase = RunPhase.FETCH;
         for(IQueryableSimController blockController: blockControllers) {
@@ -89,6 +89,7 @@ public class SimulationSequenceHandler implements Runnable {
                 }
             }
         }
+        this.executor = new Executor(blockControllers, instructionSetModel.getMemoryWordSize());
 
     }
 
@@ -132,7 +133,7 @@ public class SimulationSequenceHandler implements Runnable {
 
         phaseCounter++;
         // if no more fetch phase steps are defined, the execution phase is entered
-        if (phaseCounter > instructionSetModel.getFetchPhaseLength()) {
+        if (phaseCounter >= instructionSetModel.getFetchPhaseLength()) {
             phaseCounter = 0;
             runPhase = RunPhase.EXECUTE;
         }
@@ -149,7 +150,7 @@ public class SimulationSequenceHandler implements Runnable {
         //One full instruction consists of multiple microinstructions
         executeMicroInstruction(microInstructions[phaseCounter]);
         phaseCounter++;
-        if (phaseCounter > microInstructions.length) {
+        if (phaseCounter >= microInstructions.length) {
             phaseCounter = 0;
             runPhase = RunPhase.FETCH;
         }

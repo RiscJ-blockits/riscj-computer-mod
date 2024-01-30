@@ -86,6 +86,13 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
      * @return MemoryInstruction
      */
     private MemoryInstruction parseMemoryInstruction(String to, String from, String flag) {
+        
+        // check if all arguments (except flag) are empty --> no memory instruction
+        if (to.isEmpty() && from.isEmpty()) {
+            return null;
+        } else if (to.isEmpty() || from.isEmpty()) {
+            throw new JsonParseException("Invalid Memory Instruction, only one argument is set");
+        }
 
         return new MemoryInstruction(new String[]{from}, to, flag);
     }

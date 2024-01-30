@@ -9,6 +9,7 @@ import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,6 +85,12 @@ public class ClusterArchitectureHandler {
         for (IQueryableClusterController block : blocks) {
             if (block.getControllerType() == BlockControllerType.REGISTER) {
                 ((RegisterController) block).setData(rData);
+                String initialValue = istModel.getRegisterInitialValue(((RegisterController) block).getRegisterType());
+                if (initialValue == null) {
+                    continue;
+                }
+                ((RegisterController) block).setNewValue(
+                    Value.fromHex(initialValue, istModel.getMemoryWordSize()));
             }
         }
 

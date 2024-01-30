@@ -8,12 +8,19 @@ import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstructionException;
-import edu.kit.riscjblockits.model.instructionset.*;
+import edu.kit.riscjblockits.model.instructionset.AluInstruction;
+import edu.kit.riscjblockits.model.instructionset.ConditionedInstruction;
+import edu.kit.riscjblockits.model.instructionset.DataMovementInstruction;
+import edu.kit.riscjblockits.model.instructionset.IExecutor;
+import edu.kit.riscjblockits.model.instructionset.InstructionCondition;
+import edu.kit.riscjblockits.model.instructionset.MemoryInstruction;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Handles the execution of microinstructions. Gets called by the {@link SimulationSequenceHandler} whenever
@@ -24,6 +31,11 @@ import java.util.Map;
  */
 public class Executor implements IExecutor {
 
+    private static final String MEM_VISUALISATION = "<mem_vis>";
+
+    private static final Pattern MEMORY_ACCES_PATTERN = Pattern.compile("Mem\\[(?<register>\\w+)]");
+
+    private static final Pattern BINARY_PATTERN = Pattern.compile("[01]+");
     /**
      * Contains the block controllers of the associated computer blocks.
      */
@@ -33,14 +45,16 @@ public class Executor implements IExecutor {
      * Map of the register controllers for faster access and resolving string references.
      */
     private final Map<String, RegisterController> registerControllerMap;
+    private int wordLength;
 
     /**
      * Constructor. Initializes the {@link BlockController}s list and the {@link RegisterController}s map.
      * @param blockControllers Controllers of the associated computer blocks.
      */
-    public Executor(List<IQueryableSimController> blockControllers) {
+    public Executor(List<IQueryableSimController> blockControllers, int wordLength) {
         this.blockControllers = blockControllers;
         registerControllerMap = new HashMap<>();
+        this.wordLength = wordLength;
 
         for (IQueryableSimController blockController : blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.REGISTER) {
@@ -74,20 +88,50 @@ public class Executor implements IExecutor {
                     throw new NonExecutableMicroInstructionException("MemoryInstruction has no to value");
                 }
 
+                if (!to.equals(MEM_VISUALISATION)) {
 
-                if(flag.equals("r")) {
-                    //ToDo: check if from is a valid address
-                    Value fromAddress = Value.fromBinary(from, (from.length()/4 + ((from.length()%4 == 0) ? 0 : 1)));
-                    Value value = ((MemoryController) blockController).getValue(fromAddress);
-                    registerControllerMap.get(to).setNewValue(value);
+                    if(flag.equals("r")) {
+                        //ToDo: check if from is a valid address
 
+                        Matcher matcher = MEMORY_ACCES_PATTERN.matcher(from);
+                        if (!matcher.matches()) {
+                            throw new NonExecutableMicroInstructionException("MemoryInstruction has no valid from value, does not match pattern");
+                        }
+                        if (!registerControllerMap.containsKey(matcher.group("register"))) {
+                            throw new NonExecutableMicroInstructionException("MemoryInstruction has no valid from value, register not found");
+                        }
+
+                        RegisterController fromController = registerControllerMap.get(matcher.group("register"));
+
+                        Value fromAddress = fromController.getValue();
+
+                        Value value = ((MemoryController) blockController).getValue(fromAddress);
+                        registerControllerMap.get(to).setNewValue(value);
+
+                    }
+                    else if(flag.equals("w")) {
+                        Value value = registerControllerMap.get(from).getValue();
+
+                        Matcher matcher = MEMORY_ACCES_PATTERN.matcher(to);
+                        if (!matcher.matches()) {
+                            throw new NonExecutableMicroInstructionException("MemoryInstruction has no valid to value, does not match pattern");
+                        }
+                        if (!registerControllerMap.containsKey(matcher.group("register"))) {
+                            throw new NonExecutableMicroInstructionException("MemoryInstruction has no valid to value, register not found");
+                        }
+
+                        RegisterController toController = registerControllerMap.get(matcher.group("register"));
+
+                        Value toAddress = toController.getValue();
+
+                        ((MemoryController) blockController).writeMemory(toAddress, value);
+
+                    }
+                    //else do nothing, because memory flag is not set properly
                 }
-                else if(flag.equals("w")) {
-                    Value value = registerControllerMap.get(from).getValue();
-                    ((MemoryController) blockController).writeMemory(Value.fromBinary(to, (to.length()/4 + ((to.length()%4 == 0) ? 0 : 1))), value);
 
-                }
-                //else do nothing, because memory flag is not set properly
+                // TODO visualisation goes here
+
             }
         }
 
@@ -104,9 +148,9 @@ public class Executor implements IExecutor {
         String to = conditionedInstruction.getTo();
 
         if(from == null || from.isBlank()){
-            throw new NonExecutableMicroInstructionException("MemoryInstruction has no from value");
+            throw new NonExecutableMicroInstructionException("ConditionedInstruction has no from value");
         } else if(to == null || to.isBlank()){
-            throw new NonExecutableMicroInstructionException("MemoryInstruction has no to value");
+            throw new NonExecutableMicroInstructionException("ConditionedInstruction has no to value");
         }
 
         InstructionCondition condition = conditionedInstruction.getCondition();
@@ -171,15 +215,24 @@ public class Executor implements IExecutor {
         String from = dataMovementInstruction.getFrom()[0];
         String to = dataMovementInstruction.getTo();
 
-        if(from == null || from.isBlank()){
-            throw new NonExecutableMicroInstructionException("MemoryInstruction has no from value");
-        } else if(to == null || to.isBlank()){
-            throw new NonExecutableMicroInstructionException("MemoryInstruction has no to value");
+        // only execute if from and to are not empty
+        if(from != null && !from.isBlank() && to != null && !to.isBlank()) {
+            Value movedValue;
+            // from is a register --> load value from there
+            if (registerControllerMap.containsKey(from)) {
+                movedValue = registerControllerMap.get(from).getValue();
+            }
+            // from is not a register --> extract value from binary constant
+            else {
+                if (!BINARY_PATTERN.matcher(from).matches()) {
+                    throw new NonExecutableMicroInstructionException(
+                        "DataMovementInstruction has no valid from value, does not match pattern");
+                }
+                movedValue = Value.fromBinary(from, wordLength);
+            }
+
+            registerControllerMap.get(to).setNewValue(movedValue);
         }
-
-        Value movedValue = registerControllerMap.get(from).getValue();
-        registerControllerMap.get(to).setNewValue(movedValue);
-
         //ToDo Bus-Daten setzen wie und wo?
 
         if (dataMovementInstruction.getMemoryInstruction() != null) {

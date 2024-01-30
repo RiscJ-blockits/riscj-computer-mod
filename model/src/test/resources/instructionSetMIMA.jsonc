@@ -18,6 +18,9 @@
             "AKKU": 3,
             "SAR": 4,
             "SDR": 5
+        },
+        "initial_values": {
+            "EINS": "01"
         }
     },
     "memory": {

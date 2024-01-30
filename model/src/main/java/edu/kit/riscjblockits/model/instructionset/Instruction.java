@@ -122,7 +122,7 @@ public class Instruction implements IQueryableInstruction {
                 binaryPosition += length;
                 continue;
             }
-            binaryPosition += translation.length;
+            binaryPosition += translation[i].length();
         }
         return argumentsInstructionMap;
     }
