@@ -140,6 +140,55 @@ class BusSystemModelTest {
     }
 
     @Test
+    void combineGraphWithItself() {
+        //Build test Graph
+        system1.addNode(new BlockPosition(0,0,0));
+        system1.addNode(new BlockPosition(0,0,1));
+        system1.addNode(new BlockPosition(0,1,0));
+        system1.addEdge(new BlockPosition(0,0,0), new BlockPosition(0,0,1));
+        system1.addEdge(new BlockPosition(0,0,0), new BlockPosition(0,1,0));
+        system1.addNode(new BlockPosition(1,0,0));
+        system1.addNode(new BlockPosition(1,0,1));
+        system1.addNode(new BlockPosition(1,1,0));
+        system1.addEdge(new BlockPosition(1,0,0), new BlockPosition(1,0,1));
+        system1.addEdge(new BlockPosition(1,0,0), new BlockPosition(1,1,0));
+        system1.addEdge(new BlockPosition(1,1,0), new BlockPosition(1,0,1));
+        system1.addNode(new BlockPosition(0,1,1));
+        system1.addEdge(new BlockPosition(0,0,1), new BlockPosition(0,1,1));
+        system1.addEdge(new BlockPosition(0,1,0), new BlockPosition(0,1,1));
+        system1.addEdge(new BlockPosition(0,1,1), new BlockPosition(1,0,0));
+        //Build result Graph
+        system2.addNode(new BlockPosition(0,0,0));
+        system2.addNode(new BlockPosition(0,0,1));
+        system2.addNode(new BlockPosition(0,1,0));
+        system2.addEdge(new BlockPosition(0,0,0), new BlockPosition(0,0,1));
+        system2.addEdge(new BlockPosition(0,0,0), new BlockPosition(0,1,0));
+        system2.addNode(new BlockPosition(1,0,0));
+        system2.addNode(new BlockPosition(1,0,1));
+        system2.addNode(new BlockPosition(1,1,0));
+        system2.addEdge(new BlockPosition(1,0,0), new BlockPosition(1,0,1));
+        system2.addEdge(new BlockPosition(1,0,0), new BlockPosition(1,1,0));
+        system2.addEdge(new BlockPosition(1,1,0), new BlockPosition(1,0,1));
+        system2.addNode(new BlockPosition(0,1,1));
+        system2.addEdge(new BlockPosition(0,0,1), new BlockPosition(0,1,1));
+        system2.addEdge(new BlockPosition(0,1,0), new BlockPosition(0,1,1));
+        system2.addEdge(new BlockPosition(0,1,1), new BlockPosition(1,0,0));
+
+        system1.combineGraph(new BlockPosition(0,0,1), new BlockPosition(0,1,0), system1);
+
+        assertEquals(system1.getBusGraph().size(), system2.getBusGraph().size());
+        int edgeCountSystem1 = 0;
+        int edgeCountSystem2 = 0;
+        for (BlockPosition pos : system1.getBusGraph().keySet()) {
+            edgeCountSystem1 += system1.getBusGraph().get(pos).size();
+        }
+        for (BlockPosition pos : system2.getBusGraph().keySet()) {
+            edgeCountSystem2 += system2.getBusGraph().get(pos).size();
+        }
+        assertEquals(edgeCountSystem1 - 2, edgeCountSystem2);
+    }
+
+    @Test
     void splitBusSystemModel() {
         system1.removeNode(new BlockPosition(0,0,0));
         system2.removeNode(new BlockPosition(0,0,1));

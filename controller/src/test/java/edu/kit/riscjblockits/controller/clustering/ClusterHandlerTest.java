@@ -74,4 +74,44 @@ class ClusterHandlerTest {
         assertEquals(1, ch3.getBusBlocks().size());
     }
 
+    @Test
+    void destroyWithoutSplit() {
+        ClusteringStub_ComputerController block1 = new ClusteringStub_ComputerController(new BlockPosition(0,0,0), BlockControllerType.BUS, blocks);
+        blocks.add(block1);
+        ClusteringStub_ComputerController block2 = new ClusteringStub_ComputerController(new BlockPosition(0,0,1), BlockControllerType.BUS, blocks);
+        ClusteringStub_ComputerController block3 = new ClusteringStub_ComputerController(new BlockPosition(0,1,0), BlockControllerType.BUS, blocks);
+        blocks = new ArrayList<>();
+        blocks.add(block2);
+        blocks.add(block3);
+        ClusteringStub_ComputerController block4 = new ClusteringStub_ComputerController(new BlockPosition(0,1,1), BlockControllerType.BUS, blocks);
+
+        ClusterHandler cluster = block2.getClusterHandler();
+        assertEquals(4, cluster.getBusBlocks().size());
+
+        block1.onBroken();
+        cluster = block2.getClusterHandler();
+        assertEquals(3, cluster.getBusBlocks().size());
+    }
+
+    @Test
+    void oneBlockReCombine() {
+        ClusteringStub_ComputerController block1 = new ClusteringStub_ComputerController(new BlockPosition(0,0,0), BlockControllerType.BUS, blocks);
+        allNeighbours.add(block1);
+        ClusteringStub_ComputerController block2 = new ClusteringStub_ComputerController(new BlockPosition(2,0,0), BlockControllerType.BUS, blocks);
+        allNeighbours.add(block2);
+        ClusteringStub_ComputerController block3 = new ClusteringStub_ComputerController(new BlockPosition(1,0,0), BlockControllerType.MEMORY, allNeighbours);
+        ClusterHandler firstCluster = block2.getClusterHandler();
+        ClusterHandler secondCluster = block3.getClusterHandler();
+        assertEquals(0, firstCluster.getBlocks().size());
+        assertEquals(1, secondCluster.getBlocks().size());
+        assertEquals(1, firstCluster.getBusBlocks().size());
+        assertEquals(1, secondCluster.getBusBlocks().size());
+
+        block1.onBroken();
+
+        firstCluster = block2.getClusterHandler();
+        secondCluster = block3.getClusterHandler();
+        assertEquals(secondCluster.getBlocks().size(), firstCluster.getBlocks().size());
+        assertEquals(secondCluster.getBusBlocks().size(), firstCluster.getBusBlocks().size());
+    }
 }
