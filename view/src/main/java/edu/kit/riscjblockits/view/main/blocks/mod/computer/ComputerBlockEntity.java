@@ -178,7 +178,6 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             if (world.getPlayers().isEmpty()) {
                return;       //we are too early in the loading process
             }
-
             NbtCompound nbt = new NbtCompound();
             writeNbt(nbt);
             PacketByteBuf buf = PacketByteBufs.create();
@@ -204,6 +203,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             nbt.put(MOD_DATA, new DataNbtConverter(data).getNbtElement());
         }
         super.writeNbt(nbt);
+        markDirty();
     }
 
     /**
