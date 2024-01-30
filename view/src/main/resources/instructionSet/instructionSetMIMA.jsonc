@@ -39,11 +39,11 @@
         "JMN"
     ],
     "fetch": [
-        ["SAR", "IAR", "r", "<mem_addr>", "SAR"],
+        ["SAR", "IAR", "r", "<mem_vis>", "SAR"],
         ["X", "IAR", "r" ,"" ,""],
         ["Y", "EINS", "r", "", ""],
         ["ADD", "Z", "X", "Y" ,"", "", ""],
-        ["IAR", "Z", "r", "SDR", "<mem_data>"],
+        ["IAR", "Z", "r", "SDR", "Mem[SAR]"],
         ["IR", "SDR", "", "", ""]
     ],
     "address_change": {
@@ -71,10 +71,10 @@
             "arguments": ["[addr]"],
             "opcode": "0011",
             "execution": [
-                ["SAR", "[addr]", "r", "<mem_addr>", "SAR"],
+                ["SAR", "[addr]", "r", "<mem_vis>", "SAR"],
                 // to     from memoryAction [to         from]
                 ["X", "AKKU", "r", "", ""],
-                ["", "", "r", "SDR", "<mem_data>"],
+                ["", "", "r", "SDR", "Mem[SAR]"],
                 ["Y", "SDR", "", "", ""],
                 ["ADD", "Z", "X", "Y", "", "", ""],
                 //alu-op to   x   y  memAction
@@ -89,9 +89,9 @@
             "arguments": ["[addr]"],
             "opcode": "0001",
             "execution": [
-                ["SAR", "[addr]", "r", "<mem_addr>", "SAR"],
+                ["SAR", "[addr]", "r", "<mem_vis>", "SAR"],
                 ["", "", "r", "", ""] ,
-                ["", "", "r", "SDR", "<mem_data>"],
+                ["", "", "r", "SDR", "Mem[SAR]"],
                 ["AKKU", "SDR", "", "", ""]
             ],
             "translation": [
@@ -103,9 +103,9 @@
             "arguments": ["[addr]"],
             "opcode": "0010",
             "execution": [
-                ["SAR", "[addr]", "w", "<mem_addr>", "SAR"],
+                ["SAR", "[addr]", "w", "<mem_vis", "SAR"],
                 ["SDR", "AKKU", "w", "", ""],
-                ["", "", "w", "<mem_data>", "SDR"]
+                ["", "", "w", "Mem[SAR]", "SDR"]
             ],
             "translation": [
                 "0010",
@@ -116,9 +116,9 @@
             "arguments": ["[addr]"],
             "opcode": "0100",
             "execution": [
-                ["SAR", "[addr]", "r", "<mem_addr>", "SAR"],
+                ["SAR", "[addr]", "r", "<mem_vis>", "SAR"],
                 ["X", "AKKU", "r", "", ""],
-                ["", "", "r", "SDR", "<mem_data>"],
+                ["", "", "r", "SDR", "Mem[SAR]"],
                 ["Y", "SDR", "", "", ""],
                 ["AND", "Z", "X", "Y", "", "", ""],
                 ["AKKU", "Z", "", "", ""]
@@ -132,9 +132,9 @@
             "arguments": ["[addr]"],
             "opcode": "0101",
             "execution": [
-                ["SAR", "[addr]", "r", "<mem_addr>", "SAR"],
+                ["SAR", "[addr]", "r", "<mem_vis>", "SAR"],
                 ["X", "AKKU", "r", "" ,""],
-                ["", "", "r", "SDR", "<mem_data>"],
+                ["", "", "r", "SDR", "Mem[SAR]"],
                 ["Y", "SDR", "", "", ""],
                 ["OR", "Z", "X", "Y", "", "", ""],
                 ["AKKU", "Z", "", "", ""]
@@ -148,9 +148,9 @@
             "arguments": ["[addr]"],
             "opcode": "0110",
             "execution": [
-                ["SAR", "[addr]", "r", "<mem_addr>", "SAR"],
+                ["SAR", "[addr]", "r", "<mem_vis>", "SAR"],
                 ["X", "AKKU", "r", "", ""],
-                ["", "", "r", "SDR", "<mem_data>"],
+                ["", "", "r", "SDR", "Mem[SAR]"],
                 ["Y", "SDR", "", "", ""],
                 ["XOR", "Z", "X", "Y", "", "", ""],
                 ["AKKU", "Z", "", "", ""]
@@ -201,9 +201,9 @@
             "arguments": ["[addr]"],
             "opcode": "0111",
             "execution": [
-                ["SAR", "[addr]", "r", "<mem_addr>", "SAR"],
+                ["SAR", "[addr]", "r", "<mem_vis>", "SAR"],
                 ["X", "AKKU", "r", "", ""],
-                ["", "", "r", "SDR", "<mem_data>"],
+                ["", "", "r", "SDR", "Mem[SAR]"],
                 ["Y", "SDR", "", "", ""],
                 ["EQ", "Z", "X", "Y", "" ,"", ""],
                 ["AKKU", "Z", "", "", ""]
