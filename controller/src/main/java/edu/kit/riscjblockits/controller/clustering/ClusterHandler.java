@@ -57,13 +57,10 @@ public class ClusterHandler implements IArchitectureCheckable {
 
         if (blockController.getControllerType() == BlockControllerType.BUS) {
             busBlocks.add(blockController);
-            System.out.println("BusBlock");
         } else {
             blocks.add(blockController);
-            System.out.println("No BusBlock");
         }
 
-        System.out.println("Start combine");
         combineToNeighbours(blockController);
     }
 
@@ -119,7 +116,6 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     public void combine(IQueryableClusterController ownBlock,IQueryableClusterController neighbourBlock, ClusterHandler oldCluster) {
         busSystemModel.combineGraph(ownBlock.getBlockPosition(), neighbourBlock.getBlockPosition(), oldCluster.getBusSystemModel());
-
         if (oldCluster != this) {
             blocks.addAll(oldCluster.getBlocks());
             for (IQueryableClusterController newBlock: (oldCluster.getBlocks())) {
@@ -129,9 +125,7 @@ public class ClusterHandler implements IArchitectureCheckable {
             for (IQueryableClusterController newBlock: (oldCluster.getBusBlocks())) {
                 newBlock.setClusterHandler(this);
             }
-            System.out.println("combine with other cluster");
         }
-        System.out.println("combine");
     }
 
     /**
@@ -139,7 +133,6 @@ public class ClusterHandler implements IArchitectureCheckable {
      * @param destroyedBlockController BlockController of the destroyed block
      */
     public void blockDestroyed(IQueryableClusterController destroyedBlockController) {
-        System.out.println("Block wird zerstört");
         //Remove Block from ClusterHandler Lists
         busBlocks.remove(destroyedBlockController);
         List<IQueryableBusSystem> newBusSystemModels =
@@ -167,7 +160,6 @@ public class ClusterHandler implements IArchitectureCheckable {
         }
         for (ClusterHandler newclusterHandler: newClusterHandlers) {
             if (newclusterHandler.getBusBlocks().isEmpty()) {
-                System.out.println("Cluster neu verbinden");
                 IQueryableClusterController neighbourBlockController = newclusterHandler.getBlocks().get(0);
                 newclusterHandler.combineToNeighbours(neighbourBlockController);
                 neighbourBlockController.getClusterHandler().checkFinished();
@@ -220,7 +212,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     }
 
 
-    /** ToDo nicht im Entwurf
+    /**
      * Sets the given IQueryableInstructionSetModel as the instruction set model for this object.
      * @param istModel The IQueryableInstructionSetModel to set.
      * @return true if the set operation was successful, false if there is already an instruction set model set.
@@ -233,7 +225,7 @@ public class ClusterHandler implements IArchitectureCheckable {
         return false;
     }
 
-    /** ToDo nicht im Entwurf
+    /**
      * Removes the instruction set model from this object.
      */
     public void removeIstModel() {
@@ -261,7 +253,6 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     private void startSimulation() {
         // TODO check cast
-        //ToDo stop when blocks are broken
         List<IQueryableSimController> simControllers = blocks.stream().map(IQueryableSimController.class::cast).toList();
         SimulationTimeHandler sim = new SimulationTimeHandler(simControllers);
         for (IQueryableComputerController c : blocks) {
