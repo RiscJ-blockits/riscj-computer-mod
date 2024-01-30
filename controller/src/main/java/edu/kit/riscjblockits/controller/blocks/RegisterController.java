@@ -68,6 +68,7 @@ public class RegisterController extends ComputerBlockController {
      */
     @Override
     public void setData(IDataElement data) {
+        super.setData(data);
         /* Data Format: key: "type", value: "registerType"
         *               key: "registers", value: container
         *                                  container:   key: "missing", value: string space-separated register names

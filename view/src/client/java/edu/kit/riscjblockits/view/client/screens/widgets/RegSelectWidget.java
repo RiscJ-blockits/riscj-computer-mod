@@ -164,6 +164,7 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         if (this.cachedInvChangeCount != this.client.player.getInventory().getChangeCount()) {
             this.cachedInvChangeCount = this.client.player.getInventory().getChangeCount();
         }
+        registerList.updateEntries(getEntries());
     }
 
     @Override
