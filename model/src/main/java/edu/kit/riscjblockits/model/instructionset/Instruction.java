@@ -63,7 +63,10 @@ public class Instruction implements IQueryableInstruction {
                     from[j] = argumentsInstructionMap.get(from[j]);
                 }
             }
-            to = argumentsInstructionMap.get(to);
+
+            if (argumentsInstructionMap.containsKey(to)) {
+                to = argumentsInstructionMap.get(to);
+            }
 
             this.execution[i] = instruction.execution[i].clone(from, to);
         }

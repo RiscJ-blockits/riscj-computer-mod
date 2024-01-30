@@ -67,10 +67,12 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
     private DataMovementInstruction parseDataMovementInstruction(JsonArray jsonArray) {
 
         List<JsonElement> elementList = jsonArray.asList();
-        String[] from = new String[]{elementList.get(1).toString()};
-        String to = elementList.get(0).toString();
-        String memoryFlag = elementList.get(2).toString();
-        MemoryInstruction memoryInstruction = parseMemoryInstruction(elementList.get(3).toString(), elementList.get(4).toString(), memoryFlag);
+        String[] from = new String[]{elementList.get(1).toString().replace("\"", "")};
+        String to = elementList.get(0).toString().replace("\"", "");
+        String memoryFlag = elementList.get(2).toString().replace("\"", "");
+        MemoryInstruction memoryInstruction = parseMemoryInstruction(
+                elementList.get(3).toString().replace("\"", ""),
+                elementList.get(4).toString().replace("\"", ""), memoryFlag);
 
 
         return new DataMovementInstruction(from, to, memoryFlag, memoryInstruction);
@@ -98,11 +100,13 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
     private AluInstruction parseAluInstruction(JsonArray jsonArray) {
 
         List<JsonElement> elementList = jsonArray.asList();
-        String to = elementList.get(1).toString();
-        String[] from = new String[]{elementList.get(2).toString(), elementList.get(3).toString()};
-        String memoryFlag = elementList.get(4).toString();
-        MemoryInstruction memoryInstruction = parseMemoryInstruction(elementList.get(5).toString(), elementList.get(6).toString(), memoryFlag);
-        String action = elementList.get(0).toString();
+        String to = elementList.get(1).toString().replace("\"", "");
+        String[] from = new String[]{elementList.get(2).toString().replace("\"", ""), elementList.get(3).toString().replace("\"", "")};
+        String memoryFlag = elementList.get(4).toString().replace("\"", "");
+        MemoryInstruction memoryInstruction = parseMemoryInstruction(
+                elementList.get(5).toString().replace("\"", ""),
+                elementList.get(6).toString().replace("\"", ""), memoryFlag);
+        String action = elementList.get(0).toString().replace("\"", "");
 
 
         return new AluInstruction(from, to, memoryFlag, memoryInstruction, action);
@@ -117,16 +121,19 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
     private ConditionedInstruction parseConditionedInstruction(JsonArray jsonArray) {
 
         List<JsonElement> elementList = jsonArray.asList();
-        String comparator1 =  elementList.get(1).toString();
-        String comparator2 = elementList.get(2).toString();
-        String comparingOperation = elementList.get(3).toString();
+        String comparator1 =  elementList.get(1).toString().replace("\"", "");
+        String comparator2 = elementList.get(2).toString().replace("\"", "");
+        String comparingOperation = elementList.get(3).toString().replace("\"", "");
 
         InstructionCondition instructionCondition = new InstructionCondition(comparingOperation, comparator1, comparator2);
 
-        String thenTo = elementList.get(4).toString();
-        String[] thenFrom = new String[]{elementList.get(5).toString()};
-        String memoryFlag = elementList.get(6).toString();
-        MemoryInstruction memoryInstruction = parseMemoryInstruction(elementList.get(7).toString(), elementList.get(8).toString(), memoryFlag);
+        String thenTo = elementList.get(4).toString().replace("\"", "");
+        String[] thenFrom = new String[]{elementList.get(5).toString().replace("\"", "")};
+        String memoryFlag = elementList.get(6).toString().replace("\"", "");
+        MemoryInstruction memoryInstruction = parseMemoryInstruction(
+                elementList.get(7).toString().replace("\"", ""),
+                elementList.get(8).toString().replace("\"", ""),
+                memoryFlag);
 
         return new ConditionedInstruction(thenFrom, thenTo, memoryFlag, memoryInstruction, instructionCondition);
 
