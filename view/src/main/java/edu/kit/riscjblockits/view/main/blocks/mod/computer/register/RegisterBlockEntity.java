@@ -2,6 +2,10 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.DataConstants;
+import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -56,7 +60,8 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
 
     @Override
     public Text getDisplayName() {
-        return Text.translatable("block.riscj_blockits.register_block");
+        String registerType = ((IDataStringEntry)((IDataContainer) getModel().getData()).get(DataConstants.REGISTER_TYPE)).getContent();
+        return Text.literal("Register" + ": " + registerType);
     }
 
     @Nullable

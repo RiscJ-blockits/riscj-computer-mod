@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.view.client.screens.widgets;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
@@ -18,9 +19,8 @@ import java.util.function.Consumer;
 
 public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawable, ParentElement {
 
-    public static final Identifier
-        SCROLLBAR = new Identifier(RISCJ_blockits.MODID, "textures/gui/general/scroller.png");
-    public static final Identifier SCROLLBAR_DISABLED = new Identifier(RISCJ_blockits.MODID, "textures/gui/general/scroller_disabled.png");
+    private static final Identifier SCROLLER_TEXTURE = new Identifier("container/creative_inventory/scroller");
+    private static final Identifier SCROLLER_DISABLED_TEXTURE = new Identifier("container/creative_inventory/scroller_disabled");
 
     private static final int SCROLLBAR_WIDTH = 12;
     private static final int SCROLLBAR_HEIGHT = 15;
@@ -118,6 +118,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
             // only draw an entry when it is between top and bottom of scroll widget
             if (currentY + entry.getHeight() > scrollPosition && currentY < scrollPosition + height) {
                 entry.setY(getY() + currentY - scrollPosition);
+                entry.setX(getX());
                 entry.render(context, mouseX, mouseY, delta);
             }
             // increment currentY by height of widget + padding
@@ -142,9 +143,9 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
 
     private void drawScrollbar(DrawContext context) {
         if (overflows()) {
-            context.drawTexture(SCROLLBAR, this.x + this.width + this.scrollBarOffset, y + getScrollbarPosition(), 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+            context.drawGuiTexture(SCROLLER_TEXTURE, this.x + this.width + this.scrollBarOffset, this.y + getScrollbarPosition(), SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
         }else {
-            context.drawTexture(SCROLLBAR_DISABLED, this.x + this.width + this.scrollBarOffset, y, 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+            context.drawGuiTexture(SCROLLER_DISABLED_TEXTURE, this.x + this.width + this.scrollBarOffset, this.y, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
         }
     }
 

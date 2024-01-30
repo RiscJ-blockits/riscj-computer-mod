@@ -1,5 +1,7 @@
 package edu.kit.riscjblockits.view.main;
 
+import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.alu.AluBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.alu.AluBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlock;
@@ -295,9 +297,7 @@ public class RISCJ_blockits implements ModInitializer {
 		Registry.register(Registries.ITEM_GROUP, new Identifier(MODID, "computer_components"), ITEM_GROUP);
 
 		ServerPlayNetworking.registerGlobalReceiver(
-			NetworkingConstants.SYNC_REGISTER_SELECTION,
-
-			(server, player, handler, buf, responseSender) -> {
+			NetworkingConstants.SYNC_REGISTER_SELECTION, (server, player, handler, buf, responseSender) -> {
 				BlockPos pos = buf.readBlockPos();
 				String selectedRegister = buf.readString();
 
@@ -309,6 +309,17 @@ public class RISCJ_blockits implements ModInitializer {
 					subNbt.putString(REGISTER_TYPE, selectedRegister);
 					be.readNbt(nbt);
 				});
+			}
+		);
+		ServerPlayNetworking.registerGlobalReceiver(		//the view wants to get data
+			NetworkingConstants.REQUEST_DATA, (server, player, handler, buf, responseSender) -> {
+				BlockPos pos = buf.readBlockPos();
+				server.execute(() -> {
+					ComputerBlockEntity be = (ComputerBlockEntity) player.getWorld().getBlockEntity(pos);
+                    assert be != null;
+                    be.requestData();
+				});
+
 			}
 		);
 	}
