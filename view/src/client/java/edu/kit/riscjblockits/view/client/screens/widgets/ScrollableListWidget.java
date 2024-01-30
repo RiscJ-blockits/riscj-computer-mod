@@ -118,6 +118,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
             // only draw an entry when it is between top and bottom of scroll widget
             if (currentY + entry.getHeight() > scrollPosition && currentY < scrollPosition + height) {
                 entry.setY(getY() + currentY - scrollPosition);
+                entry.setX(getX());
                 entry.render(context, mouseX, mouseY, delta);
             }
             // increment currentY by height of widget + padding

@@ -19,6 +19,7 @@ public class RegisterListWidget extends ScrollableListWidget<RegisterEntry> {
         //Fixme: this is not working
         if(updatedEntries.size() > this.entries.size()) {
             this.entries = updatedEntries;
+            return;
         }
         for (RegisterEntry entry: this.entries) {
             for (RegisterEntry updatedEntry : updatedEntries) {
