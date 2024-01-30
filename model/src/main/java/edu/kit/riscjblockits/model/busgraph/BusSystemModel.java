@@ -52,7 +52,6 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     private BusSystemModel(Map<BlockPosition, List<BlockPosition>> adjPositions) {
         this.adjPositions = adjPositions;
         activeVisualization = new HashMap<>();
-        System.out.println("ModelSize: " + adjPositions.size());
     }
 
     /**
@@ -89,6 +88,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
             activeVisualization.put(current, true);
             current = path.get(current);
         }
+        activeVisualization.put(startPos, true);
     }
 
     /**
@@ -128,8 +128,6 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
         if (isNode(pos1) && isNode(pos2)) {
             adjPositions.get(pos1).add(pos2);
             adjPositions.get(pos2).add(pos1);
-        } else {
-            System.out.println("One of the given nodes is not in the BusSystemModel");
         }
     }
 
@@ -165,7 +163,6 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
             adjPositions.putAll(busSystemToCombine.getBusGraph());
         }
         addEdge(newNode, ownNode);
-        System.out.println("ModelSize: " + adjPositions.size() );
     }
 
     /**
@@ -180,7 +177,6 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
             BusSystemModel newBusSystem = new BusSystemModel(newGraph);
             newBusSystems.add(newBusSystem);
         }
-        System.out.println("ModelSize: " + adjPositions.size());
         return newBusSystems;
     }
 
