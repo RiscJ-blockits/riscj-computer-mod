@@ -99,7 +99,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
                     ((IDataStringEntry) ((IDataContainer) regData).get(s2)).getContent().split(" ")));
                 int i = 0;
                 while( i < registers.size()) {
-                    if (registers.get(i).equals(RegisterModel.UNASSIGNED_REGISTER)) {
+                    if (registers.get(i).equals(RegisterModel.UNASSIGNED_REGISTER) || registers.get(i).isEmpty()) {
                         registers.remove(i);
                     }else {
                         i++;
