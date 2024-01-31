@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_ADDRESS;
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_INITIAL_PC;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_WORD;
 
@@ -36,6 +37,12 @@ public class Memory {
      * the size of a memory address in bytes.
      */
     private final int addressLength;
+
+    /**
+     * where the program counter should start.
+     * TODO nicht im entwurf
+     */
+    private Value initialProgramCounter;
 
     /**
      * Constructor for a memory.
@@ -77,14 +84,20 @@ public class Memory {
      */
     public static Memory fromData(IDataContainer data) {
         // load word size and address size
-        IDataStringEntry wordSizeString = (IDataStringEntry) data.get("wordSize");
-        IDataStringEntry addressSizeString = (IDataStringEntry) data.get("addressSize");
+        IDataStringEntry wordSizeString = (IDataStringEntry) data.get(MEMORY_WORD);
+        IDataStringEntry addressSizeString = (IDataStringEntry) data.get(MEMORY_ADDRESS);
 
         int wordSize = Integer.parseInt(addressSizeString.getContent());
         int addressSize = Integer.parseInt(wordSizeString.getContent());
 
         // create new memory
         Memory memory = new Memory(addressSize, wordSize);
+
+        // load initial program counter if one is set
+        if (data.get(MEMORY_INITIAL_PC).isEntry()) {
+            IDataStringEntry initialProgramCounterString = (IDataStringEntry) data.get(MEMORY_INITIAL_PC);
+            memory.setInitialProgramCounter(Value.fromHex(initialProgramCounterString.getContent(), addressSize));
+        }
 
         // fill memory with data
         IDataContainer memoryData = (IDataContainer) data.get("memory");
@@ -111,6 +124,10 @@ public class Memory {
         data.set(MEMORY_WORD, new DataStringEntry(String.valueOf(memoryLength)));
         data.set(MEMORY_ADDRESS, new DataStringEntry(String.valueOf(addressLength)));
 
+        // save initial program counter if one is set
+        if (initialProgramCounter != null)
+            data.set(MEMORY_INITIAL_PC, new DataStringEntry(initialProgramCounter.getHexadecimalValue()));
+
         // create new data container for memory
         IDataContainer memoryData = new Data();
 
@@ -136,5 +153,20 @@ public class Memory {
     @Override
     public int hashCode() {
         return Objects.hash(memory, memoryLength, addressLength);
+    }
+
+    /**
+     * // TODO nicht im entwurf
+     * @param address
+     */
+    public void setInitialProgramCounter(Value address) {
+        initialProgramCounter = address;
+    }
+
+    /**
+     * // TODO nicht im entwurf
+     */
+    public Value getInitialProgramCounter() {
+        return initialProgramCounter;
     }
 }

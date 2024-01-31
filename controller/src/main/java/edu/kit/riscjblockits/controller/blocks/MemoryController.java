@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.controller.blocks;
 
+import edu.kit.riscjblockits.controller.clustering.ClusterHandler;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.MemoryModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
@@ -40,12 +41,14 @@ public class MemoryController extends ComputerBlockController {
     @Override
     public void setData(IDataElement data) {
         if (!data.isContainer()) {
+            onUpdate();
             return;
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(MEMORY_MEMORY)) {
                 if (((IDataContainer) data).get(s) == null) {           //programm Item has been removed
                     ((MemoryModel) getModel()).setMemory(null);
+                    onUpdate();
                     return;
                 }
                 IDataContainer memoryData = (IDataContainer) ((IDataContainer) ((IDataContainer) data).get(s)).get(MEMORY_PROGRAMM_ITEM);
@@ -53,7 +56,16 @@ public class MemoryController extends ComputerBlockController {
                 ((MemoryModel) getModel()).setMemory(memory);
             }
         }
+        onUpdate();
     }
+
+    private void onUpdate() {
+        ClusterHandler clusterHandler = getClusterHandler();
+        if (clusterHandler != null)
+            clusterHandler.checkFinished();
+    }
+
+
 
     /**
      * Returns the value at the given address.
@@ -75,4 +87,11 @@ public class MemoryController extends ComputerBlockController {
         ((MemoryModel) getModel()).setMemoryAt(address, value);
     }
 
+    public Value getInitialProgramCounter() {
+        return ((MemoryModel) getModel()).getInitialProgramCounter();
+    }
+
+    public boolean isMemorySet() {
+        return ((MemoryModel) getModel()).isMemorySet();
+    }
 }

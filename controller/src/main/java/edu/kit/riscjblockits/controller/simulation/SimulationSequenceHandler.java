@@ -11,6 +11,7 @@ import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstruction
 import edu.kit.riscjblockits.model.instructionset.IExecutableMicroInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.util.List;
 import java.util.Objects;
@@ -86,6 +87,12 @@ public class SimulationSequenceHandler implements Runnable {
             if (Objects.requireNonNull(blockController.getControllerType()) == BlockControllerType.REGISTER) {
                 if (((RegisterController) blockController).getRegisterType().equals(programCounterTag)) {
                     programCounterController = (RegisterController) blockController;
+                    // set the initial program counter value --> if not set, set to zero
+                    Value pcValue = memoryController.getInitialProgramCounter();
+                    if (pcValue == null) {
+                        pcValue = new Value(new byte[instructionSetModel.getMemoryAddressSize()]);
+                    }
+                    programCounterController.setNewValue(pcValue);
                 }
             }
         }
@@ -125,6 +132,7 @@ public class SimulationSequenceHandler implements Runnable {
         if (phaseCounter == 0) {
             IQueryableInstruction instruction = instructionSetModel.getInstructionFromBinary(memoryController.getValue(programCounterController.getValue()).getBinaryValue());
             microInstructions = instruction.getExecution();
+            System.out.println("loading from: " + programCounterController.getValue().getHexadecimalValue());
         }
 
         System.out.println("fetch: " + phaseCounter);
@@ -135,7 +143,6 @@ public class SimulationSequenceHandler implements Runnable {
         // if no more fetch phase steps are defined, the execution phase is entered
         if (phaseCounter >= instructionSetModel.getFetchPhaseLength()) {
             System.out.println("fetch phase finished");
-            System.out.println("executing command at address " + programCounterController.getValue().getHexadecimalValue());
             phaseCounter = 0;
             runPhase = RunPhase.EXECUTE;
         }

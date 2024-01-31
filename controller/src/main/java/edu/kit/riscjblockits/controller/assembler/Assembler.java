@@ -137,6 +137,7 @@ public class Assembler {
             // increment memory address
             currentAddress = currentAddress.getIncrementedValue();
         }
+
     }
 
 
@@ -196,6 +197,9 @@ public class Assembler {
             String label = labelMatcher.group("label");
             if (label != null) {
                 labels.put(label, localCurrentAddress);
+                if (instructionSetModel.getProgramStartLabel().equals(label)) {
+                    memory.setInitialProgramCounter(localCurrentAddress);
+                }
             }
             // increment memory address
             localCurrentAddress = localCurrentAddress.getIncrementedValue();

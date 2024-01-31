@@ -81,7 +81,6 @@ public class Executor implements IExecutor {
                 String from = memoryInstruction.getFrom()[0];
                 String to = memoryInstruction.getTo();
                 String flag = memoryInstruction.getFlag();
-                System.out.println("MemoryInstruction from: " + from + ", to: " + to + "flag: " + flag);
 
                 if(from == null || from.isBlank()){
                     throw new NonExecutableMicroInstructionException("MemoryInstruction has no from value");

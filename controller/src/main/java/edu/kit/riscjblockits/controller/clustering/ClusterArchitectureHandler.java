@@ -1,13 +1,12 @@
 package edu.kit.riscjblockits.controller.clustering;
 
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
-import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
+import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
-import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
@@ -50,6 +49,10 @@ public class ClusterArchitectureHandler {
             switch (block.getControllerType()) {
                 case MEMORY:
                     foundMemory++;
+                    assert block instanceof MemoryController;
+                    // check if memory is set
+                    correctArchitecture = ((MemoryController) block).isMemorySet();
+
                     break;
                 case REGISTER:
                     availableRegisters.add(((RegisterController) block).getRegisterType());
