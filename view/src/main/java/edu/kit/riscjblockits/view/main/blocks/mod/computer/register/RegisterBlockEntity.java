@@ -2,7 +2,6 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
-import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
@@ -76,10 +75,14 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
         writeNbt(nbt);
         String type = "";
         String value = "";
-        if (!nbt.contains("value")) {
+        // TODO check if data constants can be used
+        if (nbt.contains("modData")) {
+            nbt = nbt.getCompound("modData");
+        }
+        if (nbt.contains("value")) {
             value = nbt.getString("value");
         }
-        if (!nbt.contains("type")) {
+        if (nbt.contains("type")) {
             type = nbt.getString("type");
         }
         return Text.of("Register\n" + type + "\n" + value);
