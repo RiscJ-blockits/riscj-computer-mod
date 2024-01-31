@@ -16,17 +16,18 @@ public class RegisterListWidget extends ScrollableListWidget<RegisterEntry> {
     }
 
     public void updateEntries(List<RegisterEntry> updatedEntries) {
+        //Fixme: this is not working
         if(updatedEntries.size() > this.entries.size()) {
             this.entries = updatedEntries;
             return;
         }
         for (RegisterEntry entry: this.entries) {
-            for (RegisterEntry updatedEntry: updatedEntries) {
-                 if(entry.getName().equals(updatedEntry.getName())) {
-                     entry.update(updatedEntry.isMissing(), updatedEntry.isCurrentReg());
-                 }
+            for (RegisterEntry updatedEntry : updatedEntries) {
+                if (entry.getName().equals(updatedEntry.getName())) {
+                    entry.update(updatedEntry.isMissing(), updatedEntry.isCurrentReg());
+                }
             }
-
         }
+
     }
 }

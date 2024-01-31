@@ -68,6 +68,7 @@ public class RegisterController extends ComputerBlockController {
      */
     @Override
     public void setData(IDataElement data) {
+        super.setData(data);
         /* Data Format: key: "type", value: "registerType"
         *               key: "registers", value: container
         *                                  container:   key: "missing", value: string space-separated register names
@@ -83,6 +84,9 @@ public class RegisterController extends ComputerBlockController {
                 case REGISTER_TYPE -> {
                     String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
                     ((RegisterModel) getModel()).setRegisterType(type);
+                    if (getClusterHandler() != null) {
+                        this.getClusterHandler().checkFinished();
+                    }
                 }
                 case REGISTER_REGISTERS -> {
                     IDataContainer registers = (IDataContainer) ((IDataContainer) data).get(s);

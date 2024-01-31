@@ -75,11 +75,14 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
                 cuData.set(MEMORY_MEMORY, null);
                 getController().setData(cuData);
             } else {
-                NbtCompound istNbt = getItems().get(0).getNbt();
-                Data cuData = new Data();
-                NbtDataConverter converter = new NbtDataConverter(istNbt);
-                cuData.set(MEMORY_MEMORY, converter.getData());
-                getController().setData(cuData);
+                NbtCompound programmNbt = getItems().get(0).getNbt();
+                Data memData = new Data();
+                if (programmNbt == null) {
+                    return;         //if the programm item has no data on it, we don't need to do anything
+                }
+                NbtDataConverter converter = new NbtDataConverter(programmNbt);
+                memData.set(MEMORY_MEMORY, converter.getData());
+                getController().setData(memData);
             }
         }
     }
