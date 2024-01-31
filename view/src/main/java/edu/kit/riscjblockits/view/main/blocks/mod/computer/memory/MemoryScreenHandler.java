@@ -122,7 +122,7 @@ public class MemoryScreenHandler extends ModScreenHandler {
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(MEMORY_ADDRESS)) {
-                return (int) Math.pow(2, Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent()));
+                return (int) Math.pow(8, Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent()));
             }
         }
         return 9;
