@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.memory;
 
+import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
@@ -17,12 +18,8 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
-import java.util.List;
-import java.util.Set;
-
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_ADDRESS;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
-import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_WORD;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
 public class MemoryScreenHandler extends ModScreenHandler {
@@ -97,18 +94,13 @@ public class MemoryScreenHandler extends ModScreenHandler {
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(MEMORY_MEMORY)) {
-                //int adressSize = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get("addressSize")).getContent());
-                //ToDo make code more performant when address size matches real address size
-                Set<String> keys = ((IDataContainer) ((IDataContainer) data).get(s)).getKeys();
-                List<String> keysList = keys.stream().sorted().toList();
-                if (line >= keysList.size()) {
-                    return "0";
+                int addressSize = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(DataConstants.MEMORY_ADDRESS)).getContent());
+                Value value = Value.fromDecimal(String.valueOf(address), addressSize);          //ToDo Value should hav an fromInt
+                IDataElement memLine = ((IDataContainer) ((IDataContainer) data).get(s)).get(value.getHexadecimalValue());
+                if (memLine.isEntry()) {
+                    return ((IDataStringEntry) memLine).getContent();
                 }
-                String result;
-                result = keysList.get(line);
-                result += " ";
-                result += ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(s)).get(keysList.get(line))).getContent();
-                return result;
+                return "0";
             }
         }
         return "0";

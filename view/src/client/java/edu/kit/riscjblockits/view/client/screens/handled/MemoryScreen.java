@@ -55,9 +55,9 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
         drawMouseoverTooltip(context, mouseX, mouseY);
         memoryListWidget.render(context, mouseX, mouseY, delta);
         //Testcode
-        context.drawCenteredTextWithShadow(textRenderer, memory1, width / 2, height / 2, 0xffffff);
-        context.drawCenteredTextWithShadow(textRenderer, memory2, width / 2, height / 3, 0xffffff);
-        context.drawCenteredTextWithShadow(textRenderer, memory3, width / 2, height / 4, 0xffffff);
+        //context.drawCenteredTextWithShadow(textRenderer, memory1, width / 2, height / 2, 0xffffff);
+        //context.drawCenteredTextWithShadow(textRenderer, memory2, width / 2, height / 3, 0xffffff);
+        //context.drawCenteredTextWithShadow(textRenderer, memory3, width / 2, height / 4, 0xffffff);
     }
 
     @Override
