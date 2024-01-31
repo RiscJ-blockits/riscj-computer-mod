@@ -20,6 +20,7 @@ import net.minecraft.screen.slot.Slot;
 import java.util.List;
 import java.util.Set;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_ADDRESS;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_WORD;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
@@ -88,11 +89,11 @@ public class MemoryScreenHandler extends ModScreenHandler {
     public String getMemoryLine(int line) {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
-            return "";
+            return "0";
         }
         IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         if (!data.isContainer()) {
-            return "";
+            return "0";
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(MEMORY_MEMORY)) {
@@ -101,7 +102,7 @@ public class MemoryScreenHandler extends ModScreenHandler {
                 Set<String> keys = ((IDataContainer) ((IDataContainer) data).get(s)).getKeys();
                 List<String> keysList = keys.stream().sorted().toList();
                 if (line >= keysList.size()) {
-                    return "";
+                    return "0";
                 }
                 String result;
                 result = keysList.get(line);
@@ -110,7 +111,7 @@ public class MemoryScreenHandler extends ModScreenHandler {
                 return result;
             }
         }
-        return "";
+        return "0";
     }
 
 
@@ -120,18 +121,18 @@ public class MemoryScreenHandler extends ModScreenHandler {
     public int getMemorySize(){
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
-            return 0;
+            return 9;
         }
         IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         if (!data.isContainer()) {
-            return 0;
+            return 9;
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals(MEMORY_WORD)) {
+            if (s.equals(MEMORY_ADDRESS)) {
                 return (int) Math.pow(2, Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent()));
             }
         }
-        return 0;
+        return 9;
     }
 
 }

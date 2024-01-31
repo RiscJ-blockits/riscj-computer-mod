@@ -13,13 +13,13 @@ import net.minecraft.util.math.MathHelper;
 public class MemoryListWidget implements Drawable {
 
     private static final Identifier SCROLLER_TEXTURE = new Identifier("container/creative_inventory/scroller");
+    public static final int ENTRY_AMOUNT = 9;
     private static final int SCROLLBAR_WIDTH = 12;
     private static final int SCROLLBAR_HEIGHT = 15;
     private static final int ENTRY_HEIGHT = 11;
     private static final int ENTRY_WIDTH = 74;
     private static final int ENTRY_OFFSET = 2;
-    private static final int SCROLLBAR_OFFSET = 3;
-    private static final int ENTRY_AMOUNT = 9;
+    private static final int SCROLLBAR_OFFSET = 1;
     private static final int SCROLL_MULTIPLIER = 4;
     private final MemoryScreenHandler handler;
     private int x;
@@ -62,7 +62,7 @@ public class MemoryListWidget implements Drawable {
     }
 
     private int getScrollbarPosition() {
-        return MathHelper.clamp(((scrollPosition * height) / (getContentsHeight() - this.height) ), 0, this.height - SCROLLBAR_HEIGHT);
+        return MathHelper.clamp((((scrollPosition * height) / (getContentsHeight()) - this.height)), 0, this.height - SCROLLBAR_HEIGHT);
     }
 
     protected int getContentsHeight() {
