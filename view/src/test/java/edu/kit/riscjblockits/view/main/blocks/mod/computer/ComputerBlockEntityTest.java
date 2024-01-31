@@ -18,6 +18,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- *
+ * Test MOSTLY GENERATED WITH GITHUB COPILOT.
  */
 @ExtendWith(TestSetupClient.class)
 @ExtendWith(TestSetupMain.class)
@@ -54,10 +55,11 @@ class ComputerBlockEntityTest {
     }
 
     private static Map<String, ComputerBlockEntity> blocks;
+    private static World world;
 
     @BeforeAll
-    public static void setup() {
-        World world = mock(World.class);
+    private static void setup() {
+        world = mock(World.class);
         when(world.isClient()).thenReturn(false);
         BlockPos posAlu = new BlockPos(0,0, 0);
         BlockPos posControlUnit = new BlockPos(0,0, 1);
@@ -170,9 +172,13 @@ class ComputerBlockEntityTest {
         ClusterHandler clusterHandler = ((ComputerBlockController) aluUnitEntity.getController()).getClusterHandler();
         assertEquals(13, clusterHandler.getBlocks().size());
         assertEquals(26, clusterHandler.getBusSystemModel().getBusGraph().size());
+        ControlUnitBlockEntity cuEntity = (ControlUnitBlockEntity) blocks.get("CONTROL_UNIT");
+        ControlUnitModel cuModel = (ControlUnitModel) ((ComputerBlockController) cuEntity.getController()).getModel();
+        Data cuData = (Data) cuModel.getData();
+        assertEquals("Z", ((IDataStringEntry) ((IDataContainer) cuData.get(CONTROL_CLUSTERING)).get("missingRegisters")).getContent());
     }
 
-    void setupRegisters() {
+    private void setupRegisters() {
         BlockPos posRegister2 = new BlockPos(0,0, 5);
         BlockPos posRegister3 = new BlockPos(0,0, 6);
         BlockPos posRegister4 = new BlockPos(0,0, 7);
@@ -189,11 +195,103 @@ class ComputerBlockEntityTest {
         BlockPos posBus10 = new BlockPos(1,0, 10);
         BlockPos posBus11 = new BlockPos(1,0, 11);
         BlockPos posBus12 = new BlockPos(1,0, 12);
-        //
-
-
+        //we place the bus blocks
+        ComputerBlock busBlock = (ComputerBlock) RISCJ_blockits.BUS_BLOCK;
+        ComputerBlockEntity busEntity5 = (ComputerBlockEntity) busBlock.createBlockEntity(posBus5, RISCJ_blockits.BUS_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posBus5)).thenReturn(busEntity5);
+        busBlock.onPlaced(world, posBus5, RISCJ_blockits.BUS_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity busEntity6 = (ComputerBlockEntity) busBlock.createBlockEntity(posBus6, RISCJ_blockits.BUS_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posBus6)).thenReturn(busEntity6);
+        busBlock.onPlaced(world, posBus6, RISCJ_blockits.BUS_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity busEntity7 = (ComputerBlockEntity) busBlock.createBlockEntity(posBus7, RISCJ_blockits.BUS_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posBus7)).thenReturn(busEntity7);
+        busBlock.onPlaced(world, posBus7, RISCJ_blockits.BUS_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity busEntity8 = (ComputerBlockEntity) busBlock.createBlockEntity(posBus8, RISCJ_blockits.BUS_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posBus8)).thenReturn(busEntity8);
+        busBlock.onPlaced(world, posBus8, RISCJ_blockits.BUS_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity busEntity9 = (ComputerBlockEntity) busBlock.createBlockEntity(posBus9, RISCJ_blockits.BUS_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posBus9)).thenReturn(busEntity9);
+        busBlock.onPlaced(world, posBus9, RISCJ_blockits.BUS_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity busEntity10 = (ComputerBlockEntity) busBlock.createBlockEntity(posBus10, RISCJ_blockits.BUS_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posBus10)).thenReturn(busEntity10);
+        busBlock.onPlaced(world, posBus10, RISCJ_blockits.BUS_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity busEntity11 = (ComputerBlockEntity) busBlock.createBlockEntity(posBus11, RISCJ_blockits.BUS_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posBus11)).thenReturn(busEntity11);
+        busBlock.onPlaced(world, posBus11, RISCJ_blockits.BUS_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity busEntity12 = (ComputerBlockEntity) busBlock.createBlockEntity(posBus12, RISCJ_blockits.BUS_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posBus12)).thenReturn(busEntity12);
+        busBlock.onPlaced(world, posBus12, RISCJ_blockits.BUS_BLOCK.getDefaultState(), null, null);
+        //place registers
+        ComputerBlock registerBlock = (ComputerBlock) RISCJ_blockits.REGISTER_BLOCK;
+        ComputerBlockEntity registerEntity2 = (ComputerBlockEntity) registerBlock.createBlockEntity(posRegister2, RISCJ_blockits.REGISTER_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posRegister2)).thenReturn(registerEntity2);
+        registerBlock.onPlaced(world, posRegister2, RISCJ_blockits.REGISTER_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity registerEntity3 = (ComputerBlockEntity) registerBlock.createBlockEntity(posRegister3, RISCJ_blockits.REGISTER_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posRegister3)).thenReturn(registerEntity3);
+        registerBlock.onPlaced(world, posRegister3, RISCJ_blockits.REGISTER_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity registerEntity4 = (ComputerBlockEntity) registerBlock.createBlockEntity(posRegister4, RISCJ_blockits.REGISTER_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posRegister4)).thenReturn(registerEntity4);
+        registerBlock.onPlaced(world, posRegister4, RISCJ_blockits.REGISTER_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity registerEntity5 = (ComputerBlockEntity) registerBlock.createBlockEntity(posRegister5, RISCJ_blockits.REGISTER_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posRegister5)).thenReturn(registerEntity5);
+        registerBlock.onPlaced(world, posRegister5, RISCJ_blockits.REGISTER_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity registerEntity6 = (ComputerBlockEntity) registerBlock.createBlockEntity(posRegister6, RISCJ_blockits.REGISTER_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posRegister6)).thenReturn(registerEntity6);
+        registerBlock.onPlaced(world, posRegister6, RISCJ_blockits.REGISTER_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity registerEntity7 = (ComputerBlockEntity) registerBlock.createBlockEntity(posRegister7, RISCJ_blockits.REGISTER_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posRegister7)).thenReturn(registerEntity7);
+        registerBlock.onPlaced(world, posRegister7, RISCJ_blockits.REGISTER_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity registerEntity8 = (ComputerBlockEntity) registerBlock.createBlockEntity(posRegister8, RISCJ_blockits.REGISTER_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posRegister8)).thenReturn(registerEntity8);
+        registerBlock.onPlaced(world, posRegister8, RISCJ_blockits.REGISTER_BLOCK.getDefaultState(), null, null);
+        ComputerBlockEntity registerEntity9 = (ComputerBlockEntity) registerBlock.createBlockEntity(posRegister9, RISCJ_blockits.REGISTER_BLOCK.getDefaultState());
+        when(world.getBlockEntity(posRegister9)).thenReturn(registerEntity9);
+        registerBlock.onPlaced(world, posRegister9, RISCJ_blockits.REGISTER_BLOCK.getDefaultState(), null, null);
+        //configure registers
+        NbtCompound nbt = new NbtCompound();
+        ((RegisterBlockEntity) registerEntity2).writeNbt(nbt);
+        NbtCompound subNbt = (NbtCompound) nbt.get(MOD_DATA);
+        subNbt.putString(REGISTER_TYPE, "EINS");
+        registerEntity2.readNbt(nbt);
+        ((RegisterBlockEntity) registerEntity3).writeNbt(nbt);
+        subNbt = (NbtCompound) nbt.get(MOD_DATA);
+        subNbt.putString(REGISTER_TYPE, "IAR");
+        registerEntity3.readNbt(nbt);
+        ((RegisterBlockEntity) registerEntity4).writeNbt(nbt);
+        subNbt = (NbtCompound) nbt.get(MOD_DATA);
+        subNbt.putString(REGISTER_TYPE, "IR");
+        registerEntity4.readNbt(nbt);
+        ((RegisterBlockEntity) registerEntity5).writeNbt(nbt);
+        subNbt = (NbtCompound) nbt.get(MOD_DATA);
+        subNbt.putString(REGISTER_TYPE, "SAR");
+        registerEntity5.readNbt(nbt);
+        ((RegisterBlockEntity) registerEntity6).writeNbt(nbt);
+        subNbt = (NbtCompound) nbt.get(MOD_DATA);
+        subNbt.putString(REGISTER_TYPE, "SDR");
+        registerEntity6.readNbt(nbt);
+        ((RegisterBlockEntity) registerEntity7).writeNbt(nbt);
+        subNbt = (NbtCompound) nbt.get(MOD_DATA);
+        subNbt.putString(REGISTER_TYPE, "X");
+        registerEntity7.readNbt(nbt);
+        ((RegisterBlockEntity) registerEntity8).writeNbt(nbt);
+        subNbt = (NbtCompound) nbt.get(MOD_DATA);
+        subNbt.putString(REGISTER_TYPE, "Y");
+        registerEntity8.readNbt(nbt);
+        //we don't set the last one to not start the simulation
+        blocks.put("REGISTER9", registerEntity9);
     }
 
-
+    @Disabled
+    @Test
+    @Order(5)
+    void startSimualtion() {
+        NbtCompound nbt = new NbtCompound();
+        RegisterBlockEntity registerEntity9 = (RegisterBlockEntity) blocks.get("REGISTER9");
+        ((RegisterBlockEntity) registerEntity9).writeNbt(nbt);
+        NbtCompound subNbt = (NbtCompound) nbt.get(MOD_DATA);
+        subNbt.putString(REGISTER_TYPE, "Z");
+        registerEntity9.readNbt(nbt);
+        //only when memory is set
+    }
 
 }
