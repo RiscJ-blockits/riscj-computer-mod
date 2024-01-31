@@ -62,7 +62,7 @@ public class MemoryListWidget implements Drawable {
     }
 
     private int getScrollbarPosition() {
-        return MathHelper.clamp((((scrollPosition * height) / (getContentsHeight()) - this.height)), 0, this.height - SCROLLBAR_HEIGHT);
+        return MathHelper.clamp((((scrollPosition * this.height) / (getContentsHeight()))), 0, this.height - SCROLLBAR_HEIGHT);
     }
 
     protected int getContentsHeight() {
