@@ -4,6 +4,7 @@ import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
@@ -80,10 +81,10 @@ public class MemoryScreenHandler extends ModScreenHandler {
     }
 
     /**
-     * @param line the line of the memory to get
+     * @param address the line of the memory to get
      * @return a string with the address and the value of the memory at the given line separated by a space
      */
-    public String getMemoryLine(int line) {
+    public String getMemoryLine(int address) {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
             return "0";
