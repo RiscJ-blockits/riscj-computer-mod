@@ -56,7 +56,7 @@ public class Instruction implements IQueryableInstruction {
         // generate filled micro instructions
         for (int i = 0; i < instruction.execution.length; i++) {
             MicroInstruction microInstruction = instruction.execution[i];
-            String[] from = microInstruction.getFrom();
+            String[] from = microInstruction.getFrom().clone();
             String to = microInstruction.getTo();
             for (int j = 0; j < from.length; j++) {
                 if (argumentsInstructionMap.containsKey(from[j])) {
@@ -103,7 +103,7 @@ public class Instruction implements IQueryableInstruction {
                     sb.append("0".repeat(Math.max(0, from - l)));
                     sb.append(current);
                     argumentsInstructionMap.put(argument, sb.toString());
-                    binaryPosition += to - from;
+                    binaryPosition += to - from + 1;
                     continue;
                 }
                 StringBuilder sb = new StringBuilder();

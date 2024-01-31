@@ -81,6 +81,7 @@ public class Executor implements IExecutor {
                 String from = memoryInstruction.getFrom()[0];
                 String to = memoryInstruction.getTo();
                 String flag = memoryInstruction.getFlag();
+                System.out.println("MemoryInstruction from: " + from + ", to: " + to + "flag: " + flag);
 
                 if(from == null || from.isBlank()){
                     throw new NonExecutableMicroInstructionException("MemoryInstruction has no from value");
@@ -147,17 +148,12 @@ public class Executor implements IExecutor {
         String from = conditionedInstruction.getFrom()[0];
         String to = conditionedInstruction.getTo();
 
-        if(from == null || from.isBlank()){
-            throw new NonExecutableMicroInstructionException("ConditionedInstruction has no from value");
-        } else if(to == null || to.isBlank()){
-            throw new NonExecutableMicroInstructionException("ConditionedInstruction has no to value");
-        }
 
         InstructionCondition condition = conditionedInstruction.getCondition();
 
         if(checkCondition(condition)) {
-            Value movedValue = registerControllerMap.get(from).getValue();
-            registerControllerMap.get(to).setNewValue(movedValue);
+
+            moveData(from, to);
 
             if(conditionedInstruction.getMemoryInstruction() != null) {
                 execute(conditionedInstruction.getMemoryInstruction());
@@ -219,24 +215,7 @@ public class Executor implements IExecutor {
         String from = dataMovementInstruction.getFrom()[0];
         String to = dataMovementInstruction.getTo();
 
-        // only execute if from and to are not empty
-        if(from != null && !from.isBlank() && to != null && !to.isBlank()) {
-            Value movedValue;
-            // from is a register --> load value from there
-            if (registerControllerMap.containsKey(from)) {
-                movedValue = registerControllerMap.get(from).getValue();
-            }
-            // from is not a register --> extract value from binary constant
-            else {
-                if (!BINARY_PATTERN.matcher(from).matches()) {
-                    throw new NonExecutableMicroInstructionException(
-                        "DataMovementInstruction has no valid from value, does not match pattern");
-                }
-                movedValue = Value.fromBinary(from, wordLength);
-            }
-
-            registerControllerMap.get(to).setNewValue(movedValue);
-        }
+        moveData(from, to);
         //ToDo Bus-Daten setzen wie und wo?
 
         if (dataMovementInstruction.getMemoryInstruction() != null) {
@@ -247,15 +226,42 @@ public class Executor implements IExecutor {
     private boolean checkCondition(InstructionCondition condition) {
 
         String comparisonCondition = condition.getComparator();
-        Value firstValue = registerControllerMap.get(condition.getCompare1()).getValue();
-        Value secondValue = registerControllerMap.get(condition.getCompare2()).getValue();
+        Value firstValue;
+        // first Comparator is a register --> load value from there
+        if (registerControllerMap.containsKey(condition.getCompare1())) {
+            firstValue = registerControllerMap.get(condition.getCompare1()).getValue();
+        }
+        // Comparator is not a register --> extract value from binary constant
+        else {
+            if (!BINARY_PATTERN.matcher(condition.getCompare1()).matches()) {
+                throw new NonExecutableMicroInstructionException(
+                        "DataMovementInstruction has no valid from value, does not match pattern");
+            }
+            firstValue = Value.fromBinary(condition.getCompare1(), wordLength);
+        }
+
+        Value secondValue;
+        // second Comparator is a register --> load value from there
+        if (registerControllerMap.containsKey(condition.getCompare2())) {
+            secondValue = registerControllerMap.get(condition.getCompare2()).getValue();
+        }
+        // Comparator is not a register --> extract value from binary constant
+        else {
+            if (!BINARY_PATTERN.matcher(condition.getCompare2()).matches()) {
+                throw new NonExecutableMicroInstructionException(
+                        "DataMovementInstruction has no valid from value, does not match pattern");
+            }
+            secondValue = Value.fromBinary(condition.getCompare2(), wordLength);
+        }
+
 
         String comparatorType = comparisonCondition.substring(0, 1);
-        String comparator = comparisonCondition.substring(1);
+
 
 
         switch (comparatorType) {
             case "u" -> {
+                String comparator = comparisonCondition.substring(1);
                 return switch (comparator) {
                     case "==" -> firstValue.equals(secondValue);
                     case "!=" -> !firstValue.equals(secondValue);
@@ -268,6 +274,7 @@ public class Executor implements IExecutor {
                 };
             }
             case "f" -> {
+                String comparator = comparisonCondition.substring(1);
                 return switch (comparator) {
                     case "==" -> firstValue.equals(secondValue);
                     case "!=" -> !firstValue.equals(secondValue);
@@ -281,6 +288,8 @@ public class Executor implements IExecutor {
             }
             //signed comparison is default
             default -> {
+                // if the comparator is marked as signed, remove the s from the beginning
+                String comparator = comparisonCondition.startsWith("s")? comparisonCondition.substring(1) : comparisonCondition;
                 return switch (comparator) {
                     case "==" -> firstValue.equals(secondValue);
                     case "!=" -> !firstValue.equals(secondValue);
@@ -292,6 +301,31 @@ public class Executor implements IExecutor {
                     default -> false;
                 };
             }
+        }
+    }
+
+    private void moveData(String from, String to) {
+        // only execute if from and to are not empty
+        if(from != null && !from.isBlank() && to != null && !to.isBlank()) {
+            Value movedValue;
+            // from is a register --> load value from there
+            if (registerControllerMap.containsKey(from)) {
+                movedValue = registerControllerMap.get(from).getValue();
+            }
+            // from is not a register --> extract value from binary constant
+            else {
+                if (!BINARY_PATTERN.matcher(from).matches()) {
+                    throw new NonExecutableMicroInstructionException(
+                            "Cannot move Data, MicroInstruction has no valid from value, does not match pattern");
+                }
+                movedValue = Value.fromBinary(from, wordLength);
+            }
+
+            if (!registerControllerMap.containsKey(to))
+                throw new NonExecutableMicroInstructionException(
+                        "Cannot move Data, MicroInstruction has no valid to value, does not match a Register");
+
+            registerControllerMap.get(to).setNewValue(movedValue);
         }
     }
 

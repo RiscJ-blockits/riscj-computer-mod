@@ -233,7 +233,7 @@
             "execution": [
                 ["X", "AKKU", "", "", ""],
                 ["Y", "[addr]", "", "", ""],
-                ["IF", "X", "0", "<", "PC", "[addr]", "", "", ""]
+                ["IF", "X", "0", "<", "IAR", "[addr]", "", "", ""]
                 //if  cond  then
             ],
             "translation": [
