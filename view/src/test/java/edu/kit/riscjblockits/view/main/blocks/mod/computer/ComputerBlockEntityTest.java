@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer;
 
-import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.clustering.ClusterHandler;
 import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
@@ -11,39 +10,26 @@ import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.view.client.TestSetupClient;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.TestSetupMain;
-import edu.kit.riscjblockits.view.main.blocks.mod.EntityType;
-import edu.kit.riscjblockits.view.main.blocks.mod.ModBlock;
-import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.alu.AluBlock;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.bus.BusBlock;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.alu.AluBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlock;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlock;
 import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.ClassOrderer;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
@@ -67,7 +53,7 @@ class ComputerBlockEntityTest {
         assertNotNull(entity.getController());
     }
 
-    private static Map<BlockControllerType, ComputerBlockEntity> blocks;
+    private static Map<String, ComputerBlockEntity> blocks;
 
     @BeforeAll
     public static void setup() {
@@ -129,36 +115,83 @@ class ComputerBlockEntityTest {
         busBlock.onPlaced(world, posBus2, RISCJ_blockits.BUS_BLOCK.getDefaultState(), null, null);
         //Computer finished
         blocks = new HashMap<>();
-        blocks.put(BlockControllerType.REGISTER, registerEntity1);
-        blocks.put(BlockControllerType.MEMORY, memoryEntity);
-        blocks.put(BlockControllerType.ALU, aluEntity);
-        blocks.put(BlockControllerType.CONTROL_UNIT, controlUnitEntity);
-        blocks.put(BlockControllerType.CLOCK, clockEntity);
+        blocks.put("REGISTER", registerEntity1);
+        blocks.put("MEMORY", memoryEntity);
+        blocks.put("ALU", aluEntity);
+        blocks.put("CONTROL_UNIT", controlUnitEntity);
+        blocks.put("CLOCK", clockEntity);
     }
 
     @Test
     @Order(1)
     void buildMimaComputer() {
-        ControlUnitBlockEntity controlUnitEntity = (ControlUnitBlockEntity) blocks.get(BlockControllerType.CONTROL_UNIT);
+        ControlUnitBlockEntity controlUnitEntity = (ControlUnitBlockEntity) blocks.get("CONTROL_UNIT");
         ClusterHandler clusterHandler = ((ComputerBlockController) controlUnitEntity.getController()).getClusterHandler();
         assertEquals(5, clusterHandler.getBlocks().size());
         assertEquals(5, clusterHandler.getBusBlocks().size());
         assertEquals(10, clusterHandler.getBusSystemModel().getBusGraph().size());
     }
 
-    @Disabled   //ToDo does not work yet
     @Test
     @Order(2)
     void testArchitectureCheck() {
         InstructionSetItem istItem = (InstructionSetItem) RISCJ_blockits.INSTRUCTION_SET_ITEM_MIMA;
-        ControlUnitBlockEntity cuEntity = (ControlUnitBlockEntity) blocks.get(BlockControllerType.CONTROL_UNIT);
+        ControlUnitBlockEntity cuEntity = (ControlUnitBlockEntity) blocks.get("CONTROL_UNIT");
         cuEntity.items.set(0, istItem.getDefaultStack());
-        ClusterHandler clusterHandler = ((ComputerBlockController) (blocks.get(BlockControllerType.REGISTER).getController())).getClusterHandler();
+        ClusterHandler clusterHandler = ((ComputerBlockController) (blocks.get("REGISTER").getController())).getClusterHandler();
         clusterHandler.setIstModel(InstructionSetBuilder.buildInstructionSetModelMima());           //cant really change the inventory
         ControlUnitModel cuModel = (ControlUnitModel) ((ComputerBlockController) cuEntity.getController()).getModel();
         Data cuData = (Data) cuModel.getData();
-        assertNotNull(((IDataContainer) cuData.get(CONTROL_CLUSTERING)).get("foundAlu"));
-        //assertEquals("1", ((IDataStringEntry) ((IDataContainer) cuData.get(CONTROL_CLUSTERING)).get("foundAlu")).getContent());     //ToDo
+        assertEquals("1", ((IDataStringEntry) ((IDataContainer) cuData.get(CONTROL_CLUSTERING)).get("foundALU")).getContent());
+        assertEquals("AKKU EINS IAR IR SAR SDR X Y Z", ((IDataStringEntry) ((IDataContainer) cuData.get(CONTROL_CLUSTERING)).get("missingRegisters")).getContent());
+    }
+
+    @Test
+    @Order(3)
+    void testOneRegisterSet() {
+        RegisterBlockEntity registerEntity1 = (RegisterBlockEntity) blocks.get("REGISTER");
+        NbtCompound nbt = new NbtCompound();
+        ((RegisterBlockEntity) registerEntity1).writeNbt(nbt);
+        NbtCompound subNbt = (NbtCompound) nbt.get(MOD_DATA);
+        assert subNbt != null;
+        subNbt.putString(REGISTER_TYPE, "AKKU");
+        registerEntity1.readNbt(nbt);
+        ControlUnitBlockEntity cuEntity = (ControlUnitBlockEntity) blocks.get("CONTROL_UNIT");
+        ControlUnitModel cuModel = (ControlUnitModel) ((ComputerBlockController) cuEntity.getController()).getModel();
+        Data cuData = (Data) cuModel.getData();
+        assertEquals("EINS IAR IR SAR SDR X Y Z", ((IDataStringEntry) ((IDataContainer) cuData.get(CONTROL_CLUSTERING)).get("missingRegisters")).getContent());
+    }
+
+    @Test
+    @Order(4)
+    void testALLRegisterSet() {
+        setupRegisters();
+        AluBlockEntity aluUnitEntity = (AluBlockEntity) blocks.get("ALU");
+        ClusterHandler clusterHandler = ((ComputerBlockController) aluUnitEntity.getController()).getClusterHandler();
+        assertEquals(13, clusterHandler.getBlocks().size());
+        assertEquals(26, clusterHandler.getBusSystemModel().getBusGraph().size());
+    }
+
+    void setupRegisters() {
+        BlockPos posRegister2 = new BlockPos(0,0, 5);
+        BlockPos posRegister3 = new BlockPos(0,0, 6);
+        BlockPos posRegister4 = new BlockPos(0,0, 7);
+        BlockPos posRegister5 = new BlockPos(0,0, 8);
+        BlockPos posRegister6 = new BlockPos(0,0, 9);
+        BlockPos posRegister7 = new BlockPos(0,0, 10);
+        BlockPos posRegister8 = new BlockPos(0,0, 11);
+        BlockPos posRegister9 = new BlockPos(0,0, 12);
+        BlockPos posBus5 = new BlockPos(1,0, 5);
+        BlockPos posBus6 = new BlockPos(1,0, 6);
+        BlockPos posBus7 = new BlockPos(1,0, 7);
+        BlockPos posBus8 = new BlockPos(1,0, 8);
+        BlockPos posBus9 = new BlockPos(1,0, 9);
+        BlockPos posBus10 = new BlockPos(1,0, 10);
+        BlockPos posBus11 = new BlockPos(1,0, 11);
+        BlockPos posBus12 = new BlockPos(1,0, 12);
+        //
+
+
     }
 
 
