@@ -184,7 +184,7 @@ public class Executor implements IExecutor {
 
                 if(from1 == null || from1.isBlank()){
                     throw new NonExecutableMicroInstructionException("AluInstruction has no from value");
-                } else if(from2 == null || from2.isBlank()){
+                } else if(from2 == null){
                     throw new NonExecutableMicroInstructionException("AluInstruction has no from value");
                 } else if(to == null || to.isBlank()){
                     throw new NonExecutableMicroInstructionException("AluInstruction has no to value");
@@ -192,7 +192,11 @@ public class Executor implements IExecutor {
 
                 AluController aluController = (AluController) blockController;
                 aluController.setOperand1(registerControllerMap.get(from1).getValue());
-                aluController.setOperand2(registerControllerMap.get(from2).getValue());
+                // only allow for 2nd operand to be empty if the instruction is a unary operation
+                if (!from2.isBlank())
+                    aluController.setOperand2(registerControllerMap.get(from2).getValue());
+                else
+                    aluController.setOperand2(Value.fromBinary("0", wordLength));
 
                 Value result = ((AluController) blockController).executeAluOperation(aluInstruction.getAction());
 
