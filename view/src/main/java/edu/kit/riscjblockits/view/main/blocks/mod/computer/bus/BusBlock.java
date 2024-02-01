@@ -5,12 +5,15 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.ConnectingComputerBlo
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,35 +75,12 @@ public class BusBlock extends ConnectingComputerBlock {
         return new BusBlockEntity(pos, state);
     }
 
-    /**
-     * Will get the state of the block when it is placed in the world.
-     * @param ctx
-     * @return
-     */
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.withConnectionProperties(ctx.getWorld(), ctx.getBlockPos());
-    }
 
-    /**
-     * Will add the connection properties to the blank block-state.
-     * @param world
-     * @param pos
-     * @return
-     */
-    public BlockState withConnectionProperties(BlockView world, BlockPos pos) {
-        BlockState stateDown = world.getBlockState(pos.down());
-        BlockState stateUp = world.getBlockState(pos.up());
-        BlockState stateNorth = world.getBlockState(pos.north());
-        BlockState stateEast = world.getBlockState(pos.east());
-        BlockState stateSouth = world.getBlockState(pos.south());
-        BlockState stateWest = world.getBlockState(pos.west());
-        return this.getDefaultState()
-                .with(DOWN, stateDown.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
-                .with(UP, stateUp.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
-                .with(NORTH, stateNorth.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
-                .with(EAST, stateEast.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
-                .with(SOUTH, stateSouth.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG))
-                .with(WEST, stateWest.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG));
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
+                         ItemStack itemStack) {
+        super.onPlaced(world, pos, state, placer, itemStack);
+        ((BusBlockEntity) world.getBlockEntity(pos)).updateBlockState();
     }
 
 
@@ -119,8 +99,8 @@ public class BusBlock extends ConnectingComputerBlock {
             world.scheduleBlockTick(pos, this, 1);
             return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
         } else {
-            boolean bl = neighborState.isIn(RISCJ_blockits.COMPUTER_BLOCK_TAG);
-            return state.with(FACING_PROPERTIES.get(direction), bl);
+            ((BusBlockEntity) world.getBlockEntity(pos)).updateBlockState();
+            return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
         }
     }
 
