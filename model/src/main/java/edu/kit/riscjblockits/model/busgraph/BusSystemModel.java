@@ -20,19 +20,18 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      */
     private Map<BlockPosition, List<BlockPosition>> adjPositions;
 
+    /**
+     * Holds the active nodes in the visualization.
+     */
     private Map<BlockPosition, Boolean> activeVisualization;
 
+    /**
+     * Holds the data that is present on the bus.
+     */
     private Value presentData;
     private BlockPosition from;
     private BlockPosition to;
 
-    /**
-     * creates an empty BusSystemModel
-     */
-    public BusSystemModel() {
-        activeVisualization = new HashMap<>();
-        adjPositions = new HashMap<>();
-    }
 
     /**
      * creates a BusSystemModel with one node
@@ -51,7 +50,6 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     private BusSystemModel(Map<BlockPosition, List<BlockPosition>> adjPositions) {
         this.adjPositions = adjPositions;
         activeVisualization = new HashMap<>();
-        System.out.println("ModelSize: " + adjPositions.size());
     }
 
     /**
@@ -60,7 +58,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      * @param endPos is the end node
      * @param presentData is the data that is present on the bus
      */
-    public void setBusDataPath(BlockPosition startPos, BlockPosition endPos, Value presentData){
+    public void setBusDataPath(BlockPosition startPos, BlockPosition endPos, Value presentData) {
         this.presentData = presentData;
         //BFS
         List<BlockPosition> discovered = new ArrayList<>();
@@ -88,6 +86,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
             activeVisualization.put(current, true);
             current = path.get(current);
         }
+        activeVisualization.put(startPos, true);
     }
 
     /**
@@ -124,20 +123,10 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      * @param pos2 is the second node of the edge
      */
     public void addEdge(BlockPosition pos1, BlockPosition pos2) {
-        //ToDo kontrollieren ob Knoten da, maybe check if actually adjacent
-        adjPositions.get(pos1).add(pos2);
-        adjPositions.get(pos2).add(pos1);
-    }
-
-    /**
-     * removes an edge between two nodes
-     * @param pos1 is the first node of the edge
-     * @param pos2 is the second node of the edge
-     */
-    public void removeEdge(BlockPosition pos1, BlockPosition pos2) {
-        adjPositions.get(pos1).remove(pos2);
-        adjPositions.get(pos2).remove(pos1);
-        //useless
+        if (isNode(pos1) && isNode(pos2)) {
+            adjPositions.get(pos1).add(pos2);
+            adjPositions.get(pos2).add(pos1);
+        }
     }
 
     /**
@@ -172,7 +161,6 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
             adjPositions.putAll(busSystemToCombine.getBusGraph());
         }
         addEdge(newNode, ownNode);
-        System.out.println("ModelSize: " + adjPositions.size() );
     }
 
     /**
@@ -187,17 +175,15 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
             BusSystemModel newBusSystem = new BusSystemModel(newGraph);
             newBusSystems.add(newBusSystem);
         }
-        System.out.println("ModelSize: " + adjPositions.size());
         return newBusSystems;
     }
 
     /**
-     * Only PUBLIC cause of JUnit-Test.
      * Removes one Node and his Edges and split Graph when needed.
      * @param deletedNode The Node to remove.
      * @return List of new Graphs.
      */
-    public List<Map<BlockPosition, List<BlockPosition>>> splitGraph(BlockPosition deletedNode) {
+    private List<Map<BlockPosition, List<BlockPosition>>> splitGraph(BlockPosition deletedNode) {
         List<BlockPosition> neighbors = adjPositions.get(deletedNode);
         removeNode(deletedNode);
         //find new connected graphs
