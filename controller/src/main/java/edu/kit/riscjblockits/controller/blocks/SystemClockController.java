@@ -77,6 +77,7 @@ public class SystemClockController extends ComputerBlockController {
         if (simStarted) {
             simulationTimeHandler.onUserTickTrigger();
         }
+        ((SystemClockModel) getModel()).setActiveTick(true);
     }
 
     /**

@@ -158,7 +158,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      */
     public void updateUI() {
         //ToDo hasUnqueriedStateChange die richtige Variable um aktivität zu messen?
-        if (world != null && getModel() != null && getModel().hasUnqueriedStateChange()) {
+        if (world != null && getModel() != null) {
             if (getModel().hasUnqueriedStateChange()) {
                 world.setBlockState(pos, world.getBlockState(pos).with(RISCJ_blockits.ACTIVE_STATE_PROPERTY, true));
             } else {
