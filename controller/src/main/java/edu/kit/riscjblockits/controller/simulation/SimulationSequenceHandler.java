@@ -11,6 +11,7 @@ import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstruction
 import edu.kit.riscjblockits.model.instructionset.IExecutableMicroInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.util.List;
 import java.util.Objects;
@@ -68,7 +69,7 @@ public class SimulationSequenceHandler implements Runnable {
      */
     public SimulationSequenceHandler(List<IQueryableSimController> blockControllers) {
         this.blockControllers = blockControllers;
-        this.executor = new Executor(blockControllers);
+
         phaseCounter = 0;
         runPhase = RunPhase.FETCH;
         for(IQueryableSimController blockController: blockControllers) {
@@ -86,9 +87,16 @@ public class SimulationSequenceHandler implements Runnable {
             if (Objects.requireNonNull(blockController.getControllerType()) == BlockControllerType.REGISTER) {
                 if (((RegisterController) blockController).getRegisterType().equals(programCounterTag)) {
                     programCounterController = (RegisterController) blockController;
+                    // set the initial program counter value --> if not set, set to zero
+                    Value pcValue = memoryController.getInitialProgramCounter();
+                    if (pcValue == null) {
+                        pcValue = new Value(new byte[instructionSetModel.getMemoryAddressSize()]);
+                    }
+                    programCounterController.setNewValue(pcValue);
                 }
             }
         }
+        this.executor = new Executor(blockControllers, instructionSetModel.getMemoryWordSize());
 
     }
 
@@ -100,7 +108,6 @@ public class SimulationSequenceHandler implements Runnable {
      */
     @Override
     public void run() {
-        System.out.println("run test");
         //get memory address from IAR
         //Value pcValue = programCounterController.getValue();
         //get content from memory at address
@@ -125,14 +132,17 @@ public class SimulationSequenceHandler implements Runnable {
         if (phaseCounter == 0) {
             IQueryableInstruction instruction = instructionSetModel.getInstructionFromBinary(memoryController.getValue(programCounterController.getValue()).getBinaryValue());
             microInstructions = instruction.getExecution();
+            System.out.println("loading from: " + programCounterController.getValue().getHexadecimalValue());
         }
 
+        System.out.println("fetch: " + phaseCounter);
         // execute the current fetch phase step
         executeMicroInstruction(instructionSetModel.getFetchPhaseStep(phaseCounter));
 
         phaseCounter++;
         // if no more fetch phase steps are defined, the execution phase is entered
-        if (phaseCounter > instructionSetModel.getFetchPhaseLength()) {
+        if (phaseCounter >= instructionSetModel.getFetchPhaseLength()) {
+            System.out.println("fetch phase finished");
             phaseCounter = 0;
             runPhase = RunPhase.EXECUTE;
         }
@@ -147,9 +157,11 @@ public class SimulationSequenceHandler implements Runnable {
      */
     private void execute(){
         //One full instruction consists of multiple microinstructions
+        System.out.println("execution: " + phaseCounter);
         executeMicroInstruction(microInstructions[phaseCounter]);
         phaseCounter++;
-        if (phaseCounter > microInstructions.length) {
+        if (phaseCounter >= microInstructions.length) {
+            System.out.println("execution phase finished");
             phaseCounter = 0;
             runPhase = RunPhase.FETCH;
         }

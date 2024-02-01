@@ -4,26 +4,32 @@ import edu.kit.riscjblockits.controller.blocks.AluController;
 import edu.kit.riscjblockits.controller.blocks.ArchiCheckStub_ClusterHandler;
 import edu.kit.riscjblockits.controller.blocks.ArchiCheckStub_Entity;
 import edu.kit.riscjblockits.controller.blocks.ArchiCheckStub_RegisterController;
-import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
+import edu.kit.riscjblockits.model.blocks.MemoryModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
+import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ClusterArchitectureHandlerTest {
 
     @Disabled("Disabled because cast with stub does not work here")
@@ -72,6 +78,7 @@ class ClusterArchitectureHandlerTest {
         return registerController;
     }
 
+    @Order(1)
     @Test
     void checkArchitectureMIMA1_4() {
         blockController.add(getR("IAR"));
@@ -80,14 +87,18 @@ class ClusterArchitectureHandlerTest {
         assertFalse(ClusterArchitectureHandler.checkArchitecture(istModel, clusterHandler));
     }
 
+    @Order(2)
     @Test
     void checkArchitectureMIMA2_4() {
-        blockController.add(new MemoryController(new ArchiCheckStub_Entity()));
+        MemoryController memoryController = new MemoryController(new ArchiCheckStub_Entity());
+        ((MemoryModel) memoryController.getModel()).setMemory(new Memory(10, 10));
+        blockController.add(memoryController);
         blockController.add(new ControlUnitController(new ArchiCheckStub_Entity()));
         ArchiCheckStub_ClusterHandler clusterHandler = new ArchiCheckStub_ClusterHandler(blockController);
         assertFalse(ClusterArchitectureHandler.checkArchitecture(istModel, clusterHandler));
     }
 
+    @Order(3)
     @Test
     void checkArchitectureMIMA3_4() {
         blockController.add(new SystemClockController(new ArchiCheckStub_Entity()));
@@ -103,6 +114,7 @@ class ClusterArchitectureHandlerTest {
         assertTrue(ClusterArchitectureHandler.checkArchitecture(istModel, clusterHandler));
     }
 
+    @Order(4)
     @Test
     void checkArchitectureMIMA4_4() {
         blockController.add(new MemoryController(new ArchiCheckStub_Entity()));
