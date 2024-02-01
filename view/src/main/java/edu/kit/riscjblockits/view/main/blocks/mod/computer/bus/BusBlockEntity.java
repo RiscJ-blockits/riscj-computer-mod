@@ -40,7 +40,7 @@ public class BusBlockEntity extends ComputerBlockEntity {
      * This method updates the block state of the bus.
      */
     public void updateBlockState() {
-        if (world.isClient || getController() == null) {
+        if (world.isClient || getController() == null || world.getBlockState(pos) == null) {
             return;
         }
         List<BlockPosition> neighbours = ((BusController) getController()).getBusSystemNeighbors();
