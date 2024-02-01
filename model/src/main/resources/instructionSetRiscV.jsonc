@@ -104,9 +104,13 @@
         "REMU"
 
     ],
-    //TODO: Add fetch instruction
+    //TODO: Check fetch instruction
     "fetch": [
-        //TODO
+        ["A", "PC", "", "", ""],            // write PC to A
+        ["B", "1", "", "", ""],             // write 1 to B
+        ["ADD", "PC", "A", "B", "", "", ""],// add A and B and write to PC
+        ["PC", "OUT", "", "", ""]           // write ALU output to PC
+
     ],
     "address_change": {
         " *.data *": "",                    // empty string means no change
@@ -126,10 +130,10 @@
             "arguments": ["[destaddr]", "[origaddr1]", "[origaddr2]"],
 
             "execution": [
-                ["A", "&[origaddr1]", ""],		//Gibt je Subliste einen Abarbeitungsschritt für den Befehl an
-                ["B", "&[origaddr2]", ""],				//Standardformat für Datenbewegung -> [destination, origin, memory flag, storage operation]
-                ["ADD", "OUT", "A", "B", ""],			//ALU-Operationen-Format -> [operation, alu-dest, alu-origin 1, alu-origin 2, memory flag]
-                ["destaddr", "OUT", ""]
+                ["A", "&[origaddr1]", "", "", ""],		//Gibt je Subliste einen Abarbeitungsschritt für den Befehl an
+                ["B", "&[origaddr2]", "", "", ""],				//Standardformat für Datenbewegung -> [destination, origin, memory flag, storage operation]
+                ["ADD", "OUT", "A", "B", "", "", ""],			//ALU-Operationen-Format -> [operation, alu-dest, alu-origin 1, alu-origin 2, memory flag]
+                ["destaddr", "OUT", "", "", ""]
             ],
             "translation": [							//Übersetzung in Binärformat
                 "0000000",
@@ -143,10 +147,10 @@
         "addi": {
             "arguments": ["[t1]", "[t2]", "[const]"],
             "execution": [
-                ["A", "[t2]", ""],
-                ["B", "[const]", ""],
-                ["ADD", "OUT", "A", "B", ""],
-                ["t1", "OUT", ""]
+                ["A", "[t2]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["t1", "OUT", "", "", ""]
             ],
             "translation": [
                 "[const]<12>",
@@ -159,10 +163,10 @@
         "and": {
             "arguments": ["[t1]", "[t2]", "[t3]"],
             "execution": [
-                ["A", "[t2]", ""],
-                ["B", "[t3]", ""],
-                ["AND", "OUT", "A", "B", ""],
-                ["t1", "OUT", ""]
+                ["A", "[t2]", "", "", ""],
+                ["B", "[t3]", "", "", ""],
+                ["AND", "OUT", "A", "B", "", "", ""],
+                ["t1", "OUT", "", "", ""]
             ],
             "translation": [
                 "0000000",
@@ -176,10 +180,10 @@
         "andi": {
             "arguments": ["[t1]", "[t2]", "[const]"],
             "execution": [
-                ["A", "[t2]", ""],
-                ["B", "[const]", ""],
-                ["AND", "OUT", "A", "B", ""],
-                ["[t1]", "OUT", ""]
+                ["A", "[t2]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["AND", "OUT", "A", "B", "", "", ""],
+                ["[t1]", "OUT", "", "", ""]
             ],
             "translation": [
                 "[const]<12>",
@@ -192,10 +196,10 @@
         "sll": {
             "arguments": ["[t1]", "[t2]", "[t3]"],
             "execution": [
-                ["A", "[t2]", ""],
-                ["B", "[t3]", ""],
-                ["SLL", "OUT", "A", "B", ""],
-                ["[t1]", "OUT", ""]
+                ["A", "[t2]", "", "", ""],
+                ["B", "[t3]", "", "", ""],
+                ["SLL", "OUT", "A", "B", "", "", ""],
+                ["[t1]", "OUT", "", "", ""]
             ],
             "translation": [
                 "0000000",
@@ -209,10 +213,10 @@
         "slli": {
             "arguments": ["[t1]", "[t2]", "[const]"],
             "execution": [
-                ["A", "[t2]", ""],
-                ["B", "[const]", ""],
-                ["SLL", "OUT", "A", "B", ""],
-                ["[t1]", "OUT", ""]
+                ["A", "[t2]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["SLL", "OUT", "A", "B", "", "", ""],
+                ["[t1]", "OUT", "", "", ""]
             ],
             "translation": [
                 "0000000",
@@ -226,10 +230,10 @@
         "sw": {
             "arguments": ["[t1]", "[const](t2)"],
             "execution": [
-                ["A", "[t2]", ""],
-                ["B", "[const]", ""],
-                ["SLL", "OUT", "A", "B", ""],
-                ["", "", "", ["MEM[t1]", "OUT"]]
+                ["A", "[t2]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["SLL", "OUT", "A", "B", "", "", ""],
+                ["", "", "w", "MEM[t1]", "OUT", "", ""]
             ],
             "translation": [
                 "[const]<11:5>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
