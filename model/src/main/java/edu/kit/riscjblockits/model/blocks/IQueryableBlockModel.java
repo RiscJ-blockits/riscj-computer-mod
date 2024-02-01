@@ -17,6 +17,7 @@ public interface IQueryableBlockModel {
      */
     boolean hasUnqueriedStateChange();
 
+    //ToDo nicht im Entwurfs wiki
     void onStateQuery();
 
 }

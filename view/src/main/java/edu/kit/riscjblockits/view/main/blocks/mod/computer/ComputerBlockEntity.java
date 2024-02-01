@@ -64,6 +64,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (!world.isClient && entity.getController() != null) {
             ((IUserInputReceivableComputerController)entity.getController()).tick();
         }
+        entity.syncToClient();
         entity.updateUI();
         entity.syncToClient();
     }
@@ -185,6 +186,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             buf.writeNbt(nbt);
             world.getPlayers().forEach(player -> ServerPlayNetworking.send((ServerPlayerEntity) player,
                 NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, buf));
+
             model.onStateQuery();
         }
     }

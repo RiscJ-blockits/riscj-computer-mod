@@ -2,12 +2,11 @@ package edu.kit.riscjblockits.model.instructionset;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.List;
 
 /**
  * Model of an instruction set. Contains all information on how to execute code based on the instruction set.
@@ -181,7 +180,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public int getMemoryWordSize() {
-        return instructionSetMemory.getWordSize();
+        return instructionSetMemory.getWordSize() / 8 + (instructionSetMemory.getWordSize() % 8 > 0 ? 1 : 0);
     }
 
     /**
@@ -190,7 +189,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public int getMemoryAddressSize() {
-        return instructionSetMemory.getAddressSize();
+        return instructionSetMemory.getAddressSize() / 8 + (instructionSetMemory.getAddressSize() % 8 > 0 ? 1 : 0);
     }
 
     /**
@@ -332,7 +331,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
             if (!opcodeHashMap.containsKey(opCode)) continue;
             Instruction instruction = opcodeHashMap.get(opCode);
             if (instruction != null) {
-                return instruction;
+                return new Instruction(instruction, binaryValue);
             }
         }
         return null;
@@ -344,5 +343,9 @@ InstructionSetModel implements IQueryableInstructionSetModel {
      */
     public List<String> getRegisterNames() {
         return instructionSetRegisters.getRegisterNames();
+    }
+
+    public String getRegisterInitialValue(String key) {
+        return instructionSetRegisters.getInitialValue(key);
     }
 }

@@ -20,7 +20,7 @@ public class DataMovementInstruction extends ComplexMicroInstruction {
 
     @Override
     public MicroInstruction clone(String[] from, String to) {
-        return new DataMovementInstruction(from, to, getMemoryFlag(), getMemoryInstruction().clone());
+        return new DataMovementInstruction(from, to, getMemoryFlag(), getMemoryInstruction()==null ? null : getMemoryInstruction().clone());
     }
 
 

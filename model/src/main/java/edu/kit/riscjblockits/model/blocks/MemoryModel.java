@@ -61,4 +61,14 @@ public class MemoryModel extends BlockModel {
         System.out.println("Memory changed");
     }
 
+    public Value getInitialProgramCounter() {
+        if (memory == null){
+            return null;
+        }
+        return memory.getInitialProgramCounter();
+    }
+
+    public boolean isMemorySet() {
+        return memory != null;
+    }
 }

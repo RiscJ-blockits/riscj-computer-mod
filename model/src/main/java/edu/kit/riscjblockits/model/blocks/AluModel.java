@@ -76,7 +76,7 @@ public class AluModel extends BlockModel{
         if (result != null) {
             aluData.set(ALU_RESULT, new DataStringEntry(result.getHexadecimalValue()));
         }
-        setUnqueriedStateChange(false);
+        //setUnqueriedStateChange(false);
         return aluData;
     }
 

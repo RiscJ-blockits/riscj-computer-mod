@@ -56,14 +56,17 @@ public class Instruction implements IQueryableInstruction {
         // generate filled micro instructions
         for (int i = 0; i < instruction.execution.length; i++) {
             MicroInstruction microInstruction = instruction.execution[i];
-            String[] from = microInstruction.getFrom();
+            String[] from = microInstruction.getFrom().clone();
             String to = microInstruction.getTo();
             for (int j = 0; j < from.length; j++) {
                 if (argumentsInstructionMap.containsKey(from[j])) {
                     from[j] = argumentsInstructionMap.get(from[j]);
                 }
             }
-            to = argumentsInstructionMap.get(to);
+
+            if (argumentsInstructionMap.containsKey(to)) {
+                to = argumentsInstructionMap.get(to);
+            }
 
             this.execution[i] = instruction.execution[i].clone(from, to);
         }
@@ -88,7 +91,7 @@ public class Instruction implements IQueryableInstruction {
 
                 String argument = matcherRange.group("argument");
 
-                String current = "123456700abc";
+                String current = "";
                 if (argumentsInstructionMap.containsKey(argument)) {
                     current = argumentsInstructionMap.get(argument);
                 }
@@ -100,7 +103,7 @@ public class Instruction implements IQueryableInstruction {
                     sb.append("0".repeat(Math.max(0, from - l)));
                     sb.append(current);
                     argumentsInstructionMap.put(argument, sb.toString());
-                    binaryPosition += to - from;
+                    binaryPosition += to - from + 1;
                     continue;
                 }
                 StringBuilder sb = new StringBuilder();
@@ -119,7 +122,7 @@ public class Instruction implements IQueryableInstruction {
                 binaryPosition += length;
                 continue;
             }
-            binaryPosition += translation.length;
+            binaryPosition += translation[i].length();
         }
         return argumentsInstructionMap;
     }

@@ -31,7 +31,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.fabricmc.fabric.impl.screenhandler.Networking;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -200,7 +199,7 @@ public class RISCJ_blockits implements ModInitializer {
 	 * these are linked to the instruction set file for MiMa.
 	 */
 	public static final Item INSTRUCTION_SET_ITEM_MIMA = new InstructionSetItem(new Item.Settings().maxCount(1),
-			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionSet/instructionSetMIMA.jsonc"));
+			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc"));
 	/**
 	 * This attribute defines all RISC-V instruction set items.
 	 * these are linked to the instruction set file for RISC-V.

@@ -44,7 +44,17 @@ public class Value {
         byte[] bytes = new byte[length];
         int currentByte = 0;
         int currentBit = 0;
-        for (char c: s.toCharArray()) {
+
+        int missingBits = length * 8 - s.length();
+        for (int i = 0; i < length * 8; i++){
+            char c;
+            // missing bits are filled with 0
+            if (i < missingBits) {
+                c = '0';
+            } else {
+                c = s.charAt(i - missingBits);
+            }
+
             if (c == '1') {
                 bytes[currentByte] = (byte) (bytes[currentByte] << 1);
                 bytes[currentByte] = (byte) (bytes[currentByte] | 1);
@@ -53,6 +63,7 @@ public class Value {
             } else {
                 throw new IllegalArgumentException("Value String must only contain 1 and 0");
             }
+
             currentBit++;
             if (currentBit == 8) {
                 currentBit = 0;
