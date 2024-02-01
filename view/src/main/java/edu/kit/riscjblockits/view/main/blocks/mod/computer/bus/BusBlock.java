@@ -97,10 +97,10 @@ public class BusBlock extends ConnectingComputerBlock {
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (!state.canPlaceAt(world, pos)) {
             world.scheduleBlockTick(pos, this, 1);
-            return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+            return state;
         } else {
             ((BusBlockEntity) world.getBlockEntity(pos)).updateBlockState();
-            return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+            return state;
         }
     }
 
