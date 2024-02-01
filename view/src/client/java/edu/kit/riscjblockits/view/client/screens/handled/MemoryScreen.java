@@ -13,6 +13,9 @@ import net.minecraft.util.Identifier;
 public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/memory_block/memory_block_gui.png");
+    private Text memory1 = Text.literal("-");        //Testcode
+    private Text memory2 = Text.literal("-");        //Testcode
+    private Text memory3 = Text.literal("-");        //Testcode
 
     public MemoryScreen(MemoryScreenHandler handler, PlayerInventory inventory,
                         Text title) {
@@ -44,5 +47,19 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
+        //Testcode
+        context.drawCenteredTextWithShadow(textRenderer, memory1, width / 2, height / 2, 0xffffff);
+        context.drawCenteredTextWithShadow(textRenderer, memory2, width / 2, height / 3, 0xffffff);
+        context.drawCenteredTextWithShadow(textRenderer, memory3, width / 2, height / 4, 0xffffff);
     }
+
+    @Override
+    public void handledScreenTick() {
+        super.handledScreenTick();
+        //Testcode
+        memory1 = Text.literal(handler.getMemoryLine(0));
+        memory2 = Text.literal(handler.getMemoryLine(1));
+        memory3 = Text.literal(handler.getMemoryLine(2));
+    }
+
 }

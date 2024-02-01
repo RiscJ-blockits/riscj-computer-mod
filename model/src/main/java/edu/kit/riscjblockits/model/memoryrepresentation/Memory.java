@@ -10,6 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_ADDRESS;
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_WORD;
+
 /**
  * This class represents the memory of the computer.
  * it is used to store {@link Value}s at addresses.
@@ -95,14 +99,17 @@ public class Memory {
     /**
      * Saves the memory to a {@link IDataElement}.
      * @return the saved memory
+     *          Data Format: key: memory, value: DataContainer
+     *                          key: wordSize, value: Memory length as String
+     *                          key: addressSize, value: Address length as String
      */
     public IDataElement getData() {
         // create new data container
         IDataContainer data = new Data();
 
         // save word size and address size
-        data.set("wordSize", new DataStringEntry(String.valueOf(memoryLength)));
-        data.set("addressSize", new DataStringEntry(String.valueOf(addressLength)));
+        data.set(MEMORY_WORD, new DataStringEntry(String.valueOf(memoryLength)));
+        data.set(MEMORY_ADDRESS, new DataStringEntry(String.valueOf(addressLength)));
 
         // create new data container for memory
         IDataContainer memoryData = new Data();
@@ -113,8 +120,7 @@ public class Memory {
         }
 
         // save memory
-        data.set("memory", memoryData);
-
+        data.set(MEMORY_MEMORY, memoryData);
         return data;
     }
 

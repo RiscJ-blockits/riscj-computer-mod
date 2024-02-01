@@ -29,10 +29,8 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      * Holds the data that is present on the bus.
      */
     private Value presentData;
-
-    //TODO: "from", "to" are not used
-    private String from;
-    private String to;
+    private BlockPosition from;
+    private BlockPosition to;
 
 
     /**

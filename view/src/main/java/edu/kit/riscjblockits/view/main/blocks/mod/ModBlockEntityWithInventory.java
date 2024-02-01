@@ -2,7 +2,9 @@ package edu.kit.riscjblockits.view.main.blocks.mod;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 
@@ -27,7 +29,7 @@ public abstract class ModBlockEntityWithInventory extends ModBlockEntity impleme
      * @param state The state of the minecraft block.
      * @param inventorySize The size of the inventory.
      */
-    public ModBlockEntityWithInventory(BlockEntityType<?> type, BlockPos pos, BlockState state, int inventorySize) {
+    protected ModBlockEntityWithInventory(BlockEntityType<?> type, BlockPos pos, BlockState state, int inventorySize) {
         super(type, pos, state);
         items = DefaultedList.ofSize(inventorySize, ItemStack.EMPTY);
     }
@@ -39,6 +41,27 @@ public abstract class ModBlockEntityWithInventory extends ModBlockEntity impleme
     @Override
     public DefaultedList<ItemStack> getItems() {
         return items;
+    }
+
+    /**
+     * Reads the items from the given {@link NbtCompound}.
+     * Reads block information from the given {@link NbtCompound}.
+     * @param nbt
+     */
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+        Inventories.readNbt(nbt, items);
+    }
+
+    /**
+     * Writes inventory and block information to the given {@link NbtCompound}.
+     * @param nbt
+     */
+    @Override
+    public void writeNbt(NbtCompound nbt) {
+        super.writeNbt(nbt);
+        Inventories.writeNbt(nbt, items);
     }
 
 }

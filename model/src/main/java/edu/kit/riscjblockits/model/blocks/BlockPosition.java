@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.model.blocks;
 
 /**
  * Custom Class to save a position inside a minecraft world.
+ * Can also save if at the position is a bus.
  */
 public class BlockPosition {
 
@@ -24,10 +25,20 @@ public class BlockPosition {
     private boolean isBus;
 
     /**
-     * creates a new BlockPosition
-     * @param x x coordinate of the position
-     * @param y y coordinate of the position
-     * @param z z coordinate of the position
+     * Default constructor. Sets all coordinates to 0.
+     */
+    public BlockPosition() {
+        x = 0;
+        y = 0;
+        z = 0;
+        isBus = false;
+    }
+
+    /**
+     * Constructor with coordinates.
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param z z coordinate
      */
     public BlockPosition(double x, double y, double z) {
         this.x = x;

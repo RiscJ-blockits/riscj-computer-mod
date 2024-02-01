@@ -7,7 +7,9 @@ import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstructionException;
 import edu.kit.riscjblockits.model.instructionset.IExecutableMicroInstruction;
+import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 
 import java.util.List;
@@ -118,16 +120,22 @@ public class SimulationSequenceHandler implements Runnable {
      * If the last step of the fetch phase is executed, the execution phase is entered.
      */
     private void fetch(){
-        //ToDo: Rethink if fetch instructions could be a class attribute set in the constructor.
-        //ToDo: Check if an instruction initialization method might be useful.
-        IExecutableMicroInstruction[] fetchInstructions = null; // = instructionSetModel.     ;           //ToDo get fetch Instruction
-        executeMicroInstruction(fetchInstructions[phaseCounter]);
+
+        // load the execution's microinstructions internally before fetch, so the memory address is still the same
+        if (phaseCounter == 0) {
+            IQueryableInstruction instruction = instructionSetModel.getInstructionFromBinary(memoryController.getValue(programCounterController.getValue()).getBinaryValue());
+            microInstructions = instruction.getExecution();
+        }
+
+        // execute the current fetch phase step
+        executeMicroInstruction(instructionSetModel.getFetchPhaseStep(phaseCounter));
+
         phaseCounter++;
-        if (phaseCounter > fetchInstructions.length) {
+        // if no more fetch phase steps are defined, the execution phase is entered
+        if (phaseCounter > instructionSetModel.getFetchPhaseLength()) {
             phaseCounter = 0;
             runPhase = RunPhase.EXECUTE;
         }
-        //ToDo: put next Instructions in microInstructions Array
 
     }
 
@@ -153,8 +161,12 @@ public class SimulationSequenceHandler implements Runnable {
      */
     private void executeMicroInstruction(IExecutableMicroInstruction instruction) {
         //ToDo
-
-        instruction.execute(executor);
+        //ToDo consider exception handling (stop execution or just keep running the next like it is done now)
+        try {
+            instruction.execute(executor);
+        } catch (NonExecutableMicroInstructionException e) {
+            e.printStackTrace();
+        }
 
     }
 

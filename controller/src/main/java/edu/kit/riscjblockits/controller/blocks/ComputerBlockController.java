@@ -1,10 +1,10 @@
 package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.controller.clustering.ClusterHandler;
-import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
-import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
-import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
+import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
+import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
+import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public abstract class ComputerBlockController extends BlockController implements
         super(controllerType);
         this.blockEntity = blockEntity;
         this.blockModel = createBlockModel();
-        blockEntity.setBlockModel((IQueryableBlockModel) this.blockModel);      //FixMe cast sehr unschön
+        blockEntity.setBlockModel((IViewQueryableBlockModel) this.blockModel);      //FixMe cast sehr unschön
     }
 
     //ToDo nicht im entwurf
@@ -65,7 +65,7 @@ public abstract class ComputerBlockController extends BlockController implements
      */
     @Override
     public void setData(IDataElement data) {
-        //ToDo
+        blockModel.onStateChange();
     }
 
     /**
@@ -99,7 +99,6 @@ public abstract class ComputerBlockController extends BlockController implements
     /**
      * @return The associated ClusterHandler.
      */
-
     public ClusterHandler getClusterHandler() {
         return clusterHandler;
     }

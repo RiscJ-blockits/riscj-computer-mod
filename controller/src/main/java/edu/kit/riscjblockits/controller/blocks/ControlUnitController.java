@@ -3,13 +3,18 @@ package edu.kit.riscjblockits.controller.blocks;
 import edu.kit.riscjblockits.controller.clustering.ClusterHandler;
 import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
-import edu.kit.riscjblockits.model.blocks.RegisterModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
+
+import java.io.UnsupportedEncodingException;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_MODEL;
 
 /**
  * The controller for the control unit block.
@@ -36,7 +41,7 @@ public class ControlUnitController extends ComputerBlockController{
 
     /**
      * Returns the instruction set model inside the inventory of the block entity.
-     * @return An {@link InstructionSetModel} object.
+     * @return An {@link InstructionSetModel} object. Could be null.
      */
     public IQueryableInstructionSetModel getInstructionSetModel() {
         return ((ControlUnitModel)getModel()).getIstModel();
@@ -45,35 +50,39 @@ public class ControlUnitController extends ComputerBlockController{
     /**
      * Used from the view if it wants to update Data in the model.
      * @param data The data that should be set.
+     *              Data Format:    key: "clustering", value: container
+     *                                              key: "missingRegisters", value: string space-separated register names
+     *                                              key: "foundRegisters", value: string space-separated register names
+     *                                              key: "foundMemory", value: string with number of memory blocks
+     *                                              key: "foundAlu", value: string with number of alu blocks
+     *                                              key: "foundControlUnit", value: string with number of control unit blocks
+     *                                              key: "foundSystemClock", value: string with number of system clock blocks
+     *                              key: "istModel", value: null, if the ist Item has been removed, .json String if an Item has been inserted
      */
     @Override
     public void setData(IDataElement data) {
-        /* Data Format: key: "clustering", value: container
-         *                                  key: "missingRegisters", value: string space-separated register names
-         *                                  key: "foundRegisters", value: string space-separated register names
-         *                                  key: "foundMemory", value: string with number of memory blocks
-         *                                  key: "foundAlu", value: string with number of alu blocks
-         *                                  key: "foundControlUnit", value: string with number of control unit blocks
-         *                                  key: "foundSystemClock", value: string with number of system clock blocks
-         *              key: "istModel", value: ToDo
-         */
         if (!data.isContainer()) {
             return;
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals("clustering")) {
+            if (s.equals(CONTROL_CLUSTERING)) {
                 ((ControlUnitModel) getModel()).setClusteringData(((IDataContainer) data).get(s));
-            } else if (s.equals("istModel")) {
-                InstructionSetModel istModel;
-                //ToDo add method to update Ist Model
-                istModel = InstructionSetBuilder.buildInstructionSetModelMima();
-
-
+            } else if (s.equals(CONTROL_IST_MODEL)) {
+                if (((IDataContainer) data).get(s) == null) {           //istModel has been removed
+                    ((ControlUnitModel) getModel()).setIstModel(null);
+                    updateClusterHandler();
+                    return;
+                }
+                String ist = ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(s)).get(CONTROL_IST_ITEM)).getContent();
+                IQueryableInstructionSetModel istModel = null;
+                try {
+                    istModel = InstructionSetBuilder.buildInstructionSetModel(ist);
+                } catch (UnsupportedEncodingException e) {
+                    return;
+                }
                 ((ControlUnitModel) getModel()).setIstModel(istModel);
-                if (getClusterHandler() != null && istModel != null) {
-                    getClusterHandler().setIstModel(istModel);
-                } else if (getClusterHandler() != null) {
-                    getClusterHandler().removeIstModel();
+                if (getClusterHandler() != null) {
+                    updateClusterHandler();
                 }
             }
         }
@@ -87,8 +96,25 @@ public class ControlUnitController extends ComputerBlockController{
     public void setClusterHandler(ClusterHandler clusterHandler) {
         super.setClusterHandler(clusterHandler);
         //if we have multiple control units, the fastest gets to set the IstModel
-        boolean success =  clusterHandler.setIstModel(((ControlUnitModel) getModel()).getIstModel());
-        //ToDo tell the player if this istModel is not the one that is used
+        updateClusterHandler();
+    }
+
+    /**
+     * Updates the IstModel in the ClusterHandler.
+     */
+    private void updateClusterHandler() {
+        //To Do update if cluster handler is added later (should already work)
+        boolean success = getClusterHandler().setIstModel(((ControlUnitModel) getModel()).getIstModel());
+        if (!success) {
+            ((ControlUnitModel) getModel()).setIstModel(null);      //ToDo schöner machen?
+        }
+    }
+
+    /**
+     * Removes the IstModel from the model.
+     */
+    public void rejectIstModel() {
+        ((ControlUnitModel) getModel()).setIstModel(null);
     }
 
 }

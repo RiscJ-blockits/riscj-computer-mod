@@ -103,6 +103,8 @@ public interface IQueryableInstructionSetModel {
      */
     IExecutableMicroInstruction getFetchPhaseStep(int index);
 
+    IQueryableInstruction getInstructionFromBinary(String binaryValue);
+
     /**
      * ToDo nicht im Entwurf
      * @return Returns the names of all registers.

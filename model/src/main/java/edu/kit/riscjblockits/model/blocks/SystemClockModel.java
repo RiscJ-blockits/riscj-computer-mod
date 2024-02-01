@@ -1,10 +1,19 @@
 package edu.kit.riscjblockits.model.blocks;
 
+import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_ACTIVE;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_MODE;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_SPEED;
+
+/**
+ * Represents the data and state of a system clock. Every computer has one.
+ */
 public class SystemClockModel extends BlockModel implements ISimulationTimingObserveable {
 
     private List<ISimulationTimingObserver> modeObservers;
@@ -13,23 +22,36 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
 
     private boolean activeTick;
 
+    /**
+     * Constructor. Returns the model for a system clock.
+     * Initializes attributes. Default clock mode is the Step mode.
+     */
     public SystemClockModel() {
         modeObservers = new ArrayList<>();
         activeTick = false;
-        //ToDo remove Test Code
-        clockSpeed = 1;
-        mode = ClockMode.MC_TICK;
+        clockSpeed = 0;
+        mode = ClockMode.STEP;
         setType(ModelType.CLOCK);
     }
 
-    @Override
-    public boolean hasUnqueriedStateChange() {
-        return false;
-    }
-
+    /**
+     * Getter for the data the view needs for ui.
+     * @return Data Format: key: "speed", value: clockSpeed as String
+     *                      key: "mode", value: mode as String
+     *                      key: "activeTick", value: activeTick as String
+     */
     @Override
     public IDataElement getData() {
-        return null;
+        Data clockData = new Data();
+        clockData.set(CLOCK_SPEED, new DataStringEntry(String.valueOf(clockSpeed)));
+        clockData.set(CLOCK_MODE, new DataStringEntry(mode.toString()));
+        if (activeTick) {
+            clockData.set(CLOCK_ACTIVE, new DataStringEntry("true"));         //ToDo hier wäre ein boolean data entry schlau, wollen wir glaub eh nicht speichern
+        } else {
+            clockData.set(CLOCK_ACTIVE , new DataStringEntry("false"));
+        }
+        //setUnqueriedStateChange(false);
+        return clockData;
     }
 
     @Override
@@ -53,17 +75,24 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
         return clockSpeed;
     }
 
+    public void setClockSpeed(int clockSpeed) {
+        this.clockSpeed = clockSpeed;
+        setUnqueriedStateChange(true);
+    }
+
     public ClockMode getClockMode() {
         return mode;
     }
 
     public void setActiveTick(boolean activeTick) {
         this.activeTick = activeTick;
+        setUnqueriedStateChange(true);
     }
 
     public void setClockMode(ClockMode mode) {
         this.mode = mode;
         notifyObservers();
+        setUnqueriedStateChange(true);
     }
 
 }

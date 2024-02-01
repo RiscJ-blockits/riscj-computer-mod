@@ -17,4 +17,11 @@ public class DataMovementInstruction extends ComplexMicroInstruction {
     public void execute(IExecutor executor) {
         executor.execute(this);
     }
+
+    @Override
+    public MicroInstruction clone(String[] from, String to) {
+        return new DataMovementInstruction(from, to, getMemoryFlag(), getMemoryInstruction().clone());
+    }
+
+
 }

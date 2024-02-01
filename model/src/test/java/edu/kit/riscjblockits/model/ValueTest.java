@@ -75,4 +75,36 @@ class ValueTest {
         val = Value.fromHex("00FF", 2).getIncrementedValue();
         assertEquals("0100", val.getHexadecimalValue());
     }
+
+    @Test
+    void testLowerThan() {
+        Value val1 = Value.fromHex("F0", 1);
+        Value val2 = Value.fromHex("20", 1);
+        assertTrue(val1.lowerThan(val2));
+        assertFalse(val2.lowerThan(val1));
+    }
+
+    @Test
+    void testLowerThanUnsigned() {
+        Value val1 = Value.fromHex("10", 1);
+        Value val2 = Value.fromHex("F0", 1);
+        assertTrue(val1.lowerThanUnsigned(val2));
+        assertFalse(val2.lowerThanUnsigned(val1));
+    }
+
+    @Test
+    void testGreaterThan() {
+        Value val1 = Value.fromHex("30", 1);
+        Value val2 = Value.fromHex("20", 1);
+        assertTrue(val1.greaterThan(val2));
+        assertFalse(val2.greaterThan(val1));
+    }
+
+    @Test
+    void testGreaterThanUnsigned() {
+        Value val1 = Value.fromHex("F0", 1);
+        Value val2 = Value.fromHex("20", 1);
+        assertTrue(val1.greaterThanUnsigned(val2));
+        assertFalse(val2.greaterThanUnsigned(val1));
+    }
 }

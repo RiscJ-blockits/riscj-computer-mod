@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.controller.simulation;
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
+import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.model.blocks.ClockMode;
 import edu.kit.riscjblockits.model.blocks.ISimulationTimingObserver;
 import edu.kit.riscjblockits.model.blocks.SystemClockModel;
@@ -26,7 +27,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
     /**
      * The {@link SimulationSequenceHandler} that executes the simulation tick.
      */
-    private SimulationSequenceHandler simulationSequenceHandler;
+    private final SimulationSequenceHandler simulationSequenceHandler;
     /**
      * Clock speed for the Minecraft tick mode to decide waiting time between executions.
      */
@@ -36,9 +37,9 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      */
     private ClockMode clockMode;
     /**
-     * The {@link SystemClockModel} that is observed for changes in the clock state.
+     * The {@link SystemClockController} that is holding the model which is observed for changes in the clock state.
      */
-    private SystemClockModel systemClockModel;              //FixMe: not an Interface, more in this class
+    private SystemClockController systemClockContoller;
     /**
      * Counter for the Minecraft tick mode to decide waiting time between executions.
      */
@@ -55,8 +56,10 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
         //Register us as an SystemClockModel Observer
         for(IQueryableSimController blockController: blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.CLOCK) {
-                systemClockModel = (SystemClockModel) blockController.getModel();
-                systemClockModel.registerObserver(this);
+//                systemClockModel = (SystemClockModel) blockController.getModel();
+//                systemClockModel.registerObserver(this);
+                systemClockContoller = (SystemClockController) blockController;
+                ((SystemClockController) blockController).registerModelObserver(this);
             }
         }
         updateObservedState();
@@ -107,7 +110,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      */
     @Override
     public void updateObservedState() {
-        clockSpeed = systemClockModel.getClockSpeed();
-        clockMode = systemClockModel.getClockMode();
+        clockSpeed = systemClockContoller.getClockSpeed();
+        clockMode = systemClockContoller.getClockMode();
     }
 }

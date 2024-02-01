@@ -6,4 +6,5 @@ public interface IQueryableInstruction {
 
     String[] getTranslation();
 
+    IExecutableMicroInstruction[] getExecution();
 }

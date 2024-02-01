@@ -31,4 +31,9 @@ public class AluInstruction extends ComplexMicroInstruction {
     public void execute(IExecutor executor) {
         executor.execute(this);
     }
+
+    @Override
+    public MicroInstruction clone(String[] from, String to) {
+        return new AluInstruction(from, to, getMemoryFlag(), getMemoryInstruction().clone(), action);
+    }
 }

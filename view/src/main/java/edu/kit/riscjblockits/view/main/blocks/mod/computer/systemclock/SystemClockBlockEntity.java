@@ -21,6 +21,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public class SystemClockBlockEntity extends ComputerBlockEntity implements ExtendedScreenHandlerFactory {
 
+    private boolean powered;
+
     /**
      * Creates a new SystemClockBlockEntity with the given settings.
      * @param pos The position of the block in the minecraft world.
@@ -52,6 +54,15 @@ public class SystemClockBlockEntity extends ComputerBlockEntity implements Exten
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new SystemClockScreenHandler(syncId, playerInventory);
+        return new SystemClockScreenHandler(syncId, playerInventory, this);
     }
+
+    public void setPowered(boolean powered) {
+        if (powered && !this.powered) {
+            ((SystemClockController) getController()).onUserTickTriggered();
+        }
+        this.powered = powered;
+    }
+
+
 }

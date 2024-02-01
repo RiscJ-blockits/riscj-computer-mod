@@ -3,14 +3,15 @@ package edu.kit.riscjblockits.view.main.blocks.mod;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
 /**
  * This class represents a block entity from our mod in the game.
@@ -73,18 +74,26 @@ public abstract class ModBlockEntity extends BlockEntity {
                     && entitytype == EntityType.CONNECTABLE
                     && ((ComputerBlockController) controller).getBlockPosition() == null)) {
             ((ComputerBlockController) controller).startClustering(new BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
+        } else if (controller == null) {
+            controller = createController();
         }
     }
 
     /**
-     * ToDo
-     * @param nbt
+     * Method to read block data from a nbt compound.
+     * @param nbt The nbt data that should be read from.
      */
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        controller.setData(new NbtDataConverter(nbt).getData());
         setController();
+        if (controller != null) {               //the controller is in this stage only in the server not null
+            if (!nbt.contains(MOD_DATA)) {
+                return;
+            }
+            IDataElement newData = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
+            controller.setData(newData);        //when we are loaded, we get our initial data from the nbt
+        }
     }
 
     public BlockPosition getBlockPosition() {
@@ -103,7 +112,7 @@ public abstract class ModBlockEntity extends BlockEntity {
      * @return Returns the controller of this block entity. If in client context, it returns null.
      */
     public IUserInputReceivableController getController() {
-        if (world.isClient) {
+        if (world != null && world.isClient) {
             return null;
         }
         return controller;

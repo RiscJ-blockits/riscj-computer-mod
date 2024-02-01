@@ -1,8 +1,9 @@
 qodana:
   tags:
     - docker
+  stage: qodana
   image:
-    name: jetbrains/qodana-jvm
+    name: jetbrains/qodana-jvm-community
     entrypoint: [""]
   cache:
     - key: qodana-2023.2-$CI_DEFAULT_BRANCH-$CI_COMMIT_REF_SLUG
@@ -17,6 +18,7 @@ qodana:
     - qodana --save-report --results-dir=$CI_PROJECT_DIR/.qodana/results
       --cache-dir=$CI_PROJECT_DIR/.qodana/cache
   artifacts:
+    expire_in: 5 day
     paths:
       - qodana/report/
     expose_as: 'Qodana report'
@@ -25,6 +27,8 @@ qodana:
 stages:
   - build
   - test
+  - sonarqube-check
+  - qodana
 
 build:
   tags:
@@ -40,18 +44,32 @@ test:
   script:
     - ./gradlew test --continue
   artifacts:
+    expire_in: 5 day
     reports:
       junit:
         - model/build/test-results/test/TEST-*.xml
         - controller/build/test-results/test/TEST-*.xml
         - view/build/test-results/test/TEST-*.xml
     paths:
-      - controller/build/reports/tests/
-      - model/build/reports/tests/
-      - view/build/reports/tests/
+      - controller/build/reports/
+      - model/build/reports/
+      - view/build/reports/
     when: always
 
 include:
   - template: Jobs/SAST.gitlab-ci.yml
 variables:
   SEARCH_MAX_DEPTH: 15
+
+sonarqube-check:
+  stage: sonarqube-check
+  variables:
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project required by the analysis task
+  tags:
+    - shell
+  script: ./gradlew build jacocoTestReport sonar -Dsonar.token=$SONAR_TOKEN
+  allow_failure: true
+  only:
+    - merge_requests
+    - main
+    - implementation

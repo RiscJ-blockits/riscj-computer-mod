@@ -8,4 +8,6 @@ public interface IExecutableMicroInstruction {
      * @param executor The executor to execute the micro instruction on.
      */
     void execute(IExecutor executor);
+
+    MicroInstruction clone(String[] from, String to);
 }

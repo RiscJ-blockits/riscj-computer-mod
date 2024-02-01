@@ -1,31 +1,44 @@
 package edu.kit.riscjblockits.model.blocks;
 
 import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
-import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_ITEM_PRESENT;
+
+/**
+ * Represents the data and state of a control unit. Every control unit block has one.
+ */
 public class ControlUnitModel extends BlockModel{
 
+    /**
+     * The Instruction Set Model defines all behavior of the computer.
+     * Is null if no Instruction Set Model Item is inserted in the control unit block.
+     */
     private IQueryableInstructionSetModel istModel;
 
-    /** ToDo nicht im Entwurf
+    /**
      * Holds the Data which blocks are missing for a valid architecture.
      * Is used to display the information in the view.
+     * Can be null if the ClusterHandler has not checked the architecture.
      */
     private IDataContainer clusteringData;
 
+    /**
+     * Constructor. Returns the model for a control unit.
+     */
     public ControlUnitModel() {
         super();
         setType(ModelType.CONTROL_UNIT);
-        //ToDo remove Test Code
-        istModel = InstructionSetBuilder.buildInstructionSetModelMima();
     }
 
     @Override
     public boolean hasUnqueriedStateChange() {
-        return false;
+        //ToDo remove TestCode
+        return true;
     }
 
     /**
@@ -37,18 +50,22 @@ public class ControlUnitModel extends BlockModel{
      *                                          key: "foundAlu", value: string with number of alu blocks
      *                                          key: "foundControlUnit", value: string with number of control unit blocks
      *                                          key: "foundControlUnit", value: string with number of control unit blocks
-     *                      key: "istModel", value: ToDo
+     *                      key: "istModel", value: "true" if istModel is set, "false" if not
      */
     @Override
     public IDataElement getData() {
         Data cuData = new Data();
         if (clusteringData != null) {
-            cuData.set("clustering", clusteringData);
+            cuData.set(CONTROL_CLUSTERING, clusteringData);
         }
-        //ToDo return IstModel
+        if (istModel != null) {             //ToDo auch hier wäre boolean besser
+            cuData.set(CONTROL_ITEM_PRESENT, new DataStringEntry("true"));
+        } else {
+            cuData.set(CONTROL_ITEM_PRESENT, new DataStringEntry("false"));
+        }
+        //setUnqueriedStateChange(false);
         return cuData;
     }
-
 
     public IQueryableInstructionSetModel getIstModel() {
         return istModel;
@@ -56,6 +73,7 @@ public class ControlUnitModel extends BlockModel{
 
     public void setIstModel(IQueryableInstructionSetModel istModel) {
         this.istModel = istModel;
+        setUnqueriedStateChange(true);
     }
 
     /**
@@ -64,6 +82,7 @@ public class ControlUnitModel extends BlockModel{
      */
     public void setClusteringData(IDataElement clusteringData) {
         this.clusteringData = (IDataContainer) clusteringData;
+        setUnqueriedStateChange(true);
     }
 
 }
