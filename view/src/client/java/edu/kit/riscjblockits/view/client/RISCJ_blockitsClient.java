@@ -10,10 +10,13 @@ import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
 public class RISCJ_blockitsClient implements ClientModInitializer {
@@ -40,10 +43,15 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 					return;
 				}
                 BlockEntity blockEntity = client.world.getBlockEntity(target);
+
 				if (blockEntity == null) {
+					//request Data again if send was not successful
+					//ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(target));
+
 					return;
 				}
 				blockEntity.readNbt(nbt);
 		});
+
 	}
 }

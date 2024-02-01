@@ -16,4 +16,7 @@ public interface IControllerQueryableBlockModel extends IQueryableBlockModel {
      * @return An {@link BlockPosition} with the position of the block.
      */
     BlockPosition getPosition();
+
+    //ToDo nicht im Entwurfs wiki
+    public void onStateChange();
 }

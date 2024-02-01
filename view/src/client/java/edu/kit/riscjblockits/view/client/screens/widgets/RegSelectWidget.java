@@ -77,7 +77,7 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         }
         for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND)) {
             RegisterEntry entry;
-            if(register.equals(registerScreenHandler.getRegisterValue())){
+            if(register.equals(registerScreenHandler.getCurrentRegister())){
                 entry = new RegisterEntry(register, false, true, pos);
             } else {
                 entry = new RegisterEntry(register, false, false, pos);
@@ -128,6 +128,7 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         context.drawText(textRenderer, Text.literal(TO_DO_TEXT), i + 8, j + 8, 0x555555, false);
 
         //this.registerList.setPosition(i + 8, j + 18);
+        //this.registerList.updateEntries(getEntries());
         this.registerList.render(context, mouseX, mouseY, delta);
 
         context.getMatrices().pop();
@@ -164,6 +165,7 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
         if (this.cachedInvChangeCount != this.client.player.getInventory().getChangeCount()) {
             this.cachedInvChangeCount = this.client.player.getInventory().getChangeCount();
         }
+        registerList.updateEntries(getEntries());
     }
 
     @Override
@@ -172,7 +174,7 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
             return false;
         }
         boolean success = registerList.mouseClicked(mouseX, mouseY, button);
-        registerList.updateEntries(getEntries());
+        //registerList.updateEntries(getEntries());
         return success;
     }
 

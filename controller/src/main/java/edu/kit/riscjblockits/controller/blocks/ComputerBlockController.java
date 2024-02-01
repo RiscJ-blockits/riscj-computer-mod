@@ -65,7 +65,7 @@ public abstract class ComputerBlockController extends BlockController implements
      */
     @Override
     public void setData(IDataElement data) {
-        //ToDo
+        blockModel.onStateChange();
     }
 
     /**
@@ -99,7 +99,6 @@ public abstract class ComputerBlockController extends BlockController implements
     /**
      * @return The associated ClusterHandler.
      */
-
     public ClusterHandler getClusterHandler() {
         return clusterHandler;
     }

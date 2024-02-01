@@ -6,6 +6,7 @@ import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
 import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
+import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
@@ -63,8 +64,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (!world.isClient && entity.getController() != null) {
             ((IUserInputReceivableComputerController)entity.getController()).tick();
         }
-        entity.syncToClient();
         entity.updateUI();
+        entity.syncToClient();
     }
 
 
@@ -204,6 +205,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             nbt.put(MOD_DATA, new DataNbtConverter(data).getNbtElement());
         }
         super.writeNbt(nbt);
+        markDirty();
     }
 
     /**
@@ -217,6 +219,11 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (world != null && world.isClient &&  nbt.contains(MOD_DATA)) {     //we are in the client and want to save the data
             data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         }
+    }
+
+    //todo nicht im Entwurfs wiki
+    public void requestData() {
+        getController().setData(new Data());
     }
 
 }
