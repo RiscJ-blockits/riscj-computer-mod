@@ -54,7 +54,6 @@ public class BusBlockEntity extends ComputerBlockEntity {
                 .with(BusBlock.UP, listContainsPos(neighbours, pos.up()))
                 .with(BusBlock.DOWN, listContainsPos(neighbours, pos.down()));
         world.setBlockState(pos, state);
-        System.out.println("Update Block State");
     }
 
     /**
