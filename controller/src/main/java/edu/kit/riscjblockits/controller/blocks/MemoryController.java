@@ -94,4 +94,5 @@ public class MemoryController extends ComputerBlockController {
     public boolean isMemorySet() {
         return ((MemoryModel) getModel()).isMemorySet();
     }
+
 }
