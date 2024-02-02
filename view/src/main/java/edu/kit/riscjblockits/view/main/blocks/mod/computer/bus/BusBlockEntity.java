@@ -6,12 +6,7 @@ import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class represents a bus entity from our mod in the game.
@@ -37,6 +32,5 @@ public class BusBlockEntity extends ComputerBlockEntity {
     protected ComputerBlockController createController() {
         return new BusController(this);
     }
-
 
 }

@@ -118,7 +118,8 @@ public class SimulationSequenceHandler implements Runnable {
         //get MicroInstructions
 
         //------------
-       switch (runPhase) {
+        resetVisualisation();
+        switch (runPhase) {
             case FETCH -> fetch();
             case EXECUTE -> execute();
         }
@@ -130,7 +131,6 @@ public class SimulationSequenceHandler implements Runnable {
      * If the last step of the fetch phase is executed, the execution phase is entered.
      */
     private void fetch(){
-
         // load the execution's microinstructions internally before fetch, so the memory address is still the same
         if (phaseCounter == 0) {
             IQueryableInstruction instruction = instructionSetModel.getInstructionFromBinary(memoryController.getValue(programCounterController.getValue()).getBinaryValue());
@@ -159,7 +159,6 @@ public class SimulationSequenceHandler implements Runnable {
      * therefore is executed individually.
      */
     private void execute(){
-        resetVisualisation();
         //One full instruction consists of multiple microinstructions
         System.out.println("execution: " + phaseCounter);
         executeMicroInstruction(microInstructions[phaseCounter]);

@@ -53,7 +53,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * calculates shortest path between two nodes avoiding Non-Bus-Nodes and setting the presentData
+     * calculates the shortest path between two nodes avoiding Non-Bus-Nodes and setting the presentData
      * @param startPos is the start node
      * @param endPos is the end node
      * @param presentData is the data that is present on the bus

@@ -128,14 +128,13 @@ public abstract class ComputerBlockController extends BlockController implements
 
     //ToDo nicht im Entwurfs wiki
     public void activateVisualisation() {
-
-
+        blockModel.setVisualisationState(true);
     }
 
 
     //ToDo nicht im Entwurfs wiki
     public void stopVisualisation() {
-
+        blockModel.setVisualisationState(false);
     }
 
 }

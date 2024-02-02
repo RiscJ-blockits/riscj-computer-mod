@@ -321,6 +321,7 @@ public class Executor implements IExecutor {
                         "Cannot move Data, MicroInstruction has no valid to value, does not match a Register");
 
             registerControllerMap.get(to).setNewValue(movedValue);
+            //FixMe from is sometimes just a long number
             busSystem.setBusDataPath(registerControllerMap.get(from).getBlockPosition(), registerControllerMap.get(to).getBlockPosition(), movedValue);
             registerControllerMap.get(from).activateVisualisation();
             registerControllerMap.get(to).activateVisualisation();

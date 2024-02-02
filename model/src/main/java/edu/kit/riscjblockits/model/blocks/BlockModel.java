@@ -20,7 +20,7 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
     private boolean visualisationState;
 
     /**
-     * Type of the block. Used th distinguish between different models.
+     * Type of the block. Used to distinguish between different models.
      */
     private ModelType type;
 
