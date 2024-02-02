@@ -90,6 +90,15 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
+     * returns the neighbors of a node
+     * @param blockPosition is the node
+     * @return the neighbors of the node
+     */
+    public List<BlockPosition> getBusSystemNeighbors(BlockPosition blockPosition) {
+        return adjPositions.get(blockPosition);
+    }
+
+    /**
      * returns the present data on the busSystem
      * @return the present data on the busSystem
      */
