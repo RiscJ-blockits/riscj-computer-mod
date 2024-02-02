@@ -124,6 +124,9 @@ public class ClusterHandler implements IArchitectureCheckable {
         blockController.getClusterHandler().reClusterMarkedBlocks();
     }
 
+    /**
+     * checks if markedBlocks-neighbours are now in the same cluster and add Edges to the busSystemModel
+     */
     private void reClusterMarkedBlocks() {
         List<IQueryableClusterController> newMarkedBlocks = new ArrayList<>();
         for (IQueryableClusterController block: markedBlocks) {
@@ -181,6 +184,7 @@ public class ClusterHandler implements IArchitectureCheckable {
                 if (newclusterHandler.busSystemModel.isNode(blockController.getBlockPosition())) {
                     newclusterHandler.addBlocks(blockController);
                     blockController.setClusterHandler(newclusterHandler);
+                    newclusterHandler.markedBlocks.add(blockController);
                 }
             }
         }
@@ -200,6 +204,7 @@ public class ClusterHandler implements IArchitectureCheckable {
             } else {
                 newclusterHandler.checkFinished();
             }
+            newclusterHandler.reClusterMarkedBlocks();
         }
     }
 

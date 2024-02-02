@@ -155,7 +155,10 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      * @param pos1 is the node to remove
      */
     public void removeNode(BlockPosition pos1) {
-        for(BlockPosition pos2: adjPositions.get(pos1)){
+        if (adjPositions.get(pos1) == null) {
+            return;
+        }
+        for(BlockPosition pos2: adjPositions.get(pos1)) {
             adjPositions.get(pos2).remove(pos1);
         }
         adjPositions.remove(pos1);
@@ -176,7 +179,6 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      *                  There can be other connected nodes.
      * @param busSystemToCombine The Bussystem that is merged into the current Bussystem.
      */
-
     public void combineGraph(BlockPosition ownNode, BlockPosition newNode, IQueryableBusSystem busSystemToCombine) {
         if (!busSystemToCombine.equals(this)) {
             adjPositions.putAll(busSystemToCombine.getBusGraph());
@@ -221,13 +223,14 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
 
     /**
      * UNTESTED
-     * BFS to find all connected nodes.
+     * BFS to find all connected nodes. Only uses Bus-Nodes in BFS, all other nodes are end-nodes.
      * MOSTLY GENERATED WITH GITHUB COPILOT.
      * @param start The start node.
      * @return Map of all connected nodes.
      */
     private Map<BlockPosition, List<BlockPosition>> bfs(BlockPosition start) {
         Map<BlockPosition, List<BlockPosition>> discovered = new HashMap<>();
+        List<BlockPosition> noBus = new ArrayList<>();
         Queue<BlockPosition> queue = new LinkedList<>();
         queue.add(start);
         while (!queue.isEmpty()) {
@@ -235,9 +238,24 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
             if (!discovered.containsKey(current)) {
                 discovered.put(current, adjPositions.get(current));
                 for (BlockPosition neighbor : adjPositions.get(current)) {
-                    queue.add(neighbor);
+                    if (neighbor.isBus()) {
+                        queue.add(neighbor);
+                    } else {
+                        discovered.put(neighbor, new ArrayList<>());
+                        noBus.add(neighbor);
+                    }
                 }
             }
+        }
+        for (BlockPosition blockPosition : noBus) {
+            if (adjPositions.get(blockPosition) != null)
+                for (BlockPosition neighbor : adjPositions.get(blockPosition)) {
+                    if (discovered.containsKey(neighbor)) {
+                        discovered.get(blockPosition).add(neighbor);
+                        discovered.get(neighbor).add(blockPosition);
+                    }
+                }
+            removeNode(blockPosition);
         }
         return discovered;
     }
