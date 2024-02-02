@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.simulation;
 
 import edu.kit.riscjblockits.controller.blocks.*;
 import edu.kit.riscjblockits.model.blocks.*;
+import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.*;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
@@ -14,6 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ExecutorTest {
 
@@ -29,33 +32,13 @@ class ExecutorTest {
 
     //copied from Nils @ AluControllerTest
     private IConnectableComputerBlockEntity getBlockEntityMock() {
-        IConnectableComputerBlockEntity blockEntity = new IConnectableComputerBlockEntity() {
-            @Override
-            public void setBlockModel(IViewQueryableBlockModel model) {
-
-            }
-
-            @Override
-            public List<ComputerBlockController> getComputerNeighbours() {
-                return new LinkedList<>();
-            }
-
-            @Override
-            public BlockPosition getBlockPosition() {
-                return new BlockPosition(0,0,0);
-            }
-
-            @Override
-            public IDataElement getBlockEntityData() {
-                return null;
-            }
-        };
-        return blockEntity;
+        IConnectableComputerBlockEntity entity = mock(IConnectableComputerBlockEntity.class);
+        when(entity.getBlockPosition()).thenReturn(new BlockPosition());
+        return entity;
     }
 
     @BeforeEach
     void setUp() {
-
         MemoryController memoryController = new MemoryController(getBlockEntityMock());
         ((MemoryModel) (memoryController.getModel())).setMemory(new Memory(4, 4));
         memoryController.writeMemory(Value.fromHex("00", 4), Value.fromHex("0456", 4));
@@ -78,6 +61,14 @@ class ExecutorTest {
         ((RegisterModel) registerController5.getModel()).setRegisterType("R5");
         registerController5.setNewValue(Value.fromHex("1101", 4));
 
+        memoryController.startClustering(new BlockPosition());
+        aluController.startClustering(new BlockPosition());
+        registerController1.startClustering(new BlockPosition());
+        registerController2.startClustering(new BlockPosition());
+        registerController3.startClustering(new BlockPosition());
+        registerController4.startClustering(new BlockPosition());
+        registerController5.startClustering(new BlockPosition());
+
         List<IQueryableSimController> blockControllers = new LinkedList<>();
         blockControllers.add(memoryController);
         blockControllers.add(aluController);
@@ -87,7 +78,7 @@ class ExecutorTest {
         blockControllers.add(registerController4);
         blockControllers.add(registerController5);
 
-        this.executor = new Executor(blockControllers, 4);
+        this.executor = new Executor(blockControllers, 4, new BusSystemModel(new BlockPosition()));
         this.memoryController = memoryController;
         this.aluController = aluController;
         this.registerController1 = registerController1;

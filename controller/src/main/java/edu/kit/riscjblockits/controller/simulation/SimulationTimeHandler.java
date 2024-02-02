@@ -7,6 +7,7 @@ import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.model.blocks.ClockMode;
 import edu.kit.riscjblockits.model.blocks.ISimulationTimingObserver;
 import edu.kit.riscjblockits.model.blocks.SystemClockModel;
+import edu.kit.riscjblockits.model.busgraph.IBusSystem;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -51,8 +52,8 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      *
      * @param blockControllers List of all {@link BlockController}s of the associated computer blocks.
      */
-    public SimulationTimeHandler(List<IQueryableSimController> blockControllers) {
-        simulationSequenceHandler = new SimulationSequenceHandler(blockControllers);
+    public SimulationTimeHandler(List<IQueryableSimController> blockControllers, IBusSystem busSystem) {
+        simulationSequenceHandler = new SimulationSequenceHandler(blockControllers, busSystem);
         //Register us as an SystemClockModel Observer
         for(IQueryableSimController blockController: blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.CLOCK) {

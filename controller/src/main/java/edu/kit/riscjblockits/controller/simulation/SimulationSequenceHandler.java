@@ -8,6 +8,7 @@ import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstructionException;
+import edu.kit.riscjblockits.model.busgraph.IBusSystem;
 import edu.kit.riscjblockits.model.instructionset.IExecutableMicroInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
@@ -61,14 +62,16 @@ public class SimulationSequenceHandler implements Runnable {
      * Executor for the microinstructions.
      */
     private Executor executor;
+    private IBusSystem busSystem;
 
     /**
      * Constructor. Initializes the {@link BlockController}s list, hands it over to the executor, sets the first
      * run phase to FETCH and the counter to zero and initializes the instruction set model and the memory controller.
      * @param blockControllers Controllers of the associated computer blocks.
      */
-    public SimulationSequenceHandler(List<IQueryableSimController> blockControllers) {
+    public SimulationSequenceHandler(List<IQueryableSimController> blockControllers, IBusSystem busSystem) {
         this.blockControllers = blockControllers;
+        this.busSystem = busSystem;
 
         phaseCounter = 0;
         runPhase = RunPhase.FETCH;
@@ -96,7 +99,7 @@ public class SimulationSequenceHandler implements Runnable {
                 }
             }
         }
-        this.executor = new Executor(blockControllers, instructionSetModel.getMemoryWordSize());
+        this.executor = new Executor(blockControllers, instructionSetModel.getMemoryWordSize(), busSystem);
 
     }
 
@@ -156,6 +159,7 @@ public class SimulationSequenceHandler implements Runnable {
      * therefore is executed individually.
      */
     private void execute(){
+        resetVisualisation();
         //One full instruction consists of multiple microinstructions
         System.out.println("execution: " + phaseCounter);
         executeMicroInstruction(microInstructions[phaseCounter]);
@@ -164,6 +168,14 @@ public class SimulationSequenceHandler implements Runnable {
             System.out.println("execution phase finished");
             phaseCounter = 0;
             runPhase = RunPhase.FETCH;
+        }
+    }
+
+    private void resetVisualisation() {
+        //ToDo what to do on programm end
+        //ToDo what to do in fast mode
+        for (IQueryableSimController blockController : blockControllers) {
+            blockController.stopVisualisation();
         }
     }
 

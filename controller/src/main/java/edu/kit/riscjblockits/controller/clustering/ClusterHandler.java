@@ -9,6 +9,7 @@ import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
 import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
+import edu.kit.riscjblockits.model.busgraph.IBusSystem;
 import edu.kit.riscjblockits.model.busgraph.IQueryableBusSystem;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 
@@ -278,7 +279,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     private void startSimulation() {
         // TODO check cast
         List<IQueryableSimController> simControllers = blocks.stream().map(IQueryableSimController.class::cast).toList();
-        SimulationTimeHandler sim = new SimulationTimeHandler(simControllers);
+        SimulationTimeHandler sim = new SimulationTimeHandler(simControllers, (IBusSystem) busSystemModel);
         for (IQueryableComputerController c : blocks) {
             if (c.getControllerType() == BlockControllerType.CLOCK) {
                 ((SystemClockController) c).setSimulationTimeHandler(sim);
