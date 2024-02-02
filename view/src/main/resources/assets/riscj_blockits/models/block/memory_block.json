@@ -3,8 +3,8 @@
 	"parent": "block/cube",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "riscj_blockits:block/memory_block_texture",
-		"particle": "riscj_blockits:block/memory_block_texture"
+		"0": "riscj_blockits:block/memory_block_active",
+		"particle": "riscj_blockits:block/memory_block_active"
 	},
 	"elements": [
 		{
