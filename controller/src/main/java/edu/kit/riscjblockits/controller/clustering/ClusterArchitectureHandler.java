@@ -1,13 +1,11 @@
 package edu.kit.riscjblockits.controller.clustering;
 
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
-import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
-import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 
 import java.util.ArrayList;
@@ -69,7 +67,7 @@ public class ClusterArchitectureHandler {
             }
         }
         //check Registers
-        boolean rightAmountOfRegisters = availableRegisters.size() == istModel.getRegisterNames().size();
+        boolean rightAmountOfRegisters = availableRegisters.size() >= istModel.getRegisterNames().size();       //we could have more registers if we connect IO registers
         Collections.sort(availableRegisters);
         List<String> requiredRegisters = istModel.getRegisterNames();
         Collections.sort(requiredRegisters);

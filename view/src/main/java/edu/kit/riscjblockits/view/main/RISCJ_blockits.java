@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.view.main;
 
-import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.alu.AluBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.alu.AluBlockEntity;
@@ -12,6 +11,10 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUn
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RedstoneInputBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RedstoneInputBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RedstoneOutputBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RedstoneOutputBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
@@ -106,6 +109,8 @@ public class RISCJ_blockits implements ModInitializer {
 	 * A Register-Block with default settings.
 	 */
 	public static final Block REGISTER_BLOCK = new RegisterBlock();
+	public static final Block REDSTONE_OUTPUT_BLOCK = new RedstoneOutputBlock();
+	public static final Block REDSTONE_INPUT_BLOCK = new RedstoneInputBlock();
 	/**
 	 * This attribute defines all System-Clock blocks.
 	 * A System-Clock-Block with default settings.
@@ -143,6 +148,8 @@ public class RISCJ_blockits implements ModInitializer {
 	 * A Register-Block-Item with the default settings for block items.
 	 */
 	public static final BlockItem REGISTER_BLOCK_ITEM = new BlockItem(REGISTER_BLOCK, new Item.Settings());
+	public static final BlockItem REDSTONE_OUTPUT_BLOCK_ITEM = new BlockItem(REDSTONE_OUTPUT_BLOCK, new Item.Settings());
+	public static final BlockItem REDSTONE_INPUT_BLOCK_ITEM = new BlockItem(REDSTONE_INPUT_BLOCK, new Item.Settings());
 	/**
 	 * This attribute defines all System-Clock items.
 	 * A System-Clock-Block-Item with the default settings for block items.
@@ -176,6 +183,8 @@ public class RISCJ_blockits implements ModInitializer {
 	 * The Type of the Register-Block-Entity. Every Register-Block gets its own Register-Block-Entity when it is placed.
 	 */
 	public static BlockEntityType<RegisterBlockEntity> REGISTER_BLOCK_ENTITY;
+	public static BlockEntityType<RedstoneOutputBlockEntity> REDSTONE_OUTPUT_BLOCK_ENTITY;
+	public static BlockEntityType<RedstoneInputBlockEntity> REDSTONE_INPUT_BLOCK_ENTITY;
 	/**
 	 * The Type of the System-Clock-Block-Entity.
 	 * Every System-Clock-Block gets its own System-Clock-Block-Entity when it is placed.
@@ -260,6 +269,8 @@ public class RISCJ_blockits implements ModInitializer {
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "programming_block"), PROGRAMMING_BLOCK);
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "register_block"), REGISTER_BLOCK);
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "system_clock_block"), SYSTEM_CLOCK_BLOCK);
+		Registry.register(Registries.BLOCK, new Identifier(MODID, "redstone_output_block"), REDSTONE_OUTPUT_BLOCK);
+		Registry.register(Registries.BLOCK, new Identifier(MODID, "redstone_input_block"), REDSTONE_INPUT_BLOCK);
 
 		// register Block-Items
 		Registry.register(Registries.ITEM, new Identifier(MODID, "alu_block"), ALU_BLOCK_ITEM);
@@ -269,6 +280,8 @@ public class RISCJ_blockits implements ModInitializer {
 		Registry.register(Registries.ITEM, new Identifier(MODID, "programming_block"), PROGRAMMING_BLOCK_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "register_block"), REGISTER_BLOCK_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "system_clock_block"), SYSTEM_CLOCK_BLOCK_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(MODID, "redstone_output_block"), REDSTONE_OUTPUT_BLOCK_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(MODID, "redstone_input_block"), REDSTONE_INPUT_BLOCK_ITEM);
 
 		// register Items
 		Registry.register(Registries.ITEM, new Identifier(MODID, "goggles"), GOGGLES_ITEM);
@@ -292,6 +305,10 @@ public class RISCJ_blockits implements ModInitializer {
 				FabricBlockEntityTypeBuilder.create(RegisterBlockEntity::new, REGISTER_BLOCK).build());
 		SYSTEM_CLOCK_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MODID, "system_clock_block_entity"),
 				FabricBlockEntityTypeBuilder.create(SystemClockBlockEntity::new, SYSTEM_CLOCK_BLOCK).build());
+		REDSTONE_OUTPUT_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MODID, "redstone_output_block_entity"),
+				FabricBlockEntityTypeBuilder.create(RedstoneOutputBlockEntity::new, REDSTONE_OUTPUT_BLOCK).build());
+		REDSTONE_INPUT_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MODID, "redstone_input_block_entity"),
+				FabricBlockEntityTypeBuilder.create(RedstoneInputBlockEntity::new, REDSTONE_INPUT_BLOCK).build());
 
 		// register the Item-Group
 		Registry.register(Registries.ITEM_GROUP, new Identifier(MODID, "computer_components"), ITEM_GROUP);
@@ -339,6 +356,8 @@ public class RISCJ_blockits implements ModInitializer {
 				entries.add(PROGRAMMING_BLOCK_ITEM);
 				entries.add(REGISTER_BLOCK_ITEM);
 				entries.add(SYSTEM_CLOCK_BLOCK_ITEM);
+				entries.add(REDSTONE_OUTPUT_BLOCK_ITEM);
+				entries.add(REDSTONE_INPUT_BLOCK_ITEM);
 				//Items
 				entries.add(INSTRUCTION_SET_ITEM_MIMA);
 				entries.add(INSTRUCTION_SET_ITEM_RISCV);
