@@ -18,7 +18,6 @@ public class MIMAExWidget implements Drawable, Element, Selectable {
     public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier("recipe_book/button"), new Identifier("recipe_book/button_highlighted"));
     public static final Identifier
         TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/control_mima_ex.png");
-
     private int parentWidth;
     private int parentHeight;
     private boolean open;
@@ -60,7 +59,7 @@ public class MIMAExWidget implements Drawable, Element, Selectable {
         context.getMatrices().translate(0.0f, 0.0f, 100.0f);
 
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
-        int j = (this.parentHeight - 166) / 2;
+        int j = (this.parentHeight) / 2;
         context.drawTexture(TEXTURE, i, j, 1, 1, 147, 166);
 
         context.getMatrices().pop();

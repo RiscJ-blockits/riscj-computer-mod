@@ -9,10 +9,11 @@ import net.minecraft.util.Identifier;
 public class ArchitectureEntry extends ListEntry{
 
     public static final Identifier COMPONENT_MISSING = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/controlunit_gui_entry_missing.png");
-    public static final Identifier COMPONENT_FOUND = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/conbtrolunit_gui_entry_found.png");
+    public static final Identifier COMPONENT_FOUND = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/controlunit_gui_entry_found.png");
     private final String name;
     private final boolean missing;
     private final int ENTRY_HEIGHT = 20;
+    private final int ENTRY_WIDTH = 120;
 
     public ArchitectureEntry(String name, boolean missing) {
         this.name = name;
@@ -22,9 +23,9 @@ public class ArchitectureEntry extends ListEntry{
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         if(missing) {
-            context.drawTexture(COMPONENT_MISSING, this.getX(), this.getY(), 0, 0, 16, 16);
+            context.drawTexture(COMPONENT_MISSING, this.getX(), this.getY(), 0, 0, ENTRY_WIDTH, ENTRY_HEIGHT);
         } else {
-            context.drawTexture(COMPONENT_FOUND, this.getX(), this.getY(), 0, 0, 16, 16);
+            context.drawTexture(COMPONENT_FOUND, this.getX(), this.getY(), 0, 0, ENTRY_WIDTH, ENTRY_HEIGHT);
         }
         MinecraftClient client = MinecraftClient.getInstance();
         context.drawText(client.textRenderer, Text.literal(name), this.x + 2, this.y + 2, 0x555555, false);

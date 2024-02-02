@@ -25,6 +25,7 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     private ArchitectureListWidget architectureList;
     private final MIMAExWidget mimaExWidget = new MIMAExWidget();
     private boolean narrow;
+    private boolean isMima;
     private Text cu1 = Text.literal("-");        //Testcode
 
     public ControlUnitScreen(ControlUnitScreenHandler handler, PlayerInventory inventory,
@@ -33,23 +34,27 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         this.backgroundHeight = 256;
         this.backgroundWidth = 176;
         playerInventoryTitleY += 56;
+        isMima = true; //TODO get the instruction set
     }
 
     @Override
     protected void init() {
         super.init();
         this.narrow = this.width < 379;
-        this.mimaExWidget.initalize(this.width, this.height, this.narrow);
+        if(isMima) {
+            this.mimaExWidget.initalize(this.width, this.height - backgroundHeight, this.narrow);
 
-        this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, MIMAExWidget.BUTTON_TEXTURES, button -> {
-            this.mimaExWidget.toggleOpen();
-            this.x = this.mimaExWidget.findLeftEdge(this.width, this.backgroundWidth);
-            button.setPosition(this.x + 5, this.height / 2 - 49);
-        }));
+            this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, MIMAExWidget.BUTTON_TEXTURES, button -> {
+                this.mimaExWidget.toggleOpen();
+                this.x = this.mimaExWidget.findLeftEdge(this.width, this.backgroundWidth);
+                button.setPosition(this.x + 5, this.height / 2 - 49);
+            }));
+            this.addSelectableChild(this.mimaExWidget);
+            this.setInitialFocus(this.mimaExWidget);
+        }
 
-        this.architectureList = new ArchitectureListWidget(this, this.x + 8, this.y + 19, 160, 240, 6); //TODO fix values
-        this.addSelectableChild(this.mimaExWidget);
-        this.setInitialFocus(this.mimaExWidget);
+        this.architectureList = new ArchitectureListWidget(this, this.x + 30, this.y + 18, 120, 108, 6); //TODO fix values
+
     }
 
     @Override
@@ -57,7 +62,7 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (this.width - this.backgroundWidth) / 2;
+        int x = this.x;
         int y = (height - backgroundHeight) / 2;
 
         context.drawTexture(TEXTURE, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
@@ -67,7 +72,14 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
+
+        architectureList.setX(this.x + 30);
+        architectureList.setY(this.y + 18);
         this.architectureList.render(context, mouseX, mouseY, delta);
+
+        if(isMima) {
+            this.mimaExWidget.render(context, mouseX, mouseY, delta);
+        }
     }
 
     @Override
