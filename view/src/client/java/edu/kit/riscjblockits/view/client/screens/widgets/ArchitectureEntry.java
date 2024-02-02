@@ -8,9 +8,8 @@ import net.minecraft.util.Identifier;
 
 public class ArchitectureEntry extends ListEntry{
 
-    public static final Identifier COMPONENT_MISSING_ICON = new Identifier(RISCJ_blockits.MODID, "textures/gui/general/cancel.png");
-    public static final Identifier COMPONENT_FOUND_ICON = new Identifier(RISCJ_blockits.MODID, "textures/gui/general/confirm.png");
-    public static final Identifier COMPONENT_BACKGROUND = new Identifier(RISCJ_blockits.MODID, "textures/gui/general/selected.png");
+    public static final Identifier COMPONENT_MISSING = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/controlunit_gui_entry_missing.png");
+    public static final Identifier COMPONENT_FOUND = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/conbtrolunit_gui_entry_found.png");
     private final String name;
     private final boolean missing;
     private final int ENTRY_HEIGHT = 20;
@@ -22,11 +21,10 @@ public class ArchitectureEntry extends ListEntry{
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        context.drawTexture(COMPONENT_BACKGROUND, this.getX() + 16, this.getY(), 0, 0, 128, 16);
         if(missing) {
-            context.drawTexture(COMPONENT_MISSING_ICON, this.getX(), this.getY(), 0, 0, 16, 16);
+            context.drawTexture(COMPONENT_MISSING, this.getX(), this.getY(), 0, 0, 16, 16);
         } else {
-            context.drawTexture(COMPONENT_FOUND_ICON, this.getX(), this.getY(), 0, 0, 16, 16);
+            context.drawTexture(COMPONENT_FOUND, this.getX(), this.getY(), 0, 0, 16, 16);
         }
         MinecraftClient client = MinecraftClient.getInstance();
         context.drawText(client.textRenderer, Text.literal(name), this.x + 2, this.y + 2, 0x555555, false);

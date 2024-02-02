@@ -151,7 +151,6 @@ public class RegSelectWidget implements Drawable, Element, Selectable {
 
     @Override
     public void appendNarrations(NarrationMessageBuilder builder) {
-
     }
 
     public boolean isOpen() {

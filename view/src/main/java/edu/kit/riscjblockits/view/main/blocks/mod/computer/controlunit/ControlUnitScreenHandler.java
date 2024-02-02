@@ -101,10 +101,11 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
     }
 
     /**
-     * Stub for getting the Blocks needed for the Architecture
+     * Stub for getting the Blocks needed/missing for the Architecture depending on the given key.
+     * @param key The key deciding which data to get.
      * @return
      */
-    public List<String> getArchitecture(String key){
+    public List<String> getStructure(String key){
         //TODO implement
         return new ArrayList<String> ();
     }

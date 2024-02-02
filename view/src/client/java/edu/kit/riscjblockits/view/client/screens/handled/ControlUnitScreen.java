@@ -3,19 +3,28 @@ package edu.kit.riscjblockits.view.client.screens.handled;
 import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureEntry;
 import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureListWidget;
+import edu.kit.riscjblockits.view.client.screens.widgets.MIMAExWidget;
+import edu.kit.riscjblockits.view.client.screens.widgets.RegSelectWidget;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitScreenHandler;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/control_unit_gui.png");
     private ArchitectureListWidget architectureList;
+    private final MIMAExWidget mimaExWidget = new MIMAExWidget();
+    private boolean narrow;
     private Text cu1 = Text.literal("-");        //Testcode
 
     public ControlUnitScreen(ControlUnitScreenHandler handler, PlayerInventory inventory,
@@ -29,10 +38,18 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     @Override
     protected void init() {
         super.init();
-        this.architectureList = new ArchitectureListWidget(handler, this.x + 8, this.y + 19, 160, 240, 6); //TODO fix values
+        this.narrow = this.width < 379;
+        this.mimaExWidget.initalize(this.width, this.height, this.narrow);
 
+        this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, MIMAExWidget.BUTTON_TEXTURES, button -> {
+            this.mimaExWidget.toggleOpen();
+            this.x = this.mimaExWidget.findLeftEdge(this.width, this.backgroundWidth);
+            button.setPosition(this.x + 5, this.height / 2 - 49);
+        }));
 
-        //intit Screen Elements
+        this.architectureList = new ArchitectureListWidget(this, this.x + 8, this.y + 19, 160, 240, 6); //TODO fix values
+        this.addSelectableChild(this.mimaExWidget);
+        this.setInitialFocus(this.mimaExWidget);
     }
 
     @Override
@@ -64,6 +81,18 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         architectureList.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
+
+    public List<ArchitectureEntry> fetchEntries() {
+        BlockPos pos = this.handler.getBlockEntity().getPos();
+        List<ArchitectureEntry> entries = new ArrayList<>();
+        for (String component: this.handler.getStructure("missing")) { //TODO fix key, cooperate with Leon
+            entries.add(new ArchitectureEntry(component, true));
+        }
+        for (String component: this.handler.getStructure("found")) {   //TODO fix key, cooperate with Leon
+            entries.add(new ArchitectureEntry(component, false));
+        }
+        return entries;
     }
 
 }
