@@ -44,12 +44,15 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     private boolean buildingFinished;
 
+    private List<IQueryableClusterController> markedBlocks;
+
 
     /**
      * Creates a new ClusterHandler and combines it with all neighbours
      * @param blockController BlockController to start the cluster with
      */
     public ClusterHandler(IQueryableClusterController blockController) {
+        markedBlocks = new ArrayList<>();
         blocks = new ArrayList<>();
         busBlocks = new ArrayList<>();
         blockController.setClusterHandler(this);
@@ -69,6 +72,7 @@ public class ClusterHandler implements IArchitectureCheckable {
      * @param busSystemModel BusSystemModel to start the cluster with
      */
     public ClusterHandler(IQueryableBusSystem busSystemModel) {
+        markedBlocks = new ArrayList<>();
         blocks = new ArrayList<>();
         busBlocks = new ArrayList<>();
         this.busSystemModel = busSystemModel;
@@ -89,14 +93,26 @@ public class ClusterHandler implements IArchitectureCheckable {
         }
         //fill neighboursToCombine with all neighbours, which should be combined
         if (blockController.getControllerType() == BlockControllerType.BUS) {
-            neighboursToCombine.addAll(neighbourBlockControllers);
+            for (IQueryableClusterController neighbourBlock: neighbourBlockControllers) {
+                if (neighbourBlock.getControllerType() == BlockControllerType.BUS) {
+                    neighboursToCombine.add(neighbourBlock);
+                } else if (neighbourBlock.getClusterHandler().getBusBlocks().isEmpty()) {
+                    neighboursToCombine.add(neighbourBlock);
+                } else {
+                    markedBlocks.add(neighbourBlock);
+                }
+            }
+            //neighboursToCombine.addAll(neighbourBlockControllers);
         } else {
             ClusterHandler neighbourCluster = null;
             for (IQueryableClusterController neighbourBlock: neighbourBlockControllers) {
-                if (neighbourBlock.getControllerType() == BlockControllerType.BUS &&
-                        (neighboursToCombine.isEmpty() || neighbourCluster == neighbourBlock.getClusterHandler())) {
-                    neighboursToCombine.add(neighbourBlock);
-                    neighbourCluster = neighbourBlock.getClusterHandler();
+                if (neighbourBlock.getControllerType() == BlockControllerType.BUS) {
+                    if((neighboursToCombine.isEmpty() || neighbourCluster == neighbourBlock.getClusterHandler())) {
+                        neighboursToCombine.add(neighbourBlock);
+                        neighbourCluster = neighbourBlock.getClusterHandler();
+                    } else {
+                        markedBlocks.add(blockController);
+                    }
                 }
             }
         }
@@ -106,6 +122,23 @@ public class ClusterHandler implements IArchitectureCheckable {
             neighbourBlock.getClusterHandler().combine(neighbourBlock, blockController, actualCluster);
             actualCluster = neighbourBlock.getClusterHandler();
         }
+        blockController.getClusterHandler().reClusterMarkedBlocks();
+    }
+
+    private void reClusterMarkedBlocks() {
+        List<IQueryableClusterController> newMarkedBlocks = new ArrayList<>();
+        for (IQueryableClusterController block: markedBlocks) {
+            for (IQueryableClusterController neighbour: block.getNeighbours()) {
+                if (neighbour.getClusterHandler().equals(this)) {
+                    busSystemModel.addEdge(block.getBlockPosition(), neighbour.getBlockPosition());
+                } else {
+                    if (!newMarkedBlocks.contains(block)) {
+                        newMarkedBlocks.add(block);
+                    }
+                }
+            }
+        }
+        markedBlocks = newMarkedBlocks;
     }
 
     /**
@@ -125,6 +158,7 @@ public class ClusterHandler implements IArchitectureCheckable {
             for (IQueryableClusterController newBlock: (oldCluster.getBusBlocks())) {
                 newBlock.setClusterHandler(this);
             }
+            markedBlocks.addAll(oldCluster.markedBlocks);
         }
     }
 
