@@ -260,367 +260,380 @@
 
         "auipc": {
             "opcode": "0010111",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<31:12>",
-                "[rd]",
+                "[const]<19:0>",            // same as lui
+                "[t0]<5>",
                 "0010111"]
         },
 
         "jalr": {
             "opcode": "1100111",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[const](t1)"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:0>",
-                "[rs1]",
+                "[const]<11:0>",
+                "[t1]<5>",
                 "000",
-                "[rd]",
+                "[t0]<5>",
                 "1100111"]
         },
 
         "beq": {
             "opcode": "1100011",
-            "arguments": [], // TODO
+            "arguments": ["[t1]", "[t2]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<10:5>",
-                "[rs2]",
-                "[rs1]",
+                "[const]<12:12>",
+                "[const]<10:5>",
+                "[t2]<5>",
+                "[t1]<5>",
                 "000",
-                "[imm]<11:11>",
+                "[const]<4:1>",
+                "[const]<11:11>",
                 "1100011"]
         },
 
         "bne": {
             "opcode": "1100011",
-            "arguments": [], // TODO
+            "arguments": ["[t1]", "[t2]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<10:5>",
-                "[rs2]",
-                "[rs1]",
+                "[const]<12:12>",
+                "[const]<10:5>",
+                "[t2]<5>",
+                "[t1]<5>",
                 "001",
-                "[imm]<11:11>",
+                "[const]<4:1>",
+                "[const]<11:11>",
                 "1100011"]
         },
 
         "blt": {
             "opcode": "1100011",
-            "arguments": [], // TODO
+            "arguments": ["[t1]", "[t2]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<10:5>",
-                "[rs2]",
-                "[rs1]",
+                "[const]<12:12>",
+                "[const]<10:5>",
+                "[t2]<5>",
+                "[t1]<5>",
                 "100",
-                "[imm]<11:11>",
+                "[const]<4:1>",
+                "[const]<11:11>",
                 "1100011"]
         },
 
         "bge": {
             "opcode": "1100011",
-            "arguments": [], // TODO
+            "arguments": ["[t1]", "[t2]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<10:5>",
-                "[rs2]",
-                "[rs1]",
+                "[const]<12:12>",
+                "[const]<10:5>",
+                "[t2]<5>",
+                "[t1]<5>",
                 "101",
-                "[imm]<11:11>",
+                "[const]<4:1>",
+                "[const]<11:11>",
                 "1100011"]
         },
 
         "bltu": {
             "opcode": "1100011",
-            "arguments": [], // TODO
+            "arguments": ["[t1]", "[t2]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<10:5>",
-                "[rs2]",
-                "[rs1]",
+                "[const]<12:12>",
+                "[const]<10:5>",
+                "[t2]<5>",
+                "[t1]<5>",
                 "110",
-                "[imm]<11:11>",
+                "[const]<4:1>",
+                "[const]<11:11>",
                 "1100011"]
         },
 
         "bgeu": {
             "opcode": "1100011",
-            "arguments": [], // TODO
+            "arguments": ["[t1]", "[t2]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<10:5>",
-                "[rs2]",
-                "[rs1]",
+                "[const]<12:12>",
+                "[const]<10:5>",
+                "[t2]<5>",
+                "[t1]<5>",
                 "111",
-                "[imm]<11:11>",
+                "[const]<4:1>",
+                "[const]<11:11>",
                 "1100011"]
         },
 
         "lb": {
             "opcode": "0000011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[const](t1)"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:0>",
-                "[rs1]",
+                "[const]<11:0>",
+                "[t1]<5>",
                 "000",
-                "[rd]",
+                "[t0]<5>",
                 "0000011"]
         },
 
         "lh": {
             "opcode": "0000011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[const](t1)"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:0>",
-                "[rs1]",
+                "[const]<11:0>",
+                "[t1]<5>",
                 "001",
-                "[rd]",
+                "[t0]<5>",
                 "0000011"]
         },
 
         "lw": {
             "opcode": "0000011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[const](t1)"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:0>",
-                "[rs1]",
+                "[const]<11:0>",
+                "[t1]<5>",
                 "010",
-                "[rd]",
+                "[t0]<5>",
                 "0000011"]
         },
 
         "lbu": {
             "opcode": "0000011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[const](t1)"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:0>",
-                "[rs1]",
+                "[const]<11:0>",
+                "[t1]<5>",
                 "100",
-                "[rd]",
+                "[t0]<5>",
                 "0000011"]
         },
 
         "lhu": {
             "opcode": "0000011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[const](t1)"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:0>",
-                "[rs1]",
+                "[const]<11:0>",
+                "[t1]<5>",
                 "101",
-                "[rd]",
+                "[t0]<5>",
                 "0000011"]
         },
 
         "sb": {
             "opcode": "0100011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[const](t1)"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:5>",
-                "[rs2]",
-                "[rs1]",
+                "[const]<11:5>",
+                "[t1]<5>",
+                "[t0]<5>",
                 "000",
-                "[imm]<4:0>",
+                "[const]<4:0>",
                 "0100011"]
         },
 
         "sh": {
             "opcode": "0100011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[const](t1)"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:5>",
-                "[rs2]",
-                "[rs1]",
+                "[const]<11:5>",
+                "[t1]<5>",
+                "[t0]<5>",
                 "001",
-                "[imm]<4:0>",
+                "[const]<4:0>",
                 "0100011"]
         },
 
         "slti": {
             "opcode": "0010011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:0>",
-                "[rs1]",
+                "[const]<11:0>",
+                "[t1]<5>",
                 "010",
-                "[rd]",
+                "[t0]<5>",
                 "0010011"]
         },
 
         "sltiu": {
             "opcode": "0010011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:0>",
-                "[rs1]",
+                "[const]<11:0>",
+                "[t1]<5>",
                 "011",
-                "[rd]",
+                "[t0]<5>",
                 "0010011"]
         },
 
         "xori": {
             "opcode": "0010011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:0>",
-                "[rs1]",
+                "[const]<11:0>",
+                "[t1]<5>",
                 "100",
-                "[rd]",
+                "[t0]<5>",
                 "0010011"]
         },
 
         "ori": {
             "opcode": "0010011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:0>",
-                "[rs1]",
+                "[const]<11:0>",
+                "[t1]<5>",
                 "110",
-                "[rd]",
+                "[t0]<5>",
                 "0010011"]
         },
 
         "andi": {
             "opcode": "0010011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[imm]<11:0>",
-                "[rs1]",
+                "[const]<11:0>",
+                "[t1]<5>",
                 "111",
-                "[rd]",
+                "[t0]<5>",
                 "0010011"]
         },
 
         "srli": {
             "opcode": "0010011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[const]"],
             "execution": [], // TODO
             "translation": [
                 "0000000",
-                "[shamt]",
-                "[rs1]",
+                "[const]<5>",
+                "[t1]<5>",
                 "101",
-                "[rd]",
+                "[t0]<5>",
                 "0010011"]
         },
 
         "srai": {
             "opcode": "0010011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[const]"],
             "execution": [], // TODO
             "translation": [
                 "0100000",
-                "[shamt]",
-                "[rs1]",
+                "[const]<5>",
+                "[t1]<5>",
                 "101",
-                "[rd]",
+                "[t0]<5>",
                 "0010011"]
         },
 
         "sub": {
             "opcode": "0110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO
             "translation": [
                 "0100000",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "000",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "slt": {
             "opcode": "0110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO
             "translation": [
                 "0000000",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "010",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "sltu": {
             "opcode": "0110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO
             "translation": [
                 "0000000",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "011",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "xor": {
             "opcode": "0110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO
             "translation": [
                 "0000000",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "100",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "srl": {
             "opcode": "0110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO
             "translation": [
                 "0000000",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "101",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "sra": {
             "opcode": "0110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO
             "translation": [
                 "0100000",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "101",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "or": {
             "opcode": "0110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO
             "translation": [
                 "0000000",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "110",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
+        // TODO needed?
         "fence": {
             "opcode": "0001111",
             "arguments": [], // TODO
@@ -651,7 +664,7 @@
 
         "ecall": {
             "opcode": "1110011",
-            "arguments": [], // TODO
+            "arguments": [],
             "execution": [], // TODO
             "translation": [
                 "000000000000",
@@ -663,7 +676,7 @@
 
         "ebreak": {
             "opcode": "1110011",
-            "arguments": [], // TODO
+            "arguments": [],
             "execution": [], // TODO
             "translation": [
                 "000000000001",
@@ -675,179 +688,177 @@
 
         "csrrw": {
             "opcode": "1110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[csr]", "[t1]"],
             "execution": [], // TODO
             "translation": [
-                "[csr]",
-                "[rs1]",
+                "[csr]<12>",
+                "[t1]<5>",
                 "001",
-                "[rd]",
+                "[t0]<5>",
                 "1110011"]
         },
 
         "csrrs": {
             "opcode": "1110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[csr]", "[t1]"],
             "execution": [], // TODO
             "translation": [
-                "[csr]",
-                "[rs1]",
+                "[csr]<12>",
+                "[t1]<5>",
                 "010",
-                "[rd]",
+                "[t0]<5>",
                 "1110011"]
         },
 
         "csrrc": {
             "opcode": "1110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[csr]", "[t1]"],
             "execution": [], // TODO
             "translation": [
-                "[csr]",
-                "[rs1]",
+                "[csr]<12>",
+                "[t1]<5>",
                 "011",
-                "[rd]",
+                "[t0]<5>",
                 "1110011"]
         },
 
         "csrrwi": {
             "opcode": "1110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[csr]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[csr]",
-                "[zimm]",
+                "[csr]<12>",
+                "[const]",
                 "101",
-                "[rd]",
+                "[t0]<5>",
                 "1110011"]
         },
 
         "csrrsi": {
             "opcode": "1110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[csr]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[csr]",
-                "[zimm]",
+                "[csr]<12>",
+                "[const]",
                 "110",
-                "[rd]",
+                "[t0]<5>",
                 "1110011"]
         },
 
         "csrrci": {
             "opcode": "1110011",
-            "arguments": [], // TODO
+            "arguments": ["[t0]", "[csr]", "[const]"],
             "execution": [], // TODO
             "translation": [
-                "[csr]",
-                "[zimm]",
+                "[csr]<12>",
+                "[const]",
                 "111",
-                "[rd]",
+                "[t0]<5>",
                 "1110011"]
         },
 
-        // TODO: ALU-Operations exist, yet these instructions are of the RV32M Standard Extension
-
         "mul": {
             "opcode": "0110011",
-            "arguments": [], // TODO RV32M
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO RV32M
             "translation": [
                 "0000001",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "000",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "mulh": {
             "opcode": "0110011",
-            "arguments": [], // TODO RV32M
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO RV32M
             "translation": [
                 "0000001",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "001",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "mulhsu": {
             "opcode": "0110011",
-            "arguments": [], // TODO RV32M
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO RV32M
             "translation": [
                 "0000001",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "010",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "mulhu": {
             "opcode": "0110011",
-            "arguments": [], // TODO RV32M
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO RV32M
             "translation": [
                 "0000001",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "011",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "div": {
             "opcode": "0110011",
-            "arguments": [], // TODO RV32M
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO RV32M
             "translation": [
                 "0000001",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "100",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "divu": {
             "opcode": "0110011",
-            "arguments": [], // TODO RV32M
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO RV32M
             "translation": [
                 "0000001",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "101",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "rem": {
             "opcode": "0110011",
-            "arguments": [], // TODO RV32M
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO RV32M
             "translation": [
                 "0000001",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "110",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         },
 
         "remu": {
             "opcode": "0110011",
-            "arguments": [], // TODO RV32M
+            "arguments": ["[t0]", "[t1]", "[t2]"],
             "execution": [], // TODO RV32M
             "translation": [
                 "0000001",
-                "[rs2]",
-                "[rs1]",
+                "[t2]<5>",
+                "[t1]<5>",
                 "111",
-                "[rd]",
+                "[t0]<5>",
                 "0110011"]
         }
 
