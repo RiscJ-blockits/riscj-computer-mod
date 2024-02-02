@@ -102,7 +102,6 @@ public class ClusterHandler implements IArchitectureCheckable {
                     markedBlocks.add(neighbourBlock);
                 }
             }
-            //neighboursToCombine.addAll(neighbourBlockControllers);
         } else {
             ClusterHandler neighbourCluster = null;
             for (IQueryableClusterController neighbourBlock: neighbourBlockControllers) {

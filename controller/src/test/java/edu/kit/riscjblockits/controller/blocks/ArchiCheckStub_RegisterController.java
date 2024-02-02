@@ -55,4 +55,6 @@ public class ArchiCheckStub_RegisterController implements IQueryableClusterContr
     public String getRegisterType() {
         return registerType;
     }
+
+    public void neighborUpdate() {}
 }

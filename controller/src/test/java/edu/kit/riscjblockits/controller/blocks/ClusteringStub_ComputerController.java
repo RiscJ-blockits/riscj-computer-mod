@@ -49,4 +49,6 @@ public class ClusteringStub_ComputerController implements IQueryableClusterContr
         return controllerType;
     }
 
+    public void neighborUpdate() {}
+
 }
