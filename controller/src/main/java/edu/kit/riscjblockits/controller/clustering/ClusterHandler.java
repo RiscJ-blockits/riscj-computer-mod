@@ -131,6 +131,7 @@ public class ClusterHandler implements IArchitectureCheckable {
             for (IQueryableClusterController neighbour: block.getNeighbours()) {
                 if (neighbour.getClusterHandler().equals(this)) {
                     busSystemModel.addEdge(block.getBlockPosition(), neighbour.getBlockPosition());
+                    block.neighborUpdate();
                 } else {
                     if (!newMarkedBlocks.contains(block)) {
                         newMarkedBlocks.add(block);
