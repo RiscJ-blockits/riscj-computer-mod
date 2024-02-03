@@ -76,6 +76,15 @@ public class BusBlock extends ConnectingComputerBlock {
     }
 
 
+    /**
+     * This method is called when the block is placed in the world.
+     * The Block initializes the creation of his Block Controller and updates the bus-block state.
+     * @param world The minecraft world the block is placed in.
+     * @param pos The position the block is placed at.
+     * @param state The Block-State of the block.
+     * @param placer The entity that placed the block.
+     * @param itemStack The itemstack that was used to place the block.
+     */
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
                          ItemStack itemStack) {
