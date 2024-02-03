@@ -190,41 +190,54 @@ class BusSystemModelTest {
 
     @Test
     void splitBusSystemModel() {
+
         system1.removeNode(new BlockPosition(0,0,0));
         system2.removeNode(new BlockPosition(0,0,1));
         system3.removeNode(new BlockPosition(0,1,0));
-        //Build result Graph
-        system1.addNode(new BlockPosition(0,0,0));
-        system1.addNode(new BlockPosition(0,0,1));
-        system1.addNode(new BlockPosition(0,1,0));
-        system1.addEdge(new BlockPosition(0,0,0), new BlockPosition(0,0,1));
-        system1.addEdge(new BlockPosition(0,0,0), new BlockPosition(0,1,0));
-        system1.addNode(new BlockPosition(1,0,0));
-        system1.addNode(new BlockPosition(1,0,1));
-        system1.addNode(new BlockPosition(1,1,0));
-        system1.addEdge(new BlockPosition(1,0,0), new BlockPosition(1,0,1));
-        system1.addEdge(new BlockPosition(1,0,0), new BlockPosition(1,1,0));
-        system1.addEdge(new BlockPosition(1,1,0), new BlockPosition(1,0,1));
-        system1.addNode(new BlockPosition(0,1,1));
-        system1.addEdge(new BlockPosition(0,1,1), new BlockPosition(0,0,1));
-        system1.addEdge(new BlockPosition(0,1,1), new BlockPosition(0,1,0));
-        system1.addEdge(new BlockPosition(0,1,1), new BlockPosition(1,0,0));
 
-        List<IQueryableBusSystem> results = system1.splitBusSystemModel(new BlockPosition(0,1,1));
+        List<BlockPosition> graph = new ArrayList<>();
+        graph.add(new BlockPosition(0,0,0));
+        graph.add(new BlockPosition(0,0,1));
+        graph.add(new BlockPosition(0,1,0));
+        graph.add(new BlockPosition(1,0,0));
+        graph.add(new BlockPosition(1,0,1));
+        graph.add(new BlockPosition(1,1,0));
+        graph.add(new BlockPosition(0,1,1));
+        for (BlockPosition pos : graph) {
+            pos.setBus(true);
+        }
+        //Build result Graph
+        system1.addNode(graph.get(0));
+        system1.addNode(graph.get(1));
+        system1.addNode(graph.get(2));
+        system1.addEdge(graph.get(0), graph.get(1));
+        system1.addEdge(graph.get(0), graph.get(2));
+        system1.addNode(graph.get(3));
+        system1.addNode(graph.get(4));
+        system1.addNode(graph.get(5));
+        system1.addEdge(graph.get(3), graph.get(4));
+        system1.addEdge(graph.get(3), graph.get(5));
+        system1.addEdge(graph.get(5), graph.get(4));
+        system1.addNode(graph.get(6));
+        system1.addEdge(graph.get(6), graph.get(1));
+        system1.addEdge(graph.get(6), graph.get(2));
+        system1.addEdge(graph.get(6), graph.get(3));
+
+        List<IQueryableBusSystem> results = system1.splitBusSystemModel(graph.get(6));
 
         //Build third Graph
-        system3.addNode(new BlockPosition(0,0,0));
-        system3.addNode(new BlockPosition(0,0,1));
-        system3.addNode(new BlockPosition(0,1,0));
-        system3.addEdge(new BlockPosition(0,0,0), new BlockPosition(0,0,1));
-        system3.addEdge(new BlockPosition(0,0,0), new BlockPosition(0,1,0));
+        system3.addNode(graph.get(0));
+        system3.addNode(graph.get(1));
+        system3.addNode(graph.get(2));
+        system3.addEdge(graph.get(0), graph.get(1));
+        system3.addEdge(graph.get(0), graph.get(2));
         //Build second Graph
-        system2.addNode(new BlockPosition(1,0,0));
-        system2.addNode(new BlockPosition(1,0,1));
-        system2.addNode(new BlockPosition(1,1,0));
-        system2.addEdge(new BlockPosition(1,0,0), new BlockPosition(1,0,1));
-        system2.addEdge(new BlockPosition(1,0,0), new BlockPosition(1,1,0));
-        system2.addEdge(new BlockPosition(1,1,0), new BlockPosition(1,0,1));
+        system2.addNode(graph.get(3));
+        system2.addNode(graph.get(4));
+        system2.addNode(graph.get(5));
+        system2.addEdge(graph.get(3), graph.get(4));
+        system2.addEdge(graph.get(3), graph.get(5));
+        system2.addEdge(graph.get(5), graph.get(4));
         List<IQueryableBusSystem> check = new ArrayList<>();
         check.add(system3);
         check.add(system2);

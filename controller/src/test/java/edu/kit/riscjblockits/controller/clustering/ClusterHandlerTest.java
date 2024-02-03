@@ -76,14 +76,22 @@ class ClusterHandlerTest {
 
     @Test
     void destroyWithoutSplit() {
-        ClusteringStub_ComputerController block1 = new ClusteringStub_ComputerController(new BlockPosition(0,0,0), BlockControllerType.BUS, blocks);
+        List<BlockPosition> graph = new ArrayList<>();
+        graph.add(new BlockPosition(0,0,0));
+        graph.add(new BlockPosition(0,0,1));
+        graph.add(new BlockPosition(0,1,0));
+        graph.add(new BlockPosition(0,1,1));
+        for (BlockPosition pos : graph) {
+            pos.setBus(true);
+        }
+        ClusteringStub_ComputerController block1 = new ClusteringStub_ComputerController(graph.get(0), BlockControllerType.BUS, blocks);
         blocks.add(block1);
-        ClusteringStub_ComputerController block2 = new ClusteringStub_ComputerController(new BlockPosition(0,0,1), BlockControllerType.BUS, blocks);
-        ClusteringStub_ComputerController block3 = new ClusteringStub_ComputerController(new BlockPosition(0,1,0), BlockControllerType.BUS, blocks);
+        ClusteringStub_ComputerController block2 = new ClusteringStub_ComputerController(graph.get(1), BlockControllerType.BUS, blocks);
+        ClusteringStub_ComputerController block3 = new ClusteringStub_ComputerController(graph.get(2), BlockControllerType.BUS, blocks);
         blocks = new ArrayList<>();
         blocks.add(block2);
         blocks.add(block3);
-        ClusteringStub_ComputerController block4 = new ClusteringStub_ComputerController(new BlockPosition(0,1,1), BlockControllerType.BUS, blocks);
+        ClusteringStub_ComputerController block4 = new ClusteringStub_ComputerController(graph.get(3), BlockControllerType.BUS, blocks);
 
         ClusterHandler cluster = block2.getClusterHandler();
         assertEquals(4, cluster.getBusBlocks().size());
