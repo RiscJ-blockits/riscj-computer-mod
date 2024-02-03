@@ -5,6 +5,8 @@
   "block.riscj_blockits.memory_block": "Memory",
   "block.riscj_blockits.control_unit_block": "Control Unit",
   "block.riscj_blockits.system_clock_block": "System Clock",
+  "block.riscj_blockits.redstone_input_block": "Redstone Input",
+  "block.riscj_blockits.redstone_output_block": "Redstone Output",
   "itemGroup.riscj_blockits.computer_components": "Computer Items",
 
   "programming_pretext": "This could be your code"

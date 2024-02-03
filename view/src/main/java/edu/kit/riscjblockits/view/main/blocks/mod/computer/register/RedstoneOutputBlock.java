@@ -25,8 +25,8 @@ public class RedstoneOutputBlock extends RegisterBlock {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
                               BlockHitResult hit) {
-
-        return ActionResult.SUCCESS;
+        //we don't want to do anything when the block is right-clicked
+        return ActionResult.PASS;
     }
 
     @Override

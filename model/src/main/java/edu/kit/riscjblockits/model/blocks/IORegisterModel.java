@@ -16,5 +16,4 @@ public class IORegisterModel extends RegisterModel {
         setValue(Value.fromHex("08", 6));
     }
 
-
 }

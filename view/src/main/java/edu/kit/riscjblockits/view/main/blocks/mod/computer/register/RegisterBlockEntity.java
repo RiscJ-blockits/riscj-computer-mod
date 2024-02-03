@@ -68,6 +68,4 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
         return new RegisterScreenHandler(syncId, playerInventory, this);
     }
 
-
-    
 }

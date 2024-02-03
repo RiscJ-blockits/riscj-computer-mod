@@ -33,20 +33,16 @@ public class RedstoneOutputBlockEntity extends ComputerBlockEntity {
     @Override
     public void updateUI() {
         super.updateUI();
-        if (getModel() == null || world == null) return;
-        //ToDo only update on unqueried state change
+        if (getModel() == null || world == null || !getModel().hasUnqueriedStateChange()) return;
         String powerString = ((IDataStringEntry)((IDataContainer) getModel().getData()).get(DataConstants.REGISTER_VALUE)).getContent();
-        int newPower = power;
         try {
-            newPower = Integer.parseInt(powerString);
-            newPower = Math.max(Math.min(newPower, 15), 0);
+            power = Integer.parseInt(powerString);
+            power = Math.max(Math.min(power, 15), 0);
         } catch (NumberFormatException e) {
             return;
         }
-        if (newPower != power) {
-            power = newPower;
-            world.scheduleBlockTick(pos, getCachedState().getBlock(), 0, TickPriority.byIndex(1));
-        }
+        world.scheduleBlockTick(pos, getCachedState().getBlock(), 0, TickPriority.byIndex(1));      //update the block
+        getModel().onStateQuery();
     }
 
 }
