@@ -20,6 +20,12 @@ import net.minecraft.screen.slot.Slot;
 import java.util.ArrayList;
 import java.util.List;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_ALU;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_CLOCK;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_CONTROL_UNIT;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_MEMORY;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_REGISTERS;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_MISSING_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
@@ -102,12 +108,72 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
 
     /**
      * Stub for getting the Blocks needed/missing for the Architecture depending on the given key.
-     * @param key The key deciding which data to get.
      * @return
      */
-    public List<String> getStructure(String key){
+    public List[] getStructure(){
         //TODO implement
-        return new ArrayList<String> ();
+        List<String> listFound = new ArrayList<>();
+        List<String> listMissing = new ArrayList<>();
+        NbtCompound nbt = getBlockEntity().createNbt();
+        if (!nbt.contains(MOD_DATA)) {
+            return null;
+        }
+        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
+        if (!data.isContainer()) {
+            return null;
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals(CONTROL_CLUSTERING)) {
+                IDataContainer clusteringData = (IDataContainer) ((IDataContainer) data).get(CONTROL_CLUSTERING);
+                for (String s2 : clusteringData.getKeys()) {
+                    switch (s2) {
+                        //ToDo reformat ugly code
+                        case CLUSTERING_MISSING_REGISTERS:
+                            listMissing.addAll(List.of(((IDataStringEntry) clusteringData.get(s2)).getContent().split(" ")));
+                            break;
+                        case CLUSTERING_FOUND_REGISTERS:
+                            listFound.addAll(List.of(((IDataStringEntry) clusteringData.get(s2)).getContent().split(" ")));
+                            break;
+                        case CLUSTERING_FOUND_CONTROL_UNIT:
+                            String found = ((IDataStringEntry) clusteringData.get(s2)).getContent();
+                            if (found.equals("1")) {
+                                listFound.add("ControlUnit");
+                            } else {
+                                listMissing.add("ControlUnit");
+                            }
+                            break;
+                        case CLUSTERING_FOUND_ALU:
+                            String foundALU = ((IDataStringEntry) clusteringData.get(s2)).getContent();
+                            if (foundALU.equals("1")) {
+                                listFound.add("ALU");
+                            } else {
+                                listMissing.add("ALU");
+                            }
+                            break;
+                        case CLUSTERING_FOUND_MEMORY:
+                            String foundMemory = ((IDataStringEntry) clusteringData.get(s2)).getContent();
+                            if (foundMemory.equals("1")) {
+                                listFound.add("Memory");
+                            } else {
+                                listMissing.add("Memory");
+                            }
+                            break;
+                        case CLUSTERING_FOUND_CLOCK:
+                            String foundClock = ((IDataStringEntry) clusteringData.get(s2)).getContent();
+                            if (foundClock.equals("1")) {
+                                listFound.add("Clock");
+                            } else {
+                                listMissing.add("Clock");
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                System.out.println("ClusteringData: " + clusteringData);
+            }
+        }
+        return new List[]{listMissing, listFound};
     }
 
 }

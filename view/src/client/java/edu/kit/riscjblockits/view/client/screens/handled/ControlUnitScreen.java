@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureEntry;
 import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureListWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.MIMAExWidget;
-import edu.kit.riscjblockits.view.client.screens.widgets.RegSelectWidget;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitScreenHandler;
 import net.minecraft.client.gui.DrawContext;
@@ -98,10 +97,13 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     public List<ArchitectureEntry> fetchEntries() {
         BlockPos pos = this.handler.getBlockEntity().getPos();
         List<ArchitectureEntry> entries = new ArrayList<>();
-        for (String component: this.handler.getStructure("missing")) { //TODO fix key, cooperate with Leon
+        List[] data = this.handler.getStructure();
+        List<String> listFound = data[0];
+        List<String> listMissing = data[1];
+        for (String component: listMissing) {
             entries.add(new ArchitectureEntry(component, true));
         }
-        for (String component: this.handler.getStructure("found")) {   //TODO fix key, cooperate with Leon
+        for (String component: listFound) {
             entries.add(new ArchitectureEntry(component, false));
         }
         return entries;
