@@ -41,7 +41,7 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         super.init();
         this.narrow = this.width < 379;
         if(isMima) {
-            this.mimaExWidget.initalize(this.width, this.height - backgroundHeight, this.narrow);
+            this.mimaExWidget.initialize(this.width, this.height - backgroundHeight, this.narrow);
 
             this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, MIMAExWidget.BUTTON_TEXTURES, button -> {
                 this.mimaExWidget.toggleOpen();
