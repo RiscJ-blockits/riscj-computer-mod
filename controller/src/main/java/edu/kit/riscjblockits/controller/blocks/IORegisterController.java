@@ -5,10 +5,16 @@ import edu.kit.riscjblockits.model.blocks.IORegisterModel;
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
+/**
+ * The IORegisterController class is a subclass of RegisterController
+ * that represents a register block with input or output functionality.
+ */
 public class IORegisterController extends RegisterController {
 
-    private boolean isInput;
-    private final String type;
+    /**
+     * Whether the register is an input or an output device.
+     */
+    private final boolean isInput;
 
     /**
      * Creates a new RegisterController.
@@ -17,26 +23,35 @@ public class IORegisterController extends RegisterController {
     public IORegisterController(IConnectableComputerBlockEntity blockEntity, boolean isInput, String type) {
         super(blockEntity);
         this.isInput = isInput;
-        this.type = type;
         ((IORegisterModel) getModel()).setRegisterType(type);
     }
 
+    /**
+     * Creates a new block model for the IORegisterController.
+     * @return The created block model.
+     */
     @Override
     protected IControllerQueryableBlockModel createBlockModel() {
         return new IORegisterModel(isInput);
     }
 
+    /**
+     * @return The value that is stored in the register if it is an input device.
+     * Else returns an empty value.
+     */
+    @Override
     public Value getValue() {
+        if (!isInput) return new Value();
         return ((RegisterModel)getModel()).getValue();
     }
 
     /**
-     * Setter for the value inside the register.
-     * @param value The new value that should be stored in the register.
+     * @param value The new value that should be stored in the register if it is an output device.
      */
+    @Override
     public void setNewValue(Value value) {
+        if (isInput) return;
         ((RegisterModel)getModel()).setValue(value);
     }
-
 
 }
