@@ -33,6 +33,9 @@ public abstract class ExtendableWidget implements Drawable, Element, Selectable 
     }
 
     protected void setOpen(boolean opened) {
+        if (opened) {
+            this.reset();
+        }
         this.open = opened;
     }
 
@@ -43,6 +46,12 @@ public abstract class ExtendableWidget implements Drawable, Element, Selectable 
     public int findLeftEdge(int width, int backgroundWidth) {
         int i = this.open && !this.narrow ? 177 + (width - backgroundWidth - 200) / 2 : (width - backgroundWidth) / 2;
         return i;
+    }
+
+    protected void reset() {
+        this.leftOffset = this.narrow ? 0 : 86;
+        int i = (this.parentWidth - 147) / 2 - this.leftOffset;
+        int j = (this.parentHeight - 166) / 2 ;
     }
 
     @Override

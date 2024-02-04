@@ -72,16 +72,8 @@ public class RegSelectWidget extends ExtendableWidget{
     }
 
 
-
     @Override
-    protected void setOpen(boolean opened) {
-        if (opened) {
-            this.reset();
-        }
-        this.open = opened;
-    }
-
-    private void reset() {
+    protected void reset() {
         this.leftOffset = this.narrow ? 0 : 86;
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
         int j = (this.parentHeight - 166) / 2 ;
