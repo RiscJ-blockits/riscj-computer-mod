@@ -1,6 +1,8 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import edu.kit.riscjblockits.model.blocks.RegisterModel;
+import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureEntry;
 import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureListWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.MIMAExWidget;
@@ -98,12 +100,16 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         BlockPos pos = this.handler.getBlockEntity().getPos();
         List<ArchitectureEntry> entries = new ArrayList<>();
         List[] data = this.handler.getStructure();
-        List<String> listFound = data[0];
-        List<String> listMissing = data[1];
+        List<String> listFound = data[1];
+        List<String> listMissing = data[0];
         for (String component: listMissing) {
             entries.add(new ArchitectureEntry(component, true));
         }
         for (String component: listFound) {
+
+            if(component.equals(RegisterModel.UNASSIGNED_REGISTER)){
+                continue;
+            }
             entries.add(new ArchitectureEntry(component, false));
         }
         return entries;
