@@ -190,7 +190,6 @@ class BusSystemModelTest {
 
     @Test
     void splitBusSystemModel() {
-
         system1.removeNode(new BlockPosition(0,0,0));
         system2.removeNode(new BlockPosition(0,0,1));
         system3.removeNode(new BlockPosition(0,1,0));
@@ -244,5 +243,63 @@ class BusSystemModelTest {
 
         assertEquals(results.get(0).getBusGraph(), system3.getBusGraph());
         assertEquals(results.get(1).getBusGraph(), system2.getBusGraph());
+    }
+
+    @Test
+    void splitBusSystemModelWithNonBusBlocks() {
+        system1.removeNode(new BlockPosition(0,0,0));
+        system2.removeNode(new BlockPosition(0,0,1));
+        system3.removeNode(new BlockPosition(0,1,0));
+
+        List<BlockPosition> graph = new ArrayList<>();
+        graph.add(new BlockPosition(0,0,0));
+        graph.add(new BlockPosition(0,0,1));
+        graph.add(new BlockPosition(0,1,0));
+        graph.add(new BlockPosition(1,0,0));
+        graph.add(new BlockPosition(1,0,1));
+        graph.add(new BlockPosition(1,1,0));
+        graph.add(new BlockPosition(0,1,1));
+        for (BlockPosition pos : graph) {
+            pos.setBus(true);
+        }
+        graph.get(0).setBus(false);
+        graph.get(4).setBus(false);
+        //Build result Graph
+        system1.addNode(graph.get(0));
+        system1.addNode(graph.get(1));
+        system1.addNode(graph.get(2));
+        system1.addEdge(graph.get(0), graph.get(1));
+        system1.addEdge(graph.get(0), graph.get(2));
+        system1.addNode(graph.get(3));
+        system1.addNode(graph.get(4));
+        system1.addNode(graph.get(5));
+        system1.addEdge(graph.get(3), graph.get(4));
+        system1.addEdge(graph.get(3), graph.get(5));
+        system1.addEdge(graph.get(5), graph.get(4));
+        system1.addNode(graph.get(6));
+        system1.addEdge(graph.get(6), graph.get(1));
+        system1.addEdge(graph.get(6), graph.get(2));
+        system1.addEdge(graph.get(6), graph.get(3));
+
+        List<IQueryableBusSystem> results = system1.splitBusSystemModel(graph.get(6));
+        //Building graph to compare
+        system2.addNode(graph.get(3));
+        system2.addNode(graph.get(4));
+        system2.addNode(graph.get(5));
+        system2.addEdge(graph.get(3), graph.get(5));
+        system2.addEdge(graph.get(3), graph.get(4));
+        system2.addEdge(graph.get(5), graph.get(4));
+
+        assertEquals(results.get(2).getBusGraph(), system2.getBusGraph());
+
+        system3.addNode(graph.get(0));
+        system3.addNode(graph.get(1));
+        system3.addEdge(graph.get(0), graph.get(1));
+
+        assertEquals(results.get(0).getBusGraph(), system3.getBusGraph());
+
+        system3 = new BusSystemModel(graph.get(2));
+
+        assertEquals(results.get(1).getBusGraph(), system3.getBusGraph());
     }
 }

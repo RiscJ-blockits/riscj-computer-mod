@@ -10,11 +10,14 @@ public class ClusteringStub_ComputerController implements IQueryableClusterContr
     private final BlockControllerType controllerType;
     private ClusterHandler clusterHandler;
     private final BlockPosition pos;
-    private final List<IQueryableClusterController> neighbours;
+    private List<IQueryableClusterController> neighbours;
 
     public ClusteringStub_ComputerController(BlockPosition position, BlockControllerType type,
                                              List<IQueryableClusterController> n) {
         pos = position;
+        if (type == BlockControllerType.BUS) {
+            pos.setBus(true);
+        }
         controllerType = type;
         neighbours = n;
         new ClusterHandler(this);
@@ -50,5 +53,13 @@ public class ClusteringStub_ComputerController implements IQueryableClusterContr
     }
 
     public void neighborUpdate() {}
+
+    public void setNeighbours(List<IQueryableClusterController> neighbours) {
+        this.neighbours = neighbours;
+    }
+
+    public void addNeighbour(IQueryableClusterController neighbour) {
+        neighbours.add(neighbour);
+    }
 
 }
