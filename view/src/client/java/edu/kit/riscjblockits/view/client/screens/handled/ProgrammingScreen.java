@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.EditBoxWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
@@ -30,6 +31,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/programming_block_gui.png");
     private static final Identifier ASSEMBLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/write_button_unpressed.png");
 
+    private IconButtonWidget instructionSetButton;
 
     /**
      * The edit box widget that is used to enter the code.
@@ -69,13 +71,12 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     protected void init() {
         super.init();
         // add the edit box widget to the screen
-        editBox = new EditBoxWidget(textRenderer, this.x + 7, this.y + 17, 137, 93, Text.translatable("programming_pretext"), Text.of("Code"));
+        editBox = new EditBoxWidget(textRenderer, this.x + 8, this.y + 18, 129, 91, Text.translatable("programming_pretext"), Text.of("Code"));
         addDrawableChild(editBox);
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
 
-
-        // add the button to the screen
+        // add the assemble button to the screen
         assembleButton = new IconButtonWidget(
                 this.x + 151, this.y + 63,
                 15, 25,
@@ -87,6 +88,16 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         );
 
         addDrawableChild(assembleButton);
+
+        instructionSetButton = new IconButtonWidget(
+                this.x + 12, this.y + 114,
+                13, 13,
+                button -> {
+
+                },
+                ASSEMBLE_BUTTON_TEXTURE
+        );
+
         handler.enableSyncing();
     }
 
