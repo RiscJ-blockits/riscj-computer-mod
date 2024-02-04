@@ -80,7 +80,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
 
-        instructionsWidget.initialize(this.width, this.height - backgroundHeight, this.narrow);
+        instructionsWidget.initialize(this.width, this.height - backgroundHeight, this.client, this.narrow, this.handler);
 
         // add the assemble button to the screen
         assembleButton = new IconButtonWidget(

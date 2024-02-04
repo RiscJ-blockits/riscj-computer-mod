@@ -12,6 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * This class provides functionality to sync the programming screen between client and server.
@@ -130,5 +133,12 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
         return blockEntity.getCode();
     }
 
-
+    /**
+     * Get the Instructions offered by the instruction set.
+     * @return
+     */
+    public List<String[]> getInstructions() {
+        //TODO implement @Nils or @Annika
+        return new ArrayList<>();
+    }
 }

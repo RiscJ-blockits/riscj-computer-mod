@@ -18,11 +18,10 @@ public abstract class ExtendableWidget implements Drawable, Element, Selectable 
     protected boolean narrow;
     protected int leftOffset;
 
-
-
     public void initialize(int parentWidth, int parentHeight, boolean narrow, Identifier texture) {
         this.parentWidth = parentWidth;
         this.parentHeight = parentHeight;
+
         this.narrow = narrow;
         this.leftOffset = this.narrow ? 0 : 86;
         this.texture = texture;
@@ -50,8 +49,6 @@ public abstract class ExtendableWidget implements Drawable, Element, Selectable 
 
     protected void reset() {
         this.leftOffset = this.narrow ? 0 : 86;
-        int i = (this.parentWidth - 147) / 2 - this.leftOffset;
-        int j = (this.parentHeight - 166) / 2 ;
     }
 
     @Override
