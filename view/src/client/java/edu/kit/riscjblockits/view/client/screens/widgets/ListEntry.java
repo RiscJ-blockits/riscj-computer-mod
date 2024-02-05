@@ -68,4 +68,9 @@ public abstract class ListEntry implements Widget, Drawable, Element {
     public boolean isFocused() {
         return false;
     }
+
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return mouseX >= x && mouseX <= x + getWidth() && mouseY >= y && mouseY <= y + getHeight();
+    }
 }

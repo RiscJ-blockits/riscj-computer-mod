@@ -1,12 +1,12 @@
 package edu.kit.riscjblockits.view.client.screens.widgets;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.gui.ScreenRect;
+import net.minecraft.client.gui.Selectable;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.Identifier;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 
-public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawable, ParentElement {
+public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawable, ParentElement, Selectable {
 
     private static final Identifier SCROLLER_TEXTURE = new Identifier("container/creative_inventory/scroller");
     private static final Identifier SCROLLER_DISABLED_TEXTURE = new Identifier("container/creative_inventory/scroller_disabled");
@@ -198,4 +198,13 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
         return isFocused;
     }
 
+    @Override
+    public void appendNarrations(NarrationMessageBuilder builder) {
+
+    }
+
+    @Override
+    public SelectionType getType() {
+        return SelectionType.NONE;
+    }
 }
