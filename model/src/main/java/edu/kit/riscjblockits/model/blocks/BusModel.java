@@ -60,4 +60,10 @@ public class BusModel extends BlockModel{
         this.belongsToSystem = belongsToSystem;
     }
 
+    @Override
+    public boolean getVisualisationState() {
+        if(this.belongsToSystem == null) return false;
+        return belongsToSystem.getActiveVisualization(getPosition());
+    }
+
 }

@@ -300,12 +300,16 @@ public class Executor implements IExecutor {
     }
 
     private void moveData(String from, String to) {
+
+        boolean visualizeableData = false;
+
         // only execute if from and to are not empty
         if(from != null && !from.isBlank() && to != null && !to.isBlank()) {
             Value movedValue;
             // from is a register --> load value from there
             if (registerControllerMap.containsKey(from)) {
                 movedValue = registerControllerMap.get(from).getValue();
+                visualizeableData = true;
             }
             // from is not a register --> extract value from binary constant
             else {
@@ -322,9 +326,11 @@ public class Executor implements IExecutor {
 
             registerControllerMap.get(to).setNewValue(movedValue);
             //FixMe from is sometimes just a long number
-            busSystem.setBusDataPath(registerControllerMap.get(from).getBlockPosition(), registerControllerMap.get(to).getBlockPosition(), movedValue);
-            registerControllerMap.get(from).activateVisualisation();
-            registerControllerMap.get(to).activateVisualisation();
+            if(visualizeableData) {
+                busSystem.setBusDataPath(registerControllerMap.get(from).getBlockPosition(), registerControllerMap.get(to).getBlockPosition(), movedValue);
+                registerControllerMap.get(from).activateVisualisation();
+                registerControllerMap.get(to).activateVisualisation();
+            }
         }
     }
 
