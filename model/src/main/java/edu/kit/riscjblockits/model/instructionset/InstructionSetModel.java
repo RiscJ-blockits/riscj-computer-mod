@@ -2,9 +2,7 @@ package edu.kit.riscjblockits.model.instructionset;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -347,5 +345,19 @@ InstructionSetModel implements IQueryableInstructionSetModel {
 
     public String getRegisterInitialValue(String key) {
         return instructionSetRegisters.getInitialValue(key);
+    }
+
+    /**
+     * Get the Instructions offered by the instruction set to present in the view.
+     * @return List of instructions.
+     */
+    public ArrayList<String[]> getPossibleInstructions() {
+        ArrayList<String[]> instructionList = new ArrayList<>();
+        for(String instructionKey : commandHashMap.keySet()) {
+            instructionList.add(new String[]{instructionKey,
+                    Arrays.stream(commandHashMap.get(instructionKey).getArguments()).reduce("", (a, b) -> a + ", " + b)});
+        }
+
+        return instructionList;
     }
 }

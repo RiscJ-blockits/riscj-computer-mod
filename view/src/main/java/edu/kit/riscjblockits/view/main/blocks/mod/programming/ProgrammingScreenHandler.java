@@ -1,19 +1,28 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.programming;
 
 import edu.kit.riscjblockits.controller.assembler.AssemblyException;
+import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
+import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
 
 
 /**
@@ -135,10 +144,29 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
 
     /**
      * Get the Instructions offered by the instruction set.
-     * @return
+     * @return ArrayList of String[] with the instructions
      */
     public List<String[]> getInstructions() {
         //TODO implement @Nils or @Annika
-        return new ArrayList<>();
+        if(inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
+            return new ArrayList<>();
+        }
+
+        NbtElement nbt = inventory.getStack(0).getOrCreateNbt().get(CONTROL_IST_ITEM);
+
+        if(nbt == null) {
+            return new ArrayList<>();
+        }
+
+        IDataElement instructionSetData = new NbtDataConverter(nbt).getData();
+
+        InstructionSetModel instructionSet;
+        try {
+            instructionSet = InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
+        } catch (UnsupportedEncodingException e) {
+            return new ArrayList<>();
+        }
+
+        return instructionSet.getPossibleInstructions();
     }
 }
