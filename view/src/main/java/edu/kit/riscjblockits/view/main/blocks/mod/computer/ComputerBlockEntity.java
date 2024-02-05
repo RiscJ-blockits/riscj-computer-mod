@@ -131,6 +131,13 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     }
 
     /**
+     * Update the block state of neighbourBusses.
+     */
+    public void neighborUpdate() {
+        world.getBlockState(pos).updateNeighbors(world, pos, 1);
+    }
+
+    /**
      * Gets the Text that should be displayed when the player is looking at this block.
      * @return The Text that should be displayed when the player is looking at this block.
      */

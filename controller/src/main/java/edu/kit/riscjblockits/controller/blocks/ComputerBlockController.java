@@ -126,4 +126,11 @@ public abstract class ComputerBlockController extends BlockController implements
      */
     public void tick() {};
 
+    /**
+     * Update the block state of neighbourBusses.
+     */
+    public void neighborUpdate() {
+        blockEntity.neighborUpdate();
+    }
+
 }

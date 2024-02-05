@@ -90,6 +90,15 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
+     * returns the neighbors of a node
+     * @param blockPosition is the node
+     * @return the neighbors of the node
+     */
+    public List<BlockPosition> getBusSystemNeighbors(BlockPosition blockPosition) {
+        return adjPositions.get(blockPosition);
+    }
+
+    /**
      * returns the present data on the busSystem
      * @return the present data on the busSystem
      */
@@ -123,9 +132,21 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      * @param pos2 is the second node of the edge
      */
     public void addEdge(BlockPosition pos1, BlockPosition pos2) {
-        if (isNode(pos1) && isNode(pos2)) {
+        if (isNode(pos1) && isNode(pos2) && !adjPositions.get(pos1).contains(pos2)) {
             adjPositions.get(pos1).add(pos2);
             adjPositions.get(pos2).add(pos1);
+        }
+    }
+
+    /**
+     * removes an edge between two nodes
+     * @param pos1 is the first node of the edge
+     * @param pos2 is the second node of the edge
+     */
+    public void removeEdge(BlockPosition pos1, BlockPosition pos2) {
+        if (isNode(pos1) && isNode(pos2)) {
+            adjPositions.get(pos1).remove(pos2);
+            adjPositions.get(pos2).remove(pos1);
         }
     }
 
@@ -134,7 +155,10 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      * @param pos1 is the node to remove
      */
     public void removeNode(BlockPosition pos1) {
-        for(BlockPosition pos2: adjPositions.get(pos1)){
+        if (adjPositions.get(pos1) == null) {
+            return;
+        }
+        for(BlockPosition pos2: adjPositions.get(pos1)) {
             adjPositions.get(pos2).remove(pos1);
         }
         adjPositions.remove(pos1);
@@ -155,7 +179,6 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      *                  There can be other connected nodes.
      * @param busSystemToCombine The Bussystem that is merged into the current Bussystem.
      */
-
     public void combineGraph(BlockPosition ownNode, BlockPosition newNode, IQueryableBusSystem busSystemToCombine) {
         if (!busSystemToCombine.equals(this)) {
             adjPositions.putAll(busSystemToCombine.getBusGraph());
@@ -200,13 +223,14 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
 
     /**
      * UNTESTED
-     * BFS to find all connected nodes.
+     * BFS to find all connected nodes. Only uses Bus-Nodes in BFS, all other nodes are end-nodes.
      * MOSTLY GENERATED WITH GITHUB COPILOT.
      * @param start The start node.
      * @return Map of all connected nodes.
      */
     private Map<BlockPosition, List<BlockPosition>> bfs(BlockPosition start) {
         Map<BlockPosition, List<BlockPosition>> discovered = new HashMap<>();
+        List<BlockPosition> noBus = new ArrayList<>();
         Queue<BlockPosition> queue = new LinkedList<>();
         queue.add(start);
         while (!queue.isEmpty()) {
@@ -214,9 +238,24 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
             if (!discovered.containsKey(current)) {
                 discovered.put(current, adjPositions.get(current));
                 for (BlockPosition neighbor : adjPositions.get(current)) {
-                    queue.add(neighbor);
+                    if (neighbor.isBus()) {
+                        queue.add(neighbor);
+                    } else {
+                        discovered.put(neighbor, new ArrayList<>());
+                        noBus.add(neighbor);
+                    }
                 }
             }
+        }
+        for (BlockPosition blockPosition : noBus) {
+            if (adjPositions.get(blockPosition) != null)
+                for (BlockPosition neighbor : adjPositions.get(blockPosition)) {
+                    if (discovered.containsKey(neighbor)) {
+                        discovered.get(blockPosition).add(neighbor);
+                        discovered.get(neighbor).add(blockPosition);
+                    }
+                }
+            removeNode(blockPosition);
         }
         return discovered;
     }
