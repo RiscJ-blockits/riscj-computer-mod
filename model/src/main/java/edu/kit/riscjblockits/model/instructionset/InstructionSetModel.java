@@ -353,6 +353,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
      */
     public ArrayList<String[]> getPossibleInstructions() {
         ArrayList<String[]> instructionList = new ArrayList<>();
+        if(commandHashMap == null) return instructionList;
         for(String instructionKey : commandHashMap.keySet()) {
             instructionList.add(new String[]{instructionKey,
                     Arrays.stream(commandHashMap.get(instructionKey).getArguments()).reduce("", (a, b) -> a + ", " + b)});
