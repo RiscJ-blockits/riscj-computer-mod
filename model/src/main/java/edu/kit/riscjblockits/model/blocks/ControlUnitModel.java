@@ -63,7 +63,7 @@ public class ControlUnitModel extends BlockModel{
         } else {
             cuData.set(CONTROL_ITEM_PRESENT, new DataStringEntry("false"));
         }
-        setUnqueriedStateChange(false);
+        //setUnqueriedStateChange(false);
         return cuData;
     }
 

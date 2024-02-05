@@ -55,7 +55,7 @@ public class SystemClockController extends ComputerBlockController {
      */
     public void setSimulationTimeHandler(SimulationTimeHandler simulationTimeHandler) {
         this.simulationTimeHandler = simulationTimeHandler;
-        simStarted = true;
+        simStarted = simulationTimeHandler != null;
     }
 
     /**

@@ -63,11 +63,9 @@ public class Assembler {
     public Assembler(IQueryableInstructionSetModel instructionSetModel) {
         labels = new HashMap<>();
         this.instructionSetModel = instructionSetModel;
-        int memoryAddressSize = instructionSetModel.getMemoryAddressSize();
-        int memoryWordSize = instructionSetModel.getMemoryWordSize();
+        calculatedMemoryAddressSize = instructionSetModel.getMemoryAddressSize();
+        calculatedMemoryWordSize = instructionSetModel.getMemoryWordSize();
 
-        calculatedMemoryAddressSize = memoryAddressSize / 8 + (memoryAddressSize % 8 > 0 ? 1 : 0);
-        calculatedMemoryWordSize = memoryWordSize / 8 + (memoryWordSize % 8 > 0 ? 1 : 0);
 
         memory = new Memory(
             calculatedMemoryAddressSize,
@@ -139,6 +137,7 @@ public class Assembler {
             // increment memory address
             currentAddress = currentAddress.getIncrementedValue();
         }
+
     }
 
 
@@ -198,6 +197,9 @@ public class Assembler {
             String label = labelMatcher.group("label");
             if (label != null) {
                 labels.put(label, localCurrentAddress);
+                if (instructionSetModel.getProgramStartLabel().equals(label)) {
+                    memory.setInitialProgramCounter(localCurrentAddress);
+                }
             }
             // increment memory address
             localCurrentAddress = localCurrentAddress.getIncrementedValue();

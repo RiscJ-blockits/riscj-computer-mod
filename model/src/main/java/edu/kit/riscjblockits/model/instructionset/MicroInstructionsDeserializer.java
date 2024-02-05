@@ -47,13 +47,13 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
      */
     private MicroInstruction parseJsonArray(JsonArray jsonArray) {
         int size = jsonArray.size();
-        if(size == 4){
+        if(size == 5){
             return parseDataMovementInstruction(jsonArray);
         }
-        else if(size == 5) {
+        else if(size == 9) {
             return parseConditionedInstruction(jsonArray);
         }
-        else if(size == 6) {
+        else if(size == 7) {
             return parseAluInstruction(jsonArray);
         }
         return null;
@@ -67,10 +67,12 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
     private DataMovementInstruction parseDataMovementInstruction(JsonArray jsonArray) {
 
         List<JsonElement> elementList = jsonArray.asList();
-        String[] from = new String[]{elementList.get(1).toString()};
-        String to = elementList.get(0).toString();
-        String memoryFlag = elementList.get(2).toString();
-        MemoryInstruction memoryInstruction = parseMemoryInstruction(elementList.get(3), memoryFlag);
+        String[] from = new String[]{elementList.get(1).toString().replace("\"", "")};
+        String to = elementList.get(0).toString().replace("\"", "");
+        String memoryFlag = elementList.get(2).toString().replace("\"", "");
+        MemoryInstruction memoryInstruction = parseMemoryInstruction(
+                elementList.get(3).toString().replace("\"", ""),
+                elementList.get(4).toString().replace("\"", ""), memoryFlag);
 
 
         return new DataMovementInstruction(from, to, memoryFlag, memoryInstruction);
@@ -78,18 +80,21 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
 
     /**
      * Generate MemoryInstruction from json of form [destination, origin]
-     * @param jsonElement ["[destination]", "[origin]"]
+     * @param to destination
+     * @param from origin
+     * @param flag flag
      * @return MemoryInstruction
      */
-    private MemoryInstruction parseMemoryInstruction(JsonElement jsonElement, String flag) {
-        if(jsonElement.isJsonArray()){
-            JsonArray asJsonArray = jsonElement.getAsJsonArray();
-
-            String[] from = new String[]{asJsonArray.get(1).toString()};
-            String to = asJsonArray.get(0).toString();
-            return new MemoryInstruction(from, to, flag);
+    private MemoryInstruction parseMemoryInstruction(String to, String from, String flag) {
+        
+        // check if all arguments (except flag) are empty --> no memory instruction
+        if (to.isEmpty() && from.isEmpty()) {
+            return null;
+        } else if (to.isEmpty() || from.isEmpty()) {
+            throw new JsonParseException("Invalid Memory Instruction, only one argument is set");
         }
-        return null;
+
+        return new MemoryInstruction(new String[]{from}, to, flag);
     }
 
     /**
@@ -102,11 +107,13 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
     private AluInstruction parseAluInstruction(JsonArray jsonArray) {
 
         List<JsonElement> elementList = jsonArray.asList();
-        String to = elementList.get(1).toString();
-        String[] from = new String[]{elementList.get(2).toString(), elementList.get(3).toString()};
-        String memoryFlag = elementList.get(4).toString();
-        MemoryInstruction memoryInstruction = parseMemoryInstruction(elementList.get(5), memoryFlag);
-        String action = elementList.get(0).toString();
+        String to = elementList.get(1).toString().replace("\"", "");
+        String[] from = new String[]{elementList.get(2).toString().replace("\"", ""), elementList.get(3).toString().replace("\"", "")};
+        String memoryFlag = elementList.get(4).toString().replace("\"", "");
+        MemoryInstruction memoryInstruction = parseMemoryInstruction(
+                elementList.get(5).toString().replace("\"", ""),
+                elementList.get(6).toString().replace("\"", ""), memoryFlag);
+        String action = elementList.get(0).toString().replace("\"", "");
 
 
         return new AluInstruction(from, to, memoryFlag, memoryInstruction, action);
@@ -114,45 +121,29 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
 
     /**
      * Generate ConditionedInstruction from json of form
-     * ["IF", ["[comparator1]", "[comparator2]", "comparing_operation"], [then_to, then_from], "memory_flag", "storage_operation"]
-     * @param jsonArray ["IF", ["[comparator1]", "[comparator2]", "comparing_operation"], [then_to, then_from], "memory_flag", "storage_operation"]
+     * ["IF", "[comparator1]", "[comparator2]", "comparing_operation", then_to, then_from, "memory_flag", "storage_operation"]
+     * @param jsonArray ["IF", "[comparator1]", "[comparator2]", "comparing_operation", then_to, then_from, "memory_flag", "storage_operation"]
      * @return ConditionedInstruction
      */
     private ConditionedInstruction parseConditionedInstruction(JsonArray jsonArray) {
 
         List<JsonElement> elementList = jsonArray.asList();
-        JsonElement condition =  elementList.get(1);
-        if(condition.isJsonArray()) {
-            InstructionCondition instructionCondition = parseInstructionCondition(condition.getAsJsonArray());
-            JsonElement thenInstruction = elementList.get(2);
+        String comparator1 =  elementList.get(1).toString().replace("\"", "");
+        String comparator2 = elementList.get(2).toString().replace("\"", "");
+        String comparingOperation = elementList.get(3).toString().replace("\"", "");
 
-            if(!thenInstruction.isJsonArray()) {
-                return null;
-            }
+        InstructionCondition instructionCondition = new InstructionCondition(comparingOperation, comparator1, comparator2);
 
-            JsonArray thenInstructionArray = thenInstruction.getAsJsonArray();
-            String thenTo = thenInstructionArray.get(0).toString();
-            String[] thenFrom = new String[]{thenInstructionArray.get(1).toString()};
-            String memoryFlag = elementList.get(3).toString();
-            MemoryInstruction memoryInstruction = parseMemoryInstruction(elementList.get(4), memoryFlag);
+        String thenTo = elementList.get(4).toString().replace("\"", "");
+        String[] thenFrom = new String[]{elementList.get(5).toString().replace("\"", "")};
+        String memoryFlag = elementList.get(6).toString().replace("\"", "");
+        MemoryInstruction memoryInstruction = parseMemoryInstruction(
+                elementList.get(7).toString().replace("\"", ""),
+                elementList.get(8).toString().replace("\"", ""),
+                memoryFlag);
 
-            return new ConditionedInstruction(thenFrom, thenTo, memoryFlag, memoryInstruction, instructionCondition);
-        }
-        return null;
+        return new ConditionedInstruction(thenFrom, thenTo, memoryFlag, memoryInstruction, instructionCondition);
 
-    }
 
-    /**
-     * Generate InstructionCondition from json of form ["comparator1", "comparator2", "comparing_operation"]
-     * @param jsonArray ["comparator1", "comparator2", "comparing_operation"]
-     * @return InstructionCondition
-     */
-    private InstructionCondition parseInstructionCondition(JsonArray jsonArray){
-
-        String comparator1 = jsonArray.get(0).toString();
-        String comparator2 = jsonArray.get(1).toString();
-        String comparingOperation = jsonArray.get(2).toString();
-
-        return new InstructionCondition(comparingOperation, comparator1, comparator2);
     }
 }
