@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
+import edu.kit.riscjblockits.view.client.screens.widgets.InstructionsWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
@@ -9,6 +10,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.EditBoxWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
@@ -29,7 +31,9 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/programming_block_gui.png");
     private static final Identifier ASSEMBLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/write_button_unpressed.png");
+    private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/instructions_button.png");
 
+    private final InstructionsWidget instructionsWidget = new InstructionsWidget();
 
     /**
      * The edit box widget that is used to enter the code.
@@ -42,6 +46,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     private IconButtonWidget assembleButton;
 
     private boolean codeHasChanged = false;
+    private boolean narrow;
 
 
     /**
@@ -68,14 +73,16 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     @Override
     protected void init() {
         super.init();
+        this.narrow = this.width < 379;
         // add the edit box widget to the screen
-        editBox = new EditBoxWidget(textRenderer, this.x + 7, this.y + 17, 137, 93, Text.translatable("programming_pretext"), Text.of("Code"));
+        editBox = new EditBoxWidget(textRenderer, this.x + 8, this.y + 18, 129, 91, Text.translatable("programming_pretext"), Text.of("Code"));
         addDrawableChild(editBox);
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
 
+        instructionsWidget.initialize(this.width, this.height - backgroundHeight, this.client, this.narrow, this.handler);
 
-        // add the button to the screen
+        // add the assemble button to the screen
         assembleButton = new IconButtonWidget(
                 this.x + 151, this.y + 63,
                 15, 25,
@@ -87,12 +94,34 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         );
 
         addDrawableChild(assembleButton);
+
+        IconButtonWidget instructionSetButton = new IconButtonWidget(
+            this.x + 8, this.y + 111,
+            13, 13,
+            button -> {
+                instructionsWidget.toggleOpen();
+                this.x = this.instructionsWidget.findLeftEdge(this.width, this.backgroundWidth);
+                button.setPosition(this.x + 8, this.y + 111);
+                this.editBox.setPosition(this.x + 8, this.y + 18);
+                this.assembleButton.setPosition(this.x + 151, this.y + 63);
+            },
+            INSTRUCTIONS_BUTTON_TEXTURE
+
+        );
+
+        addDrawableChild(instructionSetButton);
+
         handler.enableSyncing();
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+        if(this.instructionsWidget.isOpen() && this.narrow) {
+            this.renderBackground(context, mouseX, mouseY, delta);
+        } else {
+            super.render(context, mouseX, mouseY, delta);
+        }
+        instructionsWidget.render(context, mouseX, mouseY, delta);
 
         // render the tooltip of the button if the mouse is over it
         drawMouseoverTooltip(context, mouseX, mouseY);
@@ -110,7 +139,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - backgroundWidth) / 2;
+        int x = this.x;
         int y = (height - backgroundHeight) / 2;
 
         context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);

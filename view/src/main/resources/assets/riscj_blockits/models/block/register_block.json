@@ -4,9 +4,9 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "riscj_blockits:block/register_block",
+		"0": "riscj_blockits:block/register_block_active",
 		"1": "riscj_blockits:block/glass",
-		"particle": "riscj_blockits:block/register_block"
+		"particle": "riscj_blockits:block/register_block_active"
 	},
 	"elements": [
 		{
