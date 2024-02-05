@@ -12,4 +12,10 @@ public class InstructionListWidget extends ScrollableListWidget<InstructionEntry
     public InstructionListWidget(List<InstructionEntry> entries, int x, int y, int width, int height) {
         super(entries, x, y, width, height, SCROLLBAR_OFFSET_X);
     }
+
+    public void updateEntries(List<InstructionEntry> updatedEntries) {
+        if(updatedEntries.size() != this.entries.size()) {
+            this.entries = updatedEntries;
+        }
+    }
 }

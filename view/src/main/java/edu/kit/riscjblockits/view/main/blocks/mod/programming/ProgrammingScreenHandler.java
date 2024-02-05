@@ -7,6 +7,7 @@ import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlockEntity;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,6 +17,8 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
 import java.io.UnsupportedEncodingException;
@@ -61,6 +64,19 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
                 (ProgrammingBlockEntity) playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
         // load code from packet buffer
         blockEntity.setCode(buf.readString());
+
+        addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
+            @Override
+            public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
+                if (slotId == 0) {
+                    //TODO update client
+                }
+            }
+            @Override
+            public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
+                //do nothing
+            }
+        });
     }
 
     /**

@@ -25,6 +25,7 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/control_unit_gui.png");
     private ArchitectureListWidget architectureList;
     private final MIMAExWidget mimaExWidget = new MIMAExWidget();
+    private TexturedButtonWidget expandButton;
     private boolean narrow;
     private boolean isMima;
 
@@ -43,12 +44,13 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         this.narrow = this.width < 379;
         if(isMima) { //TODO Dynamically decide wether to Enablle or disable the MIMAExWidget
             this.mimaExWidget.initialize(this.width, this.height - backgroundHeight, this.narrow);
-
-            this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, MIMAExWidget.BUTTON_TEXTURES, button -> {
+            expandButton = new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, MIMAExWidget.BUTTON_TEXTURES, button -> {
                 this.mimaExWidget.toggleOpen();
                 this.x = this.mimaExWidget.findLeftEdge(this.width, this.backgroundWidth);
                 button.setPosition(this.x + 5, this.height / 2 - 49);
-            }));
+            });
+
+            this.addDrawableChild(expandButton);
             this.addSelectableChild(this.mimaExWidget);
             this.setInitialFocus(this.mimaExWidget);
         }
