@@ -17,7 +17,9 @@ import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 
+import static edu.kit.riscjblockits.model.blocks.ClockMode.MC_TICK;
 import static edu.kit.riscjblockits.model.blocks.ClockMode.REALTIME;
+import static edu.kit.riscjblockits.model.blocks.ClockMode.STEP;
 import static edu.kit.riscjblockits.model.blocks.RegisterModel.UNASSIGNED_REGISTER;
 
 public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
@@ -58,7 +60,7 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         for(int i = 0; i < 10; i++) {
             int setMode = i;
             modeButtons.add(new IconButtonWidget(x + MODE_BUTTON_X_OFFSETS[setMode], y + MODE_BUTTON_Y_OFFSETS[setMode], MODE_BUTTON_SIZE, MODE_BUTTON_SIZE, button -> {
-                handler.setSystemClockMode(setMode);
+                updateModel(setMode);
                 leverTexture = new Identifier(RISCJ_blockits.MODID, String.format(MODE_TEXTURE, setMode));
             }, MODE_BUTTON_TEXTURE));
 
@@ -103,13 +105,26 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         clockMode = Text.literal(handler.getSystemClockMode() + "");
     }
 
-    //Stub für nicolas
-    private void updateModel(int speed, String mode) {
-        //TODO update this to only need a single int
+    /**
+     * Updates the model with the new speed and mode.
+     * @param speed The new speed. Zero is step mode, 9 is real time mode, 1-8 is mc tick mode.
+     */
+    private void updateModel(int speed) {
+        String clockMode;
+        if (speed < 0 || speed > 9) {
+            return;
+        }
+        if (speed == 0) {
+            clockMode = String.valueOf(STEP);
+        } else if (speed == 9) {
+            speed = 0;      //ToDo hier anders machen
+            clockMode = String.valueOf(REALTIME);
+        } else {
+            clockMode = String.valueOf(MC_TICK);
+        }
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeBlockPos(handler.getBlockEntity().getPos());
-       //mode = String.valueOf(REALTIME);
-        buf.writeString(mode);
+        buf.writeString(clockMode);
         buf.writeInt(speed);
         ClientPlayNetworking.send(NetworkingConstants.SYNC_CLOCK_MODE_SELECTION, buf);
     }

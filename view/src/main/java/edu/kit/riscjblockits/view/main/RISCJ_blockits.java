@@ -323,7 +323,7 @@ public class RISCJ_blockits implements ModInitializer {
 					BlockEntity be = player.getWorld().getBlockEntity(pos);
 					NbtCompound nbt = new NbtCompound();
 					assert be != null;
-					((RegisterBlockEntity) be).writeNbt(nbt);
+					((SystemClockBlockEntity) be).writeNbt(nbt);
 					NbtCompound subNbt = (NbtCompound) nbt.get(MOD_DATA);
 					assert subNbt != null;
 					subNbt.putString(CLOCK_SPEED, String.valueOf(clockSpeed));
