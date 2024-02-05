@@ -68,6 +68,31 @@ class AssemblerTest {
         assertEquals("001234", val.getHexadecimalValue());
     }
 
+
+    @Test
+    void testEmptyLabel() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelMima();
+        Assembler assembler = new Assembler(model);
+        assembler.assemble("*=16\ntest: \n ADD 0x16\n * = 0\n JMP test");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 3));
+        assertEquals("800010", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    void testComment() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelMima();
+        Assembler assembler = new Assembler(model);
+        assembler.assemble("ADD 0x16 #comment\n ADD 0x17 ;comment");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 3));
+        assertEquals("300016", val.getHexadecimalValue());
+
+        val = memory.getValueAt(Value.fromHex("01", 3));
+        assertEquals("300017", val.getHexadecimalValue());
+    }
+
     /**
      * tests the assembler, expected results are from RARS
      *
