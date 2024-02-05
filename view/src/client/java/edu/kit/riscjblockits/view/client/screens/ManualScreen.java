@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.view.client.screens;
 import edu.kit.riscjblockits.view.client.screens.widgets.CategoryEntry;
 import edu.kit.riscjblockits.view.client.screens.widgets.ScrollableListWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.ScrollableTextWidget;
+import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
@@ -35,7 +36,10 @@ public class ManualScreen extends Screen {
     private void addCategories() {
         List<CategoryEntry> categories = new ArrayList<>();
         categories.add(new CategoryEntry(0, 0, "manual.introduction", "manual.introduction.text", textWidget, textRenderer));
-        categories.add(new CategoryEntry(0, 0, "manual.controlunit", "manual.controlunit.text", textWidget, textRenderer));
+        categories.add(new CategoryEntry(0, 0, "manual.controlunit", "manual.controlunit.text", textWidget, textRenderer,
+                RISCJ_blockits.CONTROL_UNIT_BLOCK.asItem().getDefaultStack()));
+        categories.add(new CategoryEntry(0, 0, "manual.register", "manual.register.text", textWidget, textRenderer,
+                RISCJ_blockits.REGISTER_BLOCK.asItem().getDefaultStack()));
 
 
 
