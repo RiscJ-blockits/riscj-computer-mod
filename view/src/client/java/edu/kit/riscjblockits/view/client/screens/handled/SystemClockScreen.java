@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockScreenHandler;
 import net.minecraft.client.gui.DrawContext;
@@ -10,9 +11,25 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
+
 public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_gui.png");
+    private static final Identifier MODE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_button.png");
+    private static final String MODE_TEXTURE = "textures/gui/system_clock/system_clock_lever_%d.png";
+    private static final int MODE_BUTTON_SIZE = 6;
+    private static final int[] MODE_BUTTON_X_OFFSETS = {86, 84, 90, 98, 109, 122, 135, 146, 154, 160};
+    private static final int[] MODE_BUTTON_Y_OFFSETS = {62, 49, 37, 28, 20, 18, 20, 28, 37, 49};
+    private static final int LEVER_X_OFFSET = 96;
+    private static final int LEVER_Y_OFFSET = 23;
+    private static final int LEVER_WIDTH = 58;
+    private static final int LEVER_HEIGHT = 39;
+    private static final ArrayList<IconButtonWidget> modeButtons = new ArrayList<>(10);
+    private static final int SPEED_TEXTFIELD_OFFSET_X = 9;
+    private static final int SPEED_TEXTFIELD_OFFSET_Y = 18;
+    private Identifier
+        leverTexture = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_lever_0.png");
 
     private Text clockSpeed = Text.literal("0");
     private Text clockMode = Text.literal("");
@@ -25,6 +42,24 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     @Override
     protected void init() {
         super.init();
+        int mode = handler.getSystemClockMode();
+        leverTexture = new Identifier(RISCJ_blockits.MODID, String.format(MODE_TEXTURE, mode));
+
+        int x = (width - backgroundWidth) / 2;
+        int y = (height - backgroundHeight) / 2;
+
+        for(int i = 0; i < 10; i++) {
+            int setMode = i;
+            modeButtons.add(new IconButtonWidget(x + MODE_BUTTON_X_OFFSETS[setMode], y + MODE_BUTTON_Y_OFFSETS[setMode], MODE_BUTTON_SIZE, MODE_BUTTON_SIZE, button -> {
+                handler.setSystemClockMode(setMode);
+                leverTexture = new Identifier(RISCJ_blockits.MODID, String.format(MODE_TEXTURE, setMode));
+            }, MODE_BUTTON_TEXTURE));
+
+            addDrawableChild(modeButtons.get(i));
+        }
+
+
+
         //loop thorugh Screen Elements
     }
 
@@ -37,6 +72,7 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         int y = (height - backgroundHeight) / 2;
 
         context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
+
     }
 
     @Override
@@ -44,15 +80,21 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
-        context.drawCenteredTextWithShadow(textRenderer, clockSpeed, width / 2, height / 2, 0xffffff);
-        context.drawCenteredTextWithShadow(textRenderer, clockMode, width / 2, height / 3, 0xffffff);
+        int x = (width - backgroundWidth) / 2;
+        int y = (height - backgroundHeight) / 2;
+        context.drawText(textRenderer, clockSpeed, x + SPEED_TEXTFIELD_OFFSET_X, y + SPEED_TEXTFIELD_OFFSET_Y, 0xffffff, false);
+        context.drawTexture(leverTexture, x + LEVER_X_OFFSET, y + LEVER_Y_OFFSET, 0, 0, LEVER_WIDTH, LEVER_HEIGHT, LEVER_WIDTH, LEVER_HEIGHT);
+        for(int i = 0; i < 10; i++) {
+            modeButtons.get(i).setPosition(x + MODE_BUTTON_X_OFFSETS[i], y + MODE_BUTTON_Y_OFFSETS[i]);
+        }
+        //context.drawCenteredTextWithShadow(textRenderer, clockMode, width / 2, height / 3, 0xffffff);
     }
 
     @Override
     public void handledScreenTick() {
         super.handledScreenTick();
         clockSpeed = Text.literal(handler.getSystemClockSpeed());
-        clockMode = Text.literal(handler.getSystemClockMode());
+        clockMode = Text.literal(handler.getSystemClockMode() + "");
     }
 
 }
