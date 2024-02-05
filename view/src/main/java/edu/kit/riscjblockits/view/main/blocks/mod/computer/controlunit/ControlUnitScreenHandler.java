@@ -3,6 +3,8 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
@@ -12,22 +14,18 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_ALU;
-import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_CLOCK;
-import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_CONTROL_UNIT;
-import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_MEMORY;
-import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_REGISTERS;
-import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_MISSING_REGISTERS;
-import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
-import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.*;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
 
 public class ControlUnitScreenHandler extends ModScreenHandler {
 
@@ -176,12 +174,30 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
     }
 
     /**
-     * Get the Instructionset Type.
-     * @return
+     * Get the InstructionSet Type.
+     * @return The name of the InstructionSet.
      */
     public String getInstructionSetType(){
-        //TODO: implement
-        return "";
+        if(inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
+            return "";
+        }
+
+        NbtElement nbt = inventory.getStack(0).getOrCreateNbt().get(CONTROL_IST_ITEM);
+
+        if(nbt == null) {
+            return "";
+        }
+
+        IDataElement instructionSetData = new NbtDataConverter(nbt).getData();
+
+        InstructionSetModel instructionSet;
+        try {
+            instructionSet = InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
+        } catch (UnsupportedEncodingException e) {
+            return "";
+        }
+
+        return instructionSet.getName();
     }
 
 }
