@@ -105,6 +105,7 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
 
     //Stub für nicolas
     private void updateModel(int speed, String mode) {
+        //TODO update this to only need a single int
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeBlockPos(handler.getBlockEntity().getPos());
        //mode = String.valueOf(REALTIME);

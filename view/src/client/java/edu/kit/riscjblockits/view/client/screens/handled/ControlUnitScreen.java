@@ -27,7 +27,6 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     private final MIMAExWidget mimaExWidget = new MIMAExWidget();
     private boolean narrow;
     private boolean isMima;
-    private Text cu1 = Text.literal("-");        //Testcode
 
     public ControlUnitScreen(ControlUnitScreenHandler handler, PlayerInventory inventory,
                              Text title) {
@@ -35,14 +34,14 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         this.backgroundHeight = 256;
         this.backgroundWidth = 176;
         playerInventoryTitleY += 56;
-        isMima = true; //TODO get the instruction set
+        isMima = true;
     }
 
     @Override
     protected void init() {
         super.init();
         this.narrow = this.width < 379;
-        if(isMima) {
+        if(isMima) { //TODO Dynamically decide wether to Enablle or disable the MIMAExWidget
             this.mimaExWidget.initialize(this.width, this.height - backgroundHeight, this.narrow);
 
             this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, MIMAExWidget.BUTTON_TEXTURES, button -> {
@@ -86,8 +85,6 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     @Override
     public void handledScreenTick() {
         super.handledScreenTick();
-        //Testcode
-        cu1 = Text.literal(handler.getClusteringData());
     }
 
     @Override
