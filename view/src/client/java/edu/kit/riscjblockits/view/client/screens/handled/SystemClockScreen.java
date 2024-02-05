@@ -1,14 +1,21 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockScreenHandler;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+
+import static edu.kit.riscjblockits.model.blocks.ClockMode.REALTIME;
+import static edu.kit.riscjblockits.model.blocks.RegisterModel.UNASSIGNED_REGISTER;
 
 public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
 
@@ -53,6 +60,16 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         super.handledScreenTick();
         clockSpeed = Text.literal(handler.getSystemClockSpeed());
         clockMode = Text.literal(handler.getSystemClockMode());
+    }
+
+    //Stub für nicolas
+    private void updateModel(int speed, String mode) {
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeBlockPos(handler.getBlockEntity().getPos());
+       //mode = String.valueOf(REALTIME);
+        buf.writeString(mode);
+        buf.writeInt(speed);
+        ClientPlayNetworking.send(NetworkingConstants.SYNC_CLOCK_MODE_SELECTION, buf);
     }
 
 }
