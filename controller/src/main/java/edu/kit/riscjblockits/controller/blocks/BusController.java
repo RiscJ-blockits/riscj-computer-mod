@@ -1,10 +1,13 @@
 package edu.kit.riscjblockits.controller.blocks;
 
+import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.blocks.BusModel;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import edu.kit.riscjblockits.model.busgraph.IQueryableBusSystem;
 import edu.kit.riscjblockits.model.data.IDataElement;
+
+import java.util.List;
 
 /**
  * The controller for the bus block.
@@ -36,6 +39,13 @@ public class BusController extends ComputerBlockController{
     @Override
     public void setData(IDataElement data) {
         //noch leer
+    }
+
+    public List<BlockPosition> getBusSystemNeighbors() {
+        if (getClusterHandler() == null) {
+            return null;
+        }
+        return getClusterHandler().getBusSystemModel().getBusSystemNeighbors(getModel().getPosition());
     }
 
     /**

@@ -66,4 +66,5 @@ public interface IQueryableBusSystem {
      */
     boolean isNode(BlockPosition blockPosition);
 
+    List<BlockPosition> getBusSystemNeighbors(BlockPosition blockPosition);
 }

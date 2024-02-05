@@ -32,9 +32,31 @@ class ExecutorTest {
 
     //copied from Nils @ AluControllerTest
     private IConnectableComputerBlockEntity getBlockEntityMock() {
-        IConnectableComputerBlockEntity entity = mock(IConnectableComputerBlockEntity.class);
-        when(entity.getBlockPosition()).thenReturn(new BlockPosition());
-        return entity;
+        IConnectableComputerBlockEntity blockEntity = new IConnectableComputerBlockEntity() {
+            @Override
+            public void setBlockModel(IViewQueryableBlockModel model) {
+
+            }
+
+            @Override
+            public List<ComputerBlockController> getComputerNeighbours() {
+                return new LinkedList<>();
+            }
+
+            @Override
+            public BlockPosition getBlockPosition() {
+                return new BlockPosition(0,0,0);
+            }
+
+            @Override
+            public IDataElement getBlockEntityData() {
+                return null;
+            }
+
+            @Override
+            public void neighborUpdate() {}
+        };
+        return blockEntity;
     }
 
     @BeforeEach

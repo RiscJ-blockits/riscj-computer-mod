@@ -35,4 +35,5 @@ public interface IQueryableClusterController extends IQueryableComputerControlle
 
     BlockPosition getBlockPosition();
 
+    void neighborUpdate();
 }
