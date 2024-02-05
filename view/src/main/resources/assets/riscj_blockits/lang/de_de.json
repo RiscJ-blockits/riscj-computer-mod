@@ -9,5 +9,6 @@
   "block.riscj_blockits.redstone_output_block": "Redstone Ausgang",
   "itemGroup.riscj_blockits.computer_components": "Computer Gegenstände",
 
-  "programming_pretext": "hier könnte ihre Werbung stehen"
+  "programming_pretext": "hier könnte ihre Werbung stehen",
+  "block.riscj_blockits.text_output_block": "Konsole"
 }

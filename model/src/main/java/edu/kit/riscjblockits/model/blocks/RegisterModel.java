@@ -44,7 +44,7 @@ public class RegisterModel extends BlockModel {
         setType(ModelType.REGISTER);
         registerType = UNASSIGNED_REGISTER;
         //ToDo remove Test code
-        wordLength = 32;
+        wordLength = 10;
     }
 
     /**

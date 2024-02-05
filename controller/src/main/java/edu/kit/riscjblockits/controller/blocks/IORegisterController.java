@@ -41,7 +41,7 @@ public class IORegisterController extends RegisterController {
      */
     @Override
     public Value getValue() {
-        if (!isInput) return new Value();
+        //if (!isInput) return new Value();
         return ((RegisterModel)getModel()).getValue();
     }
 
@@ -50,7 +50,7 @@ public class IORegisterController extends RegisterController {
      */
     @Override
     public void setNewValue(Value value) {
-        if (isInput) return;
+        //if (isInput) return;
         ((RegisterModel)getModel()).setValue(value);
     }
 
