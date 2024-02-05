@@ -111,7 +111,6 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
      * @return
      */
     public List[] getStructure(){
-        //TODO implement
         List<String> listFound = new ArrayList<>();
         List<String> listMissing = new ArrayList<>();
         NbtCompound nbt = getBlockEntity().createNbt();
@@ -174,6 +173,15 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
             }
         }
         return new List[]{listMissing, listFound};
+    }
+
+    /**
+     * Get the Instructionset Type.
+     * @return
+     */
+    public String getInstructionSetType(){
+
+        return "";
     }
 
 }

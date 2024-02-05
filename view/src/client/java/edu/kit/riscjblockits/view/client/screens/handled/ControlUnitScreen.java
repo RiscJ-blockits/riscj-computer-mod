@@ -22,7 +22,9 @@ import java.util.List;
 
 public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/control_unit_gui.png");
+    private static final Identifier TEXTURE =
+        new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/control_unit_gui.png");
+    private static final String MIMA = "MIMA"; //TODO match with the result for getInstructionSetType
     private ArchitectureListWidget architectureList;
     private final MIMAExWidget mimaExWidget = new MIMAExWidget();
     private TexturedButtonWidget expandButton;
@@ -42,20 +44,21 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     protected void init() {
         super.init();
         this.narrow = this.width < 379;
-        if(isMima) { //TODO Dynamically decide wether to Enablle or disable the MIMAExWidget
-            this.mimaExWidget.initialize(this.width, this.height - backgroundHeight, this.narrow);
-            expandButton = new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, MIMAExWidget.BUTTON_TEXTURES, button -> {
+
+        this.mimaExWidget.initialize(this.width, this.height - backgroundHeight, this.narrow);
+        expandButton =
+            new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, MIMAExWidget.BUTTON_TEXTURES, button -> {
                 this.mimaExWidget.toggleOpen();
                 this.x = this.mimaExWidget.findLeftEdge(this.width, this.backgroundWidth);
                 button.setPosition(this.x + 5, this.height / 2 - 49);
             });
 
-            this.addDrawableChild(expandButton);
-            this.addSelectableChild(this.mimaExWidget);
-            this.setInitialFocus(this.mimaExWidget);
-        }
+        this.addDrawableChild(expandButton);
+        this.addSelectableChild(this.mimaExWidget);
+        this.setInitialFocus(this.mimaExWidget);
 
-        this.architectureList = new ArchitectureListWidget(this, this.x + 30, this.y + 18, 120, 108, 6); //TODO fix values
+        this.architectureList =
+            new ArchitectureListWidget(this, this.x + 30, this.y + 18, 120, 105, 6);
 
     }
 
@@ -73,20 +76,18 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        drawMouseoverTooltip(context, mouseX, mouseY);
 
         architectureList.setX(this.x + 30);
         architectureList.setY(this.y + 18);
         this.architectureList.render(context, mouseX, mouseY, delta);
 
-        if(isMima) {
+        if (handler.getInstructionSetType().equals(MIMA)) {
+            expandButton.visible = true;
             this.mimaExWidget.render(context, mouseX, mouseY, delta);
+        } else {
+            expandButton.visible = false;
         }
-    }
-
-    @Override
-    public void handledScreenTick() {
-        super.handledScreenTick();
+        drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
     @Override
@@ -101,12 +102,12 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         List[] data = this.handler.getStructure();
         List<String> listFound = data[1];
         List<String> listMissing = data[0];
-        for (String component: listMissing) {
+        for (String component : listMissing) {
             entries.add(new ArchitectureEntry(component, true));
         }
-        for (String component: listFound) {
+        for (String component : listFound) {
 
-            if(component.equals(RegisterModel.UNASSIGNED_REGISTER)){
+            if (component.equals(RegisterModel.UNASSIGNED_REGISTER)) {
                 continue;
             }
             entries.add(new ArchitectureEntry(component, false));

@@ -66,13 +66,10 @@ public class InstructionsWidget extends ExtendableWidget{
 
         context.getMatrices().pop();
 
-        }
-
-    @Override
-    protected void setOpen(boolean opened) {
-        super.setOpen(opened);
-        if(opened) {
-            this.instructionList.updateEntries(this.getEntries());
-        }
     }
+
+    public void update() {
+        this.instructionList.updateEntries(this.getEntries());
+    }
+
 }

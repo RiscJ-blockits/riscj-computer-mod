@@ -187,4 +187,10 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
+
+    @Override
+    protected void handledScreenTick() {
+        super.handledScreenTick();
+        this.instructionsWidget.update();
+    }
 }

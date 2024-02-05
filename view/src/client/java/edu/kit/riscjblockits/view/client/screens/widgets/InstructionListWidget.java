@@ -14,8 +14,6 @@ public class InstructionListWidget extends ScrollableListWidget<InstructionEntry
     }
 
     public void updateEntries(List<InstructionEntry> updatedEntries) {
-        if(updatedEntries.size() != this.entries.size()) {
             this.entries = updatedEntries;
-        }
     }
 }
