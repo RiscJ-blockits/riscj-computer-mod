@@ -29,7 +29,7 @@ public abstract class ModBlock extends BlockWithEntity {
     /**
      * Default strength of all blocks.
      */
-    private static final float BLOCK_STRENGTH = 1.0f;
+    private static final float BLOCK_STRENGTH = 5.0f;
 
     /**
      * Creates a new Modblock with the given settings.
