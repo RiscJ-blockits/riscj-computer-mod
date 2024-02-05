@@ -6,7 +6,6 @@ import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import java.util.HashMap;
 
 public class WirelessRegisterModel extends RegisterModel {
-
     private int frequence;
 
     private static HashMap<Integer, Value> wirelessValue = new HashMap<>();
@@ -20,6 +19,7 @@ public class WirelessRegisterModel extends RegisterModel {
             }
         }
         super.setValue(wirelessValue.get(frequence));
+        setUnqueriedStateChange(false);
     }
 
     @Override
@@ -31,6 +31,7 @@ public class WirelessRegisterModel extends RegisterModel {
     @Override
     public IDataElement getData() {
         super.setValue(wirelessValue.get(frequence));
+        setUnqueriedStateChange(false);
         IDataElement regData = super.getData();
         //ToDo add frequence to regData
         //ToDo add wirelessValue to regData
@@ -40,6 +41,7 @@ public class WirelessRegisterModel extends RegisterModel {
     @Override
     public Value getValue() {
         super.setValue(wirelessValue.get(frequence));
+        setUnqueriedStateChange(false);
         return super.getValue();
     }
 
