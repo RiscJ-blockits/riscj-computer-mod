@@ -16,4 +16,7 @@ public interface IBusSystem {
      */
     public void setBusDataPath(BlockPosition startPos, BlockPosition endPos, Value presentData);
 
+    //ToDo nicht im Entwurfs Wiki
+    public void resetVisualisation();
+
 }

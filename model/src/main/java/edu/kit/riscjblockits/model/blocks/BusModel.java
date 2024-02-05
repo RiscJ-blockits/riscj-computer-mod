@@ -1,7 +1,6 @@
 package edu.kit.riscjblockits.model.blocks;
 
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
-import edu.kit.riscjblockits.model.busgraph.IQueryableBusSystem;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataElement;
@@ -32,7 +31,6 @@ public class BusModel extends BlockModel{
         super.setPosition(position);
     }
 
-
     /**
      * Getter for the data the view needs for ui.
      * @return Data Format: key: "active", value: "true" or "false"
@@ -61,6 +59,9 @@ public class BusModel extends BlockModel{
         this.belongsToSystem = belongsToSystem;
     }
 
+    /**
+     * @return Asks the Bus system if the bus is transporting data
+     */
     @Override
     public boolean getVisualisationState() {
         if(this.belongsToSystem == null) return false;

@@ -29,9 +29,6 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      * Holds the data that is present on the bus.
      */
     private Value presentData;
-    private BlockPosition from;
-    private BlockPosition to;
-
 
     /**
      * creates a BusSystemModel with one node
@@ -94,18 +91,22 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      * @return the present data on the busSystem
      */
     public Value getPresentData() {
+        if (presentData == null) {
+            return new Value();
+        }
         return presentData;
     }
 
     /**
      * returns if the node with the given position is active in the visualization
-     * @param blockPosition is the position of the node
+     * @param blockPosition is the position of the node.
      * @return true if the node is active in the visualization
      */
     public boolean getActiveVisualization(BlockPosition blockPosition) {
-        boolean active = activeVisualization.get(blockPosition);
-        activeVisualization.put(blockPosition, false);
-        return active;
+        if (!activeVisualization.containsKey(blockPosition)) {
+            return false;
+        }
+        return activeVisualization.get(blockPosition);
     }
 
     /**
@@ -228,6 +229,13 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      */
     public boolean isNode(BlockPosition blockPosition) {
         return adjPositions.containsKey(blockPosition);
+    }
+
+    /** ToDo nicht im Entwurf Wiki
+     * Resets the list of bus nodes that transport data.
+     */
+    public void resetVisualisation() {
+        activeVisualization.clear();
     }
 
 }

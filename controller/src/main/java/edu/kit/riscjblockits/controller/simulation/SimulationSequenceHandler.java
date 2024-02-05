@@ -152,7 +152,6 @@ public class SimulationSequenceHandler implements Runnable {
 
     }
 
-
     /**
      * Gets the current microinstruction from the loaded instruction and executes it.
      * For every microinstruction, a cue from the simulation time handler is necessary. Each microinstruction
@@ -170,12 +169,16 @@ public class SimulationSequenceHandler implements Runnable {
         }
     }
 
+    /**
+     * Resets the visualization of the computer blocks and the bus system.
+     */
     private void resetVisualisation() {
         //ToDo what to do on programm end
         //ToDo what to do in fast mode
         for (IQueryableSimController blockController : blockControllers) {
             blockController.stopVisualisation();
         }
+        busSystem.resetVisualisation();
     }
 
     /**
@@ -190,7 +193,6 @@ public class SimulationSequenceHandler implements Runnable {
         } catch (NonExecutableMicroInstructionException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -200,4 +202,5 @@ public class SimulationSequenceHandler implements Runnable {
         FETCH,
         EXECUTE
     }
+
 }
