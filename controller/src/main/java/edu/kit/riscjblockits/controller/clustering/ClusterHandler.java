@@ -1,12 +1,7 @@
 package edu.kit.riscjblockits.controller.clustering;
 
 
-import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
-import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
-import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
-import edu.kit.riscjblockits.controller.blocks.IQueryableComputerController;
-import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
-import edu.kit.riscjblockits.controller.blocks.SystemClockController;
+import edu.kit.riscjblockits.controller.blocks.*;
 import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import edu.kit.riscjblockits.model.busgraph.IBusSystem;
@@ -265,6 +260,9 @@ public class ClusterHandler implements IArchitectureCheckable {
 
         if (buildingFinished) {
             System.out.println("Simulation Start [Cluster Handler]");
+            for (IQueryableClusterController busBlock: busBlocks) {
+                ((BusController) busBlock).setBusSystemModel((BusSystemModel) busSystemModel);
+            }
             startSimulation();
         }
         // stop simulation if it was running and the cluster is not finished anymore
