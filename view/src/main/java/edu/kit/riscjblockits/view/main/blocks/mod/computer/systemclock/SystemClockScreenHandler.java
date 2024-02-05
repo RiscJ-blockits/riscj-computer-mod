@@ -56,18 +56,11 @@ public class SystemClockScreenHandler extends ModScreenHandler {
             return 0;
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals(CLOCK_MODE)) {
+            if (s.equals(CLOCK_SPEED)) {
                 return Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
             }
         }
         return 0;
     }
 
-    /**
-     * Sets the system clock mode.
-     * @param i the mode to set
-     */
-    public void setSystemClockMode(int i) {
-        //TODO Implement
-    }
 }
