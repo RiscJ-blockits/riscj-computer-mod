@@ -89,6 +89,7 @@ public class SystemClockController extends ComputerBlockController {
      */
     @Override
     public void setData(IDataElement data) {
+        super.setData(data);
         if (!data.isContainer()) {
             return;
         }

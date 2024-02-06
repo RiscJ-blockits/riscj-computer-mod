@@ -76,6 +76,7 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
 
     public void setClockSpeed(int clockSpeed) {
         this.clockSpeed = clockSpeed;
+        notifyObservers();
         setUnqueriedStateChange(true);
     }
 

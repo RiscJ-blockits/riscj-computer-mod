@@ -20,9 +20,17 @@ import java.util.ArrayList;
 import static edu.kit.riscjblockits.model.blocks.ClockMode.MC_TICK;
 import static edu.kit.riscjblockits.model.blocks.ClockMode.REALTIME;
 import static edu.kit.riscjblockits.model.blocks.ClockMode.STEP;
+import static java.lang.Double.NaN;
 
 public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
 
+    /**
+     * The screen has ten buttons for the different modes.
+     * The first button is for step mode, the last for real time mode and the rest for the different mc tick modes.
+     * The representing ticks one computer tick should take can be configured here.
+     */
+    private static final int[][] MODE_TRANSLATIONS = {{0,0}, {1,80}, {2,40}, {3,20}, {4,15}, {5,10}, {6,5}, {7,2}, {8,1}, {9,0}};
+    private static final double[][] SECONDS_TRANSLATIONS = {{0,0}, {80,0.25}, {40,0.5}, {20,1}, {15,1.5}, {10,2}, {5,4}, {2,10}, {1,20}, {9,NaN}};        //assuming 20 ticks per second
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_gui.png");
     private static final Identifier MODE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_button.png");
     private static final String MODE_TEXTURE = "textures/gui/system_clock/system_clock_lever_%d.png";
@@ -36,11 +44,9 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     private static final ArrayList<IconButtonWidget> modeButtons = new ArrayList<>(10);
     private static final int SPEED_TEXTFIELD_OFFSET_X = 9;
     private static final int SPEED_TEXTFIELD_OFFSET_Y = 18;
-    private Identifier
-        leverTexture = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_lever_0.png");
+    private Identifier leverTexture = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_lever_0.png");
 
-    private Text clockSpeed = Text.literal("1");
-    private Text clockMode = Text.literal("");
+    private Text clockSpeed = Text.literal("0");
 
     public SystemClockScreen(SystemClockScreenHandler handler, PlayerInventory inventory,
                              Text title) {
@@ -50,7 +56,8 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     @Override
     protected void init() {
         super.init();
-        int mode = handler.getSystemClockMode();
+        ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(handler.getBlockEntity().getPos()));
+        int mode = getButtonStep();
         leverTexture = new Identifier(RISCJ_blockits.MODID, String.format(MODE_TEXTURE, mode));
 
         int x = (width - backgroundWidth) / 2;
@@ -65,10 +72,7 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
 
             addDrawableChild(modeButtons.get(i));
         }
-
-
-
-        //loop thorugh Screen Elements
+        //loop through Screen Elements
     }
 
     @Override
@@ -100,33 +104,53 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     @Override
     public void handledScreenTick() {
         super.handledScreenTick();
-        clockSpeed = Text.literal(handler.getSystemClockSpeed());
-        clockMode = Text.literal(handler.getSystemClockMode() + "");
+        clockSpeed = Text.literal(String.valueOf(handler.getSystemClockSpeed()));
+        clockSpeed = Text.literal(String.valueOf(SECONDS_TRANSLATIONS[getButtonStep()][1]));
     }
 
     /**
-     * Updates the model with the new speed and mode.
-     * @param speed The new speed. Zero is step mode, 9 is real time mode, 1-8 is mc tick mode.
+     * Updates the model with the new step and mode.
+     * @param step The new step. Zero is step mode, 9 is real time mode, 1-8 is mc tick mode.
      */
-    private void updateModel(int speed) {
-        String clockMode;
-        if (speed < 0 || speed > 9) {
+    private void updateModel(int step) {
+        if (step < 0 || step > 9) {
             return;
         }
-        if (speed == 0) {
-            speed = 1;
-            clockMode = String.valueOf(STEP);
-        } else if (speed == 9) {
-            speed = 1;      //ToDo hier anders machen
-            clockMode = String.valueOf(REALTIME);
-        } else {
-            clockMode = String.valueOf(MC_TICK);
+        String clockMode = String.valueOf(MC_TICK);
+        int speed = 0;
+        switch (step) {
+            case 0:          //Step mode
+                clockMode = String.valueOf(STEP);
+                break;
+            case 9:     //Real time mode//Real time mode
+                clockMode = String.valueOf(REALTIME);
+                break;
+            default:
+                speed = MODE_TRANSLATIONS[step][1];
+                break;
         }
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeBlockPos(handler.getBlockEntity().getPos());
         buf.writeString(clockMode);
         buf.writeInt(speed);
         ClientPlayNetworking.send(NetworkingConstants.SYNC_CLOCK_MODE_SELECTION, buf);
+    }
+
+    private int getButtonStep() {
+        String mode = handler.getSystemClockMode();
+        int speed = handler.getSystemClockSpeed();
+        if (mode.equals(String.valueOf(STEP))) {
+            return 0;
+        } else if (mode.equals(String.valueOf(REALTIME))) {
+            return 9;
+        } else {
+            for (int i = 1; i < 9; i++) {
+                if (speed == MODE_TRANSLATIONS[i][1]) {
+                    return i;
+                }
+            }
+        }
+        return 0;
     }
 
 }

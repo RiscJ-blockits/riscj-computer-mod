@@ -12,6 +12,7 @@ import edu.kit.riscjblockits.model.busgraph.IBusSystem;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Handling of the simulation execution timing. Uses the observer pattern to keep track of the clock state as
@@ -71,9 +72,10 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      * Runs if Minecraft tick mode is activated.
      */
     public void onMinecraftTick(){
-        if(clockMode == ClockMode.MC_TICK) {
-            if (minecraftTickCounter == 0)
+        if(clockMode == ClockMode.MC_TICK && clockSpeed > 0) {
+            if (minecraftTickCounter == 0) {
                 runTick();
+            }
             minecraftTickCounter = (minecraftTickCounter + 1) % clockSpeed;
         }
     }
@@ -102,8 +104,19 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      * Enqueues the next simulation tick execution in the execution thread.
      */
     private void runTick() {
-        //ToDo @Leon no check if the previous tick has completed. Necessary?
-        executorService.execute(simulationSequenceHandler);
+        //ToDo no check if the previous tick has completed. Necessary?
+
+        Future<?> tickTask = executorService.submit(simulationSequenceHandler);
+        //check if the previous tick has completed              //Fixme: does not work yet
+//        if (clockMode == ClockMode.REALTIME) {
+//            try {
+//                tickTask.get();     //block until the future is done
+//            } catch (InterruptedException | ExecutionException e) {
+//                e.printStackTrace();
+//            }
+//            runTick();
+//        }
+
     }
 
     /**

@@ -1,13 +1,9 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io;
 
-import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
-import edu.kit.riscjblockits.controller.blocks.IORegisterController;
-import edu.kit.riscjblockits.model.blocks.IORegisterModel;
 import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;

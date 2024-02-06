@@ -176,7 +176,6 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
                             break;
                     }
                 }
-                System.out.println("ClusteringData: " + clusteringData);
             }
         }
         return new List[]{listMissing, listFound};
