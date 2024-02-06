@@ -5,7 +5,10 @@
   "block.riscj_blockits.memory_block": "Hauptspeicher",
   "block.riscj_blockits.control_unit_block": "Kontrolleinheit",
   "block.riscj_blockits.system_clock_block": "Taktgeber",
+  "block.riscj_blockits.redstone_input_block": "Redstone Eingang",
+  "block.riscj_blockits.redstone_output_block": "Redstone Ausgang",
   "itemGroup.riscj_blockits.computer_components": "Computer Gegenstände",
 
-  "programming_pretext": "hier könnte ihre Werbung stehen"
+  "programming_pretext": "hier könnte ihre Werbung stehen",
+  "block.riscj_blockits.text_output_block": "Konsole"
 }

@@ -7,5 +7,8 @@
   "block.riscj_blockits.system_clock_block": "System Clock",
   "itemGroup.riscj_blockits.computer_components": "Computer Items",
 
-  "programming_pretext": "Do dad Eire Reklame platzierd sei kenna"
+  "programming_pretext": "Do dad Eire Reklame platzierd sei kenna",
+  "block.riscj_blockits.redstone_input_block": "Redstone Input",
+  "block.riscj_blockits.redstone_output_block": "Redstone Output",
+  "block.riscj_blockits.text_output_block": "Fernseher"
 }

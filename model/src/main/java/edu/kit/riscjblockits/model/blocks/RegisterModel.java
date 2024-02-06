@@ -44,7 +44,7 @@ public class RegisterModel extends BlockModel {
         setType(ModelType.REGISTER);
         registerType = UNASSIGNED_REGISTER;
         //ToDo remove Test code
-        wordLength = 32;
+        wordLength = 10;
     }
 
     /**
@@ -93,6 +93,7 @@ public class RegisterModel extends BlockModel {
     public void setValue(Value value) {
         this.value = value;
         setUnqueriedStateChange(true);
+        System.out.println("Value set to: " + value.getHexadecimalValue());
     }
 
     /**

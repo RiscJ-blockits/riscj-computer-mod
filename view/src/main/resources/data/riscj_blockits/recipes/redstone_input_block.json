@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    " R ",
+    " E "
+  ],
+  "key": {
+    "E": {
+      "tag": "minecraft:redstone"
+    },
+    "R": {
+      "item": "riscj_blockits:register_block"
+    }
+  },
+  "result": {
+    "item": "riscj_blockits:redstone_input_block",
+    "count": 1
+  }
+}
+
