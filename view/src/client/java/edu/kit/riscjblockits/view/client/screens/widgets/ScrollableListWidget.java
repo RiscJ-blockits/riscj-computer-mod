@@ -199,12 +199,17 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
     }
 
     @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
+    }
+
+    @Override
     public void appendNarrations(NarrationMessageBuilder builder) {
 
     }
 
     @Override
     public SelectionType getType() {
-        return SelectionType.NONE;
+        return SelectionType.HOVERED;
     }
 }
