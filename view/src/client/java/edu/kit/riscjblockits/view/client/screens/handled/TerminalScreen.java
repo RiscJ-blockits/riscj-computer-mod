@@ -26,7 +26,6 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
      */
     private EditBoxWidget inputBox;
     String output = "";
-    String lastOutput = "";
 
     private MultilineText outputtedText;
     private boolean codeHasChanged = false;
@@ -53,7 +52,6 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         inputBox.setFocused(false);
         //add rest
         output = ((TextOutputBlockEntity) handler.getBlockEntity()).getDisplayedString();
-        lastOutput = output;
         outputtedText = MultilineText.create(textRenderer, Text.literal(output), width - 20);
         handler.enableSyncing();
     }
@@ -102,7 +100,6 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         // close the screen if the escape key is pressed
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
-            ((TextOutputBlockEntity) handler.getBlockEntity()).setDisplayedString(output);
             assert this.client != null;
             assert this.client.player != null;
             this.client.player.closeHandledScreen();
@@ -121,22 +118,8 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
 
     @Override
     public void handledScreenTick() {
-        String newOutput = handler.getRegisterValue();
-        if (!newOutput.equals(lastOutput)) {        //FixMe cannot display the same output twice
-            lastOutput = newOutput;
-            output = output + translateHexToAscii(newOutput);
-            outputtedText = MultilineText.create(textRenderer, Text.literal(output) , width - 20);
-        }
-    }
-
-    private String translateHexToAscii(String hexStr) {
-        hexStr = hexStr.replaceFirst("^0+", ""); // remove leading zeros
-        StringBuilder output = new StringBuilder("");
-        for (int i = 0; i < hexStr.length(); i += 2) {
-            String str = hexStr.substring(i, i + 2);
-            output.append((char) Integer.parseInt(str, 16));
-        }
-        return output.toString();
+        output = ((TextOutputBlockEntity) handler.getBlockEntity()).getDisplayedString();
+        outputtedText = MultilineText.create(textRenderer, Text.literal(output) , width - 20);
     }
 
     private void sendData(String text) {

@@ -4,6 +4,7 @@ import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_FOUND;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_IO_TIME;
@@ -44,13 +45,6 @@ public class IORegisterModel extends RegisterModel {
         super();
         this.isInput = isInput;
         this.isOutput = isOutput;
-    }
-
-    @Override       //ToDo @Leon
-    public IDataElement getData() {
-        IDataContainer data = (IDataContainer) super.getData();
-        data.set(REGISTER_IO_TIME, new DataStringEntry("test"));
-        return data;
     }
 
 }
