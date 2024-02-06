@@ -71,9 +71,20 @@ public class ControlUnitModel extends BlockModel{
         return istModel;
     }
 
-    public void setIstModel(IQueryableInstructionSetModel istModel) {
-        this.istModel = istModel;
+    /**
+     * Setter for the Instruction Set Model.
+     * @param istModel the Instruction Set Model to set
+     * @return true if the istModel has changed, false if not
+     */
+    public boolean setIstModel(IQueryableInstructionSetModel istModel) {
+        if (this.istModel == null || !this.istModel.equals(istModel)) {
+            this.istModel = istModel;
+            setUnqueriedStateChange(true);
+            return true;
+        }
+        this.istModel = istModel;              //just to be safe
         setUnqueriedStateChange(true);
+        return false;
     }
 
     /**

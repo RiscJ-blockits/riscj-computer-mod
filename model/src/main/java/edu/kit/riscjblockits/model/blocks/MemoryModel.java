@@ -55,10 +55,26 @@ public class MemoryModel extends BlockModel {
         setUnqueriedStateChange(true);
     }
 
-    public void setMemory(Memory memory) {
-        this.memory = memory;
+
+    public boolean setMemory(Memory memory) {
+        if (this.memory == null || !this.memory.equals(memory)) {
+            this.memory = memory;
+            setUnqueriedStateChange(true);
+            return true;
+        }
+        this.memory = memory;       //just to be safe
         setUnqueriedStateChange(true);
-        System.out.println("Memory changed");
+        return false;
     }
 
+    public Value getInitialProgramCounter() {
+        if (memory == null){
+            return null;
+        }
+        return memory.getInitialProgramCounter();
+    }
+
+    public boolean isMemorySet() {
+        return memory != null;
+    }
 }

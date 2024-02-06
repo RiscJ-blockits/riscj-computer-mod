@@ -64,6 +64,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (!world.isClient && entity.getController() != null) {
             ((IUserInputReceivableComputerController)entity.getController()).tick();
         }
+        entity.syncToClient();
         entity.updateUI();
         entity.syncToClient();
     }
@@ -173,7 +174,6 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             }
         }
     }
-
 
     /**
      * Gets called every tick.

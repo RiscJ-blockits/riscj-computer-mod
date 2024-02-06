@@ -180,7 +180,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public int getMemoryWordSize() {
-        return instructionSetMemory.getWordSize();
+        return instructionSetMemory.getWordSize() / 8 + (instructionSetMemory.getWordSize() % 8 > 0 ? 1 : 0);
     }
 
     /**
@@ -189,7 +189,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public int getMemoryAddressSize() {
-        return instructionSetMemory.getAddressSize();
+        return instructionSetMemory.getAddressSize() / 8 + (instructionSetMemory.getAddressSize() % 8 > 0 ? 1 : 0);
     }
 
     /**
@@ -344,4 +344,24 @@ InstructionSetModel implements IQueryableInstructionSetModel {
     public List<String> getRegisterNames() {
         return instructionSetRegisters.getRegisterNames();
     }
+
+    public String getRegisterInitialValue(String key) {
+        return instructionSetRegisters.getInitialValue(key);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InstructionSetModel that = (InstructionSetModel) o;
+
+        if (instructionLength != that.instructionLength) return false;
+        assert name != null;
+        if (!name.equals(that.name)) return false;
+        assert programStartLabel != null;
+        if (!programStartLabel.equals(that.programStartLabel)) return false;
+        //ToDo finish
+        return true;
+    }
+
 }
