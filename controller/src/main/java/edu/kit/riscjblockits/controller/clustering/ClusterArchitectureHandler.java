@@ -84,7 +84,7 @@ public class ClusterArchitectureHandler {
             }
         }
         //check Registers
-        boolean rightAmountOfRegisters = availableRegisters.size() == istModel.getRegisterNames().size();
+        boolean rightAmountOfRegisters = availableRegisters.size() >= istModel.getRegisterNames().size();       //we could have more registers if we connect IO registers
         Collections.sort(availableRegisters);
         List<String> requiredRegisters = istModel.getRegisterNames();
         Collections.sort(requiredRegisters);

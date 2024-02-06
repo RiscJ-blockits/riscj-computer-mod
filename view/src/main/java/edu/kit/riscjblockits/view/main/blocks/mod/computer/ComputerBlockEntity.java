@@ -177,9 +177,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Gets called every tick.
      * Syncs the block entity nbt data to the client.
      */
-    private void syncToClient() {
-        if (world == null || world.isClient || model == null)
-            return;
+    public void syncToClient() {
+        if (world == null || world.isClient || model == null) return;
         if (model.hasUnqueriedStateChange()) {
             if (world.getPlayers().isEmpty()) {
                return;       //we are too early in the loading process

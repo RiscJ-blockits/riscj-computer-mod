@@ -52,6 +52,8 @@ public class DataConstants {
      */
     public static final String REGISTER_WORD_LENGTH = "word";
 
+    public static final String REGISTER_IO_TIME = "register_io_time";
+
     //SystemClock Constants
     /**
      * {@link edu.kit.riscjblockits.model.blocks.SystemClockModel#getData()}

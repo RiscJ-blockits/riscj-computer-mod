@@ -13,6 +13,10 @@
   "item.riscj_blockits.manual": "Computer Manual",
   "item.riscj_blockits.program": "Programm Code",
 
+
+  "block.riscj_blockits.redstone_input_block": "Redstone Input",
+  "block.riscj_blockits.redstone_output_block": "Redstone Output",
+  "block.riscj_blockits.text_output_block": "Terminal",
   "itemGroup.riscj_blockits.computer_components": "Computer Items",
 
   "programming_pretext": "This could be your code"

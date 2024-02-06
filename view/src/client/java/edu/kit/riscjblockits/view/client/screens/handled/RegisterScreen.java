@@ -22,10 +22,8 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
 
     private Text registerValue = Text.literal("0");
 
-    public RegisterScreen(RegisterScreenHandler handler, PlayerInventory inventory,
-                          Text title) {
+    public RegisterScreen(RegisterScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-
     }
 
     @Override
@@ -33,7 +31,7 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
         super.init();
         ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(handler.getBlockEntity().getPos()));
         this.narrow = this.width < 379;
-                this.regSelectWidget.initialize(this.width, this.height, this.client, this.narrow, this.handler);
+        this.regSelectWidget.initialize(this.width, this.height, this.client, this.narrow, this.handler);
         this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, RegSelectWidget.BUTTON_TEXTURES, button -> {
             this.regSelectWidget.toggleOpen();
             this.x = this.regSelectWidget.findLeftEdge(this.width, this.backgroundWidth);
@@ -65,7 +63,6 @@ public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
         this.regSelectWidget.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
         context.drawText(textRenderer, registerValue, this.x + 64, this.y + 39, 0x555555, false);
-
     }
 
     @Override
