@@ -49,6 +49,7 @@ public class WirelessRegisterBlock extends RegisterBlock {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
                               BlockHitResult hit) {
+        super.onUse(state, world, pos, player, hand, hit);
         if (world.isClient) {
             return ActionResult.SUCCESS;
         }

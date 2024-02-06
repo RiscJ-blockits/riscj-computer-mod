@@ -7,7 +7,7 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 
-public class WirelessRegisterBlockEntity extends ComputerBlockEntity {
+public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
 
 
     public WirelessRegisterBlockEntity(BlockPos pos, BlockState state) {

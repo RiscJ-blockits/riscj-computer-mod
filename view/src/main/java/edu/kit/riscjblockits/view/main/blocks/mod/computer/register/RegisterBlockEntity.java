@@ -9,6 +9,7 @@ import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
@@ -23,6 +24,16 @@ import org.jetbrains.annotations.Nullable;
  * Every system clock has its own unique SystemClockBlockEntity while it is loaded.
  */
 public class RegisterBlockEntity extends ComputerBlockEntity implements ExtendedScreenHandlerFactory {
+
+    /**
+     * Creates a new RegisterBlockEntity with the given settings. Used by subclasses.
+     * @param type The type of the block entity.
+     * @param pos The position of the block in the minecraft world.
+     * @param state The state of the minecraft block.
+     */
+    public RegisterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
+    }
 
     /**
      * Creates a new RegisterBlockEntity with the given settings.
