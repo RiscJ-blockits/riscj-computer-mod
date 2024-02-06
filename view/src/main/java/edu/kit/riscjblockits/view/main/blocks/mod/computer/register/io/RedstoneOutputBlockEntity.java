@@ -39,7 +39,7 @@ public class RedstoneOutputBlockEntity extends ComputerBlockEntity {
      */
     @Override
     protected ComputerBlockController createController() {
-        return new IORegisterController(this, false, IORegisterModel.REDSTONE_OUTPUT);
+        return new IORegisterController(this, false, true, IORegisterModel.REDSTONE_OUTPUT);
     }
 
     /**

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TextOutputBlockEntity;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.font.MultilineText;
@@ -19,7 +20,6 @@ import org.lwjgl.glfw.GLFW;
 
 public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/programming_block_gui.png");
-
 
     /**
      * The edit box widget that is used to enter the code.
@@ -52,7 +52,9 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         addDrawableChild(inputBox);
         inputBox.setFocused(false);
         //add rest
-        outputtedText = MultilineText.create(textRenderer, Text.literal("0"), width - 20);
+        output = ((TextOutputBlockEntity) handler.getBlockEntity()).getDisplayedString();
+        lastOutput = output;
+        outputtedText = MultilineText.create(textRenderer, Text.literal(output), width - 20);
         handler.enableSyncing();
     }
 
@@ -100,6 +102,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         // close the screen if the escape key is pressed
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            ((TextOutputBlockEntity) handler.getBlockEntity()).setDisplayedString(output);
             assert this.client != null;
             assert this.client.player != null;
             this.client.player.closeHandledScreen();

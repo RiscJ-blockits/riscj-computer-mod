@@ -35,7 +35,7 @@ public class RedstoneInputBlockEntity extends ComputerBlockEntity {
      */
     @Override
     protected ComputerBlockController createController() {
-        return new IORegisterController(this, true, REDSTONE_INPUT);
+        return new IORegisterController(this, true, false, REDSTONE_INPUT);
     }
 
     /**

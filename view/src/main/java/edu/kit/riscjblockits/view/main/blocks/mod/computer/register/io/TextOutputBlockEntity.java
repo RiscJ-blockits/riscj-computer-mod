@@ -6,6 +6,8 @@ import edu.kit.riscjblockits.model.blocks.IORegisterModel;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
+import edu.kit.riscjblockits.view.main.data.DataNbtConverter;
+import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -25,8 +27,11 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 
 public class TextOutputBlockEntity extends ComputerBlockEntity implements ExtendedScreenHandlerFactory  {
 
+    private String persistentValue;             //only in the client
+
     public TextOutputBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.TEXT_OUTPUT_BLOCK_ENTITY, pos, state);
+        //Sync the input value to the model
         ServerPlayNetworking.registerGlobalReceiver(
             NetworkingConstants.SYNC_TERMINAL_INPUT, (server, player, handler, buf, responseSender) -> {
                 BlockPos blockPos = buf.readBlockPos();
@@ -46,7 +51,7 @@ public class TextOutputBlockEntity extends ComputerBlockEntity implements Extend
 
     @Override
     protected ComputerBlockController createController() {
-        return new IORegisterController(this, false, IORegisterModel.TEXT_OUTPUT);
+        return new IORegisterController(this, true, true, IORegisterModel.TEXT_OUTPUT);
     }
 
     @Override
@@ -63,6 +68,29 @@ public class TextOutputBlockEntity extends ComputerBlockEntity implements Extend
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new TerminalScreenHandler(syncId, playerInventory, this);
+    }
+
+    @Override
+    public void writeNbt(NbtCompound nbt) {
+        //ToDo make String persistent
+        super.writeNbt(nbt);
+    }
+
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+        //ToDo make String persistent
+    }
+
+    public void setDisplayedString(String string) {
+        this.persistentValue = string;
+    }
+
+    public String getDisplayedString() {
+        if (this.persistentValue == null) {
+            return "";
+        }
+        return this.persistentValue;
     }
 
 }
