@@ -11,8 +11,20 @@ import java.util.regex.Pattern;
  */
 public class Instruction implements IQueryableInstruction {
 
+    /**
+     * The pattern to match a binary string.
+     */
+    private static final Pattern BINARY_PATTERN = Pattern.compile("[01]+");
+
+    /**
+     * The pattern to match an argument-translation pair.
+     */
     private static final Pattern ARGUMENT_TRANSLATION_PATTERN =
         Pattern.compile("(?<argument>\\[\\w+\\])<(?<length>\\d+(:?\\d+)?)>");
+
+    /**
+     * The pattern to match an argument-translation pair with a range.
+     */
     private static final Pattern ARGUMENT_TRANSLATION_PATTERN_RANGE =
         Pattern.compile("(?<argument>\\[\\w+\\])<(?<from>\\d+):(?<to>\\d+)>");
 
@@ -166,4 +178,36 @@ public class Instruction implements IQueryableInstruction {
     }
 
 
+    /**
+     * Checks if the given binary value matches the (constant) translation of the instruction.
+     *
+     * @param binaryValue The binary value to check.
+     * @return True if the binary value matches the translation, false otherwise.
+     */
+    public boolean matchesBinary(String binaryValue) {
+        int offset = 0;
+        for (String arg : translation) {
+            // increment offset based on translation
+            if (!BINARY_PATTERN.matcher(arg).matches()) {
+                Matcher matcher = ARGUMENT_TRANSLATION_PATTERN.matcher(arg);
+                if (matcher.matches()) {
+                    offset += Integer.parseInt(matcher.group("length"));
+                }
+                else {
+                    Matcher matcherRange = ARGUMENT_TRANSLATION_PATTERN_RANGE.matcher(arg);
+                    if (matcherRange.matches()) {
+                        offset += Integer.parseInt(matcherRange.group("to")) - Integer.parseInt(matcherRange.group("from")) + 1;
+                    }
+                }
+            }
+            // check if binaryValue matches translation, increment offset
+            else {
+                if (!arg.equals(binaryValue.substring(offset, offset + arg.length()))) {
+                    return false;
+                }
+                offset += arg.length();
+            }
+        }
+        return true;
+    }
 }

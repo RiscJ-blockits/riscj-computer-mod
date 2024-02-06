@@ -75,7 +75,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
     /**
      * Instructions of the instruction set, mapped by opcode.
      */
-    private HashMap<String, Instruction> opcodeHashMap;
+    private HashMap<String, List<Instruction>> opcodeHashMap;
 
     public InstructionSetModel() {
         this.name = null;
@@ -96,7 +96,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
                                MicroInstruction[] fetchPhase, HashMap<String, String> addressChangeHashMap,
                                String programStartLabel, HashMap<String, String> dataStorageKeywords,
                                HashMap<String, Instruction> commandHashMap,
-                               HashMap<String, Instruction> opcodeHashMap) {
+                               HashMap<String, List<Instruction>> opcodeHashMap) {
         this.name = name;
         this.instructionLength = instructionLength;
         this.instructionSetRegisters = instructionSetRegisters;
@@ -116,7 +116,12 @@ InstructionSetModel implements IQueryableInstructionSetModel {
     public void generateOpcodeHashmap(){
         this.opcodeHashMap = new HashMap<>();
         if(this.commandHashMap == null) return;
-        this.commandHashMap.values().forEach(e -> opcodeHashMap.put(e.getOpcode(), e));
+        this.commandHashMap.values().forEach(e -> {
+            if (!opcodeHashMap.containsKey(e.getOpcode())) {
+                opcodeHashMap.put(e.getOpcode(), new ArrayList<>());
+            }
+            opcodeHashMap.get(e.getOpcode()).add(e);
+        });
     }
 
     /**
@@ -327,7 +332,15 @@ InstructionSetModel implements IQueryableInstructionSetModel {
             String opCode = binaryValue.substring(opCodeStart, opCodeStart + opCodeLength);
             // if no instruction is found, the next opcode length is tried
             if (!opcodeHashMap.containsKey(opCode)) continue;
-            Instruction instruction = opcodeHashMap.get(opCode);
+            // find instruction in list of instructions with the same opcode
+            List<Instruction> instructions = opcodeHashMap.get(opCode);
+            Instruction instruction = null;
+            for (Instruction possibleInstruction : instructions) {
+                if (possibleInstruction.matchesBinary(binaryValue)) {
+                    instruction = possibleInstruction;
+                    break;
+                }
+            }
             if (instruction != null) {
                 return new Instruction(instruction, binaryValue);
             }
