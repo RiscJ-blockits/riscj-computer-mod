@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.IORegisterController;
+import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.model.blocks.IORegisterModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
@@ -67,7 +68,7 @@ public class TerminalBlockEntity extends ComputerBlockEntity implements Extended
 
     @Override
     protected ComputerBlockController createController() {
-        return new IORegisterController(this, true, true, IORegisterModel.TEXT_OUTPUT);
+        return new RegisterController(this);
     }
 
     @Override

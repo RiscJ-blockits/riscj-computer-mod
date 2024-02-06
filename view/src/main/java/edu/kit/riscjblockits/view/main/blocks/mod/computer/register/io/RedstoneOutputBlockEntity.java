@@ -8,6 +8,7 @@ import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.tick.TickPriority;
@@ -15,7 +16,7 @@ import net.minecraft.world.tick.TickPriority;
 /**
  * This class defines the block entity for a register that always outputs the redstone power it has stored.
  */
-public class RedstoneOutputBlockEntity extends ComputerBlockEntity {
+public class RedstoneOutputBlockEntity extends RegisterBlockEntity {
 
     /**
      * The redstone power that the block should output.
@@ -31,15 +32,6 @@ public class RedstoneOutputBlockEntity extends ComputerBlockEntity {
     public RedstoneOutputBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.REDSTONE_OUTPUT_BLOCK_ENTITY, pos, state);
         power = 0;
-    }
-
-    /**
-     * Creates a new IORegisterController.
-     * @return A new IORegisterController bound to this block entity.
-     */
-    @Override
-    protected ComputerBlockController createController() {
-        return new IORegisterController(this, false, true, IORegisterModel.REDSTONE_OUTPUT);
     }
 
     /**

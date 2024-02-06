@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import edu.kit.riscjblockits.view.client.screens.widgets.RegSelectWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
@@ -11,6 +12,7 @@ import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.EditBoxWidget;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
@@ -42,6 +44,8 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
      * A Minecraft class that is used to display the output string.
      */
     private MultilineText outputtedText;
+    private final RegSelectWidget regSelectWidget = new RegSelectWidget();
+    private boolean narrow;
 
     /**
      * The constructor of the screen.
@@ -73,6 +77,17 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         output = ((TerminalBlockEntity) handler.getBlockEntity()).getDisplayedString();
         outputtedText = MultilineText.create(textRenderer, Text.literal(output), width - 20);
         handler.enableSyncing();
+        //init the RegSelectWidget
+        this.narrow = this.width < 379;
+        this.regSelectWidget.initalize(this.width, this.height, this.client, this.narrow, this.handler);
+        this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, RegSelectWidget.BUTTON_TEXTURES, button -> {
+            this.regSelectWidget.toggleOpen();
+            this.x = this.regSelectWidget.findLeftEdge(this.width, this.backgroundWidth);
+            button.setPosition(this.x + 5, this.height / 2 - 49);
+        }));
+        this.addSelectableChild(this.regSelectWidget);
+        this.setInitialFocus(this.regSelectWidget);
+        this.titleX = 29;
     }
 
     /**
@@ -86,8 +101,13 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        // render the tooltip of the button if the mouse is over it
-        drawMouseoverTooltip(context, mouseX, mouseY);
+        if(this.regSelectWidget.isOpen() && this.narrow) {
+            this.renderBackground(context, mouseX, mouseY, delta);
+        } else {
+            super.render(context, mouseX, mouseY, delta);
+        }
+        this.regSelectWidget.render(context, mouseX, mouseY, delta);
+        drawMouseoverTooltip(context, mouseX, mouseY);  // render the tooltip of the button if the mouse is over it
         outputtedText.drawWithShadow(context, 10, height / 2, 16, 0xffffff);
     }
 
@@ -155,6 +175,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
      */
     @Override
     public void handledScreenTick() {
+        this.regSelectWidget.update();
         output = ((TerminalBlockEntity) handler.getBlockEntity()).getDisplayedString();
         outputtedText = MultilineText.create(textRenderer, Text.literal(output) , width - 20);
     }

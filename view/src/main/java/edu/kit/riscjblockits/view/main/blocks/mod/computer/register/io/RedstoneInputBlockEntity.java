@@ -2,12 +2,14 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.IORegisterController;
+import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 
@@ -18,7 +20,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGT
 /**
  * This class defines the block entity for a register that stores the redstone power it receives.
  */
-public class RedstoneInputBlockEntity extends ComputerBlockEntity {
+public class RedstoneInputBlockEntity extends RegisterBlockEntity {
 
     /**
      * Creates a new RedstoneInputBlockEntity.
@@ -27,15 +29,6 @@ public class RedstoneInputBlockEntity extends ComputerBlockEntity {
      */
     public RedstoneInputBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.REDSTONE_INPUT_BLOCK_ENTITY, pos, state);
-    }
-
-    /**
-     * Creates a new IORegisterController.
-     * @return A new IORegisterController bound to this block entity.
-     */
-    @Override
-    protected ComputerBlockController createController() {
-        return new IORegisterController(this, true, false, REDSTONE_INPUT);
     }
 
     /**
