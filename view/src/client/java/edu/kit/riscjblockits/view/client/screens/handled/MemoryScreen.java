@@ -22,7 +22,7 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
     public MemoryScreen(MemoryScreenHandler handler, PlayerInventory inventory,
                         Text title) {
         super(handler, inventory, title);
-        this.backgroundHeight = 256;
+        this.backgroundHeight = 222;
         this.backgroundWidth = 176;
         playerInventoryTitleY += 56;
 
