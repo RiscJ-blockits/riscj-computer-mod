@@ -36,7 +36,7 @@ public abstract class ModBlock extends BlockWithEntity {
      * @param settings The settings for the block as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
      */
     protected ModBlock(Settings settings) {
-        super(settings.nonOpaque());
+        super(settings.nonOpaque().pistonBehavior(PistonBehavior.IGNORE));
     }
 
     /**

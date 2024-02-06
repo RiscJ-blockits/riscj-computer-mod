@@ -70,4 +70,5 @@ public class BusBlockEntity extends ComputerBlockEntity {
         }
         return false;
     }
+
 }

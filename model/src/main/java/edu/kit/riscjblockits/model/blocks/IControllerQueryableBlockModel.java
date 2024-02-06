@@ -19,4 +19,8 @@ public interface IControllerQueryableBlockModel extends IQueryableBlockModel {
 
     //ToDo nicht im Entwurfs wiki
     public void onStateChange();
+
+    //ToDo nicht im Entwurfs wiki
+    public void setVisualisationState(boolean visualisationState);
+
 }

@@ -35,12 +35,6 @@ public class ControlUnitModel extends BlockModel{
         setType(ModelType.CONTROL_UNIT);
     }
 
-    @Override
-    public boolean hasUnqueriedStateChange() {
-        //ToDo remove TestCode
-        return true;
-    }
-
     /**
      * Getter for the data the view needs for ui.
      * @return Data Format: key: "clustering", value: container
@@ -63,7 +57,6 @@ public class ControlUnitModel extends BlockModel{
         } else {
             cuData.set(CONTROL_ITEM_PRESENT, new DataStringEntry("false"));
         }
-        //setUnqueriedStateChange(false);
         return cuData;
     }
 

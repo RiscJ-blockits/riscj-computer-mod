@@ -5,4 +5,7 @@ package edu.kit.riscjblockits.model.blocks;
  */
 public interface IViewQueryableBlockModel extends IQueryableBlockModel {
 
+    //ToDo nicht im Entwurfs wiki
+    public boolean getVisualisationState();
+
 }
