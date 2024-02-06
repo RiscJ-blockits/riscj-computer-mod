@@ -46,12 +46,15 @@ public class RedstoneOutputBlockEntity extends RegisterBlockEntity {
         super.updateUI();
         if (getModel() == null || world == null || !getModel().hasUnqueriedStateChange()) return;
         String powerString = ((IDataStringEntry)((IDataContainer) getModel().getData()).get(DataConstants.REGISTER_VALUE)).getContent();
+        int newPower = 0;
         try {
-            power = Integer.parseInt(powerString);
-            power = Math.max(Math.min(power, 15), 0);
+            newPower = Integer.parseInt(powerString);
+            newPower = Math.max(Math.min(newPower, 15), 0);
         } catch (NumberFormatException e) {
             return;
         }
+        if (newPower == power) return;
+        power = newPower;
         world.scheduleBlockTick(pos, getCachedState().getBlock(), 0, TickPriority.byIndex(1));      //update the block
         getModel().onStateQuery();
     }
