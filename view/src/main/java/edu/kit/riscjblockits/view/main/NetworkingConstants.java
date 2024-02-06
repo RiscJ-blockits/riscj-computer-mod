@@ -13,4 +13,5 @@ public class NetworkingConstants {
     public static final Identifier SYNC_REGISTER_SELECTION = new Identifier(RISCJ_blockits.MODID, "sync_register_selection");
 
     public static final Identifier REQUEST_DATA = new Identifier(RISCJ_blockits.MODID, "request_data");
+    public static final Identifier OPEN_MANUAL_SCREEN = new Identifier(RISCJ_blockits.MODID, "open_manual_screen");
 }

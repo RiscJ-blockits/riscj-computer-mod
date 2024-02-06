@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.view.client;
 
+import edu.kit.riscjblockits.view.client.screens.ManualScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.ControlUnitScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.MemoryScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.ProgrammingScreen;
@@ -15,6 +16,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 public class RISCJ_blockitsClient implements ClientModInitializer {
@@ -32,6 +34,8 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 		BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.BUS_BLOCK, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.SYSTEM_CLOCK_BLOCK, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.MEMORY_BLOCK, RenderLayer.getTranslucent());
+
+		registerManualScreenReceiver();
 
 		ClientPlayNetworking.registerGlobalReceiver(
 			NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, (client, handler, buf, responseSender) -> {
@@ -57,5 +61,17 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 				blockEntity.readNbt(nbt);
 		});
 
+	}
+
+
+
+	private void registerManualScreenReceiver() {
+		ClientPlayNetworking.registerGlobalReceiver(
+				NetworkingConstants.OPEN_MANUAL_SCREEN, (client, handler, buf, responseSender) -> {
+					client.execute(() -> {
+								client.setScreen(new ManualScreen(Text.translatable("manual.title")));
+							}
+					);
+				});
 	}
 }
