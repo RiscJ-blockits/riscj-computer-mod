@@ -37,11 +37,19 @@ public class InstructionSetRegisters {
     @SerializedName(value = "integer")
     private final HashMap<String, Integer> intRegs;
 
-    public InstructionSetRegisters(String programCounter, String[] aluRegs, HashMap<String, Integer> floatRegs, HashMap<String, Integer> intRegs) {
+    /**
+     * Map holding the Initial values of registers that are to have one.
+     */
+    @SerializedName(value = "initial_values")
+    private final HashMap<String, String> initialValues;
+
+    public InstructionSetRegisters(String programCounter, String[] aluRegs, HashMap<String, Integer> floatRegs, HashMap<String, Integer> intRegs,
+                                   HashMap<String, String> initialValues) {
         this.programCounter = programCounter;
         this.aluRegs = aluRegs;
         this.floatRegs = floatRegs;
         this.intRegs = intRegs;
+        this.initialValues = initialValues;
     }
 
     /**
@@ -97,6 +105,12 @@ public class InstructionSetRegisters {
         names.addAll(intRegs.keySet());
         names.addAll(floatRegs.keySet());
         return names;
+    }
+
+    public String getInitialValue(String key) {
+        if (initialValues == null)
+            return null;
+        return initialValues.get(key);
     }
 
 }

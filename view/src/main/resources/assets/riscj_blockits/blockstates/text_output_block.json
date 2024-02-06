@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "riscj_blockits:block/text_output_block"
+    }
+  }
+}

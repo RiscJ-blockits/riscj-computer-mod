@@ -6,6 +6,7 @@ import edu.kit.riscjblockits.view.client.screens.handled.MemoryScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.ProgrammingScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.RegisterScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.SystemClockScreen;
+import edu.kit.riscjblockits.view.client.screens.handled.TerminalScreen;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import net.fabricmc.api.ClientModInitializer;
@@ -27,6 +28,7 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 		HandledScreens.register(RISCJ_blockits.CONTROL_UNIT_SCREEN_HANDLER, ControlUnitScreen::new);
 		HandledScreens.register(RISCJ_blockits.MEMORY_BLOCK_SCREEN_HANDLER, MemoryScreen::new);
 		HandledScreens.register(RISCJ_blockits.SYSTEM_CLOCK_SCREEN_HANDLER, SystemClockScreen::new);
+		HandledScreens.register(RISCJ_blockits.TERMINAL_SCREEN_HANDLER, TerminalScreen::new);
 
 		BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.REGISTER_BLOCK, RenderLayer.getTranslucent());
 		BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.BUS_BLOCK, RenderLayer.getTranslucent());

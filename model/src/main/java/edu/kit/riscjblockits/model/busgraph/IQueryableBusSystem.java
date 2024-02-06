@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.model.busgraph;
 
-import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 
 import java.util.*;
@@ -67,4 +66,8 @@ public interface IQueryableBusSystem {
     boolean isNode(BlockPosition blockPosition);
 
     List<BlockPosition> getBusSystemNeighbors(BlockPosition blockPosition);
+
+    //ToDo nicht im Entwurf
+    void resetVisualisation();
+
 }

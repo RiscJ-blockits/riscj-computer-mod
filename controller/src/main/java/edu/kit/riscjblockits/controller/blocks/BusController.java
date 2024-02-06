@@ -3,6 +3,8 @@ package edu.kit.riscjblockits.controller.blocks;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.blocks.BusModel;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
+import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
+import edu.kit.riscjblockits.model.busgraph.IQueryableBusSystem;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.List;
@@ -45,4 +47,13 @@ public class BusController extends ComputerBlockController{
         }
         return getClusterHandler().getBusSystemModel().getBusSystemNeighbors(getModel().getPosition());
     }
+
+    /**
+     * Sets the BusSystemModel in the Model that the bus belongs to.
+     * @param busSystemModel The bus system model that the bus belongs to.
+     */
+    public void setBusSystemModel(BusSystemModel busSystemModel) {
+        ((BusModel) getModel()).setBelongingBusSystemModel(busSystemModel);
+    }
+
 }

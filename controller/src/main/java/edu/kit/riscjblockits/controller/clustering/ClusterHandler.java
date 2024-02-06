@@ -1,14 +1,10 @@
 package edu.kit.riscjblockits.controller.clustering;
 
 
-import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
-import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
-import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
-import edu.kit.riscjblockits.controller.blocks.IQueryableComputerController;
-import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
-import edu.kit.riscjblockits.controller.blocks.SystemClockController;
+import edu.kit.riscjblockits.controller.blocks.*;
 import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
+import edu.kit.riscjblockits.model.busgraph.IBusSystem;
 import edu.kit.riscjblockits.model.busgraph.IQueryableBusSystem;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 
@@ -293,14 +289,24 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     public void checkFinished() {
         System.out.println("Blocks: " + blocks.size() + " | BusBlocks: " + busBlocks.size());
+        boolean oldBuildingFinished = buildingFinished;
         if (istModel != null) {
             buildingFinished = ClusterArchitectureHandler.checkArchitecture(istModel, this);
+        } else {
+            buildingFinished = false;
         }
+
+
         if (buildingFinished) {
             System.out.println("Simulation Start [Cluster Handler]");
+            for (IQueryableClusterController busBlock: busBlocks) {
+                ((BusController) busBlock).setBusSystemModel((BusSystemModel) busSystemModel);
+            }
             startSimulation();
-        } else {
-            //TODO: remove Simulation
+        }
+        // stop simulation if it was running and the cluster is not finished anymore
+        else if (oldBuildingFinished){
+            stopSimulation();
         }
     }
 
@@ -310,7 +316,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     private void startSimulation() {
         // TODO check cast
         List<IQueryableSimController> simControllers = blocks.stream().map(IQueryableSimController.class::cast).toList();
-        SimulationTimeHandler sim = new SimulationTimeHandler(simControllers);
+        SimulationTimeHandler sim = new SimulationTimeHandler(simControllers, (IBusSystem) busSystemModel);
         for (IQueryableComputerController c : blocks) {
             if (c.getControllerType() == BlockControllerType.CLOCK) {
                 ((SystemClockController) c).setSimulationTimeHandler(sim);
@@ -318,5 +324,14 @@ public class ClusterHandler implements IArchitectureCheckable {
         }
     }
 
+    private void stopSimulation() {
+        for (IQueryableComputerController c : blocks) {
+            if (c.getControllerType() == BlockControllerType.CLOCK) {
+                ((SystemClockController) c).setSimulationTimeHandler(null);
+            }
+            c.stopVisualisation();
+        }
+        busSystemModel.resetVisualisation();
+    }
 
 }

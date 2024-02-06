@@ -164,9 +164,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Used to update ui elements.
      */
     public void updateUI() {
-        //ToDo hasUnqueriedStateChange die richtige Variable um aktivität zu messen?
-        if (world != null && getModel() != null && getModel().hasUnqueriedStateChange()) {
-            if (getModel().hasUnqueriedStateChange()) {
+        if (world != null && model != null) {
+            if (model.getVisualisationState()) {
                 world.setBlockState(pos, world.getBlockState(pos).with(RISCJ_blockits.ACTIVE_STATE_PROPERTY, true));
             } else {
                 world.setBlockState(pos, world.getBlockState(pos).with(RISCJ_blockits.ACTIVE_STATE_PROPERTY, false));
@@ -174,21 +173,18 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         }
     }
 
-
     /**
      * Gets called every tick.
      * Syncs the block entity nbt data to the client.
      */
-    private void syncToClient() {
-        if (world == null || world.isClient || model == null)
-            return;
+    public void syncToClient() {
+        if (world == null || world.isClient || model == null) return;
         if (model.hasUnqueriedStateChange()) {
             if (world.getPlayers().isEmpty()) {
                return;       //we are too early in the loading process
             }
             NbtCompound nbt = new NbtCompound();
             writeNbt(nbt);
-
             world.getPlayers().forEach(
                     player -> {
                         // reset reader Index, to make sure multiple players can receive the same packet
@@ -196,11 +192,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
                         buf.writeBlockPos(pos);
                         buf.writeNbt(nbt);
                         ServerPlayNetworking.send((ServerPlayerEntity) player,
-                            NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, buf);
-
-                    });
-
-
+                            NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, buf);});
             model.onStateQuery();
         }
     }

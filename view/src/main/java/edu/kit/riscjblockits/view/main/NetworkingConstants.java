@@ -9,7 +9,7 @@ public class NetworkingConstants {
 
     public static final Identifier SYNC_PROGRAMMING_CODE = new Identifier(RISCJ_blockits.MODID, "sync_programming_code");
     public static final Identifier ASSEMBLE_PROGRAMMING_CODE = new Identifier(RISCJ_blockits.MODID, "assemble_programming_code");
-
+    public static final Identifier SYNC_TERMINAL_INPUT = new Identifier(RISCJ_blockits.MODID, "sync_terminal_input");
     public static final Identifier SYNC_REGISTER_SELECTION = new Identifier(RISCJ_blockits.MODID, "sync_register_selection");
 
     public static final Identifier REQUEST_DATA = new Identifier(RISCJ_blockits.MODID, "request_data");

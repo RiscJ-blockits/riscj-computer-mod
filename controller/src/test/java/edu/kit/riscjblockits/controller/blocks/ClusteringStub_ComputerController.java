@@ -52,6 +52,11 @@ public class ClusteringStub_ComputerController implements IQueryableClusterContr
         return controllerType;
     }
 
+    @Override
+    public void stopVisualisation() {
+        //
+    }
+
     public void neighborUpdate() {}
 
     public void setNeighbours(List<IQueryableClusterController> neighbours) {
