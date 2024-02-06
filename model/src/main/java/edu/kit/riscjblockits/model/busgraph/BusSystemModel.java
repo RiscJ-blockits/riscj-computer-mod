@@ -112,10 +112,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      * @return true if the node is active in the visualization
      */
     public boolean getActiveVisualization(BlockPosition blockPosition) {
-        if (!activeVisualization.containsKey(blockPosition)) {
-            return false;
-        }
-        return activeVisualization.get(blockPosition);
+        return activeVisualization.getOrDefault(blockPosition, false);
     }
 
     /**
