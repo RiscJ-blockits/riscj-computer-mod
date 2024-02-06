@@ -9,6 +9,7 @@
 
   "item.riscj_blockits.goggles": "Ingenieur Brille",
   "item.riscj_blockits.instruction_set_mima": "MIMA Befehlssatz",
+  "item.riscj_blockits.instruction_set_mima_io": "MIMA Befehlssatz (I/O)",
   "item.riscj_blockits.instruction_set_riscv": "RISC-V Befehlssatz",
   "item.riscj_blockits.manual": "Computer Betriebsanleitung",
   "item.riscj_blockits.program": "Programm Code",

@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
@@ -120,11 +121,11 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
         List<String> listMissing = new ArrayList<>();
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
-            return null;
+            return new List[]{listMissing, listFound};
         }
         IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         if (!data.isContainer()) {
-            return null;
+            return new List[]{listMissing, listFound};
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(CONTROL_CLUSTERING)) {
@@ -201,7 +202,7 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
         InstructionSetModel instructionSet;
         try {
             instructionSet = InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
-        } catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException | InstructionBuildException e) {
             return "";
         }
 
