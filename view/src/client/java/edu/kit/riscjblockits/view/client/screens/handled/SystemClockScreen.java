@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import static edu.kit.riscjblockits.model.blocks.ClockMode.MC_TICK;
 import static edu.kit.riscjblockits.model.blocks.ClockMode.REALTIME;
 import static edu.kit.riscjblockits.model.blocks.ClockMode.STEP;
-import static edu.kit.riscjblockits.model.blocks.RegisterModel.UNASSIGNED_REGISTER;
 
 public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
 
@@ -40,7 +39,7 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     private Identifier
         leverTexture = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_lever_0.png");
 
-    private Text clockSpeed = Text.literal("0");
+    private Text clockSpeed = Text.literal("1");
     private Text clockMode = Text.literal("");
 
     public SystemClockScreen(SystemClockScreenHandler handler, PlayerInventory inventory,
@@ -115,9 +114,10 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
             return;
         }
         if (speed == 0) {
+            speed = 1;
             clockMode = String.valueOf(STEP);
         } else if (speed == 9) {
-            speed = 0;      //ToDo hier anders machen
+            speed = 1;      //ToDo hier anders machen
             clockMode = String.valueOf(REALTIME);
         } else {
             clockMode = String.valueOf(MC_TICK);
