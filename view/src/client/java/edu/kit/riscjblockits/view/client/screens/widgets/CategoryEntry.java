@@ -39,7 +39,6 @@ public class CategoryEntry extends ListEntry{
             context.drawItem(icon, x + width - 18, y + 2);
         }
 
-        super.render(context, mouseX, mouseY, delta);
     }
 
     @Override
