@@ -1,12 +1,12 @@
 {
-// TODO update to Structure of mima
+    // TODO update to Structure of mima
 
     "name": "RiscV",										//Name des Befehlssatzes
     "instruction_length": 32,								//Länge des Befehlswortes
 
     "registers": {
         "program_counter": "PC",
-		"alu":["A", "B", "OUT"],							//Register der Architektur, die direkt an die ALU gebunden werden müssen
+        "alu":["A", "B", "OUT"],							//Register der Architektur, die direkt an die ALU gebunden werden müssen
         "float": {
             //Register für Float-Operationen
             "ft0": 0,
@@ -81,9 +81,9 @@
         "word_length": 32,									//Wortlänge im Speicher
         "address_length": 32,								//Länge der Speicheradresse
         "access_delay": 0,									//Verzögerung beim Speicherzugriff in Takten
-		"byte_order": "be",									//Big-Endian oder Little-Endian
-		"possible_opcode_lengths": [7],
-		"opcode_position": "LEAST"
+        "byte_order": "be",									//Big-Endian oder Little-Endian
+        "possible_opcode_lengths": [7],
+        "opcode_position": "LEAST"
     },
     "alu_operations": [										//ALU-Operationen, die direkt angeboten werden
         "AND",
@@ -117,7 +117,7 @@
         " *.text *": ""
     },
     "program_start_label":
-            "main:",
+    "main:",
     "data_storage_keywords": {
         " *.byte * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<8>",
         " *.halfword * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<16>",
@@ -130,10 +130,10 @@
             "arguments": ["[destaddr]", "[origaddr1]", "[origaddr2]"],
             "opcode": "0110011",
             "execution": [
-                ["A", "&[origaddr1]", "", "", ""],		//Gibt je Subliste einen Abarbeitungsschritt für den Befehl an
-                ["B", "&[origaddr2]", "", "", ""],				//Standardformat für Datenbewegung -> [destination, origin, memory flag, storage operation]
+                ["A", "[origaddr1]", "", "", ""],		//Gibt je Subliste einen Abarbeitungsschritt für den Befehl an
+                ["B", "[origaddr2]", "", "", ""],				//Standardformat für Datenbewegung -> [destination, origin, memory flag, storage operation]
                 ["ADD", "OUT", "A", "B", "", "", ""],			//ALU-Operationen-Format -> [operation, alu-dest, alu-origin 1, alu-origin 2, memory flag]
-                ["destaddr", "OUT", "", "", ""]
+                ["[destaddr]", "OUT", "", "", ""]
             ],
             "translation": [							//Übersetzung in Binärformat
                 "0000000",
@@ -151,7 +151,7 @@
                 ["A", "[t2]", "", "", ""],
                 ["B", "[const]", "", "", ""],
                 ["ADD", "OUT", "A", "B", "", "", ""],
-                ["t1", "OUT", "", "", ""]
+                ["[t1]", "OUT", "", "", ""]
             ],
             "translation": [
                 "[const]<12>",
@@ -168,7 +168,7 @@
                 ["A", "[t2]", "", "", ""],
                 ["B", "[t3]", "", "", ""],
                 ["AND", "OUT", "A", "B", "", "", ""],
-                ["t1", "OUT", "", "", ""]
+                ["[t1]", "OUT", "", "", ""]
             ],
             "translation": [
                 "0000000",
@@ -415,30 +415,6 @@
                 "1100011"]
         },
 
-        "lb": {
-            "opcode": "0000011",
-            "arguments": ["[t0]", "[const](t1)"],
-            "execution": [], // TODO
-            "translation": [
-                "[const]<11:0>",
-                "[t1]<5>",
-                "000",
-                "[t0]<5>",
-                "0000011"]
-        },
-
-        "lh": {
-            "opcode": "0000011",
-            "arguments": ["[t0]", "[const](t1)"],
-            "execution": [], // TODO
-            "translation": [
-                "[const]<11:0>",
-                "[t1]<5>",
-                "001",
-                "[t0]<5>",
-                "0000011"]
-        },
-
         "lw": {
             "opcode": "0000011",
             "arguments": ["[t0]", "[const](t1)"],
@@ -454,56 +430,6 @@
                 "010",
                 "[t0]<5>",
                 "0000011"]
-        },
-
-        "lbu": {
-            "opcode": "0000011",
-            "arguments": ["[t0]", "[const](t1)"],
-            "execution": [], // TODO
-            "translation": [
-                "[const]<11:0>",
-                "[t1]<5>",
-                "100",
-                "[t0]<5>",
-                "0000011"]
-        },
-
-        "lhu": {
-            "opcode": "0000011",
-            "arguments": ["[t0]", "[const](t1)"],
-            "execution": [], // TODO
-            "translation": [
-                "[const]<11:0>",
-                "[t1]<5>",
-                "101",
-                "[t0]<5>",
-                "0000011"]
-        },
-
-        "sb": {
-            "opcode": "0100011",
-            "arguments": ["[t0]", "[const](t1)"],
-            "execution": [], // TODO
-            "translation": [
-                "[const]<11:5>",
-                "[t1]<5>",
-                "[t0]<5>",
-                "000",
-                "[const]<4:0>",
-                "0100011"]
-        },
-
-        "sh": {
-            "opcode": "0100011",
-            "arguments": ["[t0]", "[const](t1)"],
-            "execution": [], // TODO
-            "translation": [
-                "[const]<11:5>",
-                "[t1]<5>",
-                "[t0]<5>",
-                "001",
-                "[const]<4:0>",
-                "0100011"]
         },
 
         "slti": {
@@ -745,35 +671,6 @@
                 "0110011"]
         },
 
-        // TODO needed?
-        "fence": {
-            "opcode": "0001111",
-            "arguments": [], // TODO
-            "execution": [], // TODO
-            "translation": [
-                "0000",
-                "[pred]",
-                "[succ]",
-                "00000",
-                "000",
-                "00000",
-                "0001111"]
-        },
-
-        "fence.i": {
-            "opcode": "0001111",
-            "arguments": [], // TODO
-            "execution": [], // TODO
-            "translation": [
-                "0000",
-                "0000",
-                "0000",
-                "00000",
-                "001",
-                "00000",
-                "0001111"]
-        },
-
         "ecall": {
             "opcode": "1110011",
             "arguments": [],
@@ -789,7 +686,9 @@
         "ebreak": {
             "opcode": "1110011",
             "arguments": [],
-            "execution": [], // TODO
+            "execution": [
+                ["HALT", "", "", "", ""]
+            ], // TODO
             "translation": [
                 "000000000001",
                 "00000",
@@ -798,77 +697,6 @@
                 "1110011"]
         },
 
-        "csrrw": {
-            "opcode": "1110011",
-            "arguments": ["[t0]", "[csr]", "[t1]"],
-            "execution": [], // TODO
-            "translation": [
-                "[csr]<12>",
-                "[t1]<5>",
-                "001",
-                "[t0]<5>",
-                "1110011"]
-        },
-
-        "csrrs": {
-            "opcode": "1110011",
-            "arguments": ["[t0]", "[csr]", "[t1]"],
-            "execution": [], // TODO
-            "translation": [
-                "[csr]<12>",
-                "[t1]<5>",
-                "010",
-                "[t0]<5>",
-                "1110011"]
-        },
-
-        "csrrc": {
-            "opcode": "1110011",
-            "arguments": ["[t0]", "[csr]", "[t1]"],
-            "execution": [], // TODO
-            "translation": [
-                "[csr]<12>",
-                "[t1]<5>",
-                "011",
-                "[t0]<5>",
-                "1110011"]
-        },
-
-        "csrrwi": {
-            "opcode": "1110011",
-            "arguments": ["[t0]", "[csr]", "[const]"],
-            "execution": [], // TODO
-            "translation": [
-                "[csr]<12>",
-                "[const]",
-                "101",
-                "[t0]<5>",
-                "1110011"]
-        },
-
-        "csrrsi": {
-            "opcode": "1110011",
-            "arguments": ["[t0]", "[csr]", "[const]"],
-            "execution": [], // TODO
-            "translation": [
-                "[csr]<12>",
-                "[const]",
-                "110",
-                "[t0]<5>",
-                "1110011"]
-        },
-
-        "csrrci": {
-            "opcode": "1110011",
-            "arguments": ["[t0]", "[csr]", "[const]"],
-            "execution": [], // TODO
-            "translation": [
-                "[csr]<12>",
-                "[const]",
-                "111",
-                "[t0]<5>",
-                "1110011"]
-        },
 
         "mul": {
             "opcode": "0110011",

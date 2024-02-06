@@ -3,11 +3,12 @@
 
     "name": "RiscV",										//Name des Befehlssatzes
     "instruction_length": 32,								//Länge des Befehlswortes
-	
+
     "registers": {
-        //TODO: add program counter
+        "program_counter": "PC",
 		"alu":["A", "B", "OUT"],							//Register der Architektur, die direkt an die ALU gebunden werden müssen
-        "float": {											//Register für Float-Operationen
+        "float": {
+            //Register für Float-Operationen
             "ft0": 0,
             "ft1": 1,
             "ft2": 2,
@@ -79,33 +80,37 @@
     "memory": {												//Speicher-Spezifikation
         "word_length": 32,									//Wortlänge im Speicher
         "address_length": 32,								//Länge der Speicheradresse
-        "access_delay": 0,									//Verzögerung beim Speicherzugriff in Takten					
+        "access_delay": 0,									//Verzögerung beim Speicherzugriff in Takten
 		"byte_order": "be",									//Big-Endian oder Little-Endian
 		"possible_opcode_lengths": [7],
 		"opcode_position": "LEAST"
     },
-    "alu_operations": {										//ALU-Operationen, die direkt angeboten werden
-        "0": "AND",
-        "1": "OR",
-        "2": "ADD",
-        "3": "SUB",
-        "4": "XOR",
-        "5": "SLL",
-        "6": "SRL",
-        "7": "SRA",
-        "8": "MUL",
-        "9": "MULH",										//Unsigned-Operationen sind nötig für die Unterscheidung
-        "10": "MULHSU",										
-        "11": "MULHU",										
-        "12": "DIV",
-        "13": "DIVU",										
-        "14": "REM",
-        "15": "REMU"										
+    "alu_operations": [										//ALU-Operationen, die direkt angeboten werden
+        "AND",
+        "OR",
+        "ADD",
+        "SUB",
+        "XOR",
+        "SLL",
+        "SRL",
+        "SRA",
+        "MUL",
+        "MULH",										//Unsigned-Operationen sind nötig für die Unterscheidung
+        "MULHSU",
+        "MULHU",
+        "DIV",
+        "DIVU",
+        "REM",
+        "REMU"
 
-    },
-    //TODO: Add fetch instruction
+    ],
+    //TODO: Check fetch instruction
     "fetch": [
-        //TODO
+        ["A", "PC", "", "", ""],            // write PC to A
+        ["B", "1", "", "", ""],             // write 1 to B
+        ["ADD", "PC", "A", "B", "", "", ""],// add A and B and write to PC
+        ["PC", "OUT", "", "", ""]           // write ALU output to PC
+
     ],
     "address_change": {
         " *.data *": "",                    // empty string means no change
@@ -119,117 +124,724 @@
         " *.word * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<32>"
         // TODO" *.string * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<8>"
     },
-	"parsing": {
-		"instructions": {
-			 "ADD [destaddr], [origaddr1], [origaddr2]": {	//Gibt das Format des Befehls in der Texteingabe an
-                "execution": [["A", "[origaddr1]", ""],		//Gibt je Subliste einen Abarbeitungsschritt für den Befehl an
-					["B", "[origaddr2]", ""],				//Standardformat für Datenbewegung -> [destination, origin, memory flag, storage operation]
-                    ["ADD", "OUT", "A", "B", ""],			//ALU-Operationen-Format -> [operation, alu-dest, alu-origin 1, alu-origin 2, memory flag]
-                    ["destaddr", "OUT", ""]
-                ],
-                "translation": [							//Übersetzung in Binärformat
-					"0000000",								
-					"[origaddr2]<5>",						//Adressen oder Konstanten in [], <n> gibt Länge der Zahl an
-					"[origaddr1]<5>",
-					"000",
-					"[destaddr]<5>",
-                    "0110011"
+
+    "instructions": {
+        "add": {	//Gibt das Format des Befehls in der Texteingabe an
+            "arguments": ["[destaddr]", "[origaddr1]", "[origaddr2]"],
+            "opcode": "0110011",
+            "execution": [
+                ["A", "[origaddr1]", "", "", ""],		//Gibt je Subliste einen Abarbeitungsschritt für den Befehl an
+                ["B", "[origaddr2]", "", "", ""],				//Standardformat für Datenbewegung -> [destination, origin, memory flag, storage operation]
+                ["ADD", "OUT", "A", "B", "", "", ""],			//ALU-Operationen-Format -> [operation, alu-dest, alu-origin 1, alu-origin 2, memory flag]
+                ["[destaddr]", "OUT", "", "", ""]
+            ],
+            "translation": [							//Übersetzung in Binärformat
+                "0000000",
+                "[origaddr2]<5>",						//Adressen oder Konstanten in [], <n> gibt Länge der Zahl an
+                "[origaddr1]<5>",
+                "000",
+                "[destaddr]<5>",
+                "0110011"
             ]
-			},
-			"ADDI [t1], [t2], [const]": {
-                "execution": [
-                    ["A", "[t2]", ""],
-                    ["B", "[const]", ""],
-                    ["ADD", "OUT", "A", "B", ""],
-                    ["t1", "OUT", ""]
-                ],
-                "translation": [
-                    "[const]<12>",
-                    "[t2]<5>",
-                    "000",
-                    "[t1]<5>",
-					"0010011"
-                ]
-            },
-			"AND [t1], [t2], [t3]": {
-                "execution": [
-                    ["A", "[t2]", ""],
-                    ["B", "[t3]", ""],
-                    ["AND", "OUT", "A", "B", ""],
-                    ["t1", "OUT", ""]
-                ],
-                "translation": [
-                    "0000000",
-                    "[t3]<5>",
-                    "[t2]<5>",
-                    "111",
-                    "[t1]<5>",
-                    "0110011"
-                ]
-            },
-			"ANDI [t1], [t2], [const]": {
-                "execution": [
-                    ["A", "[t2]", ""],
-                    ["B", "[const]", ""],
-                    ["AND", "OUT", "A", "B", ""],
-                    ["[t1]", "OUT", ""]
-                ],
-                "translation": [
-                    "[const]<12>",
-                    "[t2]<5>",
-                    "111",
-                    "[t1]<5>",
-					"0010011"
-                ]
-            },
-			"SLL [t1], [t2], [t3]": {
-                "execution": [
-                    ["A", "[t2]", ""],
-                    ["B", "[t3]", ""],
-                    ["SLL", "OUT", "A", "B", ""],
-                    ["[t1]", "OUT", ""]
-                ],
-                "translation": [
-                    "0000000",
-                    "[t3]<5>",
-                    "[t2]<5>",
-                    "001",
-                    "[t1]<5>",
-                    "0110011"
-                ]
-            },
-			"SLLI [t1], [t2], [const]": {
-                "execution": [
-                    ["A", "[t2]", ""],
-                    ["B", "[const]", ""],
-                    ["SLL", "OUT", "A", "B", ""],
-                    ["[t1]", "OUT", ""]
-                ],
-                "translation": [
-                    "0000000",
-					"[const]<5>",
-                    "[t2]<5>",
-                    "001",
-                    "[t1]<5>",
-					"0010011"
-                ]
-            },
-			"SW t1, [const](t2)": {
-                "execution": [
-                    ["A", "[t2]", ""],
-                    ["B", "[const]", ""],
-                    ["SLL", "OUT", "A", "B", ""],
-                    ["", "", "", ["MEM[t1]", "OUT"]]
-                ],
-                "translation": [
-                    "[const]<11:5>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
-                    "t2<5>",
-                    "t1<5>",
-					"010",
-					"[const]<4:0>",
-                    "0100011"
-                ]
-            }
-		}
-	}
+        },
+        "addi": {
+            "arguments": ["[t1]", "[t2]", "[const]"],
+            "opcode": "0010011",
+            "execution": [
+                ["A", "[t2]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["[t1]", "OUT", "", "", ""]
+            ],
+            "translation": [
+                "[const]<12>",
+                "[t2]<5>",
+                "000",
+                "[t1]<5>",
+                "0010011"
+            ]
+        },
+        "and": {
+            "arguments": ["[t1]", "[t2]", "[t3]"],
+            "opcode": "0110011",
+            "execution": [
+                ["A", "[t2]", "", "", ""],
+                ["B", "[t3]", "", "", ""],
+                ["AND", "OUT", "A", "B", "", "", ""],
+                ["[t1]", "OUT", "", "", ""]
+            ],
+            "translation": [
+                "0000000",
+                "[t3]<5>",
+                "[t2]<5>",
+                "111",
+                "[t1]<5>",
+                "0110011"
+            ]
+        },
+        "sll": {
+            "arguments": ["[t1]", "[t2]", "[t3]"],
+            "execution": [
+                ["A", "[t2]", "", "", ""],
+                ["B", "[t3]", "", "", ""],
+                ["SLL", "OUT", "A", "B", "", "", ""],
+                ["[t1]", "OUT", "", "", ""]
+            ],
+            "translation": [
+                "0000000",
+                "[t3]<5>",
+                "[t2]<5>",
+                "001",
+                "[t1]<5>",
+                "0110011"
+            ]
+        },
+        "slli": {
+            "arguments": ["[t1]", "[t2]", "[const]"],
+            "execution": [
+                ["A", "[t2]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["SLL", "OUT", "A", "B", "", "", ""],
+                ["[t1]", "OUT", "", "", ""]
+            ],
+            "translation": [
+                "0000000",
+                "[const]<5>",
+                "[t2]<5>",
+                "001",
+                "[t1]<5>",
+                "0010011"
+            ]
+        },
+        "sw": {
+            "arguments": ["[t1]", "[const](t2)"],
+            "execution": [
+                ["A", "[t2]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["", "", "w", "MEM[OUT]", "[t1]", "", ""]
+            ],
+            "translation": [
+                "[const]<11:5>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
+                "[t1]<5>",
+                "[t2]<5>",
+                "010",
+                "[const]<4:0>",
+                "0100011"
+            ]
+        },
+
+        "lui": {
+            "arguments": ["[t1]", "[const]"],
+            "execution": [
+                ["A", "[const]", "", "", ""],
+                ["B", "12", "", "", ""],
+                ["SLL", "OUT", "A", "B", "", "", ""],
+                ["[t1]", "OUT", "", "", ""]
+            ],
+            "translation": [
+                "[const]<19:0>",
+                "[t1]<5>",
+                "0110111"
+            ]
+        },
+
+        "jal": {
+            "arguments": ["[t1]", "[const]"],
+            "execution": [
+                ["ra", "PC", "", "", ""],
+                ["PC", "[const]", "", "", ""]
+            ],
+            "translation": [
+                "[const]<20:20>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
+                "[const]<10:1>",
+                "[const]<11:11>",
+                "[const]<19:12>",
+                "[t1]<5>",
+                "1101111"
+            ]
+        },
+
+        "auipc": {
+            "opcode": "0010111",
+            "arguments": ["[t0]", "[const]"],
+            "execution": [
+                ["A", "[const]", "", "", ""],
+                ["B", "12", "", "", ""],
+                ["SLL", "OUT", "A", "B", "", "", ""],
+                ["B", "OUT", "", "", ""],
+                ["A", "PC", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["PC", "OUT", "", "", ""]
+            ],
+            "translation": [
+                "[const]<19:0>",            // same as lui
+                "[t0]<5>",
+                "0010111"]
+        },
+
+        "jalr": {
+            "opcode": "1100111",
+            "arguments": ["[t0]", "[const](t1)"],
+            "execution": [
+                ["ra", "PC", "", "", ""],
+                ["PC", "[t0]", "", "", ""]
+            ],
+            "translation": [
+                "[const]<11:0>",
+                "[t1]<5>",
+                "000",
+                "[t0]<5>",
+                "1100111"]
+        },
+
+        "beq": {
+            "opcode": "1100011",
+            "arguments": ["[t1]", "[t2]", "[const]"],
+            "execution": [
+                ["A", "PC", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["IF", "[t1]", "[t2]", "=", "PC", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "[const]<12:12>",
+                "[const]<10:5>",
+                "[t2]<5>",
+                "[t1]<5>",
+                "000",
+                "[const]<4:1>",
+                "[const]<11:11>",
+                "1100011"]
+        },
+
+        "bne": {
+            "opcode": "1100011",
+            "arguments": ["[t1]", "[t2]", "[const]"],
+            "execution": [
+                ["A", "PC", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["IF", "[t1]", "[t2]", "!=", "PC", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "[const]<12:12>",
+                "[const]<10:5>",
+                "[t2]<5>",
+                "[t1]<5>",
+                "001",
+                "[const]<4:1>",
+                "[const]<11:11>",
+                "1100011"]
+        },
+
+        "blt": {
+            "opcode": "1100011",
+            "arguments": ["[t1]", "[t2]", "[const]"],
+            "execution": [
+                ["A", "PC", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["IF", "[t1]", "[t2]", "<", "PC", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "[const]<12:12>",
+                "[const]<10:5>",
+                "[t2]<5>",
+                "[t1]<5>",
+                "100",
+                "[const]<4:1>",
+                "[const]<11:11>",
+                "1100011"]
+        },
+
+        "bge": {
+            "opcode": "1100011",
+            "arguments": ["[t1]", "[t2]", "[const]"],
+            "execution": [
+                ["A", "PC", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["IF", "[t1]", "[t2]", ">=", "PC", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "[const]<12:12>",
+                "[const]<10:5>",
+                "[t2]<5>",
+                "[t1]<5>",
+                "101",
+                "[const]<4:1>",
+                "[const]<11:11>",
+                "1100011"]
+        },
+
+        "bltu": {
+            "opcode": "1100011",
+            "arguments": ["[t1]", "[t2]", "[const]"],
+            "execution": [
+                ["A", "PC", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["IF", "[t1]", "[t2]", "u<", "PC", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "[const]<12:12>",
+                "[const]<10:5>",
+                "[t2]<5>",
+                "[t1]<5>",
+                "110",
+                "[const]<4:1>",
+                "[const]<11:11>",
+                "1100011"]
+        },
+
+        "bgeu": {
+            "opcode": "1100011",
+            "arguments": ["[t1]", "[t2]", "[const]"],
+            "execution": [
+                ["A", "PC", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["IF", "[t1]", "[t2]", "u>=", "PC", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "[const]<12:12>",
+                "[const]<10:5>",
+                "[t2]<5>",
+                "[t1]<5>",
+                "111",
+                "[const]<4:1>",
+                "[const]<11:11>",
+                "1100011"]
+        },
+
+        "lw": {
+            "opcode": "0000011",
+            "arguments": ["[t0]", "[const](t1)"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["", "", "w", "[t0]", "MEM[OUT]", "", ""]
+            ],
+            "translation": [
+                "[const]<11:0>",
+                "[t1]<5>",
+                "010",
+                "[t0]<5>",
+                "0000011"]
+        },
+
+        "slti": {
+            "opcode": "0010011",
+            "arguments": ["[t0]", "[t1]", "[const]"],
+            "execution": [
+                ["[t0]", "0", "", "", ""],
+                ["IF", "[t1]", "[t2]", "<", "[t0]", "1", "", "", ""]
+            ], // TODO
+            "translation": [
+                "[const]<11:0>",
+                "[t1]<5>",
+                "010",
+                "[t0]<5>",
+                "0010011"]
+        },
+
+        "sltiu": {
+            "opcode": "0010011",
+            "arguments": ["[t0]", "[t1]", "[const]"],
+            "execution": [
+                ["[t0]", "0", "", "", ""],
+                ["IF", "[t1]", "[t2]", "u<", "[t0]", "1", "", "", ""]
+            ], // TODO
+            "translation": [
+                "[const]<11:0>",
+                "[t1]<5>",
+                "011",
+                "[t0]<5>",
+                "0010011"]
+        },
+
+        "xori": {
+            "opcode": "0010011",
+            "arguments": ["[t0]", "[t1]", "[const]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["XOR", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "[const]<11:0>",
+                "[t1]<5>",
+                "100",
+                "[t0]<5>",
+                "0010011"]
+        },
+
+        "ori": {
+            "opcode": "0010011",
+            "arguments": ["[t0]", "[t1]", "[const]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["OR", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "[const]<11:0>",
+                "[t1]<5>",
+                "110",
+                "[t0]<5>",
+                "0010011"]
+        },
+
+        "andi": {
+            "opcode": "0010011",
+            "arguments": ["[t0]", "[t1]", "[const]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["AND", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "[const]<11:0>",
+                "[t1]<5>",
+                "111",
+                "[t0]<5>",
+                "0010011"]
+        },
+
+        "srli": {
+            "opcode": "0010011",
+            "arguments": ["[t0]", "[t1]", "[const]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["SRL", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "0000000",
+                "[const]<5>",
+                "[t1]<5>",
+                "101",
+                "[t0]<5>",
+                "0010011"]
+        },
+
+        "srai": {
+            "opcode": "0010011",
+            "arguments": ["[t0]", "[t1]", "[const]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["SRA", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "0100000",
+                "[const]<5>",
+                "[t1]<5>",
+                "101",
+                "[t0]<5>",
+                "0010011"]
+        },
+
+        "sub": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["SUB", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "0100000",
+                "[t2]<5>",
+                "[t1]<5>",
+                "000",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "slt": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["[t0]", "0", "", "", ""],
+                ["IF", "[t1]", "[t2]", "<", "[t0]", "1", "", "", ""]
+            ], // TODO
+            "translation": [
+                "0000000",
+                "[t2]<5>",
+                "[t1]<5>",
+                "010",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "sltu": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["[t0]", "0", "", "", ""],
+                ["IF", "[t1]", "[t2]", "u<", "[t0]", "1", "", "", ""]
+            ], // TODO
+            "translation": [
+                "0000000",
+                "[t2]<5>",
+                "[t1]<5>",
+                "011",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "xor": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["XOR", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "0000000",
+                "[t2]<5>",
+                "[t1]<5>",
+                "100",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "srl": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["SRL", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "0000000",
+                "[t2]<5>",
+                "[t1]<5>",
+                "101",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "sra": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["SRA", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "0100000",
+                "[t2]<5>",
+                "[t1]<5>",
+                "101",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "or": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["OR", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO
+            "translation": [
+                "0000000",
+                "[t2]<5>",
+                "[t1]<5>",
+                "110",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "ecall": {
+            "opcode": "1110011",
+            "arguments": [],
+            "execution": [], // TODO
+            "translation": [
+                "000000000000",
+                "00000",
+                "000",
+                "00000",
+                "1110011"]
+        },
+
+        "ebreak": {
+            "opcode": "1110011",
+            "arguments": [],
+            "execution": [
+                ["HALT", "", "", "", ""]
+            ], // TODO
+            "translation": [
+                "000000000001",
+                "00000",
+                "000",
+                "00000",
+                "1110011"]
+        },
+
+
+        "mul": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["MUL", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO RV32M
+            "translation": [
+                "0000001",
+                "[t2]<5>",
+                "[t1]<5>",
+                "000",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "mulh": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["MULH", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO RV32M
+            "translation": [
+                "0000001",
+                "[t2]<5>",
+                "[t1]<5>",
+                "001",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "mulhsu": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["MULHSU", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO RV32M
+            "translation": [
+                "0000001",
+                "[t2]<5>",
+                "[t1]<5>",
+                "010",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "mulhu": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["MULHU", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO RV32M
+            "translation": [
+                "0000001",
+                "[t2]<5>",
+                "[t1]<5>",
+                "011",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "div": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["DIV", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO RV32M
+            "translation": [
+                "0000001",
+                "[t2]<5>",
+                "[t1]<5>",
+                "100",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "divu": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["DIVU", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO RV32M
+            "translation": [
+                "0000001",
+                "[t2]<5>",
+                "[t1]<5>",
+                "101",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "rem": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["REM", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO RV32M
+            "translation": [
+                "0000001",
+                "[t2]<5>",
+                "[t1]<5>",
+                "110",
+                "[t0]<5>",
+                "0110011"]
+        },
+
+        "remu": {
+            "opcode": "0110011",
+            "arguments": ["[t0]", "[t1]", "[t2]"],
+            "execution": [
+                ["A", "[t1]", "", "", ""],
+                ["B", "[t2]", "", "", ""],
+                ["REMU", "OUT", "A", "B", "", "", ""],
+                ["[t0]", "OUT", "", "", ""]
+            ], // TODO RV32M
+            "translation": [
+                "0000001",
+                "[t2]<5>",
+                "[t1]<5>",
+                "111",
+                "[t0]<5>",
+                "0110011"]
+        }
+
+    }
+
 }
