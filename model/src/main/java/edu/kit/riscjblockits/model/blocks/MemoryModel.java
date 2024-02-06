@@ -37,7 +37,6 @@ public class MemoryModel extends BlockModel {
         return new Data();
     }
 
-
     public Value getMemoryAt(Value address) {
         if (memory == null) {
             return new Value();
@@ -72,4 +71,5 @@ public class MemoryModel extends BlockModel {
     public boolean isMemorySet() {
         return memory != null;
     }
+
 }

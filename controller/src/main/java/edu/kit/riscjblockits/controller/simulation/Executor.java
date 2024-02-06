@@ -187,6 +187,7 @@ public class Executor implements IExecutor {
                 }
 
                 AluController aluController = (AluController) blockController;
+                aluController.activateVisualisation();
                 aluController.setOperand1(registerControllerMap.get(from1).getValue());
                 // only allow for 2nd operand to be empty if the instruction is a unary operation
                 if (!from2.isBlank())
@@ -199,11 +200,9 @@ public class Executor implements IExecutor {
                 registerControllerMap.get(to).setNewValue(result);
             }
         }
-
         if (aluInstruction.getMemoryInstruction() != null) {
             execute(aluInstruction.getMemoryInstruction());
         }
-
     }
 
     /**
@@ -216,7 +215,6 @@ public class Executor implements IExecutor {
         String to = dataMovementInstruction.getTo();
 
         moveData(from, to);
-        //ToDo Bus-Daten setzen wie und wo?
 
         if (dataMovementInstruction.getMemoryInstruction() != null) {
             execute(dataMovementInstruction.getMemoryInstruction());
@@ -259,10 +257,7 @@ public class Executor implements IExecutor {
             secondValue = Value.fromBinary(condition.getCompare2(), wordLength);
         }
 
-
         String comparatorType = comparisonCondition.substring(0, 1);
-
-
 
         switch (comparatorType) {
             case "u" -> {
@@ -340,7 +335,6 @@ public class Executor implements IExecutor {
                         "Cannot move Data, MicroInstruction has no valid to value, does not match a Register");
 
             registerControllerMap.get(to).setNewValue(movedValue);
-            //FixMe from is sometimes just a long number
             if(visualizeableData) {
                 busSystem.setBusDataPath(registerControllerMap.get(from).getBlockPosition(), registerControllerMap.get(to).getBlockPosition(), movedValue);
                 registerControllerMap.get(from).activateVisualisation();

@@ -58,8 +58,6 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
         //Register us as an SystemClockModel Observer
         for(IQueryableSimController blockController: blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.CLOCK) {
-//                systemClockModel = (SystemClockModel) blockController.getModel();
-//                systemClockModel.registerObserver(this);
                 systemClockContoller = (SystemClockController) blockController;
                 ((SystemClockController) blockController).registerModelObserver(this);
             }
@@ -74,6 +72,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
     public void onMinecraftTick(){
         if(clockMode == ClockMode.MC_TICK && clockSpeed > 0) {
             if (minecraftTickCounter == 0) {
+                systemClockContoller.activateVisualisation();
                 runTick();
             }
             minecraftTickCounter = (minecraftTickCounter + 1) % clockSpeed;
@@ -86,6 +85,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      */
     public void onUserTickTrigger(){
         if (clockMode == ClockMode.STEP) {
+            systemClockContoller.activateVisualisation();
             runTick();
         }
     }
@@ -116,7 +116,6 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
 //            }
 //            runTick();
 //        }
-
     }
 
     /**
@@ -127,4 +126,5 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
         clockSpeed = systemClockContoller.getClockSpeed();
         clockMode = systemClockContoller.getClockMode();
     }
+
 }

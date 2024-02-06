@@ -99,20 +99,5 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
         this.visualisationState = visualisationState;
     }
 
-    //ToDo nicht im Entwurfs wiki
-//    public void visualize() {
-//        synchronized (visualisationState) {
-//            visualisationState.setActive(true);
-//            while (visualisationState.isActive()) {
-//                try {
-//                    wait();
-//                }
-//                catch (InterruptedException e) {
-//                    return;         //ToDo
-//                }
-//            }
-//            visualisationState.setActive(false);
-//        }
-//    }
 
 }

@@ -185,7 +185,6 @@ public class SimulationSequenceHandler implements Runnable {
      * @param instruction Microinstruction to execute.
      */
     private void executeMicroInstruction(IExecutableMicroInstruction instruction) {
-        //ToDo
         //ToDo consider exception handling (stop execution or just keep running the next like it is done now)
         try {
             instruction.execute(executor);
