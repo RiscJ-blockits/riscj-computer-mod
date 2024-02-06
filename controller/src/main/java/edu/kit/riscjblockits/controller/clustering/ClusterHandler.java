@@ -329,8 +329,9 @@ public class ClusterHandler implements IArchitectureCheckable {
             if (c.getControllerType() == BlockControllerType.CLOCK) {
                 ((SystemClockController) c).setSimulationTimeHandler(null);
             }
+            c.stopVisualisation();
         }
+        busSystemModel.resetVisualisation();
     }
-
 
 }

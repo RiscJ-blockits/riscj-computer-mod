@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.controller.simulation;
 
-
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
@@ -41,11 +40,11 @@ public class SimulationSequenceHandler implements Runnable {
     /**
      * Contains the block controllers of the associated computer blocks.
      */
-    private List<IQueryableSimController> blockControllers;
+    private final List<IQueryableSimController> blockControllers;
     /**
      * Instruction set model that holds all information on how to execute code based on the instruction set.
      */
-    private IQueryableInstructionSetModel instructionSetModel;            //FixMe: not an Interface, more in this class
+    private IQueryableInstructionSetModel instructionSetModel;
     /**
      * Controller of the program counter register.
      */
@@ -61,8 +60,8 @@ public class SimulationSequenceHandler implements Runnable {
     /**
      * Executor for the microinstructions.
      */
-    private Executor executor;
-    private IBusSystem busSystem;
+    private final Executor executor;
+    private final IBusSystem busSystem;
 
     /**
      * Constructor. Initializes the {@link BlockController}s list, hands it over to the executor, sets the first
