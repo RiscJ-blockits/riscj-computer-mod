@@ -24,7 +24,8 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
 
     private static final Identifier TEXTURE =
         new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/control_unit_gui.png");
-    private static final String MIMA = "MIMA"; //TODO match with the result for getInstructionSetType
+    private static final String MIMA = "MIMA";
+    private static final String RISCV = "RiscV";
     private ArchitectureListWidget architectureList;
     private final MIMAExWidget mimaExWidget = new MIMAExWidget();
     private TexturedButtonWidget expandButton;
