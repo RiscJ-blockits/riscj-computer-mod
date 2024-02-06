@@ -79,7 +79,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         handler.enableSyncing();
         //init the RegSelectWidget
         this.narrow = this.width < 379;
-        this.regSelectWidget.initalize(this.width, this.height, this.client, this.narrow, this.handler);
+        this.regSelectWidget.initialize(this.width, this.height, this.client, this.narrow, this.handler);
         this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, RegSelectWidget.BUTTON_TEXTURES, button -> {
             this.regSelectWidget.toggleOpen();
             this.x = this.regSelectWidget.findLeftEdge(this.width, this.backgroundWidth);
