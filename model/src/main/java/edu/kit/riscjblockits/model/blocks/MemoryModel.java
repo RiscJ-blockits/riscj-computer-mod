@@ -37,12 +37,6 @@ public class MemoryModel extends BlockModel {
         return new Data();
     }
 
-    @Override
-    public boolean hasUnqueriedStateChange() {
-        //ToDo remove Test code
-        return true;
-    }
-
     public Value getMemoryAt(Value address) {
         if (memory == null) {
             return new Value();
@@ -55,10 +49,16 @@ public class MemoryModel extends BlockModel {
         setUnqueriedStateChange(true);
     }
 
-    public void setMemory(Memory memory) {
-        this.memory = memory;
+
+    public boolean setMemory(Memory memory) {
+        if (this.memory == null || !this.memory.equals(memory)) {
+            this.memory = memory;
+            setUnqueriedStateChange(true);
+            return true;
+        }
+        this.memory = memory;       //just to be safe
         setUnqueriedStateChange(true);
-        System.out.println("Memory changed");
+        return false;
     }
 
     public Value getInitialProgramCounter() {
@@ -71,4 +71,5 @@ public class MemoryModel extends BlockModel {
     public boolean isMemorySet() {
         return memory != null;
     }
+
 }

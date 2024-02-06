@@ -2,15 +2,13 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.bus;
 
 import edu.kit.riscjblockits.controller.blocks.BusController;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
+import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,5 +36,39 @@ public class BusBlockEntity extends ComputerBlockEntity {
         return new BusController(this);
     }
 
+    /**
+     * This method updates the block state of the bus.
+     */
+    public void updateBlockState() {
+        if (world.isClient || getController() == null || world.getBlockState(pos) == null) {
+            return;
+        }
+        List<BlockPosition> neighbours = ((BusController) getController()).getBusSystemNeighbors();
+        if (neighbours == null) {
+            return;
+        }
+        BlockState state = world.getBlockState(pos).with(BusBlock.NORTH, listContainsPos(neighbours, pos.north()))
+                .with(BusBlock.EAST, listContainsPos(neighbours, pos.east()))
+                .with(BusBlock.SOUTH, listContainsPos(neighbours, pos.south()))
+                .with(BusBlock.WEST, listContainsPos(neighbours, pos.west()))
+                .with(BusBlock.UP, listContainsPos(neighbours, pos.up()))
+                .with(BusBlock.DOWN, listContainsPos(neighbours, pos.down()));
+        world.setBlockState(pos, state);
+    }
+
+    /**
+     * This method checks if a list of BlockPositions contains a specific position.
+     * @param pos1 The list of BlockPositions.
+     * @param pos2 The position that should be checked.
+     * @return True if the list contains the position, false otherwise.
+     */
+    private boolean listContainsPos(List<BlockPosition> pos1, BlockPos pos2) {
+        for (BlockPosition pos : pos1) {
+            if (pos.getX() == pos2.getX() && pos.getY() == pos2.getY() && pos.getZ() == pos2.getZ()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

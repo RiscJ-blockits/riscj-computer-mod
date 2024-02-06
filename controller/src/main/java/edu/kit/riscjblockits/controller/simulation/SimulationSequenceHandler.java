@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.controller.simulation;
 
-
 import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
@@ -8,6 +7,7 @@ import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstructionException;
+import edu.kit.riscjblockits.model.busgraph.IBusSystem;
 import edu.kit.riscjblockits.model.instructionset.IExecutableMicroInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
@@ -40,11 +40,11 @@ public class SimulationSequenceHandler implements Runnable {
     /**
      * Contains the block controllers of the associated computer blocks.
      */
-    private List<IQueryableSimController> blockControllers;
+    private final List<IQueryableSimController> blockControllers;
     /**
      * Instruction set model that holds all information on how to execute code based on the instruction set.
      */
-    private IQueryableInstructionSetModel instructionSetModel;            //FixMe: not an Interface, more in this class
+    private IQueryableInstructionSetModel instructionSetModel;
     /**
      * Controller of the program counter register.
      */
@@ -60,15 +60,17 @@ public class SimulationSequenceHandler implements Runnable {
     /**
      * Executor for the microinstructions.
      */
-    private Executor executor;
+    private final Executor executor;
+    private final IBusSystem busSystem;
 
     /**
      * Constructor. Initializes the {@link BlockController}s list, hands it over to the executor, sets the first
      * run phase to FETCH and the counter to zero and initializes the instruction set model and the memory controller.
      * @param blockControllers Controllers of the associated computer blocks.
      */
-    public SimulationSequenceHandler(List<IQueryableSimController> blockControllers) {
+    public SimulationSequenceHandler(List<IQueryableSimController> blockControllers, IBusSystem busSystem) {
         this.blockControllers = blockControllers;
+        this.busSystem = busSystem;
 
         phaseCounter = 0;
         runPhase = RunPhase.FETCH;
@@ -96,7 +98,7 @@ public class SimulationSequenceHandler implements Runnable {
                 }
             }
         }
-        this.executor = new Executor(blockControllers, instructionSetModel.getMemoryWordSize());
+        this.executor = new Executor(blockControllers, instructionSetModel.getMemoryWordSize(), busSystem);
 
     }
 
@@ -115,7 +117,8 @@ public class SimulationSequenceHandler implements Runnable {
         //get MicroInstructions
 
         //------------
-       switch (runPhase) {
+        resetVisualisation();
+        switch (runPhase) {
             case FETCH -> fetch();
             case EXECUTE -> execute();
         }
@@ -127,7 +130,6 @@ public class SimulationSequenceHandler implements Runnable {
      * If the last step of the fetch phase is executed, the execution phase is entered.
      */
     private void fetch(){
-
         // load the execution's microinstructions internally before fetch, so the memory address is still the same
         if (phaseCounter == 0) {
             IQueryableInstruction instruction = instructionSetModel.getInstructionFromBinary(memoryController.getValue(programCounterController.getValue()).getBinaryValue());
@@ -149,7 +151,6 @@ public class SimulationSequenceHandler implements Runnable {
 
     }
 
-
     /**
      * Gets the current microinstruction from the loaded instruction and executes it.
      * For every microinstruction, a cue from the simulation time handler is necessary. Each microinstruction
@@ -168,18 +169,28 @@ public class SimulationSequenceHandler implements Runnable {
     }
 
     /**
+     * Resets the visualization of the computer blocks and the bus system.
+     */
+    private void resetVisualisation() {
+        //ToDo what to do on programm end
+        //ToDo what to do in fast mode
+        for (IQueryableSimController blockController : blockControllers) {
+            blockController.stopVisualisation();
+        }
+        busSystem.resetVisualisation();
+    }
+
+    /**
      * Execute microinstruction using a visitor pattern.
      * @param instruction Microinstruction to execute.
      */
     private void executeMicroInstruction(IExecutableMicroInstruction instruction) {
-        //ToDo
         //ToDo consider exception handling (stop execution or just keep running the next like it is done now)
         try {
             instruction.execute(executor);
         } catch (NonExecutableMicroInstructionException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -189,4 +200,5 @@ public class SimulationSequenceHandler implements Runnable {
         FETCH,
         EXECUTE
     }
+
 }

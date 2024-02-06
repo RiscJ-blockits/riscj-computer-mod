@@ -80,10 +80,8 @@ public class ControlUnitController extends ComputerBlockController{
                 } catch (UnsupportedEncodingException e) {
                     return;
                 }
-                ((ControlUnitModel) getModel()).setIstModel(istModel);
-                if (getClusterHandler() != null) {
-                    updateClusterHandler();
-                }
+                boolean newIstModel = ((ControlUnitModel) getModel()).setIstModel(istModel);
+                if (getClusterHandler() != null && newIstModel) updateClusterHandler();
             }
         }
     }

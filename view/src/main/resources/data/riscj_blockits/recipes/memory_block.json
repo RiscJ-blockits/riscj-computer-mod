@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "CRC",
+    "CRC",
+    "CRC"
+  ],
+  "key": {
+    "C": {
+      "tag": "minecraft:copper_ingot"
+    },
+    "R": {
+      "item": "riscj_blockits:register_block"
+    }
+  },
+  "result": {
+    "item": "riscj_blockits:memory_block",
+    "count": 1
+  }
+}

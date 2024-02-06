@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.model.busgraph;
 
-import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 
 import java.util.*;
@@ -9,12 +8,6 @@ import java.util.*;
 //Wahrscheinlich auch von der Simulation
 //TODO: refactor name, typo
 public interface IQueryableBusSystem {
-
-    /**
-     * returns the present data on the bus
-     * @return the present data on the bus
-     */
-    Value getPresentData();
 
     /**
      * returns if the node with the given position is active in the visualization
@@ -35,13 +28,6 @@ public interface IQueryableBusSystem {
      * @param pos2 is the second node of the edge
      */
     void addEdge(BlockPosition pos1, BlockPosition pos2);
-
-    /**
-     * removes an edge between two nodes
-     * @param pos1 is the first node of the edge
-     * @param pos2 is the second node of the edge
-     */
-    void removeEdge(BlockPosition pos1, BlockPosition pos2);
 
     /**
      * removes a node and all edges connected to it
@@ -73,18 +59,15 @@ public interface IQueryableBusSystem {
     List<IQueryableBusSystem> splitBusSystemModel(BlockPosition deletedNode);
 
     /**
-     * Only PUBLIC cause of JUnit-Test.
-     * Removes one Node and his Edges and split Graph when needed.
-     * @param deletedNode The Node to remove.
-     * @return List of new Graphs.
-     */
-    List<Map<BlockPosition, List<BlockPosition>>> splitGraph(BlockPosition deletedNode);
-
-    /**
      * checks if a node is in the BusSystemModel
      * @param blockPosition is the node to check
      * @return true if the node is in the BusSystemModel
      */
     boolean isNode(BlockPosition blockPosition);
+
+    List<BlockPosition> getBusSystemNeighbors(BlockPosition blockPosition);
+
+    //ToDo nicht im Entwurf
+    void resetVisualisation();
 
 }

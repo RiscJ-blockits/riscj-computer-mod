@@ -55,11 +55,6 @@ public abstract class ListEntry implements Widget, Drawable, Element {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-
-    }
-
-    @Override
     public void setFocused(boolean focused) {
 
     }
@@ -67,5 +62,10 @@ public abstract class ListEntry implements Widget, Drawable, Element {
     @Override
     public boolean isFocused() {
         return false;
+    }
+
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return mouseX >= x && mouseX <= x + getWidth() && mouseY >= y && mouseY <= y + getHeight();
     }
 }

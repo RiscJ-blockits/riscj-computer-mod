@@ -50,7 +50,6 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
         } else {
             clockData.set(CLOCK_ACTIVE , new DataStringEntry("false"));
         }
-        //setUnqueriedStateChange(false);
         return clockData;
     }
 
@@ -77,6 +76,7 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
 
     public void setClockSpeed(int clockSpeed) {
         this.clockSpeed = clockSpeed;
+        notifyObservers();
         setUnqueriedStateChange(true);
     }
 

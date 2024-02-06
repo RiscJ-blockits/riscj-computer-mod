@@ -52,6 +52,8 @@ public class DataConstants {
      */
     public static final String REGISTER_WORD_LENGTH = "word";
 
+    public static final String REGISTER_IO_TIME = "register_io_time";
+
     //SystemClock Constants
     /**
      * {@link edu.kit.riscjblockits.model.blocks.SystemClockModel#getData()}
@@ -86,6 +88,15 @@ public class DataConstants {
      * {@link edu.kit.riscjblockits.model.blocks.ControlUnitModel#getData()}
      */
     public static final String CONTROL_ITEM_PRESENT = "istModelPresent";
+
+    //Clustering Constants
+    public static final String CLUSTERING_MISSING_REGISTERS = "missingRegisters";
+    public static final String CLUSTERING_FOUND_REGISTERS = "foundRegisters";
+    public static final String CLUSTERING_FOUND_CONTROL_UNIT = "foundControlUnit";
+    public static final String CLUSTERING_FOUND_ALU = "foundALU";
+    public static final String CLUSTERING_FOUND_MEMORY = "foundMemory";
+    public static final String CLUSTERING_FOUND_CLOCK = "foundSystemClock";
+
 
     //Bus Constants
     /**

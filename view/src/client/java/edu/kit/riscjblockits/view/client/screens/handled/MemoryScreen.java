@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import edu.kit.riscjblockits.view.client.screens.widgets.MemoryListWidget;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHandler;
 import net.minecraft.client.gui.DrawContext;
@@ -16,20 +17,25 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
     private Text memory1 = Text.literal("-");        //Testcode
     private Text memory2 = Text.literal("-");        //Testcode
     private Text memory3 = Text.literal("-");        //Testcode
+    private final MemoryListWidget memoryListWidget;
 
     public MemoryScreen(MemoryScreenHandler handler, PlayerInventory inventory,
                         Text title) {
         super(handler, inventory, title);
-        this.backgroundHeight = 256;
+        this.backgroundHeight = 222;
         this.backgroundWidth = 176;
         playerInventoryTitleY += 56;
+
+        int i = (this.width - this.backgroundWidth) / 2;
+        int j = (this.height - backgroundHeight) / 2;
+
+        memoryListWidget = new MemoryListWidget(handler, i + 7, j + 26, 150, 99);
     }
 
     @Override
     protected void init() {
         super.init();
-
-        //intit Screen Elements
+        memoryListWidget.updatePos(this.x + 7, this.y + 26);
     }
 
     @Override
@@ -47,10 +53,11 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
+        memoryListWidget.render(context, mouseX, mouseY, delta);
         //Testcode
-        context.drawCenteredTextWithShadow(textRenderer, memory1, width / 2, height / 2, 0xffffff);
-        context.drawCenteredTextWithShadow(textRenderer, memory2, width / 2, height / 3, 0xffffff);
-        context.drawCenteredTextWithShadow(textRenderer, memory3, width / 2, height / 4, 0xffffff);
+        //context.drawCenteredTextWithShadow(textRenderer, memory1, width / 2, height / 2, 0xffffff);
+        //context.drawCenteredTextWithShadow(textRenderer, memory2, width / 2, height / 3, 0xffffff);
+        //context.drawCenteredTextWithShadow(textRenderer, memory3, width / 2, height / 4, 0xffffff);
     }
 
     @Override
@@ -62,4 +69,9 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
         memory3 = Text.literal(handler.getMemoryLine(2));
     }
 
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        memoryListWidget.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
 }

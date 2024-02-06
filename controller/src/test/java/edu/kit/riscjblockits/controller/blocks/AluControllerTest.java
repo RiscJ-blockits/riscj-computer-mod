@@ -58,6 +58,9 @@ class AluControllerTest {
             public IDataElement getBlockEntityData() {
                 return null;
             }
+
+            @Override
+            public void neighborUpdate() {}
         };
         return blockEntity;
     }

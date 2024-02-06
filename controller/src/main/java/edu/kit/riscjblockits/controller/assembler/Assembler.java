@@ -21,7 +21,7 @@ public class Assembler {
     /**
      * regex pattern to separate a lines label and command
      */
-    private static final Pattern LABEL_COMMAND_PATTERN = Pattern.compile(" *(?:(?<label>\\w+):)? *(?<command>\\w.*)? *");
+    private static final Pattern LABEL_COMMAND_PATTERN = Pattern.compile(" *(?:(?<label>\\w+):)? *(?<command>\\w[^;#]*)? *(?:[;#].*)?");
     private static final Pattern ARGUMENT_REGISTER_PATTERN = Pattern.compile("-?\\d*\\((?<register>\\w+)\\)");
 
     /**
@@ -104,6 +104,11 @@ public class Assembler {
 
             String label = matcher.group("label");
             String cmd = matcher.group("command");
+
+            // line only contains a label --> next line
+            if (cmd == null) {
+                continue;
+            }
 
 
             // check if line is data

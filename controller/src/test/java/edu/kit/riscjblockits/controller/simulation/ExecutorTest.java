@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.simulation;
 
 import edu.kit.riscjblockits.controller.blocks.*;
 import edu.kit.riscjblockits.model.blocks.*;
+import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.*;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
@@ -10,10 +11,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Clock;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ExecutorTest {
 
@@ -26,6 +30,7 @@ class ExecutorTest {
     private RegisterController registerController4;
     private RegisterController registerController5;
     private MemoryController memoryController;
+    private SystemClockController systemClockController;
 
     //copied from Nils @ AluControllerTest
     private IConnectableComputerBlockEntity getBlockEntityMock() {
@@ -49,13 +54,15 @@ class ExecutorTest {
             public IDataElement getBlockEntityData() {
                 return null;
             }
+
+            @Override
+            public void neighborUpdate() {}
         };
         return blockEntity;
     }
 
     @BeforeEach
     void setUp() {
-
         MemoryController memoryController = new MemoryController(getBlockEntityMock());
         ((MemoryModel) (memoryController.getModel())).setMemory(new Memory(4, 4));
         memoryController.writeMemory(Value.fromHex("00", 4), Value.fromHex("0456", 4));
@@ -77,6 +84,16 @@ class ExecutorTest {
         RegisterController registerController5 = new RegisterController(getBlockEntityMock());
         ((RegisterModel) registerController5.getModel()).setRegisterType("R5");
         registerController5.setNewValue(Value.fromHex("1101", 4));
+        SystemClockController systemClockController = new SystemClockController(getBlockEntityMock());
+        systemClockController.setSimulationMode(ClockMode.MC_TICK);
+
+        memoryController.startClustering(new BlockPosition());
+        aluController.startClustering(new BlockPosition());
+        registerController1.startClustering(new BlockPosition());
+        registerController2.startClustering(new BlockPosition());
+        registerController3.startClustering(new BlockPosition());
+        registerController4.startClustering(new BlockPosition());
+        registerController5.startClustering(new BlockPosition());
 
         List<IQueryableSimController> blockControllers = new LinkedList<>();
         blockControllers.add(memoryController);
@@ -86,8 +103,9 @@ class ExecutorTest {
         blockControllers.add(registerController3);
         blockControllers.add(registerController4);
         blockControllers.add(registerController5);
+        blockControllers.add(systemClockController);
 
-        this.executor = new Executor(blockControllers, 4);
+        this.executor = new Executor(blockControllers, 4, new BusSystemModel(new BlockPosition()));
         this.memoryController = memoryController;
         this.aluController = aluController;
         this.registerController1 = registerController1;
@@ -95,6 +113,7 @@ class ExecutorTest {
         this.registerController3 = registerController3;
         this.registerController4 = registerController4;
         this.registerController5 = registerController5;
+        this.systemClockController = systemClockController;
 
     }
 
@@ -237,5 +256,17 @@ class ExecutorTest {
     @Test
     void executeMemoryInstructionBaseCase() {
         executeAluInstructionWithMemoryInstruction();
+    }
+
+    @Test
+    void executeAluInstructionPauseCase() {
+
+        assertEquals(ClockMode.MC_TICK, systemClockController.getClockMode());
+
+        AluInstruction aluInstruction = new AluInstruction(new String[]{"", ""}, "", "r", null, "PAUSE");
+        executor.execute(aluInstruction);
+
+        assertEquals(ClockMode.STEP, systemClockController.getClockMode());
+
     }
 }

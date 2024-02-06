@@ -41,7 +41,6 @@ public class MemoryController extends ComputerBlockController {
     @Override
     public void setData(IDataElement data) {
         if (!data.isContainer()) {
-            onUpdate();
             return;
         }
         for (String s : ((IDataContainer) data).getKeys()) {
@@ -52,11 +51,14 @@ public class MemoryController extends ComputerBlockController {
                     return;
                 }
                 IDataContainer memoryData = (IDataContainer) ((IDataContainer) ((IDataContainer) data).get(s)).get(MEMORY_PROGRAMM_ITEM);
+                if (memoryData.getKeys().isEmpty()) {
+                    return;     //happens during a world load when the nbt is loaded
+                }
                 Memory memory = Memory.fromData(memoryData);
-                ((MemoryModel) getModel()).setMemory(memory);
+                boolean newMemory = ((MemoryModel) getModel()).setMemory(memory);
+                if (newMemory) onUpdate();
             }
         }
-        onUpdate();
     }
 
     private void onUpdate() {
@@ -64,8 +66,6 @@ public class MemoryController extends ComputerBlockController {
         if (clusterHandler != null)
             clusterHandler.checkFinished();
     }
-
-
 
     /**
      * Returns the value at the given address.

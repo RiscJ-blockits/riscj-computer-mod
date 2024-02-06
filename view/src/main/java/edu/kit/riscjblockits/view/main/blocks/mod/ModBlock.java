@@ -29,14 +29,14 @@ public abstract class ModBlock extends BlockWithEntity {
     /**
      * Default strength of all blocks.
      */
-    private static final float BLOCK_STRENGTH = 1.0f;
+    private static final float BLOCK_STRENGTH = 5.0f;
 
     /**
      * Creates a new Modblock with the given settings.
      * @param settings The settings for the block as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
      */
     protected ModBlock(Settings settings) {
-        super(settings.nonOpaque());
+        super(settings.nonOpaque().pistonBehavior(PistonBehavior.IGNORE));
     }
 
     /**
@@ -118,7 +118,7 @@ public abstract class ModBlock extends BlockWithEntity {
      * The Block initializes the creation of his Block Controller.
      * @param world The minecraft world the block is placed in.
      * @param pos The position the block is placed at.
-     * @param state ToDo ??
+     * @param state The Block-State of the block.
      * @param placer The entity that placed the block.
      * @param itemStack The itemstack that was used to place the block.
      */
@@ -129,6 +129,7 @@ public abstract class ModBlock extends BlockWithEntity {
         //assert: entity already exists
         world.getBlockEntity(pos).setWorld(world);
         ((ModBlockEntity)world.getBlockEntity(pos)).setController();
+        state.updateNeighbors(world, pos, 1);
     }
 
 

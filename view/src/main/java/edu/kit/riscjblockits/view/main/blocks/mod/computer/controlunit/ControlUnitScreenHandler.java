@@ -3,6 +3,8 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
@@ -12,12 +14,24 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_ALU;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_CLOCK;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_CONTROL_UNIT;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_MEMORY;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_REGISTERS;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_MISSING_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
 public class ControlUnitScreenHandler extends ModScreenHandler {
@@ -95,6 +109,103 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
             }
         }
         return "";
+    }
+
+    /**
+     * Stub for getting the Blocks needed/missing for the Architecture depending on the given key.
+     * @return
+     */
+    public List[] getStructure(){
+        List<String> listFound = new ArrayList<>();
+        List<String> listMissing = new ArrayList<>();
+        NbtCompound nbt = getBlockEntity().createNbt();
+        if (!nbt.contains(MOD_DATA)) {
+            return null;
+        }
+        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
+        if (!data.isContainer()) {
+            return null;
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals(CONTROL_CLUSTERING)) {
+                IDataContainer clusteringData = (IDataContainer) ((IDataContainer) data).get(CONTROL_CLUSTERING);
+                for (String s2 : clusteringData.getKeys()) {
+                    switch (s2) {
+                        //ToDo reformat ugly code
+                        case CLUSTERING_MISSING_REGISTERS:
+                            listMissing.addAll(List.of(((IDataStringEntry) clusteringData.get(s2)).getContent().split(" ")));
+                            listMissing.remove("");
+                            break;
+                        case CLUSTERING_FOUND_REGISTERS:
+                            listFound.addAll(List.of(((IDataStringEntry) clusteringData.get(s2)).getContent().split(" ")));
+                            listFound.remove("");
+                            break;
+                        case CLUSTERING_FOUND_CONTROL_UNIT:
+                            String found = ((IDataStringEntry) clusteringData.get(s2)).getContent();
+                            if (found.equals("1")) {
+                                listFound.add("ControlUnit");
+                            } else {
+                                listMissing.add("ControlUnit");
+                            }
+                            break;
+                        case CLUSTERING_FOUND_ALU:
+                            String foundALU = ((IDataStringEntry) clusteringData.get(s2)).getContent();
+                            if (foundALU.equals("1")) {
+                                listFound.add("ALU");
+                            } else {
+                                listMissing.add("ALU");
+                            }
+                            break;
+                        case CLUSTERING_FOUND_MEMORY:
+                            String foundMemory = ((IDataStringEntry) clusteringData.get(s2)).getContent();
+                            if (foundMemory.equals("1")) {
+                                listFound.add("Memory");
+                            } else {
+                                listMissing.add("Memory");
+                            }
+                            break;
+                        case CLUSTERING_FOUND_CLOCK:
+                            String foundClock = ((IDataStringEntry) clusteringData.get(s2)).getContent();
+                            if (foundClock.equals("1")) {
+                                listFound.add("Clock");
+                            } else {
+                                listMissing.add("Clock");
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        return new List[]{listMissing, listFound};
+    }
+
+    /**
+     * Get the InstructionSet Type.
+     * @return The name of the InstructionSet.
+     */
+    public String getInstructionSetType(){
+        if(inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
+            return "";
+        }
+
+        NbtElement nbt = inventory.getStack(0).getOrCreateNbt().get(CONTROL_IST_ITEM);
+
+        if(nbt == null) {
+            return "";
+        }
+
+        IDataElement instructionSetData = new NbtDataConverter(nbt).getData();
+
+        InstructionSetModel instructionSet;
+        try {
+            instructionSet = InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
+        } catch (UnsupportedEncodingException e) {
+            return "";
+        }
+
+        return instructionSet.getName();
     }
 
 }
