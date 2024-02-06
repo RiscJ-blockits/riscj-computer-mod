@@ -87,7 +87,7 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
-        drawMouseoverTooltip(context, mouseX, mouseY);
+
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         context.drawText(textRenderer, clockSpeed, x + SPEED_TEXTFIELD_OFFSET_X, y + SPEED_TEXTFIELD_OFFSET_Y, 0xffffff, false);
@@ -95,7 +95,7 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         for(int i = 0; i < 10; i++) {
             modeButtons.get(i).setPosition(x + MODE_BUTTON_X_OFFSETS[i], y + MODE_BUTTON_Y_OFFSETS[i]);
         }
-        //context.drawCenteredTextWithShadow(textRenderer, clockMode, width / 2, height / 3, 0xffffff);
+        drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
     @Override

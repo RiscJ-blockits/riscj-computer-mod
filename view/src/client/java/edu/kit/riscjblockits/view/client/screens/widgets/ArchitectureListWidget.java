@@ -16,6 +16,12 @@ public class ArchitectureListWidget extends ScrollableListWidget<ArchitectureEnt
         this(screen.fetchEntries(), x, y, width, height, scrollBarOffset);
     }
 
-
+    public void updateEntries(List<ArchitectureEntry> updatedEntries) {
+        if(updatedEntries.isEmpty()) {
+            this.entries.clear();
+            return;
+        }
+        this.entries = updatedEntries;
+    }
 
 }

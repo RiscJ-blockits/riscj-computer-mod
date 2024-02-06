@@ -64,12 +64,14 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
 
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
+
+
+
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = this.x;
         int y = (height - backgroundHeight) / 2;
-
         context.drawTexture(TEXTURE, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
     }
 
@@ -77,9 +79,13 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
+        //RenderSystem.disableDepthTest();
+
+        this.architectureList.updateEntries(fetchEntries());
         architectureList.setX(this.x + 30);
         architectureList.setY(this.y + 18);
         this.architectureList.render(context, mouseX, mouseY, delta);
+
 
         if (handler.getInstructionSetType().equals(MIMA)) {
             expandButton.visible = true;
@@ -87,6 +93,8 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         } else {
             expandButton.visible = false;
         }
+
+
         drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
@@ -94,6 +102,11 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         architectureList.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
+
+    @Override
+    protected void handledScreenTick() {
+        super.handledScreenTick();
     }
 
     public List<ArchitectureEntry> fetchEntries() {

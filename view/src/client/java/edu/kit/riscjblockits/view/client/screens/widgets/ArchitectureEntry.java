@@ -26,10 +26,10 @@ public class ArchitectureEntry extends ListEntry{
 
         int i = this.getX();
         int j = this.getY();
-        RenderSystem.disableDepthTest();
+        //RenderSystem.disableDepthTest();
 
-        context.getMatrices().push();
-        context.getMatrices().translate(0.0f, 0.0f, 100.0f);
+        //context.getMatrices().push();
+        //context.getMatrices().translate(0.0f, 0.0f, 100.0f);
 
         if (missing) {
             context.drawTexture(COMPONENT_MISSING, i, j, 0, 0, ENTRY_WIDTH, ENTRY_HEIGHT, ENTRY_WIDTH,
@@ -42,8 +42,8 @@ public class ArchitectureEntry extends ListEntry{
         MinecraftClient client = MinecraftClient.getInstance();
         context.drawText(client.textRenderer, Text.literal(name), this.x + 2, this.y + 2, 0x555555, false);
 
-        context.getMatrices().pop();
-        RenderSystem.enableDepthTest();
+        //context.getMatrices().pop();
+        //RenderSystem.enableDepthTest();
 
 
     }

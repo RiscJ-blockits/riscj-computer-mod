@@ -129,9 +129,11 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
                         //ToDo reformat ugly code
                         case CLUSTERING_MISSING_REGISTERS:
                             listMissing.addAll(List.of(((IDataStringEntry) clusteringData.get(s2)).getContent().split(" ")));
+                            listMissing.remove("");
                             break;
                         case CLUSTERING_FOUND_REGISTERS:
                             listFound.addAll(List.of(((IDataStringEntry) clusteringData.get(s2)).getContent().split(" ")));
+                            listFound.remove("");
                             break;
                         case CLUSTERING_FOUND_CONTROL_UNIT:
                             String found = ((IDataStringEntry) clusteringData.get(s2)).getContent();
@@ -181,7 +183,7 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
      */
     public String getInstructionSetType(){
         //TODO: implement
-        return "";
+        return "MIMA";
     }
 
 }
