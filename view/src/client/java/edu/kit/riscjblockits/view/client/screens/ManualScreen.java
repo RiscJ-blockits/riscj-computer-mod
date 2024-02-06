@@ -41,6 +41,17 @@ public class ManualScreen extends Screen {
         categories.add(new CategoryEntry(0, 0, "manual.register", "manual.register.text", textWidget, textRenderer,
                 RISCJ_blockits.REGISTER_BLOCK.asItem().getDefaultStack()));
 
+        categories.add(new CategoryEntry(0, 0, "manual.alu", "manual.alu.text", textWidget, textRenderer,
+                RISCJ_blockits.ALU_BLOCK.asItem().getDefaultStack()));
+
+        categories.add(new CategoryEntry(0, 0, "manual.bus", "manual.bus.text", textWidget, textRenderer,
+                RISCJ_blockits.BUS_BLOCK.asItem().getDefaultStack()));
+
+        categories.add(new CategoryEntry(0, 0, "manual.programming", "manual.programming.text", textWidget, textRenderer,
+                RISCJ_blockits.PROGRAMMING_BLOCK.asItem().getDefaultStack()));
+
+        categories.add(new CategoryEntry(0, 0, "manual.memory", "manual.memory.text", textWidget, textRenderer,
+                RISCJ_blockits.MEMORY_BLOCK.asItem().getDefaultStack()));
 
 
         categories.get(0).select();
