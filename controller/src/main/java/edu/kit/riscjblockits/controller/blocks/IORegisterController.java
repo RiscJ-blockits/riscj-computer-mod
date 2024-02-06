@@ -12,9 +12,13 @@ import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 public class IORegisterController extends RegisterController {
 
     /**
-     * Whether the register is an input or an output device.
+     * Whether the register is an input device.
      */
     private final boolean isInput;
+
+    /**
+     * Whether the register is an output device.
+     */
     private final boolean isOutput;
 
     /**

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TextOutputBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalBlockEntity;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.font.MultilineText;
@@ -18,18 +18,37 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
+/**
+ * The screen that is displayed when the player opens the terminal block.
+ * It contains an edit box widget to enter char that are saved inside the block.
+ * Only the last char is saved.
+ * It can display the last chars inside the model.
+ */
 public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
+
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/programming_block_gui.png");
 
     /**
-     * The edit box widget that is used to enter the code.
+     * The edit box widget that is used to enter chars.
      */
     private EditBoxWidget inputBox;
-    String output = "";
 
+    /**
+     * The string that should be displayed on the screen.
+     */
+    private String output = "";
+
+    /**
+     * A Minecraft class that is used to display the output string.
+     */
     private MultilineText outputtedText;
-    private boolean codeHasChanged = false;
 
+    /**
+     * The constructor of the screen.
+     * @param handler the handler of the screen
+     * @param inventory the inventory of the player
+     * @param title the title of the screen
+     */
     public TerminalScreen(TerminalScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         this.backgroundHeight = 222;
@@ -40,7 +59,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     /**
      * Initializes the screen.
      * Adds the edit box widget to the screen.
-     * Adds the button to the screen.
+     * Adds the Text to the screen.
      */
     @Override
     protected void init() {
@@ -50,12 +69,20 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         inputBox.setMaxLength(1);
         addDrawableChild(inputBox);
         inputBox.setFocused(false);
-        //add rest
-        output = ((TextOutputBlockEntity) handler.getBlockEntity()).getDisplayedString();
+        //add text to the screen
+        output = ((TerminalBlockEntity) handler.getBlockEntity()).getDisplayedString();
         outputtedText = MultilineText.create(textRenderer, Text.literal(output), width - 20);
         handler.enableSyncing();
     }
 
+    /**
+     * Renders the screen. Gets called every frame as long as the screen is open.
+     * We use this method to update the output string.
+     * @param context the drawing context
+     * @param mouseX the x position of the mouse
+     * @param mouseY the y position of the mouse
+     * @param delta the time delta since the last frame
+     */
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
@@ -86,7 +113,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
      * @param mouseX the X coordinate of the mouse
      * @param mouseY the Y coordinate of the mouse
      * @param button the mouse button number
-     * @return minecrafts default handling of mouse clicks
+     * @return Minecraft default handling of mouse clicks
      */
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
@@ -96,6 +123,13 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+    /**
+     * Is called when a key is pressed. We use it to send the inputted char on enter.
+     * @param keyCode the named key code of the event as described in the {@link org.lwjgl.glfw.GLFW GLFW} class
+     * @param scanCode the unique/platform-specific scan code of the keyboard input
+     * @param modifiers a GLFW bitfield describing the modifier keys that are held down (see <a href="https://www.glfw.org/docs/3.3/group__mods.html">GLFW Modifier key flags</a>)
+     * @return Minecraft default handling of key presses
+     */
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         // close the screen if the escape key is pressed
@@ -107,21 +141,28 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         //Send Data on Enter
         else if (keyCode == GLFW.GLFW_KEY_ENTER) {
             sendData(inputBox.getText());
+            //ToDo reset Text inside the box
         }
         // return true if the edit box is focused or the edit box is focused --> suppress all other key presses (e.g. "e")
         if (this.inputBox.keyPressed(keyCode, scanCode, modifiers) || this.inputBox.isFocused()) {
-            codeHasChanged = true;
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
+    /**
+     * Is called every tick. We use it to update the output string from the block entity.
+     */
     @Override
     public void handledScreenTick() {
-        output = ((TextOutputBlockEntity) handler.getBlockEntity()).getDisplayedString();
+        output = ((TerminalBlockEntity) handler.getBlockEntity()).getDisplayedString();
         outputtedText = MultilineText.create(textRenderer, Text.literal(output) , width - 20);
     }
 
+    /**
+     * Sends the inputted char converted to a hex value to the server.
+     * @param text the inputted char.
+     */
     private void sendData(String text) {
         if (text.length() != 1) {
             return;

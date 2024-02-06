@@ -29,12 +29,16 @@ public class IORegisterModel extends RegisterModel {
     /**
      * Defines an RedstoneOutput IO Device.
      */
-    public static final String TEXT_OUTPUT = "RedstoneInput";
+    public static final String TEXT_OUTPUT = "Terminal";
 
     /**
-     * Whether the register is an input or an output device.
+     * Whether the register is an input device.
      */
     private final boolean isInput;
+
+    /**
+     * Whether the register is an output device.
+     */
     private final boolean isOutput;
 
     /**

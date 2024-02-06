@@ -9,9 +9,7 @@ import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
-import edu.kit.riscjblockits.view.main.data.DataNbtConverter;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -27,14 +25,26 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
-import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_IO_TIME;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 
-public class TextOutputBlockEntity extends ComputerBlockEntity implements ExtendedScreenHandlerFactory  {
+/**
+ * This class represents a block entity for a terminal block in Minecraft.
+ * It extends the {@link ComputerBlockEntity} class and implements the {@link ExtendedScreenHandlerFactory} interface.
+ * It is responsible for managing the display of text on the screen of the block.
+ */
+public class TerminalBlockEntity extends ComputerBlockEntity implements ExtendedScreenHandlerFactory  {
 
+    /**
+     * The string that should be displayed on the screen. Is only used on the client.
+     */
     private String persistentText;             //only in the client
 
-    public TextOutputBlockEntity(BlockPos pos, BlockState state) {
+    /**
+     * The constructor of the block entity.
+     * @param pos the position of the block entity in the minecraft world.
+     * @param state the state of the block entity.
+     */
+    public TerminalBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.TEXT_OUTPUT_BLOCK_ENTITY, pos, state);
         persistentText = "";
         //Sync the input value to the model
@@ -46,7 +56,7 @@ public class TextOutputBlockEntity extends ComputerBlockEntity implements Extend
                     BlockEntity be = player.getWorld().getBlockEntity(blockPos);
                     NbtCompound nbt = new NbtCompound();
                     assert be != null;
-                    ((TextOutputBlockEntity) be).writeNbt(nbt);
+                    ((TerminalBlockEntity) be).writeNbt(nbt);
                     NbtCompound subNbt = (NbtCompound) nbt.get(MOD_DATA);
                     assert subNbt != null;
                     subNbt.putString(REGISTER_VALUE, value);
@@ -76,6 +86,9 @@ public class TextOutputBlockEntity extends ComputerBlockEntity implements Extend
         return new TerminalScreenHandler(syncId, playerInventory, this);
     }
 
+    /**
+     * @return The string that should be displayed on the screen.
+     */
     public String getDisplayedString() {
         if (this.persistentText == null) {
             return "";
@@ -83,13 +96,24 @@ public class TextOutputBlockEntity extends ComputerBlockEntity implements Extend
         return this.persistentText;
     }
 
+    /**
+     * Is used here to read new data from the model and update the persistentText.
+     * @param nbt The nbt data that should be read from.
+     */
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        String newValue = getRegisterValue(nbt);
-        persistentText = persistentText + translateHexToAscii(newValue);
+        if (world != null && world.isClient) {         //we are in the client
+            String newValue = getRegisterValue(nbt);
+            persistentText = persistentText + translateHexToAscii(newValue);
+        }
     }
 
+    /**
+     * Translates a hex string to an ascii string and removes leading zeros.
+     * @param hexStr The hex string that should be translated.
+     * @return The translated ascii string.
+     */
     private String translateHexToAscii(String hexStr) {
         hexStr = hexStr.replaceFirst("^0+", ""); // remove leading zeros
         StringBuilder output = new StringBuilder("");
@@ -100,6 +124,11 @@ public class TextOutputBlockEntity extends ComputerBlockEntity implements Extend
         return output.toString();
     }
 
+    /**
+     * Reads the register value from register block nbt data.
+     * @param nbt The nbt data that should be read from.
+     * @return The register value. A hex string.
+     */
     private String getRegisterValue(NbtCompound nbt) {
         String value = "";
         int time = 0;

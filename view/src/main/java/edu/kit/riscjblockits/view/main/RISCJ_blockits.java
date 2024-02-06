@@ -19,8 +19,8 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneI
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneOutputBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneOutputBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TextOutputBlock;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TextOutputBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockScreenHandler;
@@ -114,7 +114,7 @@ public class RISCJ_blockits implements ModInitializer {
 	public static final Block REGISTER_BLOCK = new RegisterBlock();
 	public static final Block REDSTONE_OUTPUT_BLOCK = new RedstoneOutputBlock();
 	public static final Block REDSTONE_INPUT_BLOCK = new RedstoneInputBlock();
-	public static final Block TEXT_OUTPUT_BLOCK = new TextOutputBlock();
+	public static final Block TEXT_OUTPUT_BLOCK = new TerminalBlock();
 
 	/**
 	 * This attribute defines all System-Clock blocks.
@@ -192,7 +192,7 @@ public class RISCJ_blockits implements ModInitializer {
 	public static BlockEntityType<RegisterBlockEntity> REGISTER_BLOCK_ENTITY;
 	public static BlockEntityType<RedstoneOutputBlockEntity> REDSTONE_OUTPUT_BLOCK_ENTITY;
 	public static BlockEntityType<RedstoneInputBlockEntity> REDSTONE_INPUT_BLOCK_ENTITY;
-	public static BlockEntityType<TextOutputBlockEntity> TEXT_OUTPUT_BLOCK_ENTITY;
+	public static BlockEntityType<TerminalBlockEntity> TEXT_OUTPUT_BLOCK_ENTITY;
 
 	/**
 	 * The Type of the System-Clock-Block-Entity.
@@ -318,7 +318,7 @@ public class RISCJ_blockits implements ModInitializer {
 		REDSTONE_INPUT_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MODID, "redstone_input_block_entity"),
 				FabricBlockEntityTypeBuilder.create(RedstoneInputBlockEntity::new, REDSTONE_INPUT_BLOCK).build());
 		TEXT_OUTPUT_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MODID, "text_output_block_entity"),
-				FabricBlockEntityTypeBuilder.create(TextOutputBlockEntity::new, TEXT_OUTPUT_BLOCK).build());
+				FabricBlockEntityTypeBuilder.create(TerminalBlockEntity::new, TEXT_OUTPUT_BLOCK).build());
 		// register the Item-Group
 		Registry.register(Registries.ITEM_GROUP, new Identifier(MODID, "computer_components"), ITEM_GROUP);
 		// register Networking
