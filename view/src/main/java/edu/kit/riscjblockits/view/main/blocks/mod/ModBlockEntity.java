@@ -87,7 +87,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         setController();
-        if (controller != null) {               //controller is only in the server not null
+        if (controller != null) {               //the controller is in this stage only in the server not null
             if (!nbt.contains(MOD_DATA)) {
                 return;
             }

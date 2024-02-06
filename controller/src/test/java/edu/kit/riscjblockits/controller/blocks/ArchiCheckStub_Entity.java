@@ -42,4 +42,6 @@ public class ArchiCheckStub_Entity implements IConnectableComputerBlockEntity {
     public IDataElement getBlockEntityData() {
         return null;
     }
+
+    public void neighborUpdate() {}
 }

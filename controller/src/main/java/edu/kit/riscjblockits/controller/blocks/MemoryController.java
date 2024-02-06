@@ -51,6 +51,9 @@ public class MemoryController extends ComputerBlockController {
                     return;
                 }
                 IDataContainer memoryData = (IDataContainer) ((IDataContainer) ((IDataContainer) data).get(s)).get(MEMORY_PROGRAMM_ITEM);
+                if (memoryData.getKeys().isEmpty()) {
+                    return;     //happens during a world load when the nbt is loaded
+                }
                 Memory memory = Memory.fromData(memoryData);
                 boolean newMemory = ((MemoryModel) getModel()).setMemory(memory);
                 if (newMemory) onUpdate();
