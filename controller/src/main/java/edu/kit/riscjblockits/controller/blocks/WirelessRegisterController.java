@@ -14,7 +14,13 @@ public class WirelessRegisterController extends RegisterController {
         return new WirelessRegisterModel();
     }
 
-    public void incrementFrequence() {
-        ((WirelessRegisterModel) getModel()).incrementFrequence();
+    public void setRegisterModel(WirelessRegisterController registerController) {
+        ((WirelessRegisterModel)getModel()).setRegisterModel(
+                ((WirelessRegisterModel)registerController.getModel()).getRegisterModel());
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
     }
 }

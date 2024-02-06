@@ -1,6 +1,8 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
+import edu.kit.riscjblockits.controller.blocks.WirelessRegisterController;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
@@ -70,8 +72,17 @@ public class WirelessRegisterBlock extends RegisterBlock {
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        System.out.println(itemStack.getNbt());
         super.onPlaced(world, pos, state, placer, itemStack);
+        if (itemStack.getNbt() == null || world.isClient) {
+            return;
+        }
+        System.out.println(itemStack.getNbt());
+        int[] neighbourPos = itemStack.getNbt().getIntArray("pos");
+        BlockPos blockPos = new BlockPos(neighbourPos[0], neighbourPos[1], neighbourPos[2]);
+        ((ModBlockEntity)world.getBlockEntity(blockPos)).setController();
+        ((WirelessRegisterController)((WirelessRegisterBlockEntity)world.getBlockEntity(pos)).getController())
+                .setRegisterModel(((WirelessRegisterController)((ModBlockEntity)world.getBlockEntity(blockPos)).getController()));
+        System.out.println("Placed");
     }
 
     @Override

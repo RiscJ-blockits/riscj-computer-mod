@@ -18,11 +18,4 @@ public class WirelessRegisterBlockEntity extends ComputerBlockEntity {
     protected ComputerBlockController createController() {
         return new WirelessRegisterController(this);
     }
-
-    public void incrementFrequence() {
-        if (((WirelessRegisterController) getController()) != null) {
-            System.out.println("Incremented frequence.");
-            ((WirelessRegisterController) getController()).incrementFrequence();
-        }
-    }
 }

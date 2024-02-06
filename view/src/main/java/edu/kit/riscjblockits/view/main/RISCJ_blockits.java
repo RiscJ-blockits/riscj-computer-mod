@@ -361,6 +361,7 @@ public class RISCJ_blockits implements ModInitializer {
 				entries.add(SYSTEM_CLOCK_BLOCK_ITEM);
 				entries.add(REDSTONE_OUTPUT_BLOCK_ITEM);
 				entries.add(REDSTONE_INPUT_BLOCK_ITEM);
+				entries.add(WIRELESS_REGISTER_BLOCK_ITEM);
 				//Items
 				entries.add(INSTRUCTION_SET_ITEM_MIMA);
 				entries.add(INSTRUCTION_SET_ITEM_RISCV);
