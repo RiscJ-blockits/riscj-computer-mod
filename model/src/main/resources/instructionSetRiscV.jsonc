@@ -125,8 +125,9 @@
         "add": {	//Gibt das Format des Befehls in der Texteingabe an
             "arguments": ["[destaddr]", "[origaddr1]", "[origaddr2]"],
 
-            "execution": [["A", "[origaddr1]", ""],		//Gibt je Subliste einen Abarbeitungsschritt für den Befehl an
-                ["B", "[origaddr2]", ""],				//Standardformat für Datenbewegung -> [destination, origin, memory flag, storage operation]
+            "execution": [
+                ["A", "&[origaddr1]", ""],		//Gibt je Subliste einen Abarbeitungsschritt für den Befehl an
+                ["B", "&[origaddr2]", ""],				//Standardformat für Datenbewegung -> [destination, origin, memory flag, storage operation]
                 ["ADD", "OUT", "A", "B", ""],			//ALU-Operationen-Format -> [operation, alu-dest, alu-origin 1, alu-origin 2, memory flag]
                 ["destaddr", "OUT", ""]
             ],

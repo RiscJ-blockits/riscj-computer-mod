@@ -34,6 +34,6 @@ public class AluInstruction extends ComplexMicroInstruction {
 
     @Override
     public MicroInstruction clone(String[] from, String to) {
-        return new AluInstruction(from, to, getMemoryFlag(), getMemoryInstruction().clone(), action);
+        return new AluInstruction(from, to, getMemoryFlag(), getMemoryInstruction()==null ? null : getMemoryInstruction().clone(), action);
     }
 }

@@ -35,6 +35,11 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 
 		ClientPlayNetworking.registerGlobalReceiver(
 			NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, (client, handler, buf, responseSender) -> {
+
+				if (buf.readableBytes() == 0) {
+					return;
+				}
+
 				// Read packet data on the event loop
 				BlockPos target = buf.readBlockPos();
 				NbtCompound nbt = buf.readNbt();

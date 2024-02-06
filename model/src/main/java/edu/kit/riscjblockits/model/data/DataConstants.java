@@ -76,9 +76,7 @@ public class DataConstants {
      */
     public static final String CONTROL_CLUSTERING = "clustering";
 
-    /**
-     * {@link edu.kit.riscjblockits.controller.blocks.ControlUnitController#setData(IDataElement)}
-     */
+
     public static final String CONTROL_IST_MODEL = "istModel";
 
     /**
@@ -138,6 +136,8 @@ public class DataConstants {
      * {@link edu.kit.riscjblockits.model.blocks.MemoryModel#getData()}
      */
     public static final String MEMORY_ADDRESS = "addressSize";
+
+    public static final String MEMORY_INITIAL_PC = "initialPC";
 
     /**
      * NBT-Tag of the Programm Item.

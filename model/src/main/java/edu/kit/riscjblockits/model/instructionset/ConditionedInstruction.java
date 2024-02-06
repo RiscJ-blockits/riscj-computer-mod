@@ -35,6 +35,6 @@ public class ConditionedInstruction extends ComplexMicroInstruction {
 
     @Override
     public MicroInstruction clone(String[] from, String to) {
-        return new ConditionedInstruction(from, to, getMemoryFlag(), getMemoryInstruction().clone(), condition);
+        return new ConditionedInstruction(from, to, getMemoryFlag(), getMemoryInstruction()==null ? null : getMemoryInstruction().clone(), condition);
     }
 }

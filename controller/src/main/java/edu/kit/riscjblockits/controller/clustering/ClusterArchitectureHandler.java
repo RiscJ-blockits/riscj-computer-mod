@@ -3,10 +3,12 @@ package edu.kit.riscjblockits.controller.clustering;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
+import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +49,9 @@ public class ClusterArchitectureHandler {
             switch (block.getControllerType()) {
                 case MEMORY:
                     foundMemory++;
+                    assert block instanceof MemoryController;
+                    // check if memory is set
+                    correctArchitecture = ((MemoryController) block).isMemorySet();
                     break;
                 case REGISTER:
                     availableRegisters.add(((RegisterController) block).getRegisterType());
@@ -82,6 +87,12 @@ public class ClusterArchitectureHandler {
         for (IQueryableClusterController block : blocks) {
             if (block.getControllerType() == BlockControllerType.REGISTER) {
                 ((RegisterController) block).setData(rData);
+                String initialValue = istModel.getRegisterInitialValue(((RegisterController) block).getRegisterType());
+                if (initialValue == null) {
+                    continue;
+                }
+                ((RegisterController) block).setNewValue(
+                    Value.fromHex(initialValue, istModel.getMemoryWordSize()));
             }
         }
 

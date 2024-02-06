@@ -13,6 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -78,6 +79,25 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new RegisterScreenHandler(syncId, playerInventory, this);
+    }
+
+    @Override
+    public Text getGoggleText() {
+        NbtCompound nbt = new NbtCompound();
+        writeNbt(nbt);
+        String type = "";
+        String value = "";
+        // TODO check if data constants can be used
+        if (nbt.contains("modData")) {
+            nbt = nbt.getCompound("modData");
+        }
+        if (nbt.contains("value")) {
+            value = nbt.getString("value");
+        }
+        if (nbt.contains("type")) {
+            type = nbt.getString("type");
+        }
+        return Text.of("Register\n" + type + "\n" + value);
     }
 
 }
