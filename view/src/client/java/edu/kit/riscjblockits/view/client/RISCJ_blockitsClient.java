@@ -1,11 +1,11 @@
 package edu.kit.riscjblockits.view.client;
 
 import edu.kit.riscjblockits.view.client.screens.handled.ControlUnitScreen;
-import edu.kit.riscjblockits.view.client.screens.handled.ProgrammingScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.MemoryScreen;
+import edu.kit.riscjblockits.view.client.screens.handled.ProgrammingScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.RegisterScreen;
-import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.client.screens.handled.SystemClockScreen;
+import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -37,6 +37,11 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 
 		ClientPlayNetworking.registerGlobalReceiver(
 			NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, (client, handler, buf, responseSender) -> {
+
+				if (buf.readableBytes() == 0) {
+					return;
+				}
+
 				// Read packet data on the event loop
 				BlockPos target = buf.readBlockPos();
 				NbtCompound nbt = buf.readNbt();

@@ -9,7 +9,7 @@ public class DataStub_BusSystemModel extends BusSystemModel{
 
     boolean activeVisualization;
     public DataStub_BusSystemModel(Value presentData, boolean activeVisualization) {
-        super();
+        super(new BlockPosition());
         this.presentData = presentData;
         this.activeVisualization = activeVisualization;
     }

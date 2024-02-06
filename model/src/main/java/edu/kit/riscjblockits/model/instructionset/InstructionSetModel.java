@@ -361,4 +361,20 @@ InstructionSetModel implements IQueryableInstructionSetModel {
 
         return instructionList;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InstructionSetModel that = (InstructionSetModel) o;
+
+        if (instructionLength != that.instructionLength) return false;
+        assert name != null;
+        if (!name.equals(that.name)) return false;
+        assert programStartLabel != null;
+        if (!programStartLabel.equals(that.programStartLabel)) return false;
+        //ToDo finish
+        return true;
+    }
+
 }

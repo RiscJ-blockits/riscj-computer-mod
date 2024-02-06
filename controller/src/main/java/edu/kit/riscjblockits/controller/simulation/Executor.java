@@ -1,13 +1,10 @@
 package edu.kit.riscjblockits.controller.simulation;
 
 
-import edu.kit.riscjblockits.controller.blocks.AluController;
-import edu.kit.riscjblockits.controller.blocks.BlockController;
-import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
-import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
-import edu.kit.riscjblockits.controller.blocks.MemoryController;
-import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.controller.blocks.*;
 import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstructionException;
+import edu.kit.riscjblockits.model.busgraph.IBusSystem;
+import edu.kit.riscjblockits.model.blocks.ClockMode;
 import edu.kit.riscjblockits.model.instructionset.AluInstruction;
 import edu.kit.riscjblockits.model.instructionset.ConditionedInstruction;
 import edu.kit.riscjblockits.model.instructionset.DataMovementInstruction;
@@ -46,15 +43,17 @@ public class Executor implements IExecutor {
      */
     private final Map<String, RegisterController> registerControllerMap;
     private int wordLength;
+    private IBusSystem busSystem;
 
     /**
      * Constructor. Initializes the {@link BlockController}s list and the {@link RegisterController}s map.
      * @param blockControllers Controllers of the associated computer blocks.
      */
-    public Executor(List<IQueryableSimController> blockControllers, int wordLength) {
+    public Executor(List<IQueryableSimController> blockControllers, int wordLength, IBusSystem busSystem) {
         this.blockControllers = blockControllers;
         registerControllerMap = new HashMap<>();
         this.wordLength = wordLength;
+        this.busSystem = busSystem;
 
         for (IQueryableSimController blockController : blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.REGISTER) {
@@ -70,7 +69,7 @@ public class Executor implements IExecutor {
      * @param memoryInstruction Memory instruction to be executed.
      */
     public void execute(MemoryInstruction memoryInstruction) {
-
+        //ToDo Mima wartetaktvisualisierung
         if(memoryInstruction.getFlag().isEmpty()) {
             return;
         }
@@ -129,13 +128,10 @@ public class Executor implements IExecutor {
                     }
                     //else do nothing, because memory flag is not set properly
                 }
-
-                // TODO visualisation goes here
-
+                //visualisation goes here
+                blockController.activateVisualisation();
             }
         }
-
-        //ToDo Bus-Daten setzen wie und wo?
     }
 
     /**
@@ -146,7 +142,6 @@ public class Executor implements IExecutor {
 
         String from = conditionedInstruction.getFrom()[0];
         String to = conditionedInstruction.getTo();
-
 
         InstructionCondition condition = conditionedInstruction.getCondition();
 
@@ -159,9 +154,6 @@ public class Executor implements IExecutor {
             }
         }
 
-
-        //ToDo Bus-Daten setzen wie und wo?
-
     }
 
     /**
@@ -169,6 +161,13 @@ public class Executor implements IExecutor {
      * @param aluInstruction Alu instruction to be executed.
      */
     public void execute(AluInstruction aluInstruction) {
+        //check if the instruction is a pause instruction
+        if(aluInstruction.getAction().equals("PAUSE")) {
+            blockControllers.stream().filter(controller -> controller.getControllerType() == BlockControllerType.CLOCK)
+                    .forEach(controller -> ((SystemClockController) controller).setSimulationMode(ClockMode.STEP));
+
+            return;
+        }
 
         for (IQueryableSimController blockController : blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.ALU) {
@@ -176,6 +175,8 @@ public class Executor implements IExecutor {
                 String from1 = aluInstruction.getFrom()[0];
                 String from2 = aluInstruction.getFrom()[1];
                 String to = aluInstruction.getTo();
+
+
 
                 if(from1 == null || from1.isBlank()){
                     throw new NonExecutableMicroInstructionException("AluInstruction has no from value");
@@ -222,6 +223,11 @@ public class Executor implements IExecutor {
         }
     }
 
+    /**
+     * Checks the condition of a conditioned instruction.
+     * @param condition Condition to be checked.
+     * @return True if the condition is met, false otherwise.
+     */
     private boolean checkCondition(InstructionCondition condition) {
 
         String comparisonCondition = condition.getComparator();
@@ -303,13 +309,22 @@ public class Executor implements IExecutor {
         }
     }
 
+    /**
+     * Moves data from one register to another.
+     * @param from from where the data should be moved
+     * @param to to where the data should be moved
+     */
     private void moveData(String from, String to) {
+
+        boolean visualizeableData = false;
+
         // only execute if from and to are not empty
         if(from != null && !from.isBlank() && to != null && !to.isBlank()) {
             Value movedValue;
             // from is a register --> load value from there
             if (registerControllerMap.containsKey(from)) {
                 movedValue = registerControllerMap.get(from).getValue();
+                visualizeableData = true;
             }
             // from is not a register --> extract value from binary constant
             else {
@@ -325,6 +340,12 @@ public class Executor implements IExecutor {
                         "Cannot move Data, MicroInstruction has no valid to value, does not match a Register");
 
             registerControllerMap.get(to).setNewValue(movedValue);
+            //FixMe from is sometimes just a long number
+            if(visualizeableData) {
+                busSystem.setBusDataPath(registerControllerMap.get(from).getBlockPosition(), registerControllerMap.get(to).getBlockPosition(), movedValue);
+                registerControllerMap.get(from).activateVisualisation();
+                registerControllerMap.get(to).activateVisualisation();
+            }
         }
     }
 

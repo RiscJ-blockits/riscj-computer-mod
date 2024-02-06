@@ -64,7 +64,6 @@ public class ClusterArchitectureHandler {
                     assert block instanceof MemoryController;
                     // check if memory is set
                     correctArchitecture = ((MemoryController) block).isMemorySet();
-
                     break;
                 case REGISTER:
                     availableRegisters.add(((RegisterController) block).getRegisterType());
