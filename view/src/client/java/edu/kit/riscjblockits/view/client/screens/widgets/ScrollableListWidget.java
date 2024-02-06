@@ -132,7 +132,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
 
     }
 
-    private int getContentsHeight() {
+    protected int getContentsHeight() {
         int totalHeight = 0;
         for (ListEntry entry : entries) {
             totalHeight += entry.getHeight() + entryPadding;
@@ -141,7 +141,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
         return totalHeight - entryPadding;
     }
 
-    private void drawScrollbar(DrawContext context) {
+    protected void drawScrollbar(DrawContext context) {
         if (overflows()) {
             context.drawGuiTexture(SCROLLER_TEXTURE, this.x + this.width + this.scrollBarOffset, this.y + getScrollbarPosition(), SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
         }else {

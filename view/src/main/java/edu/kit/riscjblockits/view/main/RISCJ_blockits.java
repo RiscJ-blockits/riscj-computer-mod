@@ -57,6 +57,8 @@ import net.minecraft.util.math.BlockPos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_MODE;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_SPEED;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 
@@ -321,18 +323,37 @@ public class RISCJ_blockits implements ModInitializer {
 				FabricBlockEntityTypeBuilder.create(TerminalBlockEntity::new, TEXT_OUTPUT_BLOCK).build());
 		// register the Item-Group
 		Registry.register(Registries.ITEM_GROUP, new Identifier(MODID, "computer_components"), ITEM_GROUP);
-		// register Networking
+		//Register  Client-Server Networking
 		ServerPlayNetworking.registerGlobalReceiver(
 			NetworkingConstants.SYNC_REGISTER_SELECTION, (server, player, handler, buf, responseSender) -> {
 				BlockPos pos = buf.readBlockPos();
 				String selectedRegister = buf.readString();
-
 				server.execute(() -> {
 					BlockEntity be = player.getWorld().getBlockEntity(pos);
 					NbtCompound nbt = new NbtCompound();
-					((RegisterBlockEntity) be).writeNbt(nbt);
+                    assert be != null;
+                    ((RegisterBlockEntity) be).writeNbt(nbt);
 					NbtCompound subNbt = (NbtCompound) nbt.get(MOD_DATA);
-					subNbt.putString(REGISTER_TYPE, selectedRegister);
+                    assert subNbt != null;
+                    subNbt.putString(REGISTER_TYPE, selectedRegister);
+					be.readNbt(nbt);
+				});
+			}
+		);
+		ServerPlayNetworking.registerGlobalReceiver(
+			NetworkingConstants.SYNC_CLOCK_MODE_SELECTION, (server, player, handler, buf, responseSender) -> {
+				BlockPos pos = buf.readBlockPos();
+				String clockMode = buf.readString();
+				int clockSpeed = buf.readInt();
+				server.execute(() -> {
+					BlockEntity be = player.getWorld().getBlockEntity(pos);
+					NbtCompound nbt = new NbtCompound();
+					assert be != null;
+					((SystemClockBlockEntity) be).writeNbt(nbt);
+					NbtCompound subNbt = (NbtCompound) nbt.get(MOD_DATA);
+					assert subNbt != null;
+					subNbt.putString(CLOCK_SPEED, String.valueOf(clockSpeed));
+					subNbt.putString(CLOCK_MODE, clockMode);
 					be.readNbt(nbt);
 				});
 			}
@@ -345,7 +366,6 @@ public class RISCJ_blockits implements ModInitializer {
                     assert be != null;
                     be.requestData();
 				});
-
 			}
 		);
 	}

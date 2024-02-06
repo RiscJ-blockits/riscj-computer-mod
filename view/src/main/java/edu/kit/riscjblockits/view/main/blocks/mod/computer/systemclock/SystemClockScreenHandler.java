@@ -45,22 +45,22 @@ public class SystemClockScreenHandler extends ModScreenHandler {
         return "0";
     }
 
-    public String getSystemClockMode() {
+    public int getSystemClockMode() {
         //ToDo combine methods into one
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
-            return "0";
+            return 0;
         }
         IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         if (!data.isContainer()) {
-            return "0";
+            return 0;
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals(CLOCK_MODE)) {
-                return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+            if (s.equals(CLOCK_SPEED)) {
+                return Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
             }
         }
-        return "0";
+        return 0;
     }
 
 }

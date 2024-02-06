@@ -1,8 +1,10 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.memory;
 
+import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
@@ -17,9 +19,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
-import java.util.List;
-import java.util.Set;
-
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_ADDRESS;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
@@ -81,35 +81,51 @@ public class MemoryScreenHandler extends ModScreenHandler {
     }
 
     /**
-     * @param line the line of the memory to get
+     * @param address the line of the memory to get
      * @return a string with the address and the value of the memory at the given line separated by a space
      */
-    public String getMemoryLine(int line) {
+    public String getMemoryLine(int address) {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
-            return "";
+            return "0";
         }
         IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         if (!data.isContainer()) {
-            return "";
+            return "0";
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(MEMORY_MEMORY)) {
-                //int adressSize = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get("addressSize")).getContent());
-                //ToDo make code more performant when address size matches real address size
-                Set<String> keys = ((IDataContainer) ((IDataContainer) data).get(s)).getKeys();
-                List<String> keysList = keys.stream().sorted().toList();
-                if (line >= keysList.size()) {
-                    return "";
+                int addressSize = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(DataConstants.MEMORY_ADDRESS)).getContent());
+                Value value = Value.fromDecimal(String.valueOf(address), addressSize);          //ToDo Value should hav an fromInt
+                IDataElement memLine = ((IDataContainer) ((IDataContainer) data).get(s)).get(value.getHexadecimalValue());
+                if (memLine.isEntry()) {
+                    return ((IDataStringEntry) memLine).getContent();
                 }
-                String result;
-                result = keysList.get(line);
-                result += " ";
-                result += ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(s)).get(keysList.get(line))).getContent();
-                return result;
+                return "0";
             }
         }
-        return "";
+        return "0";
+    }
+
+
+    /**
+     * @return the size of the memory in adressable units
+     */
+    public int getMemorySize(){
+        NbtCompound nbt = getBlockEntity().createNbt();
+        if (!nbt.contains(MOD_DATA)) {
+            return 9;
+        }
+        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
+        if (!data.isContainer()) {
+            return 9;
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals(MEMORY_ADDRESS)) {
+                return (int) Math.pow(Math.pow(2, 8), Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent()));
+            }
+        }
+        return 9;
     }
 
 }

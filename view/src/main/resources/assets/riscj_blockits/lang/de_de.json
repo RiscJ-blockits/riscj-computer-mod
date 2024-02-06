@@ -5,8 +5,17 @@
   "block.riscj_blockits.memory_block": "Hauptspeicher",
   "block.riscj_blockits.control_unit_block": "Kontrolleinheit",
   "block.riscj_blockits.system_clock_block": "Taktgeber",
+  "block.riscj_blockits.programming_block": "Programmier Block",
+
+  "item.riscj_blockits.goggles": "Ingenieur Brille",
+  "item.riscj_blockits.instruction_set_mima": "MIMA Befehlssatz",
+  "item.riscj_blockits.instruction_set_riscv": "RISC-V Befehlssatz",
+  "item.riscj_blockits.manual": "Computer Betriebsanleitung",
+  "item.riscj_blockits.program": "Programm Code",
+
   "block.riscj_blockits.redstone_input_block": "Redstone Eingang",
   "block.riscj_blockits.redstone_output_block": "Redstone Ausgang",
+
   "itemGroup.riscj_blockits.computer_components": "Computer Gegenstände",
 
   "programming_pretext": "hier könnte ihre Werbung stehen",

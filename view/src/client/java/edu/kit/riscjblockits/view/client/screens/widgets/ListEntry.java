@@ -55,11 +55,6 @@ public abstract class ListEntry implements Widget, Drawable, Element {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-
-    }
-
-    @Override
     public void setFocused(boolean focused) {
 
     }
