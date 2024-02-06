@@ -1,14 +1,23 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
+import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class WirelessRegisterBlock extends RegisterBlock {
 
@@ -38,8 +47,41 @@ public class WirelessRegisterBlock extends RegisterBlock {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
                               BlockHitResult hit) {
-        //Todo incrementfrequence() activated twice when right-clicking
-        ((WirelessRegisterBlockEntity) world.getBlockEntity(pos)).incrementFrequence();
-        return ActionResult.PASS;
+        if (world.isClient) {
+            return ActionResult.SUCCESS;
+        }
+
+        if (player.getStackInHand(hand).getItem() == RISCJ_blockits.WIRELESS_REGISTER_BLOCK_ITEM) {
+
+            NbtCompound nbt = player.getStackInHand(hand).getNbt();
+
+            if (nbt == null) {
+                nbt = new NbtCompound();
+            }
+
+            nbt.putIntArray("pos", new int[]{pos.getX(), pos.getY(), pos.getZ()});
+
+            player.getStackInHand(hand).setNbt(nbt);
+
+        }
+
+        return ActionResult.SUCCESS;
     }
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        System.out.println(itemStack.getNbt());
+        super.onPlaced(world, pos, state, placer, itemStack);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+        NbtCompound nbt = stack.getNbt();
+        if (nbt != null) {
+            int[] pos = nbt.getIntArray("pos");
+            tooltip.add(Text.of("X: " + pos[0] + ", Y: " + pos[1] + ", Z: " + pos[2]));
+        }
+        super.appendTooltip(stack, world, tooltip, options);
+    }
+
 }
