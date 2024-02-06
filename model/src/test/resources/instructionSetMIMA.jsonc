@@ -50,7 +50,7 @@
         ["IR", "SDR", "", "", ""]
     ],
     "address_change": {
-        " *\\* *=  *(?<address>\\w+) *": "[address]"
+        " *\\* *= *(?<address>\\w+) *": "[address]"
     },
     "program_start_label":
     "START",
