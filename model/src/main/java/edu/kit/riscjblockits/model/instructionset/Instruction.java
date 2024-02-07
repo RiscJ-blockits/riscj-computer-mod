@@ -55,7 +55,7 @@ public class Instruction implements IQueryableInstruction {
         this.translation = translation;
     }
 
-    public Instruction(Instruction instruction, String binary) {
+    public Instruction(Instruction instruction, String binary, HashMap<Integer, String> intRegisters, HashMap<Integer, String> floatRegisters) {
         this.arguments = instruction.arguments.clone();
         this.opcode = instruction.opcode;
         this.translation = instruction.translation.clone();
@@ -67,20 +67,7 @@ public class Instruction implements IQueryableInstruction {
 
         // generate filled micro instructions
         for (int i = 0; i < instruction.execution.length; i++) {
-            MicroInstruction microInstruction = instruction.execution[i];
-            String[] from = microInstruction.getFrom().clone();
-            String to = microInstruction.getTo();
-            for (int j = 0; j < from.length; j++) {
-                if (argumentsInstructionMap.containsKey(from[j])) {
-                    from[j] = argumentsInstructionMap.get(from[j]);
-                }
-            }
-
-            if (argumentsInstructionMap.containsKey(to)) {
-                to = argumentsInstructionMap.get(to);
-            }
-
-            this.execution[i] = instruction.execution[i].clone(from, to);
+            this.execution[i] = instruction.execution[i].getFilled(argumentsInstructionMap, intRegisters, floatRegisters);
         }
     }
 

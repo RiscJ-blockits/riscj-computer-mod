@@ -8,7 +8,6 @@ package edu.kit.riscjblockits.model.instructionset;
 public abstract class ComplexMicroInstruction extends MicroInstruction{
 
 
-    //ToDo: Check if necessary
     /**
      * Memory flag for type of memory access.
      */

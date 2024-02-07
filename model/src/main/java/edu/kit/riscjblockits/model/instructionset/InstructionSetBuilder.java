@@ -22,7 +22,7 @@ public class InstructionSetBuilder {
         Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
         Gson gson = new GsonBuilder().registerTypeAdapter(MicroInstruction.class, new MicroInstructionsDeserializer()).create();
         InstructionSetModel instructionSet = gson.fromJson(reader, InstructionSetModel.class);
-        instructionSet.generateOpcodeHashmap();
+        instructionSet.generateHashMaps();
         return instructionSet;
     }
 
