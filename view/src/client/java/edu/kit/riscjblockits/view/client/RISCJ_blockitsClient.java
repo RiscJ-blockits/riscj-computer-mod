@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.view.client;
 
+import edu.kit.riscjblockits.view.client.screens.InsructionSetScreen;
 import edu.kit.riscjblockits.view.client.screens.ManualScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.ControlUnitScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.MemoryScreen;
@@ -37,6 +38,7 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 		BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.ALU_BLOCK, RenderLayer.getTranslucent());
 
 		registerManualScreenReceiver();
+		registerIstItemScreenReceiver();
 
 		ClientPlayNetworking.registerGlobalReceiver(
 			NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, (client, handler, buf, responseSender) -> {
@@ -64,8 +66,6 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 
 	}
 
-
-
 	private void registerManualScreenReceiver() {
 		ClientPlayNetworking.registerGlobalReceiver(
 				NetworkingConstants.OPEN_MANUAL_SCREEN, (client, handler, buf, responseSender) -> {
@@ -75,4 +75,19 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 					);
 				});
 	}
+
+	/**
+	 * Opens the edit screen for the instruction set item when a message is received from the server.
+	 * A message is sent from the server when the player right-clicks on an editable instruction set item.
+	 */
+	private void registerIstItemScreenReceiver() {
+		ClientPlayNetworking.registerGlobalReceiver(
+			NetworkingConstants.OPEN_IST_SCREEN, (client, handler, buf, responseSender) -> {
+				client.execute(() -> {
+						client.setScreen(new InsructionSetScreen(Text.translatable("istItem.title")));
+					}
+				);
+			});
+	}
+
 }

@@ -19,6 +19,9 @@
 
   "itemGroup.riscj_blockits.computer_components": "Computer Gegenstände",
 
+  "manual.title": "Handbuch",
+  "istItem.title": "Befehlssatz",
+
   "programming_pretext": "hier könnte ihre Werbung stehen",
   "block.riscj_blockits.text_output_block": "Konsole"
 }
