@@ -63,14 +63,18 @@ public class SimulationSequenceHandler implements Runnable {
     private final Executor executor;
     private final IBusSystem busSystem;
 
+    private final IRealtimeSimulationCallbackReceivable callbackReceivable;
+    private VisualisationMode visualisationMode = VisualisationMode.NORMAL;
+
     /**
      * Constructor. Initializes the {@link BlockController}s list, hands it over to the executor, sets the first
      * run phase to FETCH and the counter to zero and initializes the instruction set model and the memory controller.
      * @param blockControllers Controllers of the associated computer blocks.
      */
-    public SimulationSequenceHandler(List<IQueryableSimController> blockControllers, IBusSystem busSystem) {
+    public SimulationSequenceHandler(List<IQueryableSimController> blockControllers, IBusSystem busSystem, IRealtimeSimulationCallbackReceivable callbackReceivable) {
         this.blockControllers = blockControllers;
         this.busSystem = busSystem;
+        this.callbackReceivable = callbackReceivable;
 
         phaseCounter = 0;
         runPhase = RunPhase.FETCH;
@@ -122,6 +126,8 @@ public class SimulationSequenceHandler implements Runnable {
             case FETCH -> fetch();
             case EXECUTE -> execute();
         }
+
+        callbackReceivable.onSimulationTickComplete();
     }
 
     /**
@@ -171,13 +177,33 @@ public class SimulationSequenceHandler implements Runnable {
     /**
      * Resets the visualization of the computer blocks and the bus system.
      */
-    private void resetVisualisation() {
-        //ToDo what to do on programm end
-        //ToDo what to do in fast mode
+    public void resetVisualisation() {
+
+        if(visualisationMode == VisualisationMode.FAST) {
+            return;
+        }
+
         for (IQueryableSimController blockController : blockControllers) {
             blockController.stopVisualisation();
         }
         busSystem.resetVisualisation();
+    }
+
+    public void fullVisualisation() {
+        for (IQueryableSimController blockController : blockControllers) {
+            blockController.activateVisualisation();
+        }
+        busSystem.activateVisualisation();
+    }
+
+    public void setVisualizationMode(VisualisationMode mode) {
+        this.visualisationMode = mode;
+        if(visualisationMode == VisualisationMode.OFF || visualisationMode == VisualisationMode.NORMAL) {
+            resetVisualisation();
+        }
+        else if(visualisationMode == VisualisationMode.FAST) {
+            fullVisualisation();
+        }
     }
 
     /**
@@ -199,6 +225,12 @@ public class SimulationSequenceHandler implements Runnable {
     private enum RunPhase{
         FETCH,
         EXECUTE
+    }
+
+    public enum VisualisationMode {
+        FAST,
+        NORMAL,
+        OFF
     }
 
 }
