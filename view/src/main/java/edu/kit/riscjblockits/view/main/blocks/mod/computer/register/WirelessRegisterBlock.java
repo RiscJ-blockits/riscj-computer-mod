@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
 import edu.kit.riscjblockits.controller.blocks.WirelessRegisterController;
+import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import net.minecraft.block.BlockState;
@@ -49,10 +50,15 @@ public class WirelessRegisterBlock extends RegisterBlock {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
                               BlockHitResult hit) {
-        super.onUse(state, world, pos, player, hand, hit);
         if (world.isClient) {
             return ActionResult.SUCCESS;
         }
+        WirelessRegisterBlockEntity blockEntity = (WirelessRegisterBlockEntity) world.getBlockEntity(pos);
+        BlockPosition connectedBlockPos = ((WirelessRegisterController)blockEntity.getController()).getConnectedPos();
+        BlockPos conPos = new BlockPos((int)connectedBlockPos.getX(), (int)connectedBlockPos.getY(), (int)connectedBlockPos.getZ());
+        WirelessRegisterController connectedController = ((WirelessRegisterController)((ModBlockEntity)world.getBlockEntity(conPos)).getController());
+        ((WirelessRegisterController)blockEntity.getController()).setRegisterModel(connectedController);
+        super.onUse(state, world, pos, player, hand, hit);
 
         if (player.getStackInHand(hand).getItem() == RISCJ_blockits.WIRELESS_REGISTER_BLOCK_ITEM) {
 
@@ -74,16 +80,19 @@ public class WirelessRegisterBlock extends RegisterBlock {
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
-        if (itemStack.getNbt() == null || world.isClient) {
+        if (world.isClient || itemStack.getNbt() == null) {
             return;
         }
-        System.out.println(itemStack.getNbt());
+        WirelessRegisterBlockEntity blockEntity = (WirelessRegisterBlockEntity) world.getBlockEntity(pos);
         int[] neighbourPos = itemStack.getNbt().getIntArray("pos");
         BlockPos blockPos = new BlockPos(neighbourPos[0], neighbourPos[1], neighbourPos[2]);
+        //Todo instanceof entfernen
+        if (!(world.getBlockEntity(blockPos) instanceof WirelessRegisterBlockEntity)) {
+            return;
+        }
         ((ModBlockEntity)world.getBlockEntity(blockPos)).setController();
-        ((WirelessRegisterController)((WirelessRegisterBlockEntity)world.getBlockEntity(pos)).getController())
+        ((WirelessRegisterController) blockEntity.getController())
                 .setRegisterModel(((WirelessRegisterController)((ModBlockEntity)world.getBlockEntity(blockPos)).getController()));
-        System.out.println("Placed");
     }
 
     @Override

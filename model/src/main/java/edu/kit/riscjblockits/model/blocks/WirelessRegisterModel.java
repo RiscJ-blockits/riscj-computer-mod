@@ -1,7 +1,12 @@
 package edu.kit.riscjblockits.model.blocks;
 
+import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.*;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 
 
 public class WirelessRegisterModel extends RegisterModel {
@@ -11,9 +16,24 @@ public class WirelessRegisterModel extends RegisterModel {
      */
     private RegisterModel registerModel;
 
+    private BlockPosition wirelessNeighbourPosition;
+
     public WirelessRegisterModel() {
         super();
         registerModel = new RegisterModel();
+        wirelessNeighbourPosition = new BlockPosition(0,0,0);
+    }
+
+    @Override
+    public void setPosition(BlockPosition position) {
+        super.setPosition(position);
+        if (wirelessNeighbourPosition.equals(new BlockPosition(0,0,0))) {
+            wirelessNeighbourPosition = position;
+        }
+    }
+
+    public void setWirelessNeighbourPosition(BlockPosition wirelessNeighbourPosition) {
+        this.wirelessNeighbourPosition = wirelessNeighbourPosition;
     }
 
     /**
@@ -21,7 +41,6 @@ public class WirelessRegisterModel extends RegisterModel {
      * @param registerModel The register model that holds the data of the register.
      */
     public void setRegisterModel(RegisterModel registerModel) {
-        System.out.println("New Model set");
         this.registerModel = registerModel;
     }
 
@@ -41,13 +60,6 @@ public class WirelessRegisterModel extends RegisterModel {
         registerModel.setValue(value);
     }
 
-    /**
-     * Sets the word length of the register.
-     * @return The word length of the register.
-     */
-    public IDataElement getData() {
-        return registerModel.getData();
-    }
 
     /**
      * Getter for the data of the register.
@@ -66,26 +78,32 @@ public class WirelessRegisterModel extends RegisterModel {
     }
 
     /**
-     * Getter for the register type.
-     * @return The register type.
+     * Getter for the word length of the register.
+     * @return The word length of the register.
      */
-    public String getRegisterType() {
-        return registerModel.getRegisterType();
+    @Override
+    public IDataElement getData() {
+        Data regData = new Data();
+        Data connectedPos = new Data();
+        connectedPos.set(REGISTER_WIRELESS_XPOS, new DataStringEntry(String.valueOf(wirelessNeighbourPosition.getX())));
+        connectedPos.set(REGISTER_WIRELESS_YPOS, new DataStringEntry(String.valueOf(wirelessNeighbourPosition.getY())));
+        connectedPos.set(REGISTER_WIRELESS_ZPOS, new DataStringEntry(String.valueOf(wirelessNeighbourPosition.getZ())));
+        regData.set(REGISTER_WIRELESS, connectedPos);
+
+        regData.set(REGISTER_TYPE, new DataStringEntry(super.getRegisterType()));
+        regData.set(REGISTER_WORD_LENGTH, new DataStringEntry(String.valueOf(super.getWordLength())));
+        regData.set(REGISTER_VALUE, new DataStringEntry(registerModel.getValue().getHexadecimalValue()));
+        if (super.getMissingAvailableRegisters() != null && super.getMissingAvailableRegisters().length == 2
+                && (super.getMissingAvailableRegisters()[0] != null) && (super.getMissingAvailableRegisters()[1] != null)) {
+            Data registersData = new Data();
+            registersData.set(REGISTER_MISSING, new DataStringEntry(super.getMissingAvailableRegisters()[0]));
+            registersData.set(REGISTER_FOUND, new DataStringEntry(super.getMissingAvailableRegisters()[1]));
+            regData.set(REGISTER_REGISTERS, registersData);
+        }
+        return regData;
     }
 
-    /**
-     * Sets the register type.
-     * @param registerType The register type.
-     */
-    public void setRegisterType(String registerType) {
-        registerModel.setRegisterType(registerType);
-    }
-
-    /**
-     * Getter for the missing available registers.
-     * @param missingAvailableRegisters [0] missing for a valid architecture. [1] already present in the cluster.
-     */
-    public void setMissingAvailableRegisters(String[] missingAvailableRegisters) {
-        registerModel.setMissingAvailableRegisters(missingAvailableRegisters);
+    public BlockPosition getWirelessNeighbourPosition() {
+        return wirelessNeighbourPosition;
     }
 }

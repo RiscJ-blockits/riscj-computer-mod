@@ -52,6 +52,14 @@ public class DataConstants {
      */
     public static final String REGISTER_WORD_LENGTH = "word";
 
+    //WirelessRegister Constants
+    public static final String REGISTER_WIRELESS_XPOS = "WirelessRegister_XPos";
+
+    public static final String REGISTER_WIRELESS_YPOS = "WirelessRegister_YPos";
+    public static final String REGISTER_WIRELESS_ZPOS = "WirelessRegister_ZPos";
+
+    public static final String REGISTER_WIRELESS = "WirelessRegister";
+
     //SystemClock Constants
     /**
      * {@link edu.kit.riscjblockits.model.blocks.SystemClockModel#getData()}
