@@ -120,11 +120,11 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
         List<String> listMissing = new ArrayList<>();
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
-            return null;
+            return new List[]{listMissing, listFound};
         }
         IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         if (!data.isContainer()) {
-            return null;
+            return new List[]{listMissing, listFound};
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(CONTROL_CLUSTERING)) {
