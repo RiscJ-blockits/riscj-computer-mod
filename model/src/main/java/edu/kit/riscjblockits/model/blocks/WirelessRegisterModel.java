@@ -70,6 +70,7 @@ public class WirelessRegisterModel extends RegisterModel {
      * Sets the data of the register.
      * @param value The data of the register.
      */
+    @Override
     public void setValue(Value value) {
         registerModel.setValue(value);
     }
@@ -79,6 +80,7 @@ public class WirelessRegisterModel extends RegisterModel {
      * Getter for the data of the register.
      * @return The data of the register.
      */
+    @Override
     public Value getValue() {
         return registerModel.getValue();
     }
@@ -87,6 +89,7 @@ public class WirelessRegisterModel extends RegisterModel {
      * Getter for the word length of the register.
      * @param wordLength The word length of the register.
      */
+    @Override
     public void setWordLength(int wordLength) {
         registerModel.setWordLength(wordLength);
     }
@@ -111,7 +114,7 @@ public class WirelessRegisterModel extends RegisterModel {
         regData.set(REGISTER_WIRELESS, connectedPos);
 
         regData.set(REGISTER_TYPE, new DataStringEntry(super.getRegisterType()));
-        regData.set(REGISTER_WORD_LENGTH, new DataStringEntry(String.valueOf(super.getWordLength())));
+        regData.set(REGISTER_WORD_LENGTH, new DataStringEntry(String.valueOf(registerModel.getWordLength())));
         regData.set(REGISTER_VALUE, new DataStringEntry(registerModel.getValue().getHexadecimalValue()));
         if (super.getMissingAvailableRegisters() != null && super.getMissingAvailableRegisters().length == 2
                 && (super.getMissingAvailableRegisters()[0] != null) && (super.getMissingAvailableRegisters()[1] != null)) {
