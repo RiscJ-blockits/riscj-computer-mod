@@ -5,13 +5,17 @@ import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
+import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.EditBoxWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
@@ -188,6 +192,9 @@ public class InsructionSetScreen extends Screen {
         client.player.getStackInHand(client.player.getActiveHand()).setNbt(nbt);
         client.player.getStackInHand(client.player.getActiveHand()).setCustomName(Text.of(instructionSetModel.getName()));
         client.player.getInventory().markDirty();
+        PacketByteBuf buf = PacketByteBufs.create().writeNbt(nbt);
+        buf.writeString(client.player.getActiveHand().toString());
+        ClientPlayNetworking.send(NetworkingConstants.SYNC_IST_INPUT, buf);     //sync data to server
         edited = false;
         this.client.player.closeHandledScreen();
     }

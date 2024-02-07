@@ -43,6 +43,15 @@ public class InstructionSetItem extends Item {
                 new InputStreamReader(inputStream, StandardCharsets.UTF_8))
                 .lines()
                 .collect(Collectors.joining("\n"));
+
+        ServerPlayNetworking.registerGlobalReceiver(
+            NetworkingConstants.SYNC_IST_INPUT, (server, player, handler, buf, responseSender) -> {
+                NbtCompound nbt = buf.readNbt();
+                String hand = buf.readString();
+                server.execute(() -> {
+                    //player.getStackInHand(
+                });
+            });
     }
 
     @Override
