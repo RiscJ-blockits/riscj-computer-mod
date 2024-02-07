@@ -22,6 +22,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -230,6 +231,22 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     //todo nicht im Entwurfs wiki
     public void requestData() {
         getController().setData(new Data());
+    }
+
+    @Override
+    public void spawnEffect(ComputerEffect effect){
+        if (world == null) return;
+        switch (effect) {
+            case EXPLODE:
+                world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 10.0f, World.ExplosionSourceType.BLOCK);
+                break;
+            case SMOKE:
+                //ToDo
+                world.addParticle(ParticleTypes.END_ROD , pos.getX(), pos.getY(), pos.getZ() + 1, 0.0D, 0.0D, 0.0D);
+                break;
+            default:
+                break;
+        }
     }
 
 }

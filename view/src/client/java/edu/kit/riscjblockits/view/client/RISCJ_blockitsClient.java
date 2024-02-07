@@ -24,6 +24,7 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
+		//Reghister the screens
 		HandledScreens.register(RISCJ_blockits.PROGRAMMING_SCREEN_HANDLER, ProgrammingScreen::new);
 		HandledScreens.register(RISCJ_blockits.REGISTER_SCREEN_HANDLER, RegisterScreen::new);
 		HandledScreens.register(RISCJ_blockits.CONTROL_UNIT_SCREEN_HANDLER, ControlUnitScreen::new);
@@ -42,11 +43,9 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 
 		ClientPlayNetworking.registerGlobalReceiver(
 			NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, (client, handler, buf, responseSender) -> {
-
 				if (buf.readableBytes() == 0) {
 					return;
 				}
-
 				// Read packet data on the event loop
 				BlockPos target = buf.readBlockPos();
 				NbtCompound nbt = buf.readNbt();
@@ -54,11 +53,7 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 					return;
 				}
                 BlockEntity blockEntity = client.world.getBlockEntity(target);
-
 				if (blockEntity == null) {
-					//request Data again if send was not successful
-					//ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(target));
-
 					return;
 				}
 				blockEntity.readNbt(nbt);
@@ -84,7 +79,7 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(
 			NetworkingConstants.OPEN_IST_SCREEN, (client, handler, buf, responseSender) -> {
 				client.execute(() -> {
-						client.setScreen(new InsructionSetScreen(Text.translatable("istItem.title")));
+						client.setScreen(new InsructionSetScreen(Text.translatable("istItem.title"), buf.readString()));
 					}
 				);
 			});

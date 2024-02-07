@@ -44,13 +44,17 @@ public class InstructionSetItem extends Item {
                 .lines()
                 .collect(Collectors.joining("\n"));
 
-        ServerPlayNetworking.registerGlobalReceiver(
+        ServerPlayNetworking.registerGlobalReceiver(        //receiver when the player edits the item
             NetworkingConstants.SYNC_IST_INPUT, (server, player, handler, buf, responseSender) -> {
                 NbtCompound nbt = buf.readNbt();
                 String hand = buf.readString();
-                server.execute(() -> {
-                    //player.getStackInHand(
-                });
+                Hand currentHand;
+                if (hand.equals("MAIN_HAND")) {
+                    currentHand = Hand.MAIN_HAND;
+                } else {
+                    currentHand = Hand.OFF_HAND;
+                }
+                server.execute(() -> player.getStackInHand(currentHand).setNbt(nbt));
             });
     }
 
@@ -77,6 +81,7 @@ public class InstructionSetItem extends Item {
             return super.use(world, user, hand);
         }
         PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeString(hand.toString());
         ServerPlayNetworking.send((ServerPlayerEntity) user, NetworkingConstants.OPEN_IST_SCREEN, buf);
         return super.use(world, user, hand);
     }

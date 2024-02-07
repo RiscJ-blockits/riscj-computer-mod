@@ -14,9 +14,11 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.EditBoxWidget;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
@@ -58,13 +60,23 @@ public class InsructionSetScreen extends Screen {
     private boolean edited = false;
 
     /**
+     * The hand that holds the item. Cane be the Main Hand or the Offhand.
+     */
+    private Hand currentHand;
+
+    /**
      * Creates a new Instruction Set Item Screen. With it, the player can modify the Instruction Set on the Item.
      * @param title
      */
-    public InsructionSetScreen(Text title) {
+    public InsructionSetScreen(Text title, String hand) {
         super(title);
         this.backgroundHeight = 180;
         this.backgroundWidth = 277;
+        if (hand.equals("OFF_HAND")) {
+            currentHand = Hand.OFF_HAND;
+        } else {
+            currentHand = Hand.MAIN_HAND;
+        }
     }
 
     /**
@@ -78,7 +90,7 @@ public class InsructionSetScreen extends Screen {
         //get istString from NBT
         assert this.client != null;
         assert client.player != null;
-        NbtCompound nbt = client.player.getStackInHand(client.player.getActiveHand()).getOrCreateNbt();
+        NbtCompound nbt = client.player.getStackInHand(currentHand).getOrCreateNbt();
         String istString = "";
         for (String s : nbt.getKeys()) {        //if there is a temp_IstString, use it
             if (s.equals(CONTROL_IST_ITEM)) {
@@ -151,16 +163,28 @@ public class InsructionSetScreen extends Screen {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+    /**
+     * Is called when a key is pressed.
+     * Closes the screen if the escape key is pressed.
+     * Also send edited data to the server when the escape key is pressed.
+     * @param keyCode the named key code of the event as described in the {@link org.lwjgl.glfw.GLFW GLFW} class
+     * @param scanCode the unique/platform-specific scan code of the keyboard input
+     * @param modifiers a GLFW bitfield describing the modifier keys that are held down (see <a href="https://www.glfw.org/docs/3.3/group__mods.html">GLFW Modifier key flags</a>)
+     * @return
+     */
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         // close the screen if the escape key is pressed
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             assert this.client != null;
             assert this.client.player != null;
-            NbtCompound nbt = client.player.getStackInHand(client.player.getActiveHand()).getOrCreateNbt();
+            NbtCompound nbt = client.player.getStackInHand(currentHand).getOrCreateNbt();
             nbt.putString(TEMP_IST_NBT_TAG, inputBox.getText());
-            client.player.getStackInHand(client.player.getActiveHand()).setNbt(nbt);
+            client.player.getStackInHand(currentHand).setNbt(nbt);
             client.player.getInventory().markDirty();
+            PacketByteBuf buf = PacketByteBufs.create().writeNbt(nbt);
+            buf.writeString(currentHand.toString());
+            ClientPlayNetworking.send(NetworkingConstants.SYNC_IST_INPUT, buf);     //sync data to server
             this.client.player.closeHandledScreen();
         }
         // return true if the edit box is focused or the edit box is focused --> suppress all other key presses (e.g. "e")
@@ -172,6 +196,7 @@ public class InsructionSetScreen extends Screen {
 
     /**
      * Tries to build the Instruction Set from the input string and writes it to the nbt data of the item.
+     * Sends the new data to the server.
      * Can display an error message if the input string is not valid.
      * @param ist the input string.
      */
@@ -186,14 +211,14 @@ public class InsructionSetScreen extends Screen {
         }
         assert this.client != null;
         assert client.player != null;
-        NbtCompound nbt = client.player.getStackInHand(client.player.getActiveHand()).getOrCreateNbt();
+        NbtCompound nbt = client.player.getStackInHand(currentHand).getOrCreateNbt();
         nbt.putString(CONTROL_IST_ITEM, ist);
         nbt.remove(TEMP_IST_NBT_TAG);
-        client.player.getStackInHand(client.player.getActiveHand()).setNbt(nbt);
-        client.player.getStackInHand(client.player.getActiveHand()).setCustomName(Text.of(instructionSetModel.getName()));
+        client.player.getStackInHand(currentHand).setNbt(nbt);
+        client.player.getStackInHand(currentHand).setCustomName(Text.of(instructionSetModel.getName() + " " + I18n.translate("istItem.title")));
         client.player.getInventory().markDirty();
         PacketByteBuf buf = PacketByteBufs.create().writeNbt(nbt);
-        buf.writeString(client.player.getActiveHand().toString());
+        buf.writeString(currentHand.toString());
         ClientPlayNetworking.send(NetworkingConstants.SYNC_IST_INPUT, buf);     //sync data to server
         edited = false;
         this.client.player.closeHandledScreen();
@@ -206,7 +231,7 @@ public class InsructionSetScreen extends Screen {
         String istString = "";
         assert this.client != null;
         assert client.player != null;
-        NbtCompound nbt = client.player.getStackInHand(client.player.getActiveHand()).getOrCreateNbt();
+        NbtCompound nbt = client.player.getStackInHand(currentHand).getOrCreateNbt();
         for (String s : nbt.getKeys()) {        //if there is a temp_IstString, use it
             if (s.equals(CONTROL_IST_ITEM)) {
                 istString = nbt.getString(CONTROL_IST_ITEM);

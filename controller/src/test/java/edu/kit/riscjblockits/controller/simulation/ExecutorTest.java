@@ -1,23 +1,35 @@
 package edu.kit.riscjblockits.controller.simulation;
 
-import edu.kit.riscjblockits.controller.blocks.*;
-import edu.kit.riscjblockits.model.blocks.*;
+import edu.kit.riscjblockits.controller.blocks.AluController;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
+import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
+import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
+import edu.kit.riscjblockits.controller.blocks.MemoryController;
+import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.controller.blocks.SystemClockController;
+import edu.kit.riscjblockits.model.blocks.AluModel;
+import edu.kit.riscjblockits.model.blocks.BlockPosition;
+import edu.kit.riscjblockits.model.blocks.ClockMode;
+import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
+import edu.kit.riscjblockits.model.blocks.MemoryModel;
+import edu.kit.riscjblockits.model.blocks.RegisterModel;
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
-import edu.kit.riscjblockits.model.instructionset.*;
+import edu.kit.riscjblockits.model.instructionset.AluInstruction;
+import edu.kit.riscjblockits.model.instructionset.ConditionedInstruction;
+import edu.kit.riscjblockits.model.instructionset.DataMovementInstruction;
+import edu.kit.riscjblockits.model.instructionset.InstructionCondition;
+import edu.kit.riscjblockits.model.instructionset.MemoryInstruction;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.Clock;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class ExecutorTest {
 
@@ -37,7 +49,7 @@ class ExecutorTest {
         IConnectableComputerBlockEntity blockEntity = new IConnectableComputerBlockEntity() {
             @Override
             public void setBlockModel(IViewQueryableBlockModel model) {
-
+                //
             }
 
             @Override
@@ -57,6 +69,11 @@ class ExecutorTest {
 
             @Override
             public void neighborUpdate() {}
+
+            @Override
+            public void spawnEffect(ComputerEffect effect) {
+                //
+            }
         };
         return blockEntity;
     }
