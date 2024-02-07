@@ -3,7 +3,6 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 import edu.kit.riscjblockits.controller.blocks.WirelessRegisterController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
-import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -76,6 +75,14 @@ public class WirelessRegisterBlock extends RegisterBlock {
         return ActionResult.SUCCESS;
     }
 
+    /**
+     * This method is called when the block is placed in the world.
+     * @param world The minecraft world the block is placed in.
+     * @param pos The position the block is placed at.
+     * @param state ToDo ??
+     * @param placer The entity that placed the block.
+     * @param itemStack The itemstack that was used to place the block.
+     */
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
@@ -88,6 +95,13 @@ public class WirelessRegisterBlock extends RegisterBlock {
                 .setWirelessNeighbourPosition(new BlockPosition(neighbourPos[0], neighbourPos[1], neighbourPos[2]));
     }
 
+    /**
+     * This method is called when the block is right-clicked with a tool.
+     * @param stack The itemstack that was used to right-click on the block.
+     * @param world The world in which the block is placed.
+     * @param tooltip The list of tooltips that should be displayed.
+     * @param options The tooltip context options.
+     */
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
         NbtCompound nbt = stack.getNbt();

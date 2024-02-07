@@ -1,24 +1,31 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
-import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
 import edu.kit.riscjblockits.controller.blocks.WirelessRegisterController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
 
 
+    /**
+     * Creates a new WirelessRegisterBlockEntity.
+     * @param pos The position of the block in the minecraft world for which the entity should be created.
+     * @param state The state of the minecraft block for which the entity should be created.
+     */
     public WirelessRegisterBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.WIRELESS_REGISTER_BLOCK_ENTITY, pos, state);
     }
 
+    /**
+     * Creates a new WirelessRegisterController.
+     * @return A new WirelessRegisterController.
+     */
     @Override
     protected ComputerBlockController createController() {
         return new WirelessRegisterController(this);
@@ -45,8 +52,10 @@ public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
                         .setWirelessNeighbourPosition(new BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
                 conPos = pos;
             }
-            WirelessRegisterController connectedController = ((WirelessRegisterController)((ModBlockEntity)world.getBlockEntity(conPos)).getController());
-            ((WirelessRegisterController)this.getController()).setRegisterModel(connectedController);
+            if (!conPos.equals(pos)) {
+                WirelessRegisterController connectedController = ((WirelessRegisterController)((ModBlockEntity)world.getBlockEntity(conPos)).getController());
+                ((WirelessRegisterController)this.getController()).setRegisterModel(connectedController);
+            }
         }
     }
 

@@ -16,14 +16,24 @@ public class WirelessRegisterModel extends RegisterModel {
      */
     private RegisterModel registerModel;
 
+    /**
+     * The position of the wireless neighbour.
+     */
     private BlockPosition wirelessNeighbourPosition;
 
+    /**
+     * Creates a new WirelessRegisterModel.
+     */
     public WirelessRegisterModel() {
         super();
         registerModel = new RegisterModel();
         wirelessNeighbourPosition = new BlockPosition(0,0,0);
     }
 
+    /**
+     * Sets the position of the associated block in the minecraft world.
+     * @param position The position of the associated block in the minecraft world.
+     */
     @Override
     public void setPosition(BlockPosition position) {
         super.setPosition(position);
@@ -32,6 +42,10 @@ public class WirelessRegisterModel extends RegisterModel {
         }
     }
 
+    /**
+     * Sets the BlockPosition of the wireless neighbour.
+     * @param wirelessNeighbourPosition The BlockPosition of the wireless neighbour.
+     */
     public void setWirelessNeighbourPosition(BlockPosition wirelessNeighbourPosition) {
         this.wirelessNeighbourPosition = wirelessNeighbourPosition;
     }
@@ -109,6 +123,10 @@ public class WirelessRegisterModel extends RegisterModel {
         return regData;
     }
 
+    /**
+     * Getter for the BlockPosition of the wireless neighbour.
+     * @return The BlockPosition of the wireless neighbour.
+     */
     public BlockPosition getWirelessNeighbourPosition() {
         return wirelessNeighbourPosition;
     }
