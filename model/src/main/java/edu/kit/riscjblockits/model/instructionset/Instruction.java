@@ -176,14 +176,22 @@ public class Instruction implements IQueryableInstruction {
         for (String arg : translation) {
             // increment offset based on translation
             if (!BINARY_PATTERN.matcher(arg).matches()) {
-                Matcher matcher = ARGUMENT_TRANSLATION_PATTERN.matcher(arg);
-                if (matcher.matches()) {
-                    offset += Integer.parseInt(matcher.group("length"));
+                Matcher matcherRange = ARGUMENT_TRANSLATION_PATTERN_RANGE.matcher(arg);
+                if (matcherRange.matches()) {
+                    int from = Integer.parseInt(matcherRange.group("from"));
+                    int to = Integer.parseInt(matcherRange.group("to"));
+                    if (from > to) {
+                        to += from;
+                        from = to - from;
+                        to -= from;
+                    }
+                    offset += to - from + 1;
                 }
+
                 else {
-                    Matcher matcherRange = ARGUMENT_TRANSLATION_PATTERN_RANGE.matcher(arg);
-                    if (matcherRange.matches()) {
-                        offset += Integer.parseInt(matcherRange.group("to")) - Integer.parseInt(matcherRange.group("from")) + 1;
+                    Matcher matcher = ARGUMENT_TRANSLATION_PATTERN.matcher(arg);
+                    if (matcher.matches()) {
+                        offset += Integer.parseInt(matcher.group("length"));
                     }
                 }
             }
