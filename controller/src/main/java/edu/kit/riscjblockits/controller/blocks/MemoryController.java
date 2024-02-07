@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.controller.blocks;
 
+import edu.kit.riscjblockits.controller.clustering.ClusterHandler;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.MemoryModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
@@ -46,6 +47,7 @@ public class MemoryController extends ComputerBlockController {
             if (s.equals(MEMORY_MEMORY)) {
                 if (((IDataContainer) data).get(s) == null) {           //programm Item has been removed
                     ((MemoryModel) getModel()).setMemory(null);
+                    onUpdate();
                     return;
                 }
                 IDataContainer memoryData = (IDataContainer) ((IDataContainer) ((IDataContainer) data).get(s)).get(MEMORY_PROGRAMM_ITEM);
@@ -53,9 +55,16 @@ public class MemoryController extends ComputerBlockController {
                     return;     //happens during a world load when the nbt is loaded
                 }
                 Memory memory = Memory.fromData(memoryData);
-                ((MemoryModel) getModel()).setMemory(memory);
+                boolean newMemory = ((MemoryModel) getModel()).setMemory(memory);
+                if (newMemory) onUpdate();
             }
         }
+    }
+
+    private void onUpdate() {
+        ClusterHandler clusterHandler = getClusterHandler();
+        if (clusterHandler != null)
+            clusterHandler.checkFinished();
     }
 
     /**
@@ -76,6 +85,14 @@ public class MemoryController extends ComputerBlockController {
     public void writeMemory(Value address, Value value) {
         //ToDo do checks?
         ((MemoryModel) getModel()).setMemoryAt(address, value);
+    }
+
+    public Value getInitialProgramCounter() {
+        return ((MemoryModel) getModel()).getInitialProgramCounter();
+    }
+
+    public boolean isMemorySet() {
+        return ((MemoryModel) getModel()).isMemorySet();
     }
 
 }

@@ -31,7 +31,6 @@ public class BusModel extends BlockModel{
         super.setPosition(position);
     }
 
-
     /**
      * Getter for the data the view needs for ui.
      * @return Data Format: key: "active", value: "true" or "false"
@@ -58,6 +57,15 @@ public class BusModel extends BlockModel{
      */
     public void setBelongingBusSystemModel(BusSystemModel belongsToSystem) {
         this.belongsToSystem = belongsToSystem;
+    }
+
+    /**
+     * @return Asks the Bus system if the bus is transporting data
+     */
+    @Override
+    public boolean getVisualisationState() {
+        if(this.belongsToSystem == null) return false;
+        return belongsToSystem.getActiveVisualization(getPosition());
     }
 
 }

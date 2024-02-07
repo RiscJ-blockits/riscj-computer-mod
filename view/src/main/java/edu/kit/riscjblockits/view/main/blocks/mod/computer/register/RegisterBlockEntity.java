@@ -7,11 +7,13 @@ import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneInputBlockEntity;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -42,6 +44,16 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
      */
     public RegisterBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.REGISTER_BLOCK_ENTITY, pos, state);
+    }
+
+    /**
+     * Creates a new RegisterBlockEntity with the given settings. Used by subclasses.
+     * @param type The type of the block entity.
+     * @param pos The position of the block in the minecraft world.
+     * @param state The state of the minecraft block.
+     */
+    public RegisterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     /**
@@ -77,6 +89,25 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new RegisterScreenHandler(syncId, playerInventory, this);
+    }
+
+    @Override
+    public Text getGoggleText() {
+        NbtCompound nbt = new NbtCompound();
+        writeNbt(nbt);
+        String type = "";
+        String value = "";
+        // TODO check if data constants can be used
+        if (nbt.contains("modData")) {
+            nbt = nbt.getCompound("modData");
+        }
+        if (nbt.contains("value")) {
+            value = nbt.getString("value");
+        }
+        if (nbt.contains("type")) {
+            type = nbt.getString("type");
+        }
+        return Text.of("Register\n" + type + "\n" + value);
     }
 
 }

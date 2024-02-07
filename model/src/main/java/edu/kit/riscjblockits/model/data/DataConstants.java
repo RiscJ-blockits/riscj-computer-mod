@@ -54,11 +54,10 @@ public class DataConstants {
 
     //WirelessRegister Constants
     public static final String REGISTER_WIRELESS_XPOS = "WirelessRegister_XPos";
-
     public static final String REGISTER_WIRELESS_YPOS = "WirelessRegister_YPos";
     public static final String REGISTER_WIRELESS_ZPOS = "WirelessRegister_ZPos";
-
     public static final String REGISTER_WIRELESS = "WirelessRegister";
+    public static final String REGISTER_IO_TIME = "register_io_time";
 
     //SystemClock Constants
     /**
@@ -82,9 +81,7 @@ public class DataConstants {
      */
     public static final String CONTROL_CLUSTERING = "clustering";
 
-    /**
-     * {@link edu.kit.riscjblockits.controller.blocks.ControlUnitController#setData(IDataElement)}
-     */
+
     public static final String CONTROL_IST_MODEL = "istModel";
 
     /**
@@ -96,6 +93,15 @@ public class DataConstants {
      * {@link edu.kit.riscjblockits.model.blocks.ControlUnitModel#getData()}
      */
     public static final String CONTROL_ITEM_PRESENT = "istModelPresent";
+
+    //Clustering Constants
+    public static final String CLUSTERING_MISSING_REGISTERS = "missingRegisters";
+    public static final String CLUSTERING_FOUND_REGISTERS = "foundRegisters";
+    public static final String CLUSTERING_FOUND_CONTROL_UNIT = "foundControlUnit";
+    public static final String CLUSTERING_FOUND_ALU = "foundALU";
+    public static final String CLUSTERING_FOUND_MEMORY = "foundMemory";
+    public static final String CLUSTERING_FOUND_CLOCK = "foundSystemClock";
+
 
     //Bus Constants
     /**
@@ -144,6 +150,8 @@ public class DataConstants {
      * {@link edu.kit.riscjblockits.model.blocks.MemoryModel#getData()}
      */
     public static final String MEMORY_ADDRESS = "addressSize";
+
+    public static final String MEMORY_INITIAL_PC = "initialPC";
 
     /**
      * NBT-Tag of the Programm Item.

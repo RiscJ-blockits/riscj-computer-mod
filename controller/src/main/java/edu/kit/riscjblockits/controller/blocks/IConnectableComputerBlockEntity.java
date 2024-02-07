@@ -36,4 +36,5 @@ public interface IConnectableComputerBlockEntity {
      */
     IDataElement getBlockEntityData();
 
+    void neighborUpdate();
 }

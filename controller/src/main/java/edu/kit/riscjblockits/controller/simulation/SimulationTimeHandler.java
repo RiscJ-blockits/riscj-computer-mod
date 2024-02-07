@@ -7,10 +7,12 @@ import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.model.blocks.ClockMode;
 import edu.kit.riscjblockits.model.blocks.ISimulationTimingObserver;
 import edu.kit.riscjblockits.model.blocks.SystemClockModel;
+import edu.kit.riscjblockits.model.busgraph.IBusSystem;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Handling of the simulation execution timing. Uses the observer pattern to keep track of the clock state as
@@ -51,13 +53,11 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      *
      * @param blockControllers List of all {@link BlockController}s of the associated computer blocks.
      */
-    public SimulationTimeHandler(List<IQueryableSimController> blockControllers) {
-        simulationSequenceHandler = new SimulationSequenceHandler(blockControllers);
+    public SimulationTimeHandler(List<IQueryableSimController> blockControllers, IBusSystem busSystem) {
+        simulationSequenceHandler = new SimulationSequenceHandler(blockControllers, busSystem);
         //Register us as an SystemClockModel Observer
         for(IQueryableSimController blockController: blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.CLOCK) {
-//                systemClockModel = (SystemClockModel) blockController.getModel();
-//                systemClockModel.registerObserver(this);
                 systemClockContoller = (SystemClockController) blockController;
                 ((SystemClockController) blockController).registerModelObserver(this);
             }
@@ -70,9 +70,11 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      * Runs if Minecraft tick mode is activated.
      */
     public void onMinecraftTick(){
-        if(clockMode == ClockMode.MC_TICK) {
-            if (minecraftTickCounter == 0)
+        if(clockMode == ClockMode.MC_TICK && clockSpeed > 0) {
+            if (minecraftTickCounter == 0) {
+                systemClockContoller.activateVisualisation();
                 runTick();
+            }
             minecraftTickCounter = (minecraftTickCounter + 1) % clockSpeed;
         }
     }
@@ -83,6 +85,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      */
     public void onUserTickTrigger(){
         if (clockMode == ClockMode.STEP) {
+            systemClockContoller.activateVisualisation();
             runTick();
         }
     }
@@ -101,8 +104,18 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      * Enqueues the next simulation tick execution in the execution thread.
      */
     private void runTick() {
-        //ToDo @Leon no check if the previous tick has completed. Necessary?
-        executorService.execute(simulationSequenceHandler);
+        //ToDo no check if the previous tick has completed. Necessary?
+
+        Future<?> tickTask = executorService.submit(simulationSequenceHandler);
+        //check if the previous tick has completed              //Fixme: does not work yet
+//        if (clockMode == ClockMode.REALTIME) {
+//            try {
+//                tickTask.get();     //block until the future is done
+//            } catch (InterruptedException | ExecutionException e) {
+//                e.printStackTrace();
+//            }
+//            runTick();
+//        }
     }
 
     /**
@@ -113,4 +126,5 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
         clockSpeed = systemClockContoller.getClockSpeed();
         clockMode = systemClockContoller.getClockMode();
     }
+
 }

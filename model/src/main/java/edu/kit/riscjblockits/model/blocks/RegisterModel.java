@@ -44,7 +44,7 @@ public class RegisterModel extends BlockModel {
         setType(ModelType.REGISTER);
         registerType = UNASSIGNED_REGISTER;
         //ToDo remove Test code
-        wordLength = 32;
+        wordLength = 10;
     }
 
     /**
@@ -69,7 +69,6 @@ public class RegisterModel extends BlockModel {
             registersData.set(REGISTER_FOUND, new DataStringEntry(missingAvailableRegisters[1]));
             regData.set(REGISTER_REGISTERS, registersData);
         }
-        //setUnqueriedStateChange(false);
         return regData;
     }
 

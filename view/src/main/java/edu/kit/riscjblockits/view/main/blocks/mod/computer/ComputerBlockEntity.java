@@ -131,6 +131,13 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     }
 
     /**
+     * Update the block state of neighbourBusses.
+     */
+    public void neighborUpdate() {
+        world.getBlockState(pos).updateNeighbors(world, pos, 1);
+    }
+
+    /**
      * Gets the Text that should be displayed when the player is looking at this block.
      * @return The Text that should be displayed when the player is looking at this block.
      */
@@ -157,9 +164,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Used to update ui elements.
      */
     public void updateUI() {
-        //ToDo hasUnqueriedStateChange die richtige Variable um aktivität zu messen?
-        if (world != null && getModel() != null && getModel().hasUnqueriedStateChange()) {
-            if (getModel().hasUnqueriedStateChange()) {
+        if (world != null && model != null) {
+            if (model.getVisualisationState()) {
                 world.setBlockState(pos, world.getBlockState(pos).with(RISCJ_blockits.ACTIVE_STATE_PROPERTY, true));
             } else {
                 world.setBlockState(pos, world.getBlockState(pos).with(RISCJ_blockits.ACTIVE_STATE_PROPERTY, false));
@@ -167,26 +173,26 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         }
     }
 
-
     /**
      * Gets called every tick.
      * Syncs the block entity nbt data to the client.
      */
-    private void syncToClient() {
-        if (world == null || world.isClient || model == null)
-            return;
+    public void syncToClient() {
+        if (world == null || world.isClient || model == null) return;
         if (model.hasUnqueriedStateChange()) {
             if (world.getPlayers().isEmpty()) {
                return;       //we are too early in the loading process
             }
             NbtCompound nbt = new NbtCompound();
             writeNbt(nbt);
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeBlockPos(pos);
-            buf.writeNbt(nbt);
-            world.getPlayers().forEach(player -> ServerPlayNetworking.send((ServerPlayerEntity) player,
-                NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, buf));
-
+            world.getPlayers().forEach(
+                    player -> {
+                        // reset reader Index, to make sure multiple players can receive the same packet
+                        PacketByteBuf buf = PacketByteBufs.create();
+                        buf.writeBlockPos(pos);
+                        buf.writeNbt(nbt);
+                        ServerPlayNetworking.send((ServerPlayerEntity) player,
+                            NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, buf);});
             model.onStateQuery();
         }
     }

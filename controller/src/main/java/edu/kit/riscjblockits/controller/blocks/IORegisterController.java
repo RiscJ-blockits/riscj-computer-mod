@@ -12,17 +12,23 @@ import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 public class IORegisterController extends RegisterController {
 
     /**
-     * Whether the register is an input or an output device.
+     * Whether the register is an input device.
      */
     private final boolean isInput;
+
+    /**
+     * Whether the register is an output device.
+     */
+    private final boolean isOutput;
 
     /**
      * Creates a new RegisterController.
      * @param blockEntity The block entity that the controller is responsible for.
      */
-    public IORegisterController(IConnectableComputerBlockEntity blockEntity, boolean isInput, String type) {
+    public IORegisterController(IConnectableComputerBlockEntity blockEntity, boolean isInput, boolean isOutput, String type) {
         super(blockEntity);
         this.isInput = isInput;
+        this.isOutput = isOutput;
         ((IORegisterModel) getModel()).setRegisterType(type);
     }
 
@@ -32,7 +38,7 @@ public class IORegisterController extends RegisterController {
      */
     @Override
     protected IControllerQueryableBlockModel createBlockModel() {
-        return new IORegisterModel(isInput);
+        return new IORegisterModel(isInput, isOutput);
     }
 
     /**
@@ -50,7 +56,7 @@ public class IORegisterController extends RegisterController {
      */
     @Override
     public void setNewValue(Value value) {
-        if (isInput) return;
+        if (!isOutput) return;
         ((RegisterModel)getModel()).setValue(value);
     }
 

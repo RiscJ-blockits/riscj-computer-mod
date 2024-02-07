@@ -52,7 +52,14 @@ public class ArchiCheckStub_RegisterController implements IQueryableClusterContr
         return controllerType;
     }
 
+    @Override
+    public void stopVisualisation() {
+        //
+    }
+
     public String getRegisterType() {
         return registerType;
     }
+
+    public void neighborUpdate() {}
 }

@@ -35,10 +35,10 @@ public class TextIconToggleWidget extends ButtonWidget {
     protected void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
         int i = this.getX();
         int j = this.getY();
-        RenderSystem.disableDepthTest();
+        //RenderSystem.disableDepthTest();
 
-        context.getMatrices().push();
-        context.getMatrices().translate(0.0f, 0.0f, 100.0f);
+        //context.getMatrices().push();
+        //context.getMatrices().translate(0.0f, 0.0f, 100.0f);
 
         if (this.selected && this.currentReg) {
             context.drawTexture(TEXTURE_CURRENT, i, j, 0, 0, this.getWidth(), this.getHeight(), this.getWidth(),
@@ -54,8 +54,8 @@ public class TextIconToggleWidget extends ButtonWidget {
         MinecraftClient client = MinecraftClient.getInstance();
         context.drawText(client.textRenderer, this.getMessage(), getX() + 5, getY() + 7, 0x555555, false);
 
-        context.getMatrices().pop();
-        RenderSystem.enableDepthTest();
+        //context.getMatrices().pop();
+        //RenderSystem.enableDepthTest();
     }
 
     @Override

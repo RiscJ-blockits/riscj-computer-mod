@@ -12,6 +12,16 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.*;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneInputBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneInputBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneOutputBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneOutputBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockScreenHandler;
@@ -48,6 +58,8 @@ import net.minecraft.util.math.BlockPos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_MODE;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_SPEED;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 
@@ -105,8 +117,9 @@ public class RISCJ_blockits implements ModInitializer {
 	public static final Block REGISTER_BLOCK = new RegisterBlock();
 	public static final Block REDSTONE_OUTPUT_BLOCK = new RedstoneOutputBlock();
 	public static final Block REDSTONE_INPUT_BLOCK = new RedstoneInputBlock();
-
 	public static final Block WIRELESS_REGISTER_BLOCK = new WirelessRegisterBlock();
+	public static final Block TEXT_OUTPUT_BLOCK = new TerminalBlock();
+
 	/**
 	 * This attribute defines all System-Clock blocks.
 	 * A System-Clock-Block with default settings.
@@ -146,8 +159,9 @@ public class RISCJ_blockits implements ModInitializer {
 	public static final BlockItem REGISTER_BLOCK_ITEM = new BlockItem(REGISTER_BLOCK, new Item.Settings());
 	public static final BlockItem REDSTONE_OUTPUT_BLOCK_ITEM = new BlockItem(REDSTONE_OUTPUT_BLOCK, new Item.Settings());
 	public static final BlockItem REDSTONE_INPUT_BLOCK_ITEM = new BlockItem(REDSTONE_INPUT_BLOCK, new Item.Settings());
-
 	public static final BlockItem WIRELESS_REGISTER_BLOCK_ITEM = new BlockItem(WIRELESS_REGISTER_BLOCK, new Item.Settings());
+	public static final BlockItem TEXT_OUTPUT_BLOCK_ITEM = new BlockItem(TEXT_OUTPUT_BLOCK, new Item.Settings());
+
 	/**
 	 * This attribute defines all System-Clock items.
 	 * A System-Clock-Block-Item with the default settings for block items.
@@ -183,8 +197,9 @@ public class RISCJ_blockits implements ModInitializer {
 	public static BlockEntityType<RegisterBlockEntity> REGISTER_BLOCK_ENTITY;
 	public static BlockEntityType<RedstoneOutputBlockEntity> REDSTONE_OUTPUT_BLOCK_ENTITY;
 	public static BlockEntityType<RedstoneInputBlockEntity> REDSTONE_INPUT_BLOCK_ENTITY;
-
 	public static BlockEntityType<WirelessRegisterBlockEntity> WIRELESS_REGISTER_BLOCK_ENTITY;
+	public static BlockEntityType<TerminalBlockEntity> TEXT_OUTPUT_BLOCK_ENTITY;
+
 	/**
 	 * The Type of the System-Clock-Block-Entity.
 	 * Every System-Clock-Block gets its own System-Clock-Block-Entity when it is placed.
@@ -226,12 +241,10 @@ public class RISCJ_blockits implements ModInitializer {
 	 */
 	public static ScreenHandlerType<ProgrammingScreenHandler> PROGRAMMING_SCREEN_HANDLER;
 
-
 	/**
 	 * This attribute defines the TagKey to identify computerBlocks
 	 */
 	public static final TagKey<Block> COMPUTER_BLOCK_TAG = new TagKey<>(RegistryKeys.BLOCK,new Identifier(MODID, "computer_blocks"));
-
 
 	public static  ScreenHandlerType<RegisterScreenHandler> REGISTER_SCREEN_HANDLER =
 		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "register_screen"),
@@ -249,7 +262,9 @@ public class RISCJ_blockits implements ModInitializer {
 		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "system_clock_screen"),
 			new ExtendedScreenHandlerType<>(SystemClockScreenHandler::new));
 
-
+	public static  ScreenHandlerType<TerminalScreenHandler> TERMINAL_SCREEN_HANDLER =
+		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "terminal_screen"),
+			new ExtendedScreenHandlerType<>(TerminalScreenHandler::new));
 
 	/**
 	 * This method is called when the mod is initialized.
@@ -260,7 +275,6 @@ public class RISCJ_blockits implements ModInitializer {
 	public void onInitialize() {
 		// register ScreenHandlers
 		PROGRAMMING_SCREEN_HANDLER = ScreenHandlerRegistry.registerExtended(new Identifier(MODID, "programming_screen"), ProgrammingScreenHandler::new);
-
 		// register Blocks
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "alu_block"), ALU_BLOCK);
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "bus_block"), BUS_BLOCK);
@@ -272,7 +286,7 @@ public class RISCJ_blockits implements ModInitializer {
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "redstone_output_block"), REDSTONE_OUTPUT_BLOCK);
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "redstone_input_block"), REDSTONE_INPUT_BLOCK);
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "wireless_register_block"), WIRELESS_REGISTER_BLOCK);
-
+		Registry.register(Registries.BLOCK, new Identifier(MODID, "text_output_block"), TEXT_OUTPUT_BLOCK);
 		// register Block-Items
 		Registry.register(Registries.ITEM, new Identifier(MODID, "alu_block"), ALU_BLOCK_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "bus_block"), BUS_BLOCK_ITEM);
@@ -284,14 +298,13 @@ public class RISCJ_blockits implements ModInitializer {
 		Registry.register(Registries.ITEM, new Identifier(MODID, "redstone_output_block"), REDSTONE_OUTPUT_BLOCK_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "redstone_input_block"), REDSTONE_INPUT_BLOCK_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "wireless_register_block"), WIRELESS_REGISTER_BLOCK_ITEM);
-
+		Registry.register(Registries.ITEM, new Identifier(MODID, "text_output_block"), TEXT_OUTPUT_BLOCK_ITEM);
 		// register Items
 		Registry.register(Registries.ITEM, new Identifier(MODID, "goggles"), GOGGLES_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "instruction_set_mima"), INSTRUCTION_SET_ITEM_MIMA);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "instruction_set_riscv"), INSTRUCTION_SET_ITEM_RISCV);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "manual"), MANUAL_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "program"), PROGRAM_ITEM);
-
 		// register Block-Entities
 		ALU_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MODID, "alu_block_entity"),
 				FabricBlockEntityTypeBuilder.create(AluBlockEntity::new, ALU_BLOCK).build());
@@ -313,20 +326,41 @@ public class RISCJ_blockits implements ModInitializer {
 				FabricBlockEntityTypeBuilder.create(RedstoneInputBlockEntity::new, REDSTONE_INPUT_BLOCK).build());
 		WIRELESS_REGISTER_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MODID, "wireless_register_block_entity"),
 				FabricBlockEntityTypeBuilder.create(WirelessRegisterBlockEntity::new, WIRELESS_REGISTER_BLOCK).build());
+		TEXT_OUTPUT_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MODID, "text_output_block_entity"),
+				FabricBlockEntityTypeBuilder.create(TerminalBlockEntity::new, TEXT_OUTPUT_BLOCK).build());
 		// register the Item-Group
 		Registry.register(Registries.ITEM_GROUP, new Identifier(MODID, "computer_components"), ITEM_GROUP);
-
+		//Register  Client-Server Networking
 		ServerPlayNetworking.registerGlobalReceiver(
 			NetworkingConstants.SYNC_REGISTER_SELECTION, (server, player, handler, buf, responseSender) -> {
 				BlockPos pos = buf.readBlockPos();
 				String selectedRegister = buf.readString();
-
 				server.execute(() -> {
 					BlockEntity be = player.getWorld().getBlockEntity(pos);
 					NbtCompound nbt = new NbtCompound();
-					((RegisterBlockEntity) be).writeNbt(nbt);
+                    assert be != null;
+                    ((RegisterBlockEntity) be).writeNbt(nbt);
 					NbtCompound subNbt = (NbtCompound) nbt.get(MOD_DATA);
-					subNbt.putString(REGISTER_TYPE, selectedRegister);
+                    assert subNbt != null;
+                    subNbt.putString(REGISTER_TYPE, selectedRegister);
+					be.readNbt(nbt);
+				});
+			}
+		);
+		ServerPlayNetworking.registerGlobalReceiver(
+			NetworkingConstants.SYNC_CLOCK_MODE_SELECTION, (server, player, handler, buf, responseSender) -> {
+				BlockPos pos = buf.readBlockPos();
+				String clockMode = buf.readString();
+				int clockSpeed = buf.readInt();
+				server.execute(() -> {
+					BlockEntity be = player.getWorld().getBlockEntity(pos);
+					NbtCompound nbt = new NbtCompound();
+					assert be != null;
+					((SystemClockBlockEntity) be).writeNbt(nbt);
+					NbtCompound subNbt = (NbtCompound) nbt.get(MOD_DATA);
+					assert subNbt != null;
+					subNbt.putString(CLOCK_SPEED, String.valueOf(clockSpeed));
+					subNbt.putString(CLOCK_MODE, clockMode);
 					be.readNbt(nbt);
 				});
 			}
@@ -339,7 +373,6 @@ public class RISCJ_blockits implements ModInitializer {
                     assert be != null;
                     be.requestData();
 				});
-
 			}
 		);
 	}
@@ -362,6 +395,7 @@ public class RISCJ_blockits implements ModInitializer {
 				entries.add(REDSTONE_OUTPUT_BLOCK_ITEM);
 				entries.add(REDSTONE_INPUT_BLOCK_ITEM);
 				entries.add(WIRELESS_REGISTER_BLOCK_ITEM);
+				entries.add(TEXT_OUTPUT_BLOCK_ITEM);
 				//Items
 				entries.add(INSTRUCTION_SET_ITEM_MIMA);
 				entries.add(INSTRUCTION_SET_ITEM_RISCV);

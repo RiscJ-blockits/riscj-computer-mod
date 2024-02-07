@@ -134,4 +134,21 @@ public abstract class ComputerBlockController extends BlockController implements
      */
     public void tick() {};
 
+    //ToDo nicht im Entwurfs wiki
+    public void activateVisualisation() {
+        blockModel.setVisualisationState(true);
+    }
+
+    //ToDo nicht im Entwurfs wiki
+    public void stopVisualisation() {
+        blockModel.setVisualisationState(false);
+    }
+
+    /**
+     * Update the block state of neighbourBusses.
+     */
+    public void neighborUpdate() {
+        blockEntity.neighborUpdate();
+    }
+
 }

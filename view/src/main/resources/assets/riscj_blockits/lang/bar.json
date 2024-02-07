@@ -1,13 +1,16 @@
 {
-  "block.riscj_blockits.bus_block": "Bus",
-  "block.riscj_blockits.register_block": "Register",
-  "block.riscj_blockits.alu_block": "Algorithmic Logic Unit",
-  "block.riscj_blockits.memory_block": "Memory",
-  "block.riscj_blockits.control_unit_block": "Control Unit",
-  "block.riscj_blockits.system_clock_block": "System Clock",
-  "itemGroup.riscj_blockits.computer_components": "Computer Items",
-
-  "programming_pretext": "Do dad Eire Reklame platzierd sei kenna",
-  "block.riscj_blockits.redstone_input_block": "Redstone Input",
-  "block.riscj_blockits.redstone_output_block": "Redstone Output"
+  "block.riscj_blockits.alu_block": "Taschenrechner",
+  "block.riscj_blockits.bus_block": "Straßenbahn",
+  "block.riscj_blockits.control_unit_block": "Gehirn",
+  "block.riscj_blockits.memory_block": "Elefant",
+  "block.riscj_blockits.programming_block": "IntelliJ für arme",
+  "block.riscj_blockits.register_block": "Notizblock",
+  "block.riscj_blockits.system_clock_block": "Kirchturm",
+  "item.riscj_blockits.goggles": "Apple Vision Pro",
+  "item.riscj_blockits.instruction_set_mima": "ist MIMA",
+  "item.riscj_blockits.instruction_set_riscv": "ist MIMA für Hobbylose",
+  "item.riscj_blockits.manual": "Duden",
+  "item.riscj_blockits.program": "Diskette",
+  "itemGroup.riscj_blockits.computer_components": "RO Items",
+  "programming_pretext": "Do dad Eire Reklame platzierd sei kenna"
 }
