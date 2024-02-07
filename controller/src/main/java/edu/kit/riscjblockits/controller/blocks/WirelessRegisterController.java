@@ -27,6 +27,10 @@ public class WirelessRegisterController extends RegisterController {
                 registerController.getModel().getPosition());
     }
 
+    public void setWirelessNeighbourPosition(BlockPosition blockPosition) {
+        ((WirelessRegisterModel)getModel()).setWirelessNeighbourPosition(blockPosition);
+    }
+
     @Override
     public void tick() {
         super.tick();

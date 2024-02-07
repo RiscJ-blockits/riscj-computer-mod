@@ -56,8 +56,15 @@ public class WirelessRegisterBlock extends RegisterBlock {
         WirelessRegisterBlockEntity blockEntity = (WirelessRegisterBlockEntity) world.getBlockEntity(pos);
         BlockPosition connectedBlockPos = ((WirelessRegisterController)blockEntity.getController()).getConnectedPos();
         BlockPos conPos = new BlockPos((int)connectedBlockPos.getX(), (int)connectedBlockPos.getY(), (int)connectedBlockPos.getZ());
+        //Todo instanceof entfernen
+        if (!(world.getBlockEntity(conPos) instanceof WirelessRegisterBlockEntity)) {
+            ((WirelessRegisterController) blockEntity.getController())
+                    .setWirelessNeighbourPosition(new BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
+            conPos = pos;
+        }
         WirelessRegisterController connectedController = ((WirelessRegisterController)((ModBlockEntity)world.getBlockEntity(conPos)).getController());
         ((WirelessRegisterController)blockEntity.getController()).setRegisterModel(connectedController);
+
         super.onUse(state, world, pos, player, hand, hit);
 
         if (player.getStackInHand(hand).getItem() == RISCJ_blockits.WIRELESS_REGISTER_BLOCK_ITEM) {
@@ -88,11 +95,12 @@ public class WirelessRegisterBlock extends RegisterBlock {
         BlockPos blockPos = new BlockPos(neighbourPos[0], neighbourPos[1], neighbourPos[2]);
         //Todo instanceof entfernen
         if (!(world.getBlockEntity(blockPos) instanceof WirelessRegisterBlockEntity)) {
-            return;
+            ((WirelessRegisterController) blockEntity.getController())
+                    .setWirelessNeighbourPosition(new BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
+        } else {
+            ((WirelessRegisterController) blockEntity.getController())
+                    .setWirelessNeighbourPosition(new BlockPosition(neighbourPos[0], neighbourPos[1], neighbourPos[2]));
         }
-        ((ModBlockEntity)world.getBlockEntity(blockPos)).setController();
-        ((WirelessRegisterController) blockEntity.getController())
-                .setRegisterModel(((WirelessRegisterController)((ModBlockEntity)world.getBlockEntity(blockPos)).getController()));
     }
 
     @Override
