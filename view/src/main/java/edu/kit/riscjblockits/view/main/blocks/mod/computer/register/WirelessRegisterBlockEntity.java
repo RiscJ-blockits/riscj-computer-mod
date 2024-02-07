@@ -49,4 +49,12 @@ public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
             ((WirelessRegisterController)this.getController()).setRegisterModel(connectedController);
         }
     }
+
+    public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
+        ComputerBlockEntity.tick(world, pos, state, entity);
+        if (world.isClient) {
+            return;
+        }
+        ((WirelessRegisterBlockEntity) world.getBlockEntity(pos)).syncRegister();
+    }
 }

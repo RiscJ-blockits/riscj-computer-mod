@@ -4,8 +4,11 @@ import edu.kit.riscjblockits.controller.blocks.WirelessRegisterController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -53,7 +56,6 @@ public class WirelessRegisterBlock extends RegisterBlock {
         if (world.isClient) {
             return ActionResult.SUCCESS;
         }
-        ((WirelessRegisterBlockEntity) world.getBlockEntity(pos)).syncRegister();
 
         super.onUse(state, world, pos, player, hand, hit);
 
@@ -84,7 +86,6 @@ public class WirelessRegisterBlock extends RegisterBlock {
         int[] neighbourPos = itemStack.getNbt().getIntArray("pos");
         ((WirelessRegisterController) blockEntity.getController())
                 .setWirelessNeighbourPosition(new BlockPosition(neighbourPos[0], neighbourPos[1], neighbourPos[2]));
-        blockEntity.syncRegister();
     }
 
     @Override
@@ -95,5 +96,10 @@ public class WirelessRegisterBlock extends RegisterBlock {
             tooltip.add(Text.of("X: " + pos[0] + ", Y: " + pos[1] + ", Z: " + pos[2]));
         }
         super.appendTooltip(stack, world, tooltip, options);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return (world1, pos, state1, be) -> WirelessRegisterBlockEntity.tick(world1, pos, state1, (ComputerBlockEntity) be);
     }
 }

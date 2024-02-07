@@ -85,9 +85,15 @@ public class WirelessRegisterModel extends RegisterModel {
     public IDataElement getData() {
         Data regData = new Data();
         Data connectedPos = new Data();
-        connectedPos.set(REGISTER_WIRELESS_XPOS, new DataStringEntry(String.valueOf(wirelessNeighbourPosition.getX())));
-        connectedPos.set(REGISTER_WIRELESS_YPOS, new DataStringEntry(String.valueOf(wirelessNeighbourPosition.getY())));
-        connectedPos.set(REGISTER_WIRELESS_ZPOS, new DataStringEntry(String.valueOf(wirelessNeighbourPosition.getZ())));
+        if (wirelessNeighbourPosition == null) {
+            connectedPos.set(REGISTER_WIRELESS_XPOS, new DataStringEntry(String.valueOf(0)));
+            connectedPos.set(REGISTER_WIRELESS_YPOS, new DataStringEntry(String.valueOf(0)));
+            connectedPos.set(REGISTER_WIRELESS_ZPOS, new DataStringEntry(String.valueOf(0)));
+        } else {
+            connectedPos.set(REGISTER_WIRELESS_XPOS, new DataStringEntry(String.valueOf(wirelessNeighbourPosition.getX())));
+            connectedPos.set(REGISTER_WIRELESS_YPOS, new DataStringEntry(String.valueOf(wirelessNeighbourPosition.getY())));
+            connectedPos.set(REGISTER_WIRELESS_ZPOS, new DataStringEntry(String.valueOf(wirelessNeighbourPosition.getZ())));
+        }
         regData.set(REGISTER_WIRELESS, connectedPos);
 
         regData.set(REGISTER_TYPE, new DataStringEntry(super.getRegisterType()));
