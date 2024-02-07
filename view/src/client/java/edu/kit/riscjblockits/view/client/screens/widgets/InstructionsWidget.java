@@ -28,13 +28,14 @@ public class InstructionsWidget extends ExtendableWidget{
     public void initialize(int parentWidth, int parentHeight, MinecraftClient client, boolean narrow, ProgrammingScreenHandler handler) {
         super.initialize(parentWidth, parentHeight, narrow, TEXTURE);
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
-        int j = (this.parentHeight - 166) / 2;
+        int j = (this.parentHeight) / 2;
         this.handler = handler;
-        this.instructionList = new InstructionListWidget(this.getEntries(), i + 8, j + 28, 113, 130);
+        this.instructionList = new InstructionListWidget(this.getEntries(), i + 8, j + 18, 113, 130);
     }
 
     private List<InstructionEntry> getEntries() {
         List<InstructionEntry> entries = new ArrayList<>();
+        entries.add(new InstructionEntry("ID", "Arguments"));
         List<String[]> instructions = ((ProgrammingScreenHandler) handler).getInstructions();
         for(String[] instruction : instructions) {
             String id = instruction[0];
@@ -59,8 +60,8 @@ public class InstructionsWidget extends ExtendableWidget{
 
         MinecraftClient client = MinecraftClient.getInstance();
         context.drawText(client.textRenderer, TO_DO_TEXT, i + 7, j + 6, 0x555555, false);
-        context.drawText(client.textRenderer, ID_TITLE, i + 9, j + 19, 0xffffff, false);
-        context.drawText(client.textRenderer, ARGUMENTS_TITLE, i + 42, j + 19, 0xffffff, false);
+        //context.drawText(client.textRenderer, ID_TITLE, i + 9, j + 19, 0xffffff, false);
+        //context.drawText(client.textRenderer, ARGUMENTS_TITLE, i + 42, j + 19, 0xffffff, false);
 
         this.instructionList.render(context, mouseX, mouseY, delta);
 
