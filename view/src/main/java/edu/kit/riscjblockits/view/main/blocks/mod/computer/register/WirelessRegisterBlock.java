@@ -53,17 +53,7 @@ public class WirelessRegisterBlock extends RegisterBlock {
         if (world.isClient) {
             return ActionResult.SUCCESS;
         }
-        WirelessRegisterBlockEntity blockEntity = (WirelessRegisterBlockEntity) world.getBlockEntity(pos);
-        BlockPosition connectedBlockPos = ((WirelessRegisterController)blockEntity.getController()).getConnectedPos();
-        BlockPos conPos = new BlockPos((int)connectedBlockPos.getX(), (int)connectedBlockPos.getY(), (int)connectedBlockPos.getZ());
-        //Todo instanceof entfernen
-        if (!(world.getBlockEntity(conPos) instanceof WirelessRegisterBlockEntity)) {
-            ((WirelessRegisterController) blockEntity.getController())
-                    .setWirelessNeighbourPosition(new BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
-            conPos = pos;
-        }
-        WirelessRegisterController connectedController = ((WirelessRegisterController)((ModBlockEntity)world.getBlockEntity(conPos)).getController());
-        ((WirelessRegisterController)blockEntity.getController()).setRegisterModel(connectedController);
+        ((WirelessRegisterBlockEntity) world.getBlockEntity(pos)).syncRegister();
 
         super.onUse(state, world, pos, player, hand, hit);
 
@@ -92,15 +82,9 @@ public class WirelessRegisterBlock extends RegisterBlock {
         }
         WirelessRegisterBlockEntity blockEntity = (WirelessRegisterBlockEntity) world.getBlockEntity(pos);
         int[] neighbourPos = itemStack.getNbt().getIntArray("pos");
-        BlockPos blockPos = new BlockPos(neighbourPos[0], neighbourPos[1], neighbourPos[2]);
-        //Todo instanceof entfernen
-        if (!(world.getBlockEntity(blockPos) instanceof WirelessRegisterBlockEntity)) {
-            ((WirelessRegisterController) blockEntity.getController())
-                    .setWirelessNeighbourPosition(new BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
-        } else {
-            ((WirelessRegisterController) blockEntity.getController())
-                    .setWirelessNeighbourPosition(new BlockPosition(neighbourPos[0], neighbourPos[1], neighbourPos[2]));
-        }
+        ((WirelessRegisterController) blockEntity.getController())
+                .setWirelessNeighbourPosition(new BlockPosition(neighbourPos[0], neighbourPos[1], neighbourPos[2]));
+        blockEntity.syncRegister();
     }
 
     @Override
@@ -112,5 +96,4 @@ public class WirelessRegisterBlock extends RegisterBlock {
         }
         super.appendTooltip(stack, world, tooltip, options);
     }
-
 }
