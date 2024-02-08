@@ -1,12 +1,12 @@
 {
-// TODO update to Structure of mima
+    // TODO update to Structure of mima
 
     "name": "RiscV",										//Name des Befehlssatzes
     "instruction_length": 32,								//Länge des Befehlswortes
 
     "registers": {
         "program_counter": "PC",
-		"alu":["A", "B", "OUT"],							//Register der Architektur, die direkt an die ALU gebunden werden müssen
+        "alu":["A", "B", "OUT"],							//Register der Architektur, die direkt an die ALU gebunden werden müssen
         "float": {
             //Register für Float-Operationen
             "ft0": 0,
@@ -81,9 +81,9 @@
         "word_length": 32,									//Wortlänge im Speicher
         "address_length": 32,								//Länge der Speicheradresse
         "access_delay": 0,									//Verzögerung beim Speicherzugriff in Takten
-		"byte_order": "be",									//Big-Endian oder Little-Endian
-		"possible_opcode_lengths": [7],
-		"opcode_position": "LEAST"
+        "byte_order": "be",									//Big-Endian oder Little-Endian
+        "possible_opcode_lengths": [7],
+        "opcode_position": "LEAST"
     },
     "alu_operations": [										//ALU-Operationen, die direkt angeboten werden
         "AND",
@@ -115,7 +115,7 @@
         " *.text *": ""
     },
     "program_start_label":
-            "main:",
+    "main:",
     "data_storage_keywords": {
         " *.byte * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<8>",
         " *.halfword * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<16>",
@@ -178,6 +178,7 @@
             ]
         },
         "sll": {
+            "opcode": "0110011",
             "arguments": ["[t1]", "[t2]", "[t3]"],
             "execution": [
                 ["A", "&[t2]", "", "", ""],
@@ -195,6 +196,7 @@
             ]
         },
         "slli": {
+            "opcode": "0010011",
             "arguments": ["[t1]", "[t2]", "[const]"],
             "execution": [
                 ["A", "&[t2]", "", "", ""],
@@ -212,6 +214,7 @@
             ]
         },
         "sw": {
+            "opcode": "0100011",
             "arguments": ["[t1]", "[const](t2)"],
             "execution": [
                 ["A", "&[t2]", "", "", ""],
@@ -230,6 +233,7 @@
         },
 
         "lui": {
+            "opcode": "0110111",
             "arguments": ["[t1]", "[const]"],
             "execution": [
                 ["A", "[const]", "", "", ""],
@@ -245,6 +249,7 @@
         },
 
         "jal": {
+            "opcode": "1101111",
             "arguments": ["[t1]", "[const]"],
             "execution": [
                 ["&[t1]", "PC", "", "", ""],
