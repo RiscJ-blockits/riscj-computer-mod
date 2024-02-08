@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
@@ -201,7 +202,7 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
         InstructionSetModel instructionSet;
         try {
             instructionSet = InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
-        } catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException | InstructionBuildException e) {
             return "";
         }
 

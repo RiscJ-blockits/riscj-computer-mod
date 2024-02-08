@@ -9,6 +9,7 @@
 
   "item.riscj_blockits.goggles": "Engineering Googles",
   "item.riscj_blockits.instruction_set_mima": "MIMA Instruction Set",
+  "item.riscj_blockits.instruction_set_mima_io": "MIMA Instruction Set (I/O)",
   "item.riscj_blockits.instruction_set_riscv": "RISC-V Instruction Set",
   "item.riscj_blockits.manual": "Computer Manual",
   "item.riscj_blockits.program": "Programm Code",
