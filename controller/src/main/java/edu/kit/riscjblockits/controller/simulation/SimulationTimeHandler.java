@@ -109,10 +109,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver, IRealti
      * Enqueues the next simulation tick execution in the execution thread.
      */
     private void runTick() {
-        //no check if the previous tick has completed. Necessary? Should not be necessary, as the executor service is single threaded.
-
         executorService.submit(simulationSequenceHandler);
-
     }
 
     /**

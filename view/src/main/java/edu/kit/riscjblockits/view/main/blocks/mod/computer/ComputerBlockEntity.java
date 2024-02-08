@@ -24,6 +24,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -233,6 +234,11 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         getController().setData(new Data());
     }
 
+    /**
+     * Can be used to create effects inside the minecraft world.
+     * Spawns the effects on the block in which the method is called.
+     * @param effect The effect that should be spawned.
+     */
     @Override
     public void spawnEffect(ComputerEffect effect){
         if (world == null) return;
@@ -240,9 +246,10 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             case EXPLODE:
                 world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 10.0f, World.ExplosionSourceType.BLOCK);
                 break;
-            case SMOKE:
-                //ToDo
-                world.addParticle(ParticleTypes.END_ROD , pos.getX(), pos.getY(), pos.getZ() + 1, 0.0D, 0.0D, 0.0D);
+            case SMOKE: //17 6
+                if (!world.isClient) {
+                    ((ServerWorld) world).spawnParticles(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,5, 0.0D, 0.0D, 0.0D,0);
+                }
                 break;
             default:
                 break;

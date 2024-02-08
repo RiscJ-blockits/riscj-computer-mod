@@ -143,10 +143,12 @@ public abstract class ComputerBlockController extends BlockController implements
         blockEntity.neighborUpdate();
     }
 
+    /** ToDo nicht im Entwurfs wiki
+     * Creates a new effect at position of the block entity.
+     * @param effect The effect that should be spawned.
+     */
     protected void spawnEffect(IConnectableComputerBlockEntity.ComputerEffect effect) {
         blockEntity.spawnEffect(effect);
     }
-
-
 
 }
