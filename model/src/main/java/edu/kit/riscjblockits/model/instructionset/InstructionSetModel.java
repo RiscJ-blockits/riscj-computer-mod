@@ -113,7 +113,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
     /**
      * Generates the opcode hashmap from the command hashmap.
      */
-    public void generateOpcodeHashmap(){
+    public void generateHashMaps(){
         this.opcodeHashMap = new HashMap<>();
         if(this.commandHashMap == null) return;
         this.commandHashMap.values().forEach(e -> {
@@ -122,6 +122,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
             }
             opcodeHashMap.get(e.getOpcode()).add(e);
         });
+        instructionSetRegisters.generateRegisterAddressMaps();
     }
 
     /**
@@ -342,7 +343,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
                 }
             }
             if (instruction != null) {
-                return new Instruction(instruction, binaryValue);
+                return new Instruction(instruction, binaryValue, instructionSetRegisters.getIntRegisterAddressMap(), instructionSetRegisters.getFloatRegisterAddressMap());
             }
         }
         return null;

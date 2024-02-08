@@ -55,7 +55,7 @@ public class Instruction implements IQueryableInstruction {
         this.translation = translation;
     }
 
-    public Instruction(Instruction instruction, String binary) {
+    public Instruction(Instruction instruction, String binary, HashMap<Integer, String> intRegisters, HashMap<Integer, String> floatRegisters) {
         this.arguments = instruction.arguments.clone();
         this.opcode = instruction.opcode;
         this.translation = instruction.translation.clone();
@@ -67,20 +67,7 @@ public class Instruction implements IQueryableInstruction {
 
         // generate filled micro instructions
         for (int i = 0; i < instruction.execution.length; i++) {
-            MicroInstruction microInstruction = instruction.execution[i];
-            String[] from = microInstruction.getFrom().clone();
-            String to = microInstruction.getTo();
-            for (int j = 0; j < from.length; j++) {
-                if (argumentsInstructionMap.containsKey(from[j])) {
-                    from[j] = argumentsInstructionMap.get(from[j]);
-                }
-            }
-
-            if (argumentsInstructionMap.containsKey(to)) {
-                to = argumentsInstructionMap.get(to);
-            }
-
-            this.execution[i] = instruction.execution[i].clone(from, to);
+            this.execution[i] = instruction.execution[i].getFilled(argumentsInstructionMap, intRegisters, floatRegisters);
         }
     }
 
@@ -189,14 +176,22 @@ public class Instruction implements IQueryableInstruction {
         for (String arg : translation) {
             // increment offset based on translation
             if (!BINARY_PATTERN.matcher(arg).matches()) {
-                Matcher matcher = ARGUMENT_TRANSLATION_PATTERN.matcher(arg);
-                if (matcher.matches()) {
-                    offset += Integer.parseInt(matcher.group("length"));
+                Matcher matcherRange = ARGUMENT_TRANSLATION_PATTERN_RANGE.matcher(arg);
+                if (matcherRange.matches()) {
+                    int from = Integer.parseInt(matcherRange.group("from"));
+                    int to = Integer.parseInt(matcherRange.group("to"));
+                    if (from > to) {
+                        to += from;
+                        from = to - from;
+                        to -= from;
+                    }
+                    offset += to - from + 1;
                 }
+
                 else {
-                    Matcher matcherRange = ARGUMENT_TRANSLATION_PATTERN_RANGE.matcher(arg);
-                    if (matcherRange.matches()) {
-                        offset += Integer.parseInt(matcherRange.group("to")) - Integer.parseInt(matcherRange.group("from")) + 1;
+                    Matcher matcher = ARGUMENT_TRANSLATION_PATTERN.matcher(arg);
+                    if (matcher.matches()) {
+                        offset += Integer.parseInt(matcher.group("length"));
                     }
                 }
             }

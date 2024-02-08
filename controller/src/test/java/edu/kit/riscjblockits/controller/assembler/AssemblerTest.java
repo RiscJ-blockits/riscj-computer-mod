@@ -5,7 +5,6 @@ import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -163,6 +162,14 @@ class AssemblerTest {
         Value val = memory.getValueAt(Value.fromHex("00", 4));
         assertEquals("2340136F", val.getHexadecimalValue());
     }
-    // TODO B type
+    @Test
+    void assembleRiscBGE() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
 
+        assembler.assemble("bge, s0, t0, 0x04");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("00545263", val.getHexadecimalValue());
+    }
 }
