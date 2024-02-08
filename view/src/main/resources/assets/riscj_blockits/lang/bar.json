@@ -13,5 +13,7 @@
   "item.riscj_blockits.manual": "Duden",
   "item.riscj_blockits.program": "Diskette",
   "itemGroup.riscj_blockits.computer_components": "RO Items",
-  "programming_pretext": "Do dad Eire Reklame platzierd sei kenna"
+  "programming_pretext": "Do dad Eire Reklame platzierd sei kenna",
+  "manual.title": "Duden",
+  "istItem.title": "ist änderbaar"
 }

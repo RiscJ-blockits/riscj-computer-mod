@@ -143,4 +143,10 @@ public abstract class ComputerBlockController extends BlockController implements
         blockEntity.neighborUpdate();
     }
 
+    protected void spawnEffect(IConnectableComputerBlockEntity.ComputerEffect effect) {
+        blockEntity.spawnEffect(effect);
+    }
+
+
+
 }

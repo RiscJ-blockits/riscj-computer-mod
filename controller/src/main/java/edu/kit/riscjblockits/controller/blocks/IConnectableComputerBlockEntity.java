@@ -37,4 +37,12 @@ public interface IConnectableComputerBlockEntity {
     IDataElement getBlockEntityData();
 
     void neighborUpdate();
+
+    void spawnEffect(ComputerEffect effect);
+
+    enum ComputerEffect {
+        EXPLODE,
+        SMOKE,
+    }
+
 }

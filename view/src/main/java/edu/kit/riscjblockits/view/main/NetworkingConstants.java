@@ -19,4 +19,7 @@ public abstract class NetworkingConstants {
 
     public static final Identifier REQUEST_DATA = new Identifier(RISCJ_blockits.MODID, "request_data");
     public static final Identifier OPEN_MANUAL_SCREEN = new Identifier(RISCJ_blockits.MODID, "open_manual_screen");
+    public static final Identifier OPEN_IST_SCREEN = new Identifier(RISCJ_blockits.MODID, "open_ist_screen");
+    public static final Identifier SYNC_IST_INPUT = new Identifier(RISCJ_blockits.MODID, "sync_ist_input");
+
 }
