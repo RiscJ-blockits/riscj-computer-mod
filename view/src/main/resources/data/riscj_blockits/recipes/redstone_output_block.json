@@ -1,16 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "redstone",
   "pattern": [
-    " E ",
-    " R ",
-    "   "
+    "CEC",
+    "CRC",
+    "CVC"
   ],
   "key": {
     "E": {
-      "tag": "minecraft:redstone"
+      "item": "minecraft:redstone"
     },
     "R": {
       "item": "riscj_blockits:register_block"
+    },
+    "V": {
+      "item": "minecraft:repeater"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
     }
   },
   "result": {
@@ -18,4 +25,3 @@
     "count": 1
   }
 }
-

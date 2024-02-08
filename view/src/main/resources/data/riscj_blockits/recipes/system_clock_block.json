@@ -8,7 +8,7 @@
   ],
   "key": {
     "T": {
-      "tag": "minecraft:clock"
+      "item": "minecraft:clock"
     },
     "C": {
       "item": "minecraft:copper_ingot"
