@@ -2,7 +2,6 @@ package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
-import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureEntry;
 import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureListWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.MIMAExWidget;
@@ -18,7 +17,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
 
@@ -60,14 +61,10 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
 
         this.architectureList =
             new ArchitectureListWidget(this, this.x + 30, this.y + 18, 120, 105, 6);
-
     }
 
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-
-
-
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.setShaderTexture(0, TEXTURE);
@@ -80,13 +77,10 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
-        //RenderSystem.disableDepthTest();
-
         this.architectureList.updateEntries(fetchEntries());
         architectureList.setX(this.x + 30);
         architectureList.setY(this.y + 18);
         this.architectureList.render(context, mouseX, mouseY, delta);
-
 
         if (handler.getInstructionSetType().equals(MIMA)) {
             expandButton.visible = true;
@@ -95,7 +89,6 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
             expandButton.visible = false;
         }
 
-
         drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
@@ -103,11 +96,6 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         architectureList.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
-    }
-
-    @Override
-    protected void handledScreenTick() {
-        super.handledScreenTick();
     }
 
     public List<ArchitectureEntry> fetchEntries() {
@@ -119,12 +107,25 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         for (String component : listMissing) {
             entries.add(new ArchitectureEntry(component, true));
         }
+        //find identical entries, that happen when you assign the same register multiple times.
+        Map<String, Integer> map = new HashMap<>();
+        for (String s : listFound) {
+            map.put(s, map.getOrDefault(s, 0) + 1);
+        }
+        List<String> identicalEntries = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (entry.getValue() > 1) {
+                identicalEntries.add(entry.getKey());
+            }
+        }
         for (String component : listFound) {
-
             if (component.equals(RegisterModel.UNASSIGNED_REGISTER)) {
                 continue;
+            } else if (identicalEntries.contains(component)) {
+                entries.add(new ArchitectureEntry(component, true));
+            } else {
+                entries.add(new ArchitectureEntry(component, false));
             }
-            entries.add(new ArchitectureEntry(component, false));
         }
         return entries;
     }
