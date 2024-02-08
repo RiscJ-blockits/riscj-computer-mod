@@ -6,6 +6,7 @@ import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class Assembler {
      */
     private static final Pattern LABEL_COMMAND_PATTERN = Pattern.compile(" *(?:(?<label>\\w+):)? *(?<command>\\w[^;#]*)? *(?:[;#].*)?");
     private static final Pattern ARGUMENT_REGISTER_PATTERN = Pattern.compile("-?\\d*\\((?<register>\\w+)\\)");
+    private static final Pattern RELATIVE_LABEL_PATTERN = Pattern.compile("~\\[\\w+]");
 
     /**
      * the {@link IQueryableInstructionSetModel} that is used for the assembly
@@ -162,8 +164,27 @@ public class Assembler {
         }
         String[] arguments = Arrays.copyOfRange(cmd, 1, cmd.length);
         writeLabelsToArguments(arguments);
+        makeLabelsRelative(arguments, instruction.getArguments());
         writeRegistersToArguments(arguments);
         return new Command(instruction, arguments);
+    }
+
+    private void makeLabelsRelative(String[] arguments, String[] arguments1) {
+        for (int i = 0; i < arguments.length; i++) {
+            String argument = arguments[i];
+            // check if argument is a label --> replace with address
+            if (RELATIVE_LABEL_PATTERN.matcher(arguments1[i]).matches()) {
+
+                BigInteger targetInt = new BigInteger(ValueExtractor.extractValue(argument, calculatedMemoryAddressSize).getByteValue());
+                BigInteger currentInt = new BigInteger(currentAddress.getByteValue());
+
+                BigInteger offset = targetInt
+                        .subtract(currentInt)       // subtract current position to get difference
+                        .subtract(BigInteger.ONE);  // subtract one to get the correct offset
+                arguments[i] = Value.fromBinary(offset.toString(2), calculatedMemoryAddressSize).getHexadecimalValue();
+            }
+        }
+
     }
 
     /**
@@ -206,6 +227,15 @@ public class Assembler {
                     memory.setInitialProgramCounter(localCurrentAddress);
                 }
             }
+
+            // check if there is a command in the line or just a label
+            String cmd = labelMatcher.group("command");
+
+            // line only contains a label --> next line
+            if (cmd == null) {
+                continue;
+            }
+
             // increment memory address
             localCurrentAddress = localCurrentAddress.getIncrementedValue();
         }

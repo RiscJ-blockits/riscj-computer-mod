@@ -1,12 +1,11 @@
 {
-// TODO update to Structure of mima
 
     "name": "RiscV",										//Name des Befehlssatzes
     "instruction_length": 32,								//Länge des Befehlswortes
 
     "registers": {
         "program_counter": "PC",
-		"alu":["A", "B", "OUT"],							//Register der Architektur, die direkt an die ALU gebunden werden müssen
+        "alu":["A", "B", "OUT"],							//Register der Architektur, die direkt an die ALU gebunden werden müssen
         "float": {
             //Register für Float-Operationen
             "ft0": 0,
@@ -81,9 +80,9 @@
         "word_length": 32,									//Wortlänge im Speicher
         "address_length": 32,								//Länge der Speicheradresse
         "access_delay": 0,									//Verzögerung beim Speicherzugriff in Takten
-		"byte_order": "be",									//Big-Endian oder Little-Endian
-		"possible_opcode_lengths": [7],
-		"opcode_position": "LEAST"
+        "byte_order": "be",									//Big-Endian oder Little-Endian
+        "possible_opcode_lengths": [7],
+        "opcode_position": "LEAST"
     },
     "alu_operations": [										//ALU-Operationen, die direkt angeboten werden
         "AND",
@@ -115,7 +114,7 @@
         " *.text *": ""
     },
     "program_start_label":
-            "main:",
+    "main:",
     "data_storage_keywords": {
         " *.byte * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<8>",
         " *.halfword * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<16>",
@@ -256,10 +255,10 @@
                 ["PC", "[const]", "", "", ""]
             ],
             "translation": [
-                "[const]<20:20>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
-                "[const]<10:1>",
-                "[const]<11:11>",
-                "[const]<19:12>",
+                "[const]<19:19>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
+                "[const]<9:0>",
+                "[const]<10:10>",
+                "[const]<18:11>",
                 "[t1]<5>",
                 "1101111"
             ]
@@ -308,19 +307,19 @@
                 ["IF", "&[t1]", "&[t2]", "=", "PC", "OUT", "", "", ""]
             ], // TODO
             "translation": [
-                "[const]<12:12>",
-                "[const]<10:5>",
+                "[const]<11:11>",
+                "[const]<9:4>",
                 "[t2]<5>",
                 "[t1]<5>",
                 "000",
-                "[const]<4:1>",
-                "[const]<11:11>",
+                "[const]<3:0>",
+                "[const]<10:10>",
                 "1100011"]
         },
 
         "bne": {
             "opcode": "1100011",
-            "arguments": ["[t1]", "[t2]", "[const]"],
+            "arguments": ["[t1]", "[t2]", "~[const]"],
             "execution": [
                 ["A", "PC", "", "", ""],
                 ["B", "[const]", "", "", ""],
@@ -328,19 +327,19 @@
                 ["IF", "&[t1]", "&[t2]", "!=", "PC", "OUT", "", "", ""]
             ], // TODO
             "translation": [
-                "[const]<12:12>",
-                "[const]<10:5>",
+                "[const]<11:11>",
+                "[const]<9:4>",
                 "[t2]<5>",
                 "[t1]<5>",
                 "001",
-                "[const]<4:1>",
-                "[const]<11:11>",
+                "[const]<3:0>",
+                "[const]<10:10>",
                 "1100011"]
         },
 
         "blt": {
             "opcode": "1100011",
-            "arguments": ["[t1]", "[t2]", "[const]"],
+            "arguments": ["[t1]", "[t2]", "~[const]"],
             "execution": [
                 ["A", "PC", "", "", ""],
                 ["B", "[const]", "", "", ""],
@@ -348,19 +347,19 @@
                 ["IF", "&[t1]", "&[t2]", "<", "PC", "OUT", "", "", ""]
             ], // TODO
             "translation": [
-                "[const]<12:12>",
-                "[const]<10:5>",
+                "[const]<11:11>",
+                "[const]<9:4>",
                 "[t2]<5>",
                 "[t1]<5>",
                 "100",
-                "[const]<4:1>",
-                "[const]<11:11>",
+                "[const]<3:0>",
+                "[const]<10:10>",
                 "1100011"]
         },
 
         "bge": {
             "opcode": "1100011",
-            "arguments": ["[t1]", "[t2]", "[const]"],
+            "arguments": ["[t1]", "[t2]", "~[const]"],
             "execution": [
                 ["A", "PC", "", "", ""],
                 ["B", "[const]", "", "", ""],
@@ -368,19 +367,19 @@
                 ["IF", "&[t1]", "&[t2]", ">=", "PC", "OUT", "", "", ""]
             ], // TODO
             "translation": [
-                "[const]<12:12>",
-                "[const]<10:5>",
+                "[const]<11:11>",
+                "[const]<9:4>",
                 "[t2]<5>",
                 "[t1]<5>",
                 "101",
-                "[const]<4:1>",
-                "[const]<11:11>",
+                "[const]<3:0>",
+                "[const]<10:10>",
                 "1100011"]
         },
 
         "bltu": {
             "opcode": "1100011",
-            "arguments": ["[t1]", "[t2]", "[const]"],
+            "arguments": ["[t1]", "[t2]", "~[const]"],
             "execution": [
                 ["A", "PC", "", "", ""],
                 ["B", "[const]", "", "", ""],
@@ -388,19 +387,19 @@
                 ["IF", "&[t1]", "&[t2]", "u<", "PC", "OUT", "", "", ""]
             ], // TODO
             "translation": [
-                "[const]<12:12>",
-                "[const]<10:5>",
+                "[const]<11:11>",
+                "[const]<9:4>",
                 "[t2]<5>",
                 "[t1]<5>",
                 "110",
-                "[const]<4:1>",
-                "[const]<11:11>",
+                "[const]<3:0>",
+                "[const]<10:10>",
                 "1100011"]
         },
 
         "bgeu": {
             "opcode": "1100011",
-            "arguments": ["[t1]", "[t2]", "[const]"],
+            "arguments": ["[t1]", "[t2]", "~[const]"],
             "execution": [
                 ["A", "PC", "", "", ""],
                 ["B", "[const]", "", "", ""],
@@ -408,13 +407,13 @@
                 ["IF", "&[t1]", "&[t2]", "u>=", "PC", "OUT", "", "", ""]
             ], // TODO
             "translation": [
-                "[const]<12:12>",
-                "[const]<10:5>",
+                "[const]<11:11>",
+                "[const]<9:4>",
                 "[t2]<5>",
                 "[t1]<5>",
                 "111",
-                "[const]<4:1>",
-                "[const]<11:11>",
+                "[const]<3:0>",
+                "[const]<10:10>",
                 "1100011"]
         },
 

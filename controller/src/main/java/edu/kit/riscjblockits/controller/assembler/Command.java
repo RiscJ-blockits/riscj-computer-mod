@@ -18,6 +18,8 @@ public class Command {
     private static final Pattern ARGUMENT_TRANSLATION_PATTERN = Pattern.compile("(?<argument>\\[\\w+\\])<(?<length>\\d+(:?\\d+)?)>");
     private static final Pattern ARGUMENT_TRANSLATION_PATTERN_RANGE = Pattern.compile("(?<argument>\\[\\w+\\])<(?<from>\\d+):(?<to>\\d+)>");
     private static final Pattern MULTI_ARGUMENT_PATTERN = Pattern.compile("(?<arg1>\\[\\w+])\\((?<arg2>\\w+)\\)");
+    private static final Pattern RELATIVE_LABEL_PATTERN = Pattern.compile("~\\[\\w+]");
+
 
 
     /**
@@ -44,6 +46,10 @@ public class Command {
                 String arg2 = "[" + matcher.group("arg2") + "]";
                 argumentsInstructionMap.put(arg1, arguments[i].substring(0, arguments[i].indexOf("(")));
                 argumentsInstructionMap.put(arg2, arguments[i].substring(arguments[i].indexOf("(") + 1, arguments[i].length() - 1));
+                continue;
+            }
+            if (RELATIVE_LABEL_PATTERN.matcher(instruction.getArguments()[i]).matches()) {
+                argumentsInstructionMap.put(instruction.getArguments()[i].substring(1), arguments[i]);
                 continue;
             }
             argumentsInstructionMap.put(instruction.getArguments()[i], arguments[i]);

@@ -1,5 +1,4 @@
 {
-    // TODO update to Structure of mima
 
     "name": "RiscV",										//Name des Befehlssatzes
     "instruction_length": 32,								//Länge des Befehlswortes
@@ -256,10 +255,10 @@
                 ["PC", "[const]", "", "", ""]
             ],
             "translation": [
-                "[const]<20:20>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
-                "[const]<10:1>",
-                "[const]<11:11>",
-                "[const]<19:12>",
+                "[const]<19:19>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
+                "[const]<9:0>",
+                "[const]<10:10>",
+                "[const]<18:11>",
                 "[t1]<5>",
                 "1101111"
             ]
@@ -320,7 +319,7 @@
 
         "bne": {
             "opcode": "1100011",
-            "arguments": ["[t1]", "[t2]", "[const]"],
+            "arguments": ["[t1]", "[t2]", "~[const]"],
             "execution": [
                 ["A", "PC", "", "", ""],
                 ["B", "[const]", "", "", ""],
@@ -340,7 +339,7 @@
 
         "blt": {
             "opcode": "1100011",
-            "arguments": ["[t1]", "[t2]", "[const]"],
+            "arguments": ["[t1]", "[t2]", "~[const]"],
             "execution": [
                 ["A", "PC", "", "", ""],
                 ["B", "[const]", "", "", ""],
@@ -360,7 +359,7 @@
 
         "bge": {
             "opcode": "1100011",
-            "arguments": ["[t1]", "[t2]", "[const]"],
+            "arguments": ["[t1]", "[t2]", "~[const]"],
             "execution": [
                 ["A", "PC", "", "", ""],
                 ["B", "[const]", "", "", ""],
@@ -380,7 +379,7 @@
 
         "bltu": {
             "opcode": "1100011",
-            "arguments": ["[t1]", "[t2]", "[const]"],
+            "arguments": ["[t1]", "[t2]", "~[const]"],
             "execution": [
                 ["A", "PC", "", "", ""],
                 ["B", "[const]", "", "", ""],
@@ -400,7 +399,7 @@
 
         "bgeu": {
             "opcode": "1100011",
-            "arguments": ["[t1]", "[t2]", "[const]"],
+            "arguments": ["[t1]", "[t2]", "~[const]"],
             "execution": [
                 ["A", "PC", "", "", ""],
                 ["B", "[const]", "", "", ""],

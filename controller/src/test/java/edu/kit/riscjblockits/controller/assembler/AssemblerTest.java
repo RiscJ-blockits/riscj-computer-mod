@@ -170,6 +170,6 @@ class AssemblerTest {
         assembler.assemble("bge, s0, t0, 0x04");
         Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
         Value val = memory.getValueAt(Value.fromHex("00", 4));
-        assertEquals("00545263", val.getHexadecimalValue());
+        assertEquals("00545463", val.getHexadecimalValue());
     }
 }
