@@ -114,12 +114,12 @@
         " *.text *": ""
     },
     "program_start_label":
-    "main:",
+    "main",
     "data_storage_keywords": {
-        " *.byte * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<8>",
-        " *.halfword * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<16>",
-        " *.word * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<32>"
-        // TODO" *.string * (?<value>(?:(?:0x)|(?:0b))\\d+)": "[value]<8>"
+        " *.byte +(?<value>(?:(?:0x)|(?:0b))?\\d+)": "[value]<8>",
+        " *.halfword +(?<value>(?:(?:0x)|(?:0b))?\\d+)": "[value]<16>",
+        " *.word +(?<value>(?:(?:0x)|(?:0b))?\\d+)": "[value]<32>",
+        " *.ascii +\"(?<value>(?:[\\x00-\\xFF])*)\"": "[value]<8>+"
     },
 
     "instructions": {

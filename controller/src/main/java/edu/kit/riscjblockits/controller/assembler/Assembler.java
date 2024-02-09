@@ -22,7 +22,7 @@ public class Assembler {
     /**
      * regex pattern to separate a lines label and command
      */
-    private static final Pattern LABEL_COMMAND_PATTERN = Pattern.compile(" *(?:(?<label>\\w+):)? *(?<command>\\w[^;#]*)? *(?:[;#].*)?");
+    private static final Pattern LABEL_COMMAND_PATTERN = Pattern.compile(" *(?:(?<label>\\w+):)? *(?<command>[^;# ][^;#]*)? *(?:[;#].*)?");
     private static final Pattern ARGUMENT_REGISTER_PATTERN = Pattern.compile("-?\\d*\\((?<register>\\w+)\\)");
     private static final Pattern RELATIVE_LABEL_PATTERN = Pattern.compile("~\\[\\w+]");
 
@@ -115,8 +115,14 @@ public class Assembler {
 
             // check if line is data
             if (instructionSetModel.isDataStorageCommand(cmd)) {
-                String unsplitDirtyData = instructionSetModel.getStorageCommandData(cmd);
-                for (String dirtyData : unsplitDirtyData.split(",")) {
+                String unsplitDirtyData;
+                try {
+                    unsplitDirtyData = instructionSetModel.getStorageCommandData(cmd);
+                } catch (IllegalArgumentException e) {
+                    throw new AssemblyException("Invalid data: "+e.getMessage());
+                }
+
+                for (String dirtyData : unsplitDirtyData.split(";")) {
                     // split data into value and length
                     String[] data = dirtyData.split("~");
                     if (data.length != 2) {
@@ -160,7 +166,7 @@ public class Assembler {
         String[] cmd = command.split(" *,? +");
         IQueryableInstruction instruction = instructionSetModel.getInstruction(cmd[0]);
         if (instruction == null) {
-            throw new AssemblyException("Unknown instruction");
+            throw new AssemblyException("Unknown instruction " + cmd[0]);
         }
         String[] arguments = Arrays.copyOfRange(cmd, 1, cmd.length);
         writeLabelsToArguments(arguments);
@@ -169,13 +175,19 @@ public class Assembler {
         return new Command(instruction, arguments);
     }
 
-    private void makeLabelsRelative(String[] arguments, String[] arguments1) {
+    private void makeLabelsRelative(String[] arguments, String[] arguments1) throws AssemblyException {
         for (int i = 0; i < arguments.length; i++) {
             String argument = arguments[i];
             // check if argument is a label --> replace with address
             if (RELATIVE_LABEL_PATTERN.matcher(arguments1[i]).matches()) {
 
-                BigInteger targetInt = new BigInteger(ValueExtractor.extractValue(argument, calculatedMemoryAddressSize).getByteValue());
+                Value value = ValueExtractor.extractValue(argument, calculatedMemoryAddressSize);
+
+                if (value == null) {
+                    throw new AssemblyException("Invalid label " + argument);
+                }
+
+                BigInteger targetInt = new BigInteger(value.getByteValue());
                 BigInteger currentInt = new BigInteger(currentAddress.getByteValue());
 
                 BigInteger offset = targetInt

@@ -183,4 +183,45 @@ class AssemblerTest {
         Value val = memory.getValueAt(Value.fromHex("00", 4));
         assertEquals("FFC28293", val.getHexadecimalValue());
     }
+
+    @Test
+    void assembleRiscDataWord() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble(".word 0x12345678");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("12345678", val.getHexadecimalValue());
+    }
+
+    @Test
+    void assembleRiscDataStringSingleChar() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble(".ascii \"a\"");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("00000061", val.getHexadecimalValue());
+    }
+
+    @Test
+    void assembleRiscDataStringMultiChar() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble(".ascii \"hello\"");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("00000068", val.getHexadecimalValue());
+        val = memory.getValueAt(Value.fromHex("01", 4));
+        assertEquals("00000065", val.getHexadecimalValue());
+        val = memory.getValueAt(Value.fromHex("02", 4));
+        assertEquals("0000006C", val.getHexadecimalValue());
+        val = memory.getValueAt(Value.fromHex("03", 4));
+        assertEquals("0000006C", val.getHexadecimalValue());
+        val = memory.getValueAt(Value.fromHex("04", 4));
+        assertEquals("0000006F", val.getHexadecimalValue());
+    }
 }

@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 public class
 InstructionSetModel implements IQueryableInstructionSetModel {
 
+    private static final Pattern DATA_GROUP_PATTERN = Pattern.compile("\\[(?<name>\\w+)]<(?<length>\\d+)>(?<asciiRepeat>\\+)?");
+
     /**
      * Name of the instruction set.
      */
@@ -275,6 +277,9 @@ InstructionSetModel implements IQueryableInstructionSetModel {
 
     /**
      * Resolves a data storage command to the data that shall be stored in the needed format.
+     * when the data is a constant, it is returned as is.
+     * when the data is dynamic, it is returned as a string with the format "data~length".
+     * when the pattern defines that there can be multiple entries, these will be seperated by a semicolon
      * @param s The data storage command.
      * @return The data to be stored.
      */
@@ -285,9 +290,28 @@ InstructionSetModel implements IQueryableInstructionSetModel {
             Matcher m = p.matcher(s);
             if (m.matches()) {
                 // check if data needs dynamic replacing
-                Pattern groupPattern = Pattern.compile("\\[(?<name>\\w+)]<(?<length>\\d+)>");
-                Matcher groupMatcher = groupPattern.matcher(dataStorageKeywords.get(key));
+
+                Matcher groupMatcher = DATA_GROUP_PATTERN.matcher(dataStorageKeywords.get(key));
                 if (groupMatcher.matches()) {
+                    // check if data needs dynamic repeating
+                    if (groupMatcher.group("asciiRepeat") != null) {
+                        String data = m.group(groupMatcher.group("name"));
+
+                        StringBuilder result = new StringBuilder();
+                        for (int i = 0; i < data.length(); i++){
+                            char c = data.charAt(i);
+                            if (c > 127) {
+                                throw new IllegalArgumentException("Data contains non-ASCII characters");
+                            }
+                            result.append(Integer.toString(c));
+                            result.append("~");
+                            result.append(groupMatcher.group("length"));
+                            if (i < data.length() - 1) {
+                                result.append(";");
+                            }
+                        }
+                        return result.toString();
+                    }
                     String groupName = groupMatcher.group("name");
                     return m.group(groupName) + "~" + groupMatcher.group("length");
                 }
