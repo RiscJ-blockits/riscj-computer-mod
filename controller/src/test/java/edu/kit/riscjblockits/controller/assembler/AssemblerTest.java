@@ -22,36 +22,44 @@ class AssemblerTest {
         Assembler assembler = new Assembler(model);
         assembler.assemble("\n\nADD 0x16");
         Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+
         Value val = memory.getValueAt(Value.fromHex("00", 3));
         assertEquals("300016", val.getHexadecimalValue());
 
         assembler = new Assembler(model);
-        assembler.assemble( "\n" +
-                                        "\n" +
-                                        "\n" +
-                                        "ADD 0x16\n" +
-                                        "test: STV 5\n" +
-                                        "* = 4\n" +
-                                        "JMP test\n" +
-                                        "HALT\n" +
-                                        "   LDV LABEL\n" +
-                                        "\n   " +
-                                        "*= 8\n" +
-                                        "LABEL: HALT");
+        assembler.assemble("""
+
+
+
+                ADD 0x16
+                test: STV 5
+                * = 4
+                JMP test
+                HALT
+                   LDV LABEL
+
+                   *= 8
+                LABEL: HALT""");
         memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+
         val = memory.getValueAt(Value.fromHex("00", 3));
         assertEquals("300016", val.getHexadecimalValue());
+
         val = memory.getValueAt(Value.fromHex("01", 3));
         assertEquals("200005", val.getHexadecimalValue());
+
         val = memory.getValueAt(Value.fromHex("03", 3));
         assertEquals("000000", val.getHexadecimalValue());
+
         val = memory.getValueAt(Value.fromHex("04", 3));
         assertEquals("800001", val.getHexadecimalValue());
+
         val = memory.getValueAt(Value.fromHex("05", 3));
         assertEquals("F00000", val.getHexadecimalValue());
 
         val = memory.getValueAt(Value.fromHex("06", 3));
         assertEquals("100008", val.getHexadecimalValue());
+
         val = memory.getValueAt(Value.fromHex("08", 3));
         assertEquals("F00000", val.getHexadecimalValue());
     }
@@ -215,12 +223,16 @@ class AssemblerTest {
         Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
         Value val = memory.getValueAt(Value.fromHex("00", 4));
         assertEquals("00000068", val.getHexadecimalValue());
+
         val = memory.getValueAt(Value.fromHex("01", 4));
         assertEquals("00000065", val.getHexadecimalValue());
+
         val = memory.getValueAt(Value.fromHex("02", 4));
         assertEquals("0000006C", val.getHexadecimalValue());
+
         val = memory.getValueAt(Value.fromHex("03", 4));
         assertEquals("0000006C", val.getHexadecimalValue());
+
         val = memory.getValueAt(Value.fromHex("04", 4));
         assertEquals("0000006F", val.getHexadecimalValue());
     }
