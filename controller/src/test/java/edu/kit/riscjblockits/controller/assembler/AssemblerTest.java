@@ -160,7 +160,7 @@ class AssemblerTest {
         assembler.assemble("jal t1, 0x1234");
         Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
         Value val = memory.getValueAt(Value.fromHex("00", 4));
-        assertEquals("2340136F", val.getHexadecimalValue());
+        assertEquals("4680236F", val.getHexadecimalValue());    // difference to Rars as we are using word addressing
     }
     @Test
     void assembleRiscBGE() throws AssemblyException {
@@ -170,6 +170,6 @@ class AssemblerTest {
         assembler.assemble("bge, s0, t0, 0x04");
         Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
         Value val = memory.getValueAt(Value.fromHex("00", 4));
-        assertEquals("00545463", val.getHexadecimalValue());
+        assertEquals("00545363", val.getHexadecimalValue());
     }
 }
