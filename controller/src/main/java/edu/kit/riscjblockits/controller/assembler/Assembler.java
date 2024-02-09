@@ -181,7 +181,7 @@ public class Assembler {
                 BigInteger offset = targetInt
                         .subtract(currentInt)       // subtract current position to get difference
                         .subtract(BigInteger.ONE);  // subtract one to get the correct offset
-                arguments[i] = Value.fromBinary(offset.toString(2), calculatedMemoryAddressSize).getHexadecimalValue();
+                arguments[i] = "0x" + ValueExtractor.extractValue(offset.toString(), calculatedMemoryAddressSize).getHexadecimalValue();
             }
         }
 

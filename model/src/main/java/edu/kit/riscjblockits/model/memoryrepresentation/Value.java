@@ -27,8 +27,10 @@ public class Value {
         byte[] bytes = new byte[length];
         byte[] hexBytes = HexFormat.of().parseHex(s); //Todo fill with zeros if length is not a multiple of 2
         int offset = length - hexBytes.length;
-        for (int i = 0; i < hexBytes.length; i++) {
-            bytes[i + offset] = hexBytes[i];
+        offset = Math.max(offset, 0);
+        int endOffset = Math.max(hexBytes.length - length, 0);
+        for (int i = 0; i < hexBytes.length - endOffset; i++) {
+            bytes[i + offset] = hexBytes[i + endOffset];
         }
 
         return new Value(bytes);
@@ -40,17 +42,18 @@ public class Value {
      * @param length the length of the value in bytes
      * @return the value
      */
-    public static Value fromBinary(String s, int length) {
+    public static Value fromBinary(String s, int length, boolean autoSignExtend) {
         byte[] bytes = new byte[length];
         int currentByte = 0;
         int currentBit = 0;
 
         int missingBits = length * 8 - s.length();
+        boolean signExtend = autoSignExtend && s.charAt(0) == '1';
         for (int i = 0; i < length * 8; i++){
             char c;
-            // missing bits are filled with 0
+            // missing bits are filled with 0 (1 if sign extend is true)
             if (i < missingBits) {
-                c = '0';
+                c = signExtend ? '1' : '0';
             } else {
                 c = s.charAt(i - missingBits);
             }
@@ -72,6 +75,10 @@ public class Value {
         }
 
         return new Value(bytes);
+    }
+
+    public static Value fromBinary(String s, int length) {
+        return fromBinary(s, length, false);
     }
 
     /**
@@ -222,5 +229,15 @@ public class Value {
     public boolean greaterThanFloat(Value comparator) {
         //TODO implement
         return false;
+    }
+
+    public Value negate() {
+        // invert
+        for (int i = 0; i < value.length; i++) {
+            value[i] = (byte) ~value[i];
+        }
+        // increment to get two's complement
+        value[value.length - 1]++;
+        return this;
     }
 }

@@ -172,4 +172,15 @@ class AssemblerTest {
         Value val = memory.getValueAt(Value.fromHex("00", 4));
         assertEquals("00545363", val.getHexadecimalValue());
     }
+
+    @Test
+    void assembleRiscADDINegValue() throws AssemblyException {
+        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble("addi, t0, t0, -4");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        Value val = memory.getValueAt(Value.fromHex("00", 4));
+        assertEquals("FFC28293", val.getHexadecimalValue());
+    }
 }
