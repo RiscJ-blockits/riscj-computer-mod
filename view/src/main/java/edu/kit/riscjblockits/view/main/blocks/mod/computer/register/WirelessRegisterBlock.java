@@ -56,8 +56,6 @@ public class WirelessRegisterBlock extends RegisterBlock {
             return ActionResult.SUCCESS;
         }
 
-        super.onUse(state, world, pos, player, hand, hit);
-
         if (player.getStackInHand(hand).getItem() == RISCJ_blockits.WIRELESS_REGISTER_BLOCK_ITEM) {
 
             NbtCompound nbt = player.getStackInHand(hand).getNbt();
@@ -69,9 +67,9 @@ public class WirelessRegisterBlock extends RegisterBlock {
             nbt.putIntArray("pos", new int[]{pos.getX(), pos.getY(), pos.getZ()});
 
             player.getStackInHand(hand).setNbt(nbt);
-
+            return ActionResult.SUCCESS;
         }
-
+        super.onUse(state, world, pos, player, hand, hit);
         return ActionResult.SUCCESS;
     }
 
@@ -89,7 +87,7 @@ public class WirelessRegisterBlock extends RegisterBlock {
         if (world.isClient || itemStack.getNbt() == null) {
             return;
         }
-        WirelessRegisterBlockEntity blockEntity = (WirelessRegisterBlockEntity) world.getBlockEntity(pos);
+        edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlockEntity blockEntity = (edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlockEntity) world.getBlockEntity(pos);
         int[] neighbourPos = itemStack.getNbt().getIntArray("pos");
         ((WirelessRegisterController) blockEntity.getController())
                 .setWirelessNeighbourPosition(new BlockPosition(neighbourPos[0], neighbourPos[1], neighbourPos[2]));

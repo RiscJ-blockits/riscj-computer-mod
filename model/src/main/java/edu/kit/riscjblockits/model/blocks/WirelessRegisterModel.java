@@ -12,7 +12,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 public class WirelessRegisterModel extends RegisterModel {
 
     /**
-     * The register model that holds the data of the register.
+     * The register model that is shared with the wireless neighbour and holds the data of both registers.
      */
     private RegisterModel registerModel;
 
@@ -27,7 +27,7 @@ public class WirelessRegisterModel extends RegisterModel {
     public WirelessRegisterModel() {
         super();
         registerModel = new RegisterModel();
-        wirelessNeighbourPosition = new BlockPosition(0,0,0);
+        wirelessNeighbourPosition = new BlockPosition(0,-300,0);
     }
 
     /**
@@ -37,7 +37,7 @@ public class WirelessRegisterModel extends RegisterModel {
     @Override
     public void setPosition(BlockPosition position) {
         super.setPosition(position);
-        if (wirelessNeighbourPosition.equals(new BlockPosition(0,0,0))) {
+        if (wirelessNeighbourPosition.equals(new BlockPosition(0,-300,0))) {
             wirelessNeighbourPosition = position;
         }
     }
@@ -100,7 +100,7 @@ public class WirelessRegisterModel extends RegisterModel {
      */
     @Override
     public IDataElement getData() {
-        Data regData = new Data();
+        Data regData = (Data) super.getData();
         Data connectedPos = new Data();
         if (wirelessNeighbourPosition == null) {
             connectedPos.set(REGISTER_WIRELESS_XPOS, new DataStringEntry(String.valueOf(0)));
@@ -112,17 +112,8 @@ public class WirelessRegisterModel extends RegisterModel {
             connectedPos.set(REGISTER_WIRELESS_ZPOS, new DataStringEntry(String.valueOf(wirelessNeighbourPosition.getZ())));
         }
         regData.set(REGISTER_WIRELESS, connectedPos);
-
-        regData.set(REGISTER_TYPE, new DataStringEntry(super.getRegisterType()));
         regData.set(REGISTER_WORD_LENGTH, new DataStringEntry(String.valueOf(registerModel.getWordLength())));
         regData.set(REGISTER_VALUE, new DataStringEntry(registerModel.getValue().getHexadecimalValue()));
-        if (super.getMissingAvailableRegisters() != null && super.getMissingAvailableRegisters().length == 2
-                && (super.getMissingAvailableRegisters()[0] != null) && (super.getMissingAvailableRegisters()[1] != null)) {
-            Data registersData = new Data();
-            registersData.set(REGISTER_MISSING, new DataStringEntry(super.getMissingAvailableRegisters()[0]));
-            registersData.set(REGISTER_FOUND, new DataStringEntry(super.getMissingAvailableRegisters()[1]));
-            regData.set(REGISTER_REGISTERS, registersData);
-        }
         return regData;
     }
 

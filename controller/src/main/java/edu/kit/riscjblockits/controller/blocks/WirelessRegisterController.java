@@ -25,17 +25,10 @@ public class WirelessRegisterController extends RegisterController {
     public void setRegisterModel(WirelessRegisterController registerController) {
         ((WirelessRegisterModel)getModel()).setRegisterModel(
                 ((WirelessRegisterModel)registerController.getModel()).getRegisterModel());
-        ((WirelessRegisterModel)getModel()).setWirelessNeighbourPosition(
-                registerController.getModel().getPosition());
     }
 
     public void setWirelessNeighbourPosition(BlockPosition blockPosition) {
         ((WirelessRegisterModel)getModel()).setWirelessNeighbourPosition(blockPosition);
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
     }
 
     /**
@@ -44,26 +37,12 @@ public class WirelessRegisterController extends RegisterController {
      */
     @Override
     public void setData(IDataElement data) {
-        getModel().onStateChange();
+        super.setData(data);
         if (!data.isContainer()) {
             return;
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             switch (s) {
-                case REGISTER_TYPE -> {
-                    String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
-                    ((WirelessRegisterModel) getModel()).setRegisterType(type);
-                    if (getClusterHandler() != null) {
-                        this.getClusterHandler().checkFinished();
-                    }
-                }
-                case REGISTER_REGISTERS -> {
-                    IDataContainer registers = (IDataContainer) ((IDataContainer) data).get(s);
-                    String[] missingAvailableRegisters = new String[2];
-                    missingAvailableRegisters[0] = ((IDataStringEntry) registers.get(REGISTER_MISSING)).getContent();
-                    missingAvailableRegisters[1] = ((IDataStringEntry) registers.get(REGISTER_FOUND)).getContent();
-                    ((WirelessRegisterModel) getModel()).setMissingAvailableRegisters(missingAvailableRegisters);
-                }
                 case REGISTER_WORD_LENGTH -> {
                     int wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
                     ((WirelessRegisterModel) getModel()).setWordLength(wordLength);
