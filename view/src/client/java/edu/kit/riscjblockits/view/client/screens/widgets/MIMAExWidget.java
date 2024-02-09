@@ -16,5 +16,6 @@ public class MIMAExWidget extends ExtendableWidget {
 
     public void initialize(int parentWidth, int parentHeight, boolean narrow) {
         super.initialize(parentWidth, parentHeight, narrow, TEXTURE);
+        this.open = false;
     }
 }
