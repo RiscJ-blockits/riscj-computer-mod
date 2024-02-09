@@ -31,6 +31,7 @@ public class InstructionsWidget extends ExtendableWidget{
         int j = (this.parentHeight) / 2;
         this.handler = handler;
         this.instructionList = new InstructionListWidget(this.getEntries(), i + 8, j + 18, 113, 130);
+        this.open = false;
     }
 
     private List<InstructionEntry> getEntries() {

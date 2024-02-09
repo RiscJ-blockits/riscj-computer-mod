@@ -5,12 +5,11 @@ import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
-
-import static edu.kit.riscjblockits.model.data.DataConstants.ALU_OPERATION;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.math.BigInteger;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.ALU_OPERATION;
 import static java.lang.Math.max;
 
 /**
@@ -246,8 +245,8 @@ public class AluController extends ComputerBlockController {
         BigInteger bigInt1 = getUnsignedBigInteger(operand1);
         BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
-        //ToDo: Put basis for explosion of computer here
         if (bigInt2.equals(BigInteger.ZERO)) {
+            spawnEffect(IConnectableComputerBlockEntity.ComputerEffect.EXPLODE);
             return Value.fromHex("FF".repeat(array1.length), array1.length);
         }
 
@@ -269,8 +268,8 @@ public class AluController extends ComputerBlockController {
         byte[] array2 = operand2.getByteValue();
         BigInteger bigInt2 = new BigInteger(array2);
 
-        //ToDo: Put basis for explosion of computer here
         if (bigInt2.equals(BigInteger.ZERO)) {
+            spawnEffect(IConnectableComputerBlockEntity.ComputerEffect.EXPLODE);
             return Value.fromHex("FF".repeat(array1.length), array1.length);
         }
 
@@ -481,7 +480,6 @@ public class AluController extends ComputerBlockController {
         bigInteger = bigInteger.shiftLeft(shift);
 
         return reconvertToByteArrayOfOriginalLength(array1.length, bigInteger);
-
     }
 
     /**
@@ -527,7 +525,6 @@ public class AluController extends ComputerBlockController {
         }
 
         return new Value(result);
-
     }
 
     /**
@@ -628,7 +625,6 @@ public class AluController extends ComputerBlockController {
         }
 
         return new Value(result);
-
     }
 
 }

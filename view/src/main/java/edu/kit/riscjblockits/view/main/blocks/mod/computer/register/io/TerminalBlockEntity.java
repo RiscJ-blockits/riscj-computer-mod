@@ -1,9 +1,7 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
-import edu.kit.riscjblockits.controller.blocks.IORegisterController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
-import edu.kit.riscjblockits.model.blocks.IORegisterModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
@@ -115,11 +113,16 @@ public class TerminalBlockEntity extends ComputerBlockEntity implements Extended
      * @param hexStr The hex string that should be translated.
      * @return The translated ascii string.
      */
-    private String translateHexToAscii(String hexStr) {
+    public String translateHexToAscii(String hexStr) {
         hexStr = hexStr.replaceFirst("^0+", ""); // remove leading zeros
         StringBuilder output = new StringBuilder("");
         for (int i = 0; i < hexStr.length(); i += 2) {
-            String str = hexStr.substring(i, i + 2);
+            String str;
+            if(i + 2 <= hexStr.length()){
+                str = hexStr.substring(i, i + 2);
+            } else {
+                str = hexStr.substring(i);
+            }
             output.append((char) Integer.parseInt(str, 16));
         }
         return output.toString();
@@ -132,7 +135,6 @@ public class TerminalBlockEntity extends ComputerBlockEntity implements Extended
      */
     private String getRegisterValue(NbtCompound nbt) {
         String value = "";
-        int time = 0;
         if (!nbt.contains(MOD_DATA)) {
             return value;
         }

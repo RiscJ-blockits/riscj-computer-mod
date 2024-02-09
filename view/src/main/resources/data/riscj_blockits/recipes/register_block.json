@@ -8,7 +8,7 @@
   ],
   "key": {
     "P": {
-      "tag": "riscj_blockits:program"
+      "item": "riscj_blockits:program"
     },
     "C": {
       "item": "minecraft:copper_ingot"

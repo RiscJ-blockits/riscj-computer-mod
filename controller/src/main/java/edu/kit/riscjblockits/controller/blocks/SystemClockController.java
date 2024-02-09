@@ -67,6 +67,9 @@ public class SystemClockController extends ComputerBlockController {
         if (simStarted) {
             simulationTimeHandler.onMinecraftTick();
         }
+        if (getClockMode() == ClockMode.REALTIME) {
+            spawnEffect(IConnectableComputerBlockEntity.ComputerEffect.SMOKE);
+        }
     }
 
     /**

@@ -274,4 +274,11 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
         activeVisualization.clear();
     }
 
+    @Override
+    public void activateVisualisation() {
+        for (BlockPosition blockPosition : adjPositions.keySet()) {
+            activeVisualization.put(blockPosition, true);
+        }
+    }
+
 }

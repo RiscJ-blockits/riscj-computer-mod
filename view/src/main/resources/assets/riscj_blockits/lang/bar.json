@@ -8,9 +8,12 @@
   "block.riscj_blockits.system_clock_block": "Kirchturm",
   "item.riscj_blockits.goggles": "Apple Vision Pro",
   "item.riscj_blockits.instruction_set_mima": "ist MIMA",
+  "item.riscj_blockits.instruction_set_mima_io": "rein-raus",
   "item.riscj_blockits.instruction_set_riscv": "ist MIMA für Hobbylose",
   "item.riscj_blockits.manual": "Duden",
   "item.riscj_blockits.program": "Diskette",
   "itemGroup.riscj_blockits.computer_components": "RO Items",
-  "programming_pretext": "Do dad Eire Reklame platzierd sei kenna"
+  "programming_pretext": "Do dad Eire Reklame platzierd sei kenna",
+  "manual.title": "Duden",
+  "istItem.title": "ist änderbaar"
 }
