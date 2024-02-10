@@ -27,6 +27,7 @@ public class MemoryScreenHandler extends ModScreenHandler {
 
     private final Inventory inventory;
     private  final MemoryBlockEntity blockEntity;
+    private boolean opened = false;
 
     public MemoryScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
         this(syncId, inventory, (ModBlockEntity) inventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
@@ -38,15 +39,19 @@ public class MemoryScreenHandler extends ModScreenHandler {
         this.inventory = ((Inventory) blockEntity);
         inventory.onOpen(playerInventory.player);
         this.blockEntity = ((MemoryBlockEntity) blockEntity);
-
         this.addSlot(new Slot(inventory, 0, 135, 6));
-
         addPlayerInventorySlotsLarge(playerInventory);
 
         addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
                 if (slotId == 0) {
+                    //On SlotUpdate gets sometimes called on screen open even when the item is not changed.
+                    // We don't want to update the memory in this case because it would reset the simulation
+                    if (!opened) {
+                        opened = true;
+                        return;
+                    }
                     ((MemoryBlockEntity) blockEntity).inventoryChanged();
                 }
             }

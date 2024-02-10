@@ -38,22 +38,26 @@ import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 public class ControlUnitScreenHandler extends ModScreenHandler {
 
     private final Inventory inventory;
+    private boolean opened = false;
 
     public ControlUnitScreenHandler(int syncId, PlayerInventory playerInventory, ModBlockEntity blockEntity) {
         super(RISCJ_blockits.CONTROL_UNIT_SCREEN_HANDLER, syncId, blockEntity);
-
         checkSize(((Inventory) blockEntity), 1);
         this.inventory = ((Inventory) blockEntity);
         inventory.onOpen(playerInventory.player);
-
         this.addSlot(new Slot(inventory, 0, 8, 18));
-
         addPlayerInventorySlotsLarge(playerInventory);
 
         addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
                 if (slotId == 0) {
+                    //On SlotUpdate gets sometimes called on screen open even when the item is not changed.
+                    // We don't want to update the memory in this case because it would reset the simulation
+                    if (!opened) {
+                        opened = true;
+                        return;
+                    }
                     ((ControlUnitBlockEntity) blockEntity).inventoryChanged();
                 }
             }

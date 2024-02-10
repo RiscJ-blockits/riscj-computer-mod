@@ -64,9 +64,7 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
         return new MemoryScreenHandler(syncId, playerInventory, this);
     }
 
-    /**
-     * When the Instruction Set changes, the controller needs to be notified.
-     */
+
     @Override
     public void inventoryChanged() {
         if (getController() != null) {             //only on the server

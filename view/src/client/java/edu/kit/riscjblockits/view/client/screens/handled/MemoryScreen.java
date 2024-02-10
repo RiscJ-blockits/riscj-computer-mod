@@ -14,9 +14,6 @@ import net.minecraft.util.Identifier;
 public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/memory_block/memory_block_gui.png");
-    private Text memory1 = Text.literal("-");        //Testcode
-    private Text memory2 = Text.literal("-");        //Testcode
-    private Text memory3 = Text.literal("-");        //Testcode
     private final MemoryListWidget memoryListWidget;
 
     public MemoryScreen(MemoryScreenHandler handler, PlayerInventory inventory,
@@ -25,10 +22,8 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
         this.backgroundHeight = 222;
         this.backgroundWidth = 176;
         playerInventoryTitleY += 56;
-
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - backgroundHeight) / 2;
-
         memoryListWidget = new MemoryListWidget(handler, i + 7, j + 26, 150, 99);
     }
 
@@ -54,19 +49,11 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
         super.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
         memoryListWidget.render(context, mouseX, mouseY, delta);
-        //Testcode
-        //context.drawCenteredTextWithShadow(textRenderer, memory1, width / 2, height / 2, 0xffffff);
-        //context.drawCenteredTextWithShadow(textRenderer, memory2, width / 2, height / 3, 0xffffff);
-        //context.drawCenteredTextWithShadow(textRenderer, memory3, width / 2, height / 4, 0xffffff);
     }
 
     @Override
     public void handledScreenTick() {
         super.handledScreenTick();
-        //Testcode
-        memory1 = Text.literal(handler.getMemoryLine(0));
-        memory2 = Text.literal(handler.getMemoryLine(1));
-        memory3 = Text.literal(handler.getMemoryLine(2));
     }
 
     @Override
@@ -74,4 +61,5 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
         memoryListWidget.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
+
 }
