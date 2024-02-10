@@ -1,5 +1,8 @@
 package edu.kit.riscjblockits.model.instructionset;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Abstract class for common attributes and functionalities of complex micro instructions which can contain a
  * memory flag and memory instruction.
@@ -16,7 +19,7 @@ public abstract class ComplexMicroInstruction extends MicroInstruction{
     /**
      * Memory instruction for parallel memory access.
      */
-    private final MemoryInstruction memoryInstruction;
+    private MemoryInstruction memoryInstruction;
 
     public ComplexMicroInstruction(String[] from, String to, String memoryFlag, MemoryInstruction memoryInstruction) {
         super(from, to);
@@ -40,4 +43,14 @@ public abstract class ComplexMicroInstruction extends MicroInstruction{
         return memoryInstruction;
     }
 
+
+    @Override
+    public MicroInstruction getFilled(Map<String, String> argumentsInstructionMap, HashMap<Integer, String> intRegisters, HashMap<Integer, String> floatRegisters) {
+        ComplexMicroInstruction filled = (ComplexMicroInstruction) super.getFilled(argumentsInstructionMap, intRegisters, floatRegisters);
+
+        if (memoryInstruction != null)
+            filled.memoryInstruction = (MemoryInstruction) filled.memoryInstruction.getFilled(argumentsInstructionMap, intRegisters, floatRegisters);
+
+        return filled;
+    }
 }

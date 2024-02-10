@@ -219,7 +219,7 @@
                 ["A", "&[t2]", "", "", ""],
                 ["B", "[const]", "", "", ""],
                 ["ADD", "OUT", "A", "B", "", "", ""],
-                ["", "", "w", "MEM[OUT]", "&[t1]", "", ""]
+                ["", "", "w", "Mem[OUT]", "&[t1]"]
             ],
             "translation": [
                 "[const]<11:5>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
@@ -424,7 +424,7 @@
                 ["A", "&f[t1]", "", "", ""],
                 ["B", "[const]", "", "", ""],
                 ["ADD", "OUT", "A", "B", "", "", ""],
-                ["", "", "w", "&[t0]", "MEM[OUT]", "", ""]
+                ["", "", "r", "&[t0]", "Mem[OUT]"]
             ],
             "translation": [
                 "[const]<11:0>",
