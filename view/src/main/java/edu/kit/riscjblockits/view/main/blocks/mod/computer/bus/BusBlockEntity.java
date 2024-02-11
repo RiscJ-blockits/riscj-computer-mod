@@ -7,6 +7,8 @@ import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
@@ -74,4 +76,22 @@ public class BusBlockEntity extends ComputerBlockEntity {
         return false;
     }
 
+    @Override
+    public Text getGoggleText() {
+        NbtCompound nbt = new NbtCompound();
+        writeNbt(nbt);
+        Text busData = Text.translatable("riscj_blockits.no_bus_data");
+
+        if (nbt.contains(MOD_DATA)) {
+            if (nbt.getCompound(MOD_DATA).contains(BUS_DATA)) {
+                busData = Text.of(nbt.getCompound(MOD_DATA).getString(BUS_DATA));
+            }
+        }
+
+        return Text.translatable("block.riscj_blockits.bus_block")
+                .append("\n")
+                .append(Text.translatable("block.riscj_blockits.bus_data"))
+                .append(": ")
+                .append(busData);
+    }
 }

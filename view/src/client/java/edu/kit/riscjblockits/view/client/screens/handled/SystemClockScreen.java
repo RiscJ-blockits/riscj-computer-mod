@@ -104,7 +104,7 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     @Override
     public void handledScreenTick() {
         super.handledScreenTick();
-        clockSpeed = Text.literal(String.valueOf(handler.getSystemClockSpeed()));
+        clockSpeed = Text.literal(String.valueOf(((SystemClockBlockEntity)handler.getBlockEntity()).getSystemClockSpeed()));
         clockSpeed = Text.literal(String.valueOf(SECONDS_TRANSLATIONS[getButtonStep()][1]));
     }
 

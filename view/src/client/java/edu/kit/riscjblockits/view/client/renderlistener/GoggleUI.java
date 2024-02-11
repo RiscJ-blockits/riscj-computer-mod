@@ -93,7 +93,7 @@ public final class GoggleUI {
             }
         }
         // calculate the position and width to draw
-        int width = cleanWidth+2*padding;
+        int width = cleanWidth + 2 * padding;
         int x = screenWidth/2 - width/2;
         // draw the background
         context.drawBorder(x - padding, 5, width + padding, 8 + textHeight * lines.size(), 0xFF000000);
@@ -101,7 +101,7 @@ public final class GoggleUI {
         // draw the text line by line
         for (int i = 0; i < lines.size(); i++) {
             int lineWidth = textRenderer.getWidth(lines.get(i));
-            context.drawText(textRenderer, lines.get(i), x+(cleanWidth-lineWidth) +padding/2, 10 + textHeight * i, 0xFF13FFFD, false);
+            context.drawText(textRenderer, lines.get(i), x + (cleanWidth - lineWidth)/2 + padding, 10 + textHeight * i, 0xFF13FFFD, false);
         }
 
     }
