@@ -48,7 +48,6 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         this.backgroundHeight = 222;
         this.backgroundWidth = 176;
         playerInventoryTitleY += 56;
-        isMima = false;
     }
 
     /**
