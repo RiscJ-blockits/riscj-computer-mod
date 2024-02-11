@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -136,8 +137,8 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     }
 
     private int getButtonStep() {
-        String mode = handler.getSystemClockMode();
-        int speed = handler.getSystemClockSpeed();
+        String mode = ((SystemClockBlockEntity) handler.getBlockEntity()).getSystemClockMode();
+        int speed = ((SystemClockBlockEntity) handler.getBlockEntity()).getSystemClockSpeed();
         if (mode.equals(String.valueOf(STEP))) {
             return 0;
         } else if (mode.equals(String.valueOf(REALTIME))) {

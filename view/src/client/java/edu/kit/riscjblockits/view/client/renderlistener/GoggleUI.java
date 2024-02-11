@@ -96,8 +96,8 @@ public final class GoggleUI {
         int width = cleanWidth+2*padding;
         int x = screenWidth/2 - width/2;
         // draw the background
-        context.drawBorder(x, 5, width, 8 + textHeight * lines.size(), 0xFF000000);
-        context.fill(x, 5, x + width, 13 + textHeight * lines.size(), 0x80000000);
+        context.drawBorder(x - padding, 5, width + padding, 8 + textHeight * lines.size(), 0xFF000000);
+        context.fill(x - padding, 5, x + width, 13 + textHeight * lines.size(), 0x80000000);
         // draw the text line by line
         for (int i = 0; i < lines.size(); i++) {
             int lineWidth = textRenderer.getWidth(lines.get(i));

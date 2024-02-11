@@ -20,6 +20,21 @@
   "block.riscj_blockits.text_output_block": "Terminal",
   "itemGroup.riscj_blockits.computer_components": "Computer Items",
 
+  "riscj_blockits.clockmode": "Mode",
+  "riscj_blockits.clockspeed": "Speed",
+  "riscj_blockits.register_type": "Type",
+  "riscj_blockits.register_value": "Value",
+  "riscj_blockits.alu_operation": "Operation",
+  "riscj_blockits.program": "Program",
+  "riscj_blockits.program_none": "None loaded",
+  "riscj_blockits.computer_complete": "Functional",
+  "riscj_blockits.computer_incomplete": "Incomplete",
+  "riscj_blockits.ist_none": "None",
+  "riscj_blockits.ist": "Instruction Set",
+  "riscj_blockits.completion": "Completion",
+  "riscj_blockits.no_bus_data": "no Data",
+  "block.riscj_blockits.bus_data": "Data",
+
   "programming_pretext": "This could be your code",
 
   "manual.title": "Users Manual",

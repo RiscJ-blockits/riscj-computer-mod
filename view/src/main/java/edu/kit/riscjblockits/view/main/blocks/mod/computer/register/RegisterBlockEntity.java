@@ -98,7 +98,13 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
         if (nbt.contains(REGISTER_TYPE)) {
             type = nbt.getString(REGISTER_TYPE);
         }
-        return Text.of("Register\n" + type + "\n" + value);
+
+        return Text.translatable("block.riscj_blockits.register_block")
+                .append("\n")
+                .append(Text.translatable("riscj_blockits.register_type"))
+                .append(": " + type + "\n")
+                .append(Text.translatable("riscj_blockits.register_value"))
+                .append(": " + value);
     }
 
 }

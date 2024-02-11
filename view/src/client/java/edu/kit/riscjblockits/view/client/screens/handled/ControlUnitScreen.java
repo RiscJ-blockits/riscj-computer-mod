@@ -7,6 +7,7 @@ import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureEntry;
 import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureListWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.MIMAExWidget;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitScreenHandler;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -113,7 +114,7 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     public List<ArchitectureEntry> fetchEntries() {
         BlockPos pos = this.handler.getBlockEntity().getPos();
         List<ArchitectureEntry> entries = new ArrayList<>();
-        List[] data = this.handler.getStructure();
+        List[] data = ((ControlUnitBlockEntity) this.handler.getBlockEntity()).getStructure();
         List<String> listFound = data[1];
         List<String> listMissing = data[0];
         for (String component : listMissing) {

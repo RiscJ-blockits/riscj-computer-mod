@@ -11,6 +11,9 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.BUS_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+
 /**
  * This class represents a bus entity from our mod in the game.
  * Every bus has its own unique BusBlockEntity while it is loaded.
