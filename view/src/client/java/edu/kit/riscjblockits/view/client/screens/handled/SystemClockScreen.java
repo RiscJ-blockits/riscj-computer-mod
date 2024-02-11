@@ -41,7 +41,7 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     private static final int LEVER_Y_OFFSET = 23;
     private static final int LEVER_WIDTH = 58;
     private static final int LEVER_HEIGHT = 39;
-    private static final ArrayList<IconButtonWidget> modeButtons = new ArrayList<>(10);
+    private final ArrayList<IconButtonWidget> modeButtons = new ArrayList<>(10);
     private static final int SPEED_TEXTFIELD_OFFSET_X = 9;
     private static final int SPEED_TEXTFIELD_OFFSET_Y = 18;
     private Identifier leverTexture = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_lever_0.png");
@@ -72,7 +72,6 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
 
             addDrawableChild(modeButtons.get(i));
         }
-        //loop through Screen Elements
     }
 
     @Override
