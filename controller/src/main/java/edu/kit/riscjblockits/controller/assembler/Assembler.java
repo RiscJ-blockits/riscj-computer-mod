@@ -273,19 +273,25 @@ public class Assembler {
      *
      * @param arguments array of arguments that may have registers, in need to be replaced
      */
-    private void writeRegistersToArguments(String[] arguments) {
+    private void writeRegistersToArguments(String[] arguments) throws AssemblyException {
         // for each argument:
         for (int i = 0; i < arguments.length; i++) {
             String argument = arguments[i];
             // check if argument is a register with offset --> replace register with address, fill with leading zeros to match even hex length
+            // only for int registers, as float registers are not used in addressing
             Matcher matcher = ARGUMENT_REGISTER_PATTERN.matcher(argument);
             if (matcher.matches()) {
                 String register = matcher.group("register");
                 Integer registerInt = instructionSetModel.getIntegerRegister(register);
+                if (registerInt == null) {
+                    throw new AssemblyException("Unknown register " + argument);
+                }
                 String hex = Integer.toHexString(registerInt);
                 arguments[i] = argument.replaceFirst("\\(\\w+\\)", "(0x" + "0".repeat(hex.length()%2) + hex + ")");
                 continue;
             }
+
+
             // check if argument is an Integer register --> replace with address, fill with leading zeros to match even hex length
             Integer register = instructionSetModel.getIntegerRegister(argument);
             if (register != null) {

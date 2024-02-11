@@ -148,14 +148,12 @@ public class SimulationSequenceHandler implements Runnable {
             }
         }
 
-        System.out.println("fetch: " + phaseCounter);
         // execute the current fetch phase step
         executeMicroInstruction(instructionSetModel.getFetchPhaseStep(phaseCounter));
 
         phaseCounter++;
         // if no more fetch phase steps are defined, the execution phase is entered
         if (phaseCounter >= instructionSetModel.getFetchPhaseLength()) {
-            System.out.println("fetch phase finished");
             phaseCounter = 0;
             runPhase = RunPhase.EXECUTE;
         }
@@ -169,7 +167,6 @@ public class SimulationSequenceHandler implements Runnable {
      */
     private void execute(){
         //One full instruction consists of multiple microinstructions
-        System.out.println("execution: " + phaseCounter);
         executeMicroInstruction(microInstructions[phaseCounter]);
         phaseCounter++;
         if (phaseCounter >= microInstructions.length) {
