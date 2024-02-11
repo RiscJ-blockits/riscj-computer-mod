@@ -26,16 +26,13 @@ public class ManualItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-
         if (world.isClient) {
             return super.use(world, user, hand);
         }
-
-
-        //ToDo: open manual
         PacketByteBuf buf = PacketByteBufs.create();
         ServerPlayNetworking.send((ServerPlayerEntity) user, NetworkingConstants.OPEN_MANUAL_SCREEN, buf);
 
         return super.use(world, user, hand);
     }
+
 }

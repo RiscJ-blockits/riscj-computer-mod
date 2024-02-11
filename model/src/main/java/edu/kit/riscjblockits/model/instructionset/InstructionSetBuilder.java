@@ -2,8 +2,14 @@ package edu.kit.riscjblockits.model.instructionset;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -18,10 +24,15 @@ public class InstructionSetBuilder {
      * @return InstructionSetModel
      * @throws UnsupportedEncodingException if the character encoding is not supported
      */
-    public static InstructionSetModel buildInstructionSetModel (InputStream is) throws UnsupportedEncodingException {
+    public static InstructionSetModel buildInstructionSetModel (InputStream is) throws UnsupportedEncodingException, InstructionBuildException {
         Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
         Gson gson = new GsonBuilder().registerTypeAdapter(MicroInstruction.class, new MicroInstructionsDeserializer()).create();
-        InstructionSetModel instructionSet = gson.fromJson(reader, InstructionSetModel.class);
+        InstructionSetModel instructionSet;
+        try {
+            instructionSet = gson.fromJson(reader, InstructionSetModel.class);
+        } catch (JsonSyntaxException e) {
+            throw new InstructionBuildException("Error while parsing the instruction set: " + e.getMessage());
+        }
         instructionSet.generateOpcodeHashmap();
         return instructionSet;
     }
@@ -32,7 +43,7 @@ public class InstructionSetBuilder {
      * @return InstructionSetModel
      * @throws UnsupportedEncodingException if the character encoding is not supported
      */
-    public static InstructionSetModel buildInstructionSetModel (String s) throws UnsupportedEncodingException {
+    public static InstructionSetModel buildInstructionSetModel (String s) throws UnsupportedEncodingException, InstructionBuildException {
         InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
         return buildInstructionSetModel(stream);
     }

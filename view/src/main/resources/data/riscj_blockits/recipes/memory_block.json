@@ -8,7 +8,7 @@
   ],
   "key": {
     "C": {
-      "tag": "minecraft:copper_ingot"
+      "item": "minecraft:copper_ingot"
     },
     "R": {
       "item": "riscj_blockits:register_block"

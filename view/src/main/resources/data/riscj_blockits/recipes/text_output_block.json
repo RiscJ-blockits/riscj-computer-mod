@@ -1,16 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "redstone",
   "pattern": [
-    "   ",
-    " RE",
-    "   "
+    "C C",
+    "MRB",
+    "C C"
   ],
   "key": {
-    "E": {
-      "tag": "minecraft:redstone"
-    },
     "R": {
       "item": "riscj_blockits:register_block"
+    },
+    "B": {
+      "item": "minecraft:writable_book"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "M": {
+      "item": "minecraft:map"
     }
   },
   "result": {
@@ -18,4 +25,3 @@
     "count": 1
   }
 }
-

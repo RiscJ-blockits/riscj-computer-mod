@@ -19,4 +19,7 @@ public interface IBusSystem {
     //ToDo nicht im Entwurfs Wiki
     public void resetVisualisation();
 
+    //ToDo nicht im Entwurfs Wiki
+    void activateVisualisation();
+
 }

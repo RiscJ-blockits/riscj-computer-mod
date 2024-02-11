@@ -8,7 +8,7 @@
   ],
   "key": {
     "C": {
-      "tag": "minecraft:copper_ingot"
+      "item": "minecraft:copper_ingot"
     },
     "V": {
       "item": "minecraft:comparator"

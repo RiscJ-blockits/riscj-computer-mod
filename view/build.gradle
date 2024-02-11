@@ -81,6 +81,9 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.base.archivesName.get()}"}
 	}
+	// Include the output of the controller and model modules
+	from project(':controller').sourceSets.main.output
+	from project(':model').sourceSets.main.output
 }
 
 // configure the maven publication

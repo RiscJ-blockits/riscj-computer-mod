@@ -217,13 +217,21 @@ public class RISCJ_blockits implements ModInitializer {
 	 * A Goggles-Item with the default settings for items but only stackable up to 1.
 	 */
 	public static final Item GOGGLES_ITEM = new GogglesItem(new Item.Settings().maxCount(1));
-	//ToDo right location for .json
+
 	/**
 	 * This attribute defines all MiMa instruction set items.
 	 * these are linked to the instruction set file for MiMa.
 	 */
 	public static final Item INSTRUCTION_SET_ITEM_MIMA = new InstructionSetItem(new Item.Settings().maxCount(1),
 			RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc"));
+
+	/**
+	 * This attribute defines all mima with IO support instruction set items.
+	 * these are linked to the instruction set file for mima with IO support.
+	 */
+	public static final Item INSTRUCTION_SET_ITEM_MIMA_IO = new InstructionSetItem(new Item.Settings().maxCount(1),
+		RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionSet/instructionSetMIMA_IO.jsonc"));
+
 	/**
 	 * This attribute defines all RISC-V instruction set items.
 	 * these are linked to the instruction set file for RISC-V.
@@ -302,6 +310,7 @@ public class RISCJ_blockits implements ModInitializer {
 		// register Items
 		Registry.register(Registries.ITEM, new Identifier(MODID, "goggles"), GOGGLES_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "instruction_set_mima"), INSTRUCTION_SET_ITEM_MIMA);
+		Registry.register(Registries.ITEM, new Identifier(MODID, "instruction_set_mima_io"), INSTRUCTION_SET_ITEM_MIMA_IO);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "instruction_set_riscv"), INSTRUCTION_SET_ITEM_RISCV);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "manual"), MANUAL_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "program"), PROGRAM_ITEM);
@@ -398,6 +407,7 @@ public class RISCJ_blockits implements ModInitializer {
 				entries.add(TEXT_OUTPUT_BLOCK_ITEM);
 				//Items
 				entries.add(INSTRUCTION_SET_ITEM_MIMA);
+				entries.add(INSTRUCTION_SET_ITEM_MIMA_IO);
 				entries.add(INSTRUCTION_SET_ITEM_RISCV);
 				entries.add(GOGGLES_ITEM);
 				entries.add(PROGRAM_ITEM);
