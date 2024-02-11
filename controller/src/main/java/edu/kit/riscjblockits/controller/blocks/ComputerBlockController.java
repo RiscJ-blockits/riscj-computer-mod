@@ -77,6 +77,14 @@ public abstract class ComputerBlockController extends BlockController implements
     }
 
     /**
+     * Getter for the block entity.
+     * @return The block entity that the controller is responsible for.
+     */
+    protected IConnectableComputerBlockEntity getBlockEntity() {
+        return blockEntity;
+    }
+
+    /**
      * Getter for the position of the block in the minecraft world.
      * @return An {@link BlockPosition} with the position of the block.
      */
