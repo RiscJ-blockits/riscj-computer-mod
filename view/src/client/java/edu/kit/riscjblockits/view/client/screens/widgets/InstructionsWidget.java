@@ -74,4 +74,8 @@ public class InstructionsWidget extends ExtendableWidget{
         this.instructionList.updateEntries(this.getEntries());
     }
 
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        return instructionList.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
 }

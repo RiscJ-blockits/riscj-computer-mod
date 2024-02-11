@@ -82,6 +82,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
 
         instructionsWidget.initialize(this.width, this.height - backgroundHeight, this.client, this.narrow, this.handler);
 
+        addDrawableChild(instructionsWidget);
+
         // add the assemble button to the screen
         assembleButton = new IconButtonWidget(
                 this.x + 151, this.y + 63,
@@ -192,5 +194,10 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     protected void handledScreenTick() {
         super.handledScreenTick();
         this.instructionsWidget.update();
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 }
