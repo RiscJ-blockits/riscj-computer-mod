@@ -21,7 +21,7 @@ public class TerminalScreenHandler extends RegisterScreenHandler {
 
     public TerminalScreenHandler(int syncId, PlayerInventory inventory, ModBlockEntity blockEntity) {
         super(RISCJ_blockits.TERMINAL_SCREEN_HANDLER, syncId, blockEntity);
-        addPlayerInventorySlots(inventory);
+        addPlayerInventorySlotsLarge(inventory);
     }
 
     public TerminalScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {

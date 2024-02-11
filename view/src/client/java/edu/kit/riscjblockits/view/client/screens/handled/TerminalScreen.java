@@ -28,7 +28,7 @@ import org.lwjgl.glfw.GLFW;
  */
 public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/programming_block_gui.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/register/terminal_block_gui.png");
 
     /**
      * The edit box widget that is used to enter chars.
@@ -69,7 +69,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     protected void init() {
         super.init();
         // add the edit box widget to the screen
-        inputBox = new EditBoxWidget(textRenderer, this.x + 7, this.y + 17, 137, 93, Text.literal(""), Text.of(""));
+        inputBox = new EditBoxWidget(textRenderer, this.x + 108, this.y + 99, 61, 11, Text.literal(""), Text.of(""));
         inputBox.setMaxLength(1);
         addDrawableChild(inputBox);
         inputBox.setFocused(false);
