@@ -53,6 +53,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      */
     private IDataElement data;
 
+    private boolean active;
+
     /**
      * Method that Minecraft calls every tick.
      * Will call the {@link ComputerBlockController#tick()} method.
@@ -78,6 +80,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     public ComputerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         setType(EntityType.CONNECTABLE);
+        active = false;
     }
 
     /**
@@ -167,10 +170,16 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (world != null && model != null) {
             if (model.getVisualisationState()) {
                 world.setBlockState(pos, world.getBlockState(pos).with(RISCJ_blockits.ACTIVE_STATE_PROPERTY, true));
+                active = true;
             } else {
                 world.setBlockState(pos, world.getBlockState(pos).with(RISCJ_blockits.ACTIVE_STATE_PROPERTY, false));
+                active = false;
             }
         }
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     /**

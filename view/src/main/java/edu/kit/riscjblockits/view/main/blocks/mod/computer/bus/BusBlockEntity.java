@@ -48,12 +48,24 @@ public class BusBlockEntity extends ComputerBlockEntity {
         if (neighbours == null) {
             return;
         }
-        BlockState state = world.getBlockState(pos).with(BusBlock.NORTH, listContainsPos(neighbours, pos.north()) ? BusBlock.Side.PRESENT : BusBlock.Side.NONE)
-                .with(BusBlock.EAST, listContainsPos(neighbours, pos.east()) ? BusBlock.Side.PRESENT : BusBlock.Side.NONE)
-                .with(BusBlock.SOUTH, listContainsPos(neighbours, pos.south()) ? BusBlock.Side.PRESENT : BusBlock.Side.NONE)
-                .with(BusBlock.WEST, listContainsPos(neighbours, pos.west()) ? BusBlock.Side.PRESENT : BusBlock.Side.NONE)
-                .with(BusBlock.UP, listContainsPos(neighbours, pos.up()) ? BusBlock.Side.PRESENT : BusBlock.Side.NONE)
-                .with(BusBlock.DOWN, listContainsPos(neighbours, pos.down()) ? BusBlock.Side.PRESENT : BusBlock.Side.NONE);
+        BlockState state = world.getBlockState(pos).with(BusBlock.NORTH, listContainsPos(neighbours, pos.north()) ?
+                        ((ComputerBlockEntity) world.getBlockEntity(pos.north())).isActive() && this.isActive() ?
+                                BusBlock.Side.ACTIVE : BusBlock.Side.PRESENT : BusBlock.Side.NONE)
+                .with(BusBlock.EAST, listContainsPos(neighbours, pos.east()) ?
+                        ((ComputerBlockEntity) world.getBlockEntity(pos.east())).isActive() && this.isActive() ?
+                                BusBlock.Side.ACTIVE : BusBlock.Side.PRESENT : BusBlock.Side.NONE)
+                .with(BusBlock.SOUTH, listContainsPos(neighbours, pos.south()) ?
+                        ((ComputerBlockEntity) world.getBlockEntity(pos.south())).isActive() && this.isActive() ?
+                                BusBlock.Side.ACTIVE : BusBlock.Side.PRESENT : BusBlock.Side.NONE)
+                .with(BusBlock.WEST, listContainsPos(neighbours, pos.west()) ?
+                        ((ComputerBlockEntity) world.getBlockEntity(pos.west())).isActive() && this.isActive() ?
+                                BusBlock.Side.ACTIVE : BusBlock.Side.PRESENT : BusBlock.Side.NONE)
+                .with(BusBlock.UP, listContainsPos(neighbours, pos.up()) ?
+                        ((ComputerBlockEntity) world.getBlockEntity(pos.up())).isActive() && this.isActive() ?
+                                BusBlock.Side.ACTIVE : BusBlock.Side.PRESENT : BusBlock.Side.NONE)
+                .with(BusBlock.DOWN, listContainsPos(neighbours, pos.down()) ?
+                        ((ComputerBlockEntity) world.getBlockEntity(pos.down())).isActive() && this.isActive() ?
+                                BusBlock.Side.ACTIVE : BusBlock.Side.PRESENT : BusBlock.Side.NONE);
         world.setBlockState(pos, state);
     }
 
@@ -72,4 +84,13 @@ public class BusBlockEntity extends ComputerBlockEntity {
         return false;
     }
 
+    /**
+     * Gets called every tick.
+     * Used to update ui elements.
+     */
+    @Override
+    public void updateUI() {
+        super.updateUI();
+        updateBlockState();
+    }
 }
