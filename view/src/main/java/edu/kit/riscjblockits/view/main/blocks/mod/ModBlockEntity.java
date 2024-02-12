@@ -20,14 +20,12 @@ import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
  */
 public abstract class ModBlockEntity extends BlockEntity {
 
-    private static final String CONTROLLER_NBT_TAG = "riscj_blockits.controller";
     /**
      * The controller of this block entity.
      * It can be null if the block is in the process of being loaded.
      * The controller handles the computer logic of the block and the communication with the model.
      * Is null on the client side.
      */
-
     private IUserInputReceivableController controller;
 
     /**

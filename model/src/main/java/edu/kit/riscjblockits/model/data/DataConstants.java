@@ -59,6 +59,9 @@ public class DataConstants {
     public static final String REGISTER_WIRELESS = "WirelessRegister";
     public static final String REGISTER_IO_TIME = "register_io_time";
 
+    public static final String REGISTER_TERMNAL_MODE = "terminal_mode";
+    public static final String REGISTER_TERMINAL_INPUT = "terminal_input";
+
     //SystemClock Constants
     /**
      * {@link edu.kit.riscjblockits.model.blocks.SystemClockModel#getData()}

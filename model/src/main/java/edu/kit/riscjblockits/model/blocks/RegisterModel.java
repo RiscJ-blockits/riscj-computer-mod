@@ -75,6 +75,7 @@ public class RegisterModel extends BlockModel {
     public void setWordLength(int wordLength){
         this.wordLength = wordLength;
         setUnqueriedStateChange(true);
+        System.out.println("Word length set to: " + wordLength);
     }
 
     public String getRegisterType() {
@@ -84,6 +85,7 @@ public class RegisterModel extends BlockModel {
     public void setRegisterType(String registerType) {
         this.registerType = registerType;
         setUnqueriedStateChange(true);
+        System.out.println("Register type set to: " + registerType);
     }
 
     public Value getValue() {
@@ -103,6 +105,7 @@ public class RegisterModel extends BlockModel {
     public void setMissingAvailableRegisters(String[] missingAvailableRegisters) {
         this.missingAvailableRegisters = missingAvailableRegisters;
         setUnqueriedStateChange(true);
+        System.out.println("Missing and available registers set to: " + missingAvailableRegisters[0] + " " + missingAvailableRegisters[1]);
     }
 
     /**

@@ -5,9 +5,8 @@ import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.RegSelectWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.font.MultilineText;
@@ -16,12 +15,10 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
-import edu.kit.riscjblockits.view.client.screens.widgets.RegSelectWidget;
 
 /**
  * The screen that is displayed when the player opens the terminal block.
@@ -205,14 +202,9 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
      * @param text the inputted char.
      */
     private void sendData(String text) {
-        if (text.length() != 1) {
-            return;
-        }
-        char input = text.charAt(0);
-        String hexInput = Integer.toHexString((int) input);
         PacketByteBuf packet = PacketByteBufs.create();
         packet.writeBlockPos(handler.getBlockEntity().getPos());
-        packet.writeString(hexInput);
+        packet.writeString(text);
         ClientPlayNetworking.send(NetworkingConstants.SYNC_TERMINAL_INPUT, packet);
     }
 

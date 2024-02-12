@@ -134,6 +134,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Update the block state of neighbourBusses.
      */
     public void neighborUpdate() {
+        assert world != null;
         world.getBlockState(pos).updateNeighbors(world, pos, 1);
     }
 
@@ -252,6 +253,14 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             default:
                 break;
         }
+    }
+
+    protected IDataElement getClientData() {
+        return data;
+    }
+
+    protected void setClientData(IDataElement data) {
+        this.data = data;
     }
 
 }

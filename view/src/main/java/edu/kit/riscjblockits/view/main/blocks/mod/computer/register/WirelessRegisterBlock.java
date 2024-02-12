@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
-import edu.kit.riscjblockits.controller.blocks.WirelessRegisterController;
+import edu.kit.riscjblockits.controller.blocks.io.WirelessRegisterController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
