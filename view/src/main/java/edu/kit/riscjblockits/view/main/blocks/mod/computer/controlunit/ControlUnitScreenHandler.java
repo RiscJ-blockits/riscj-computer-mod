@@ -176,29 +176,23 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
     }
 
     /**
-     * Get the InstructionSet Type.
-     * @return The name of the InstructionSet.
+     * @return The name of the InstructionSet or "" if the fetch fails.
      */
     public String getInstructionSetType(){
         if(inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
             return "";
         }
-
         NbtElement nbt = inventory.getStack(0).getOrCreateNbt().get(CONTROL_IST_ITEM);
-
         if(nbt == null) {
             return "";
         }
-
         IDataElement instructionSetData = new NbtDataConverter(nbt).getData();
-
         InstructionSetModel instructionSet;
         try {
             instructionSet = InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
         } catch (UnsupportedEncodingException | InstructionBuildException e) {
             return "";
         }
-
         return instructionSet.getName();
     }
 
