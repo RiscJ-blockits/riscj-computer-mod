@@ -6,6 +6,7 @@ import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.ConnectingComputerBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 
@@ -47,12 +48,12 @@ public class BusBlockEntity extends ComputerBlockEntity {
         if (neighbours == null) {
             return;
         }
-        BlockState state = world.getBlockState(pos).with(BusBlock.NORTH, listContainsPos(neighbours, pos.north()))
-                .with(BusBlock.EAST, listContainsPos(neighbours, pos.east()))
-                .with(BusBlock.SOUTH, listContainsPos(neighbours, pos.south()))
-                .with(BusBlock.WEST, listContainsPos(neighbours, pos.west()))
-                .with(BusBlock.UP, listContainsPos(neighbours, pos.up()))
-                .with(BusBlock.DOWN, listContainsPos(neighbours, pos.down()));
+        BlockState state = world.getBlockState(pos).with(BusBlock.NORTH, listContainsPos(neighbours, pos.north()) ? BusBlock.Side.PRESENT : BusBlock.Side.NONE)
+                .with(BusBlock.EAST, listContainsPos(neighbours, pos.east()) ? BusBlock.Side.PRESENT : BusBlock.Side.NONE)
+                .with(BusBlock.SOUTH, listContainsPos(neighbours, pos.south()) ? BusBlock.Side.PRESENT : BusBlock.Side.NONE)
+                .with(BusBlock.WEST, listContainsPos(neighbours, pos.west()) ? BusBlock.Side.PRESENT : BusBlock.Side.NONE)
+                .with(BusBlock.UP, listContainsPos(neighbours, pos.up()) ? BusBlock.Side.PRESENT : BusBlock.Side.NONE)
+                .with(BusBlock.DOWN, listContainsPos(neighbours, pos.down()) ? BusBlock.Side.PRESENT : BusBlock.Side.NONE);
         world.setBlockState(pos, state);
     }
 
