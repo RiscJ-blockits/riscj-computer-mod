@@ -10,6 +10,7 @@ import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
+import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -56,7 +57,12 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
         checkSize(((Inventory) blockEntity), 1);
         this.inventory = ((Inventory) blockEntity);
         inventory.onOpen(playerInventory.player);
-        this.addSlot(new Slot(inventory, 0, 8, 18));
+        this.addSlot(new Slot(inventory, 0, 8, 18) {
+            @Override
+            public boolean canInsert(ItemStack stack) {
+                return stack.getItem() instanceof InstructionSetItem;
+            }
+        });
         addPlayerInventorySlotsLarge(playerInventory);
         addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
             @Override

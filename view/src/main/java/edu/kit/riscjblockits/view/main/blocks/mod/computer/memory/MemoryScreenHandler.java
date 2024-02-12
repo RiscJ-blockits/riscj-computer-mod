@@ -48,7 +48,12 @@ public class MemoryScreenHandler extends ModScreenHandler {
         checkSize(((Inventory) blockEntity), 1);
         this.inventory = ((Inventory) blockEntity);
         inventory.onOpen(playerInventory.player);
-        this.addSlot(new Slot(inventory, 0, 135, 6));
+        this.addSlot(new Slot(inventory, 0, 135, 6) {
+            @Override
+            public boolean canInsert(ItemStack stack) {
+                return stack.isOf(RISCJ_blockits.PROGRAM_ITEM);
+            }
+        });
         addPlayerInventorySlotsLarge(playerInventory);
 
         addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
