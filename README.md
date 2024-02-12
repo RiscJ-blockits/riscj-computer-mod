@@ -71,6 +71,7 @@ To write your own instruction set, please adhere to the following guidelines:
 - The address_change section should include a list of address change command regexes.
 - The program_start_label section should include the label of the start of the program.
 - The data_storage_keywords section should include a list of data storage keyword regexes.
+- The Values of these regexes should contain `[your-group-name]<value-length-in-bytes>´ to indicate what the value is supposed to be parsed to. A plus can be added at the end to indicate that the regex value should be viewed as ascii characters and therefore repeated.
 - The instructions section should include a list of available instructions, each with a unique name and the subsections arguments, opcode, execution, and translation.
 - The arguments subsection should include a list of arguments for the instruction.
 - The opcode subsection should include the opcode for the instruction.
@@ -78,11 +79,11 @@ To write your own instruction set, please adhere to the following guidelines:
 - The translation subsection should include the scheme for binary translation of the instruction.
 - For a detailed example, refer to the sample instruction set below.
 
-The so-called microinstructions used in the execution section of the instructions and in the fetch phase are defined as follows ([] means to insert own content, <> means to insert the value of the register, and <mem_vis> means that this is only for visualization of memory access and does not perform any data movement):
-- Data Transfer: `json ["[destination]", "[origin]", "[memory_flag]", "[storage operation]"] `
-- ALU Operation: `json ["[operation]", "[alu-dest]", "[alu-origin 1]", "[alu-origin 2]", "[memory flag]", "[storage operation]"] `
-- Conditional Operation: `json ["IF", "[comparator1]", "[comparator2]", "[comparing_operation]", "[destination]", "[origin]", "[memory_flag]", "[storage operation]"] `
-- Memory Access: `json ["[destination]", "[origin]"] `
+The so-called microinstructions used in the execution section of the instructions and in the fetch phase are defined as follows ("[]" indicates that there is an argument to be inserted in that field, "&[]" indicates that the argument is to be treated as a register, "&f[]" means a float register, and "<mem_vis>" means that this is only for visualization of memory access and does not perform any data movement):
+- Data Transfer: `json ["[destination]", "[origin]", "[memory_flag]", Storage-Operation] `
+- ALU Operation: `json ["[operation]", "[alu-dest]", "[alu-origin 1]", "[alu-origin 2]", "[memory flag]", Storage-Operation] `
+- Conditional Operation: `json ["IF", "[comparator1]", "[comparator2]", "[comparing_operation]", "[destination]", "[origin]", "[memory_flag]", Storage-Operation] `
+- Storage Operation: `json ["[destination]", "[origin]"] `
 
 Once you’ve defined your instruction set, insert the item in the control unit block to apply the changes to your virtual computer. Experiment with different instruction sets to understand how they impact the capabilities of your virtual computer.
 

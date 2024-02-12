@@ -160,8 +160,8 @@ public class ScrollableTextWidget implements Widget, Drawable, Element, Selectab
                                 line.append(" ");
                             }
                             line.append(split[i]);
+                            result.add(Text.of(line.toString()));
                         }
-
                         line = new StringBuilder();
 
                     }
