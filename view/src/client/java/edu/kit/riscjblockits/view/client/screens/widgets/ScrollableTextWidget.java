@@ -23,7 +23,7 @@ public class ScrollableTextWidget implements Widget, Drawable, Element, Selectab
     private static final float TEXT_SCALE = 0.7f;
 
     private static final float INVERSE_TEXT_SCALE = 1 / TEXT_SCALE;
-    private static final int LINE_HEIGHT = (int) (9 * TEXT_SCALE);
+    private static final int LINE_HEIGHT = 9;
     private List<Text> lines;
     private int scrollPosition = 0;
     private final TextRenderer textRenderer;
@@ -44,13 +44,13 @@ public class ScrollableTextWidget implements Widget, Drawable, Element, Selectab
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        int start = Math.max(scrollPosition/LINE_HEIGHT - 1, 0);
+        int start = (int) Math.max(scrollPosition/(LINE_HEIGHT * TEXT_SCALE) - 1, 0);
         MatrixStack matrixStack = context.getMatrices();
         matrixStack.push();
         matrixStack.scale(TEXT_SCALE, TEXT_SCALE, TEXT_SCALE);
         for (int i = start; i < lines.size(); i++) {
-            context.drawText(textRenderer, lines.get(i), (int) (x * INVERSE_TEXT_SCALE), (int) (y * INVERSE_TEXT_SCALE + (i - start) * 2 * LINE_HEIGHT), 0x000000, false);
-            if ((i - start) * LINE_HEIGHT * INVERSE_TEXT_SCALE > height) {
+            context.drawText(textRenderer, lines.get(i), (int) (x * INVERSE_TEXT_SCALE), (int) (y * INVERSE_TEXT_SCALE + (i - start) * 2 * LINE_HEIGHT * TEXT_SCALE), 0x000000, false);
+            if ((i - start) * LINE_HEIGHT > height) {
                 break;
             }
         }
@@ -120,7 +120,7 @@ public class ScrollableTextWidget implements Widget, Drawable, Element, Selectab
     }
 
     private int getContentsHeight() {
-        return lines.size() * LINE_HEIGHT;
+        return (int) ((lines.size() + 5) * LINE_HEIGHT * TEXT_SCALE);
     }
 
     public void setText(String text) {
