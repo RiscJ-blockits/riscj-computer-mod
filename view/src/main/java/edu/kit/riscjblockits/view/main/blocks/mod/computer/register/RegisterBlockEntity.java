@@ -30,15 +30,6 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 public class RegisterBlockEntity extends ComputerBlockEntity implements ExtendedScreenHandlerFactory {
 
     /**
-     * Creates a new RegisterBlockEntity with the given settings.
-     * @param pos The position of the block in the minecraft world.
-     * @param state The state of the minecraft block.
-     */
-    public RegisterBlockEntity(BlockPos pos, BlockState state) {
-        super(RISCJ_blockits.REGISTER_BLOCK_ENTITY, pos, state);
-    }
-
-    /**
      * Creates a new RegisterBlockEntity with the given settings. Used by subclasses.
      * @param type The type of the block entity.
      * @param pos The position of the block in the minecraft world.
@@ -46,6 +37,15 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
      */
     public RegisterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+    }
+
+    /**
+     * Creates a new RegisterBlockEntity with the given settings.
+     * @param pos The position of the block in the minecraft world.
+     * @param state The state of the minecraft block.
+     */
+    public RegisterBlockEntity(BlockPos pos, BlockState state) {
+        super(RISCJ_blockits.REGISTER_BLOCK_ENTITY, pos, state);
     }
 
     /**

@@ -53,12 +53,21 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
         buf.writeBlockPos(pos);
     }
 
-    //ToDo
+    /**
+     * @return The name on the memory screen.
+     */
     @Override
     public Text getDisplayName() {
         return Text.literal("Memory");
     }
 
+    /**
+     * Creates a new MemoryScreenHandler for the memory block.
+     * @param syncId The id of the screen.
+     * @param playerInventory The inventory of the player that opened the screen.
+     * @param player The player that opened the screen.
+     * @return A new MemoryScreenHandler.
+     */
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
@@ -66,7 +75,8 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
     }
 
     /**
-     * When the Instruction Set changes, the controller needs to be notified.
+     * This method is called when the inventory of the memory block is changed.
+     * It updates the data of the controller with the new memory data.
      */
     @Override
     public void inventoryChanged() {

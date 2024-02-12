@@ -3,9 +3,12 @@ package edu.kit.riscjblockits.view.client.screens.widgets;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
 public class CategoryEntry extends ListEntry{
+
+    private static final float MAX_TEXT_WIDTH = 70f;
 
     private final String name;
     private final String key;
@@ -33,7 +36,18 @@ public class CategoryEntry extends ListEntry{
 
         context.fill(x, y, x + width, y + height, 0x77000000);
 
-        context.drawText(textRenderer, I18n.translate(name), x + 3, y + 6, 0xFFFFFF, false);
+        String text = I18n.translate(name);
+
+        float scale = Math.min(MAX_TEXT_WIDTH / textRenderer.getWidth(text), 1f);
+        float inverseScale = 1 / scale;
+        MatrixStack matrixStack = context.getMatrices();
+        matrixStack.push();
+        matrixStack.scale(scale, scale, scale);
+
+        context.drawText(textRenderer, text, (int) ((x + 3) * inverseScale), (int) ((y + 6)*inverseScale), 0xFFFFFF, false);
+
+        matrixStack.pop();
+
 
         if (icon != null) {
             context.drawItem(icon, x + width - 18, y + 2);

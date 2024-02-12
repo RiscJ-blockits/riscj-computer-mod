@@ -68,9 +68,23 @@ public class ManualScreen extends Screen {
         categories.add(new CategoryEntry(0, 0, "manual.memory", "manual.memory.text", textWidget, textRenderer,
                 RISCJ_blockits.MEMORY_BLOCK.asItem().getDefaultStack()));
 
-        categories.add(new CategoryEntry(0, 0, "manual.memory", "manual.memory.text", textWidget, textRenderer,
+        categories.add(new CategoryEntry(0, 0, "manual.systemclock", "manual.systemclock.text", textWidget, textRenderer,
+                RISCJ_blockits.SYSTEM_CLOCK_BLOCK.asItem().getDefaultStack()));
+
+        categories.add(new CategoryEntry(0, 0, "manual.goggles", "manual.goggles.text", textWidget, textRenderer,
                 RISCJ_blockits.GOGGLES_ITEM.getDefaultStack()));
 
+        categories.add(new CategoryEntry(0, 0, "manual.redstoneinput", "manual.redstoneinput.text", textWidget, textRenderer,
+                RISCJ_blockits.REDSTONE_INPUT_BLOCK_ITEM.getDefaultStack()));
+
+        categories.add(new CategoryEntry(0, 0, "manual.quantumstateregister", "manual.quantumstateregister.text", textWidget, textRenderer,
+                RISCJ_blockits.WIRELESS_REGISTER_BLOCK_ITEM.getDefaultStack()));
+
+        categories.add(new CategoryEntry(0, 0, "manual.terminal", "manual.terminal.text", textWidget, textRenderer,
+                RISCJ_blockits.TEXT_OUTPUT_BLOCK_ITEM.getDefaultStack()));
+
+        categories.add(new CategoryEntry(0, 0, "manual.instruction_set", "manual.instruction_set.text", textWidget, textRenderer,
+                RISCJ_blockits.INSTRUCTION_SET_ITEM_MIMA.getDefaultStack()));
 
         categories.get(0).select();
         categoryList = new ScrollableListWidget<>(categories, x, y, width, height, 0);
