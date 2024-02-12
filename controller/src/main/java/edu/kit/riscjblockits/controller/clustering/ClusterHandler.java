@@ -334,4 +334,7 @@ public class ClusterHandler implements IArchitectureCheckable {
         busSystemModel.resetVisualisation();
     }
 
+    public boolean isNeighbourPosition(BlockController block1, BlockController block2) {
+        return busSystemModel.isNeighbourPosition(((ComputerBlockController)block2).getBlockPosition(), ((ComputerBlockController)block1).getBlockPosition());
+    }
 }

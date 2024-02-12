@@ -5,6 +5,7 @@ import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
@@ -49,12 +50,17 @@ public class ClusterArchitectureHandler {
         boolean correctArchitecture = true;
         List<ControlUnitController> controlUnit = new ArrayList<>();
         //we could count all blocks first for better performance
-
         //check Blocks
         int foundMemory = 0;
         int foundALU = 0;
         int foundSystemClock = 0;
         int foundControlUnit = 0;
+
+        String[] aluRegisterNames = istModel.getAluRegisters();
+        String programCounterName = istModel.getProgramCounter();
+        List<BlockController> aluRegister = new ArrayList<>();
+        BlockController programCounter = null;
+        BlockController alu = null;
 
         List<String> availableRegisters = new ArrayList<>();
         for (IQueryableClusterController block : blocks) {
@@ -67,9 +73,18 @@ public class ClusterArchitectureHandler {
                     break;
                 case REGISTER:
                     availableRegisters.add(((RegisterController) block).getRegisterType());
+                    for (String aluRegisterName : aluRegisterNames) {
+                        if (aluRegisterName.equals(((RegisterController) block).getRegisterType())) {
+                            aluRegister.add((BlockController) block);
+                        }
+                    }
+                    if (((RegisterController) block).getRegisterType().equals(programCounterName)) {
+                        programCounter = (BlockController) block;
+                    }
                     break;
                 case ALU:
                     foundALU++;
+                    alu = (BlockController) block;
                     break;
                 case CONTROL_UNIT:
                     foundControlUnit++;
@@ -111,6 +126,27 @@ public class ClusterArchitectureHandler {
         //check if everything is correct
         if (foundControlUnit != 1 || foundALU != 1 || foundMemory != 1
             ||!requiredRegisters.isEmpty() || foundSystemClock != 1 || !rightAmountOfRegisters){      //we only allow one block
+            correctArchitecture = false;
+        }
+
+        //check if the ALU registers are connected to the ALU
+        if (alu != null) {
+            for (BlockController register : aluRegister) {
+                if (!clusterHandler.isNeighbourPosition(alu, register)) {
+                    System.out.println("ALU Register not connected to ALU");
+                    correctArchitecture = false;
+                }
+            }
+        } else {
+            correctArchitecture = false;
+        }
+        //check if the program counter is connected to the control unit
+        if (programCounter != null) {
+            if (!clusterHandler.isNeighbourPosition(controlUnit.get(0), programCounter)) {
+                System.out.println("Program Counter not connected to Control Unit");
+                correctArchitecture = false;
+            }
+        } else {
             correctArchitecture = false;
         }
 
