@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "CCC",
+    "VRV",
+    "CEC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "V": {
+      "item": "minecraft:comparator"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    },
+    "E": {
+      "item": "minecraft:repeater"
+    }
+  },
+  "result": {
+    "item": "riscj_blockits:alu_block",
+    "count": 1
+  }
+}

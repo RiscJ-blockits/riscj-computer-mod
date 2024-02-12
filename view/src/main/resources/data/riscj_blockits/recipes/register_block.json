@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "CGC",
+    "GPG",
+    "CVC"
+  ],
+  "key": {
+    "P": {
+      "item": "riscj_blockits:program"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "V": {
+      "item": "minecraft:repeater"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "result": {
+    "item": "riscj_blockits:register_block",
+    "count": 1
+  }
+}

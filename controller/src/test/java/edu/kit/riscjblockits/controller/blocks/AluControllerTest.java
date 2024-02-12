@@ -61,6 +61,11 @@ class AluControllerTest {
 
             @Override
             public void neighborUpdate() {}
+
+            @Override
+            public void spawnEffect(ComputerEffect effect) {
+                //
+            }
         };
         return blockEntity;
     }

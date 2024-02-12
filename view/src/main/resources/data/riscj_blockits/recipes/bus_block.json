@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "   ",
+    "RER",
+    "   "
+  ],
+  "key": {
+    "E": {
+      "item": "minecraft:repeater"
+    },
+    "R": {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "result": {
+    "item": "riscj_blockits:bus_block",
+    "count": 2
+  }
+}

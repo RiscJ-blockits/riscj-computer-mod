@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "C C",
+    " B ",
+    "C C"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:writable_book"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "result": {
+    "item": "riscj_blockits:program",
+    "count": 1
+  }
+}

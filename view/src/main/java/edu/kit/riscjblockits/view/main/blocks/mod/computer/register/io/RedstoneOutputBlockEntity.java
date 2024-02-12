@@ -1,13 +1,9 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io;
 
-import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
-import edu.kit.riscjblockits.controller.blocks.IORegisterController;
-import edu.kit.riscjblockits.model.blocks.IORegisterModel;
 import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -50,12 +46,15 @@ public class RedstoneOutputBlockEntity extends RegisterBlockEntity {
         super.updateUI();
         if (getModel() == null || world == null || !getModel().hasUnqueriedStateChange()) return;
         String powerString = ((IDataStringEntry)((IDataContainer) getModel().getData()).get(DataConstants.REGISTER_VALUE)).getContent();
+        int newPower = 0;
         try {
-            power = Integer.parseInt(powerString);
-            power = Math.max(Math.min(power, 15), 0);
+            newPower = Integer.parseInt(powerString);
+            newPower = Math.max(Math.min(newPower, 15), 0);
         } catch (NumberFormatException e) {
             return;
         }
+        if (newPower == power) return;
+        power = newPower;
         world.scheduleBlockTick(pos, getCachedState().getBlock(), 0, TickPriority.byIndex(1));      //update the block
         getModel().onStateQuery();
     }

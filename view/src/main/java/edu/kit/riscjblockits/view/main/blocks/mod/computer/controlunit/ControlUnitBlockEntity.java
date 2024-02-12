@@ -18,7 +18,6 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,8 +32,6 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     ExtendedScreenHandlerFactory {
 
     private static final int INSTRUCTION_SET_SLOT = 1;
-    private DefaultedList<ComputerBlockController> connectedBlocks;
-    private DefaultedList<ComputerBlockController> missingBlocks;
 
     /**
      * Creates a new ControlUnitBlockEntity with the given settings.
@@ -65,8 +62,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     }
 
     /**
-     * ToDo
-     * @return
+     * @return The name on the ControlUnit Screen.
      */
     @Override
     public Text getDisplayName() {
@@ -74,11 +70,11 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     }
 
     /**
-     * ToDo
-     * @param syncId
-     * @param playerInventory
-     * @param player
-     * @return
+     * Creates a screen handler for the control unit.
+     * @param syncId The id of the screen handler.
+     * @param playerInventory The inventory of the player opening the screen.
+     * @param player The player opening the screen.
+     * @return A new ControlUnitScreenHandler.
      */
     @Nullable
     @Override
@@ -100,6 +96,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
             } else {
                 NbtCompound istNbt = getItems().get(0).getNbt();
                 Data cuData = new Data();
+                assert istNbt != null;
                 NbtDataConverter converter = new NbtDataConverter(istNbt);
                 cuData.set(CONTROL_IST_MODEL, converter.getData());
                 getController().setData(cuData);

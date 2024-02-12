@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "CGC",
+    "GTG",
+    "CVC"
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:clock"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "V": {
+      "item": "minecraft:repeater"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "result": {
+    "item": "riscj_blockits:system_clock_block",
+    "count": 1
+  }
+}

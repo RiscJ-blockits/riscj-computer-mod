@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
  *  the necessary wait time for the next execution is decreased by one step.
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
-public class SimulationTimeHandler implements ISimulationTimingObserver {
+public class SimulationTimeHandler implements ISimulationTimingObserver, IRealtimeSimulationCallbackReceivable {
 
     /**
      * Executor service for the simulation sequence handler to run tick execution in a new thread.
@@ -40,11 +40,12 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
     /**
      * The {@link SystemClockController} that is holding the model which is observed for changes in the clock state.
      */
-    private SystemClockController systemClockContoller;
+    private SystemClockController systemClockController;
     /**
      * Counter for the Minecraft tick mode to decide waiting time between executions.
      */
     private int minecraftTickCounter = 0;
+    private boolean realtimeSimulationRunning = false;
 
     /**
      * Constructor. Creates a new {@link SimulationSequenceHandler} and registers itself as an observer
@@ -53,13 +54,11 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      * @param blockControllers List of all {@link BlockController}s of the associated computer blocks.
      */
     public SimulationTimeHandler(List<IQueryableSimController> blockControllers, IBusSystem busSystem) {
-        simulationSequenceHandler = new SimulationSequenceHandler(blockControllers, busSystem);
+        simulationSequenceHandler = new SimulationSequenceHandler(blockControllers, busSystem, this);
         //Register us as an SystemClockModel Observer
         for(IQueryableSimController blockController: blockControllers) {
             if (blockController.getControllerType() == BlockControllerType.CLOCK) {
-//                systemClockModel = (SystemClockModel) blockController.getModel();
-//                systemClockModel.registerObserver(this);
-                systemClockContoller = (SystemClockController) blockController;
+                systemClockController = (SystemClockController) blockController;
                 ((SystemClockController) blockController).registerModelObserver(this);
             }
         }
@@ -71,9 +70,11 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      * Runs if Minecraft tick mode is activated.
      */
     public void onMinecraftTick(){
-        if(clockMode == ClockMode.MC_TICK) {
-            if (minecraftTickCounter == 0)
+        if(clockMode == ClockMode.MC_TICK && clockSpeed > 0) {
+            if (minecraftTickCounter == 0) {
+                systemClockController.activateVisualisation();
                 runTick();
+            }
             minecraftTickCounter = (minecraftTickCounter + 1) % clockSpeed;
         }
     }
@@ -84,8 +85,14 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      */
     public void onUserTickTrigger(){
         if (clockMode == ClockMode.STEP) {
+            systemClockController.activateVisualisation();
             runTick();
         }
+        else if(clockMode == ClockMode.REALTIME && !realtimeSimulationRunning) {
+            realtimeSimulationRunning = true;
+            runTick();
+        }
+
     }
 
     /**
@@ -102,8 +109,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      * Enqueues the next simulation tick execution in the execution thread.
      */
     private void runTick() {
-        //ToDo @Leon no check if the previous tick has completed. Necessary?
-        executorService.execute(simulationSequenceHandler);
+        executorService.submit(simulationSequenceHandler);
     }
 
     /**
@@ -111,7 +117,23 @@ public class SimulationTimeHandler implements ISimulationTimingObserver {
      */
     @Override
     public void updateObservedState() {
-        clockSpeed = systemClockContoller.getClockSpeed();
-        clockMode = systemClockContoller.getClockMode();
+        if(clockMode != ClockMode.REALTIME) {
+            realtimeSimulationRunning = false;
+        }
+
+        clockSpeed = systemClockController.getClockSpeed();
+        clockMode = systemClockController.getClockMode();
+
+        if(clockMode == ClockMode.REALTIME) {
+            simulationSequenceHandler.setVisualizationMode(SimulationSequenceHandler.VisualisationMode.FAST);
+        }
+        else if (clockMode == ClockMode.MC_TICK) {
+            simulationSequenceHandler.setVisualizationMode(SimulationSequenceHandler.VisualisationMode.NORMAL);
+        }
+        else if (clockMode == ClockMode.STEP) {
+            simulationSequenceHandler.setVisualizationMode(SimulationSequenceHandler.VisualisationMode.NORMAL);
+        }
+
     }
+
 }

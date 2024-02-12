@@ -44,4 +44,10 @@ public class ArchiCheckStub_Entity implements IConnectableComputerBlockEntity {
     }
 
     public void neighborUpdate() {}
+
+    @Override
+    public void spawnEffect(ComputerEffect effect) {
+        //
+    }
+
 }
