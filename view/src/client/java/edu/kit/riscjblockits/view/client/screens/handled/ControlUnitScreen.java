@@ -5,8 +5,11 @@ import edu.kit.riscjblockits.model.blocks.RegisterModel;
 import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureEntry;
 import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureListWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.MIMAExWidget;
+import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitScreenHandler;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
@@ -58,6 +61,7 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     @Override
     protected void init() {
         super.init();
+        ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(handler.getBlockEntity().getPos()));
         this.narrow = this.width < 379;
         this.mimaExWidget.initialize(this.width, this.height - backgroundHeight, this.narrow);
         expandButton =
@@ -100,19 +104,16 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-
         this.architectureList.updateEntries(fetchEntries());
         architectureList.setX(this.x + 30);
         architectureList.setY(this.y + 18);
         this.architectureList.render(context, mouseX, mouseY, delta);
-
         if (handler.getInstructionSetType().equals(MIMA)) {
             expandButton.visible = true;
             this.mimaExWidget.render(context, mouseX, mouseY, delta);
         } else {
             expandButton.visible = false;
         }
-
         drawMouseoverTooltip(context, mouseX, mouseY);
     }
 

@@ -35,25 +35,39 @@ import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
+/**
+ * This class represents a control unit screen handler from our mod in the game.
+ * It is used to handle the interaction between the control unit screen and the entity.
+ */
 public class ControlUnitScreenHandler extends ModScreenHandler {
 
+    /**
+     * The inventory of the control unit entity.
+     */
     private final Inventory inventory;
+
+    /**
+     * Is set to true after the screen is opened.
+     */
+    private boolean opened = false;
 
     public ControlUnitScreenHandler(int syncId, PlayerInventory playerInventory, ModBlockEntity blockEntity) {
         super(RISCJ_blockits.CONTROL_UNIT_SCREEN_HANDLER, syncId, blockEntity);
-
         checkSize(((Inventory) blockEntity), 1);
         this.inventory = ((Inventory) blockEntity);
         inventory.onOpen(playerInventory.player);
-
         this.addSlot(new Slot(inventory, 0, 8, 18));
-
         addPlayerInventorySlotsLarge(playerInventory);
-
         addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
                 if (slotId == 0) {
+                    //On SlotUpdate gets sometimes called on screen open even when the item is not changed.
+                    // We don't want to update the memory in this case because it would reset the simulation
+                    if (!opened) {
+                        opened = true;
+                        return;
+                    }
                     ((ControlUnitBlockEntity) blockEntity).inventoryChanged();
                 }
             }
@@ -92,8 +106,8 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
     }
 
     /**
-     * Gets all missing and found components from the cluster.
-     * @return A list of two lists. The first list contains the missing components, the second list contains the found components.
+     * Creates a List that contains all components of the cluster and all missing components specified in the instruction set.
+     * @return The entries of the architecture list. List[0] contains all missing components, List[1] contains all found components.
      */
     public List[] getStructure(){
         List<String> listFound = new ArrayList<>();
@@ -111,7 +125,7 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
                 IDataContainer clusteringData = (IDataContainer) ((IDataContainer) data).get(CONTROL_CLUSTERING);
                 for (String s2 : clusteringData.getKeys()) {
                     switch (s2) {
-                        //ToDo im ugly code please reformat me
+                        //ToDo I am ugly code please reformat me
                         case CLUSTERING_MISSING_REGISTERS:
                             listMissing.addAll(List.of(((IDataStringEntry) clusteringData.get(s2)).getContent().split(" ")));
                             listMissing.remove("");
