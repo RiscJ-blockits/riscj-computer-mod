@@ -8,6 +8,7 @@ import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -31,7 +32,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
  * It extends the {@link ComputerBlockEntity} class and implements the {@link ExtendedScreenHandlerFactory} interface.
  * It is responsible for managing the display of text on the screen of the block.
  */
-public class TerminalBlockEntity extends ComputerBlockEntity implements ExtendedScreenHandlerFactory  {
+public class TerminalBlockEntity extends RegisterBlockEntity implements ExtendedScreenHandlerFactory  {
 
     /**
      * The string that should be displayed on the screen. Is only used on the client.

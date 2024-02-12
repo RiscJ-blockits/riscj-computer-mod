@@ -35,7 +35,7 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
      * @param pos The position of the block in the minecraft world.
      * @param state The state of the minecraft block.
      */
-    public RegisterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    protected RegisterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 

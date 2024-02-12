@@ -5,23 +5,23 @@ import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.RegSelectWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.EditBoxWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
+import edu.kit.riscjblockits.view.client.screens.widgets.RegSelectWidget;
 
 /**
  * The screen that is displayed when the player opens the terminal block.
@@ -32,7 +32,7 @@ import org.lwjgl.glfw.GLFW;
 public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/register/terminal_block_gui.png");
-    private static final Identifier BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/bsp_button_unpressed.png");
+    private static final Identifier BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/instructions_button.png");
 
     /**
      * The edit box widget that is used to enter chars.
@@ -48,7 +48,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
      * A Minecraft class that is used to display the output string.
      */
     private MultilineText outputtedText;
-    private final RegSelectWidget regSelectWidget = new RegSelectWidget();
+    private RegSelectWidget regSelectWidget;
     private IconButtonWidget regSelectButton;
     private boolean narrow;
 
@@ -73,6 +73,9 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     @Override
     protected void init() {
         super.init();
+        if (handler.getBlockEntity().createNbt().getSize() == 0) {      //the data normally only gets send if something changed so we need to request it again
+            ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(handler.getBlockEntity().getPos()));
+        }
         // add the edit box widget to the screen
         inputBox = new TextFieldWidget(textRenderer, this.x + 108, this.y + 99, 61, 11, Text.literal(""));
         inputBox.setMaxLength(1);
@@ -81,11 +84,11 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         //add text to the screen
         output = ((TerminalBlockEntity) handler.getBlockEntity()).getDisplayedString();
         handler.enableSyncing();
-
         //init the RegSelectWidget
         this.narrow = this.width < 379;
-        this.regSelectWidget.initalize(this.width, this.height, this.client, this.narrow, this.handler);
-
+        regSelectWidget = new RegSelectWidget();
+        assert this.client != null;
+        regSelectWidget.initialize(this.width, this.height, this.client, this.narrow, this.handler);
         regSelectButton = new IconButtonWidget(
             this.x + 7, this.y + 99,
             13, 13,
