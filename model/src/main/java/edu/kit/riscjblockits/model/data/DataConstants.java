@@ -158,4 +158,7 @@ public class DataConstants {
      */
     public static final String MEMORY_PROGRAMM_ITEM = "riscj_blockits.memory";  //Don't change this!
 
+    //ProgrammingBlock Constants
+    public static final String PROGRAMMING_BLOCK_CODE = "code";
+
 }

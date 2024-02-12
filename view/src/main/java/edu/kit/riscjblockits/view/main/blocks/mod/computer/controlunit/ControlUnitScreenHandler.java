@@ -109,7 +109,7 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
      * Creates a List that contains all components of the cluster and all missing components specified in the instruction set.
      * @return The entries of the architecture list. List[0] contains all missing components, List[1] contains all found components.
      */
-    public List[] getStructure(){
+    public List<String>[] getStructure(){
         List<String> listFound = new ArrayList<>();
         List<String> listMissing = new ArrayList<>();
         NbtCompound nbt = getBlockEntity().createNbt();
