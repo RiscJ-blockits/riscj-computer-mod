@@ -23,10 +23,21 @@ import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_ADDRESS;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
+/**
+ * This class represents the screen handler for the memory block.
+ * It is used to handle the interaction between the memory screen and the memory block entity.
+ */
 public class MemoryScreenHandler extends ModScreenHandler {
 
+    /**
+     * The inventory of the memory entity.
+     */
     private final Inventory inventory;
-    private  final MemoryBlockEntity blockEntity;
+
+    /**
+     * Is set to true after the screen is opened.
+     */
+    private boolean opened = false;
 
     public MemoryScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
         this(syncId, inventory, (ModBlockEntity) inventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
@@ -37,16 +48,19 @@ public class MemoryScreenHandler extends ModScreenHandler {
         checkSize(((Inventory) blockEntity), 1);
         this.inventory = ((Inventory) blockEntity);
         inventory.onOpen(playerInventory.player);
-        this.blockEntity = ((MemoryBlockEntity) blockEntity);
-
         this.addSlot(new Slot(inventory, 0, 135, 6));
-
         addPlayerInventorySlotsLarge(playerInventory);
 
         addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
                 if (slotId == 0) {
+                    //On SlotUpdate gets sometimes called on screen open even when the item is not changed.
+                    // We don't want to update the memory in this case because it would reset the simulation
+                    if (!opened) {
+                        opened = true;
+                        return;
+                    }
                     ((MemoryBlockEntity) blockEntity).inventoryChanged();
                 }
             }
@@ -109,7 +123,7 @@ public class MemoryScreenHandler extends ModScreenHandler {
 
 
     /**
-     * @return the size of the memory in adressable units
+     * @return the size of the memory in addressable units
      */
     public int getMemorySize(){
         NbtCompound nbt = getBlockEntity().createNbt();
