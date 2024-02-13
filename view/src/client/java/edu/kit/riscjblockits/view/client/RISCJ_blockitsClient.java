@@ -20,32 +20,38 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
+/**
+ * The client-side entrypoint for the RISCJ_blockits mod.
+ */
 public class RISCJ_blockitsClient implements ClientModInitializer {
+
+	/**
+	 * This method is called on the client when the game is starting up.
+	 */
 	@Override
 	public void onInitializeClient() {
-		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
-		//Reghister the screens
+		//This entrypoint is suitable for setting up client-specific logic, such as rendering.
+		//Register the screens
 		HandledScreens.register(RISCJ_blockits.PROGRAMMING_SCREEN_HANDLER, ProgrammingScreen::new);
 		HandledScreens.register(RISCJ_blockits.REGISTER_SCREEN_HANDLER, RegisterScreen::new);
 		HandledScreens.register(RISCJ_blockits.CONTROL_UNIT_SCREEN_HANDLER, ControlUnitScreen::new);
 		HandledScreens.register(RISCJ_blockits.MEMORY_BLOCK_SCREEN_HANDLER, MemoryScreen::new);
 		HandledScreens.register(RISCJ_blockits.SYSTEM_CLOCK_SCREEN_HANDLER, SystemClockScreen::new);
 		HandledScreens.register(RISCJ_blockits.TERMINAL_SCREEN_HANDLER, TerminalScreen::new);
-
+		//
 		BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.REGISTER_BLOCK, RenderLayer.getTranslucent());
 		BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.BUS_BLOCK, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.SYSTEM_CLOCK_BLOCK, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.MEMORY_BLOCK, RenderLayer.getTranslucent());
 		BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.ALU_BLOCK, RenderLayer.getTranslucent());
-
+		BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.REDSTONE_INPUT_BLOCK, RenderLayer.getTranslucent());
+		BlockRenderLayerMap.INSTANCE.putBlock(RISCJ_blockits.REDSTONE_OUTPUT_BLOCK, RenderLayer.getTranslucent());		
+		//Register the networking
 		registerManualScreenReceiver();
 		registerIstItemScreenReceiver();
-
-		ClientPlayNetworking.registerGlobalReceiver(
+		ClientPlayNetworking.registerGlobalReceiver(		//is called by screens who want the serer to send new data
 			NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, (client, handler, buf, responseSender) -> {
-				if (buf.readableBytes() == 0) {
-					return;
-				}
+				if (buf.readableBytes() == 0) return;
 				// Read packet data on the event loop
 				BlockPos target = buf.readBlockPos();
 				NbtCompound nbt = buf.readNbt();
@@ -58,17 +64,16 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 				}
 				blockEntity.readNbt(nbt);
 		});
-
 	}
 
+	/**
+	 * Opens the manual screen when a message is received from the server.
+	 * A message is sent from the server when the player right-clicks on the manual item.
+	 */
 	private void registerManualScreenReceiver() {
 		ClientPlayNetworking.registerGlobalReceiver(
-				NetworkingConstants.OPEN_MANUAL_SCREEN, (client, handler, buf, responseSender) -> {
-					client.execute(() -> {
-								client.setScreen(new ManualScreen(Text.translatable("manual.title")));
-							}
-					);
-				});
+				NetworkingConstants.OPEN_MANUAL_SCREEN, (client, handler, buf, responseSender) -> client.execute(() -> client.setScreen(new ManualScreen(Text.translatable("manual.title")))
+                ));
 	}
 
 	/**
@@ -77,12 +82,8 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 	 */
 	private void registerIstItemScreenReceiver() {
 		ClientPlayNetworking.registerGlobalReceiver(
-			NetworkingConstants.OPEN_IST_SCREEN, (client, handler, buf, responseSender) -> {
-				client.execute(() -> {
-						client.setScreen(new InsructionSetScreen(Text.translatable("istItem.title"), buf.readString()));
-					}
-				);
-			});
+			NetworkingConstants.OPEN_IST_SCREEN, (client, handler, buf, responseSender) -> client.execute(() -> client.setScreen(new InsructionSetScreen(Text.translatable("istItem.title"), buf.readString()))
+            ));
 	}
 
 }

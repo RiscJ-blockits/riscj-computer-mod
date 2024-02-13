@@ -6,13 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
@@ -33,12 +31,12 @@ public class BusBlock extends ConnectingComputerBlock {
         super((float) 3 /16, settings);
         this.setDefaultState(
                 this.stateManager.getDefaultState()
-                    .with(NORTH, false)
-                    .with(EAST, false)
-                    .with(SOUTH, false)
-                    .with(WEST, false)
-                    .with(UP, false)
-                    .with(DOWN, false));
+                    .with(NORTH, Side.NONE)
+                    .with(EAST, Side.NONE)
+                    .with(SOUTH, Side.NONE)
+                    .with(WEST, Side.NONE)
+                    .with(UP, Side.NONE)
+                    .with(DOWN, Side.NONE));
 
     }
 
@@ -49,12 +47,12 @@ public class BusBlock extends ConnectingComputerBlock {
         super((float) 3 /16);
         this.setDefaultState(
                 this.stateManager.getDefaultState()
-                        .with(NORTH, false)
-                        .with(EAST, false)
-                        .with(SOUTH, false)
-                        .with(WEST, false)
-                        .with(UP, false)
-                        .with(DOWN, false)
+                        .with(NORTH, Side.NONE)
+                        .with(EAST, Side.NONE)
+                        .with(SOUTH, Side.NONE)
+                        .with(WEST, Side.NONE)
+                        .with(UP, Side.NONE)
+                        .with(DOWN, Side.NONE)
                         .with(ACTIVE, false));
 
     }
@@ -103,6 +101,7 @@ public class BusBlock extends ConnectingComputerBlock {
      * @param neighborPos the position of the neighbor block.
      * @return the updated block-state.
      */
+    @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (!state.canPlaceAt(world, pos)) {
             world.scheduleBlockTick(pos, this, 1);

@@ -21,18 +21,28 @@ import java.util.regex.Pattern;
 
 /**
  * Handles the execution of microinstructions. Gets called by the {@link SimulationSequenceHandler} whenever
- * a microinstrution is supposed to be executed. Distinguishes between the different types of microinstructions and
+ * a microinstruction is supposed to be executed. Distinguishes between the different types of microinstructions and
  * holds the BlockControllers of the associated computer blocks as well as a map of the register controllers to perform
  * the operations on the computer blocks.
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
 public class Executor implements IExecutor {
 
+    /**
+     * String representation of the memory visualisation placeholder.
+     */
     private static final String MEM_VISUALISATION = "<mem_vis>";
 
+    /**
+     * Pattern to match memory access strings.
+     */
     private static final Pattern MEMORY_ACCES_PATTERN = Pattern.compile("Mem\\[(?<register>\\w+)]");
 
+    /**
+     * Pattern to match binary strings.
+     */
     private static final Pattern BINARY_PATTERN = Pattern.compile("[01]+");
+
     /**
      * Contains the block controllers of the associated computer blocks.
      */
@@ -42,8 +52,21 @@ public class Executor implements IExecutor {
      * Map of the register controllers for faster access and resolving string references.
      */
     private final Map<String, RegisterController> registerControllerMap;
-    private int wordLength;
-    private IBusSystem busSystem;
+
+    /**
+     * The word length of the computer.
+     */
+    private final int wordLength;
+
+    /**
+     * The bus system of the computer.
+     */
+    private final IBusSystem busSystem;
+
+    /**
+     * The control unit controller of the computer.
+     */
+    private ComputerBlockController controlUnitController;
 
     /**
      * Constructor. Initializes the {@link BlockController}s list and the {@link RegisterController}s map.
@@ -59,6 +82,9 @@ public class Executor implements IExecutor {
             if (blockController.getControllerType() == BlockControllerType.REGISTER) {
                 RegisterController registerController = (RegisterController) blockController;
                 registerControllerMap.put(registerController.getRegisterType(), registerController);
+            }
+            if (blockController.getControllerType() == BlockControllerType.CONTROL_UNIT) {
+                this.controlUnitController = (ComputerBlockController) blockController;
             }
         }
         
@@ -330,14 +356,24 @@ public class Executor implements IExecutor {
                 movedValue = Value.fromBinary(from, wordLength);
             }
 
-            if (!registerControllerMap.containsKey(to))
+            // check to and set after
+            if (!registerControllerMap.containsKey(to)) {
                 throw new NonExecutableMicroInstructionException(
                         "Cannot move Data, MicroInstruction has no valid to value, does not match a Register");
+            }
 
             registerControllerMap.get(to).setNewValue(movedValue);
+
+            // visualization of data between components
             if(visualizeableData) {
                 busSystem.setBusDataPath(registerControllerMap.get(from).getBlockPosition(), registerControllerMap.get(to).getBlockPosition(), movedValue);
                 registerControllerMap.get(from).activateVisualisation();
+                registerControllerMap.get(to).activateVisualisation();
+            }
+            // visualization of loading of immediate
+            else {
+                busSystem.setBusDataPath(controlUnitController.getBlockPosition(), registerControllerMap.get(to).getBlockPosition(), movedValue);
+                controlUnitController.activateVisualisation();
                 registerControllerMap.get(to).activateVisualisation();
             }
         }

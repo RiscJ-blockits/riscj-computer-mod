@@ -5,6 +5,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
@@ -15,6 +19,12 @@ import org.jetbrains.annotations.Nullable;
  * [JavaDoc in this class partially generated with GitHub Copilot]
  */
 public class SystemClockBlock extends ComputerBlock {
+
+    public static final int MAX_CURSORPOS = 7;
+
+    public static final IntProperty CURSORPOS = IntProperty.of("cursorpos", 0, MAX_CURSORPOS);
+
+
 
     /**
      * Creates a new SystemClockBlock with the given settings.
@@ -61,4 +71,13 @@ public class SystemClockBlock extends ComputerBlock {
         ((SystemClockBlockEntity) world.getBlockEntity(pos)).setPowered(world.isReceivingRedstonePower(pos));
     }
 
+    /**
+     * Will append the properties of this block to the given builder.
+     * @param builder {@link net.minecraft.block.Block#appendProperties(StateManager.Builder)} for this block.
+     */
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(CURSORPOS);
+        super.appendProperties(builder);
+    }
 }

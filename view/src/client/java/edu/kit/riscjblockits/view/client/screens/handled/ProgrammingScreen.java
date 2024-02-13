@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.EditBoxWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,6 +19,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.PROGRAMMING_BLOCK_CODE;
 
 /**
  * This class represents the programming screen.
@@ -29,25 +29,33 @@ import org.lwjgl.glfw.GLFW;
  */
 public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
 
+    /**
+     * The background texture of the screen.
+     */
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/programming_block_gui.png");
     private static final Identifier ASSEMBLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/write_button_unpressed.png");
     private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/instructions_button.png");
 
-    private final InstructionsWidget instructionsWidget = new InstructionsWidget();
-
     /**
-     * The edit box widget that is used to enter the code.
+     * Can display information about all available instructions.
      */
-    private EditBoxWidget editBox;
+    private final InstructionsWidget instructionsWidget = new InstructionsWidget();
 
     /**
      * The button that is used to assemble the code.
      */
     private IconButtonWidget assembleButton;
 
+    /**
+     * The edit box widget that is used to enter the code.
+     */
+    private EditBoxWidget editBox;
     private boolean codeHasChanged = false;
-    private boolean narrow;
 
+    /**
+     * Specifies whether the instructionsWidget is open or not.
+     */
+    private boolean narrow;
 
     /**
      * Creates a new ProgrammingScreen.
@@ -55,15 +63,12 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
      * @param inventory the player inventory
      * @param title the title of the screen
      */
-    public ProgrammingScreen(ProgrammingScreenHandler handler, PlayerInventory inventory,
-                             Text title) {
+    public ProgrammingScreen(ProgrammingScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         this.backgroundHeight = 222;
         this.backgroundWidth = 176;
         this.playerInventoryTitleY = this.backgroundHeight - 94;
-
     }
-
 
     /**
      * Initializes the screen.
@@ -79,22 +84,20 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         addDrawableChild(editBox);
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
-
         instructionsWidget.initialize(this.width, this.height - backgroundHeight, this.client, this.narrow, this.handler);
-
-        // add the assemble button to the screen
+        // add the assembly button to the screen
         assembleButton = new IconButtonWidget(
                 this.x + 151, this.y + 63,
                 15, 25,
                 button -> {
                     syncCode(editBox.getText());
+                    assert client != null;
+                    assert client.interactionManager != null;
                     client.interactionManager.clickButton(handler.syncId, ProgrammingScreenHandler.ASSEMBLE_BUTTON_ID);
                 },
                 ASSEMBLE_BUTTON_TEXTURE
         );
-
         addDrawableChild(assembleButton);
-
         IconButtonWidget instructionSetButton = new IconButtonWidget(
             this.x + 8, this.y + 111,
             13, 13,
@@ -106,14 +109,18 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
                 this.assembleButton.setPosition(this.x + 151, this.y + 63);
             },
             INSTRUCTIONS_BUTTON_TEXTURE
-
         );
-
         addDrawableChild(instructionSetButton);
-
         handler.enableSyncing();
     }
 
+    /**
+     * Renders the screen. Is called every frame.
+     * @param context the drawing context
+     * @param mouseX the x position of the mouse
+     * @param mouseY the y position of the mouse
+     * @param delta the time delta since the last frame
+     */
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         if(this.instructionsWidget.isOpen() && this.narrow) {
@@ -122,13 +129,12 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
             super.render(context, mouseX, mouseY, delta);
         }
         instructionsWidget.render(context, mouseX, mouseY, delta);
-
         // render the tooltip of the button if the mouse is over it
         drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
     /**
-     * Renders the background of the screen.
+     * Renders in the background of the screen.
      * @param context the drawing context
      * @param mouseX the x position of the mouse
      * @param mouseY the y position of the mouse
@@ -141,7 +147,6 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = this.x;
         int y = (height - backgroundHeight) / 2;
-
         context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
     }
 
@@ -150,11 +155,11 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
      * @param mouseX the X coordinate of the mouse
      * @param mouseY the Y coordinate of the mouse
      * @param button the mouse button number
-     * @return minecrafts default handling of mouse clicks
+     * @return Minecraft default handling of mouse clicks
      */
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        // set the edit box to focused if the mouse is over it while clicking
+        // set the edit box to focus if the mouse is over it while clicking
         editBox.setFocused(editBox.isMouseOver(mouseX, mouseY));
         // sync the code when the edit box is unfocused
         if (!editBox.isFocused() && codeHasChanged) {
@@ -167,7 +172,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     private void syncCode(String text) {
         PacketByteBuf packet = PacketByteBufs.create();
         NbtCompound nbt = new NbtCompound();
-        nbt.putString("code", text);
+        nbt.putString(PROGRAMMING_BLOCK_CODE, text);
         packet.writeNbt(nbt);
         packet.writeBlockPos(handler.getBlockEntity().getPos());
         ClientPlayNetworking.send(NetworkingConstants.SYNC_PROGRAMMING_CODE, packet);
@@ -178,6 +183,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         // close the screen if the escape key is pressed
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             syncCode(editBox.getText());
+            assert this.client != null;
+            assert this.client.player != null;
             this.client.player.closeHandledScreen();
         }
         // return true if the edit box is focused or the edit box is focused --> suppress all other key presses (e.g. "e")
@@ -188,9 +195,13 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
+    /**
+     * Is called every tick while the screen is open. Used to update the instructionsWidget.
+     */
     @Override
     protected void handledScreenTick() {
         super.handledScreenTick();
         this.instructionsWidget.update();
     }
+
 }

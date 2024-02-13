@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.view.client.screens.widgets;
 
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.ScreenRect;
@@ -9,6 +8,9 @@ import net.minecraft.client.gui.widget.Widget;
 
 import java.util.function.Consumer;
 
+/** ToDo javadoc
+ * An abstract class representing an entry in a list. It implements the Widget, Drawable, and Element interfaces.
+ */
 public abstract class ListEntry implements Widget, Drawable, Element {
 
     protected int x;
@@ -68,4 +70,5 @@ public abstract class ListEntry implements Widget, Drawable, Element {
     public boolean isMouseOver(double mouseX, double mouseY) {
         return mouseX >= x && mouseX <= x + getWidth() && mouseY >= y && mouseY <= y + getHeight();
     }
+
 }

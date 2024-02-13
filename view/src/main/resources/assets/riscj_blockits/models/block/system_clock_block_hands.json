@@ -1,0 +1,31 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/cube",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "riscj_blockits:block/system_clock_block_active",
+		"particle": "riscj_blockits:block/system_clock_block_active"
+	},
+	"elements": [
+		{
+			"from": [3, 5, 7],
+			"to": [9, 6, 9],
+			"faces": {
+				"north": {"uv": [13.5, 2, 15, 2.25], "texture": "#0"},
+				"east": {"uv": [3.5, 15, 4, 15.25], "texture": "#0"},
+				"south": {"uv": [13.5, 2.25, 15, 2.5], "texture": "#0"},
+				"west": {"uv": [15, 8.75, 15.5, 9], "texture": "#0"},
+				"up": {"uv": [1.5, 14, 0, 13.5], "texture": "#0"},
+				"down": {"uv": [15, 1, 13.5, 1.5], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "clock_hands",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

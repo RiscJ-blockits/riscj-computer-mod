@@ -8,20 +8,36 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
 
+/** ToDo javadoc
+ * A widget that can be drawn right as an extension to an existing screen.
+ */
 public abstract class ExtendableWidget implements Drawable, Element, Selectable {
 
+    /**
+     * The background texture of the widget.
+     */
     protected Identifier texture;
     protected int parentWidth;
     protected int parentHeight;
+
+    /**
+     * The screen handler of the parent screen.
+     */
     protected ScreenHandler handler;
     protected boolean open;
     protected boolean narrow;
     protected int leftOffset;
 
+    /**
+     * Initializes the widget.
+     * @param parentWidth The width of the parent screen.
+     * @param parentHeight The height of the parent screen.
+     * @param narrow Whether this widget is visible or not.
+     * @param texture The background texture of the widget.
+     */
     public void initialize(int parentWidth, int parentHeight, boolean narrow, Identifier texture) {
         this.parentWidth = parentWidth;
         this.parentHeight = parentHeight;
-
         this.narrow = narrow;
         this.leftOffset = this.narrow ? 0 : 86;
         this.texture = texture;
@@ -43,8 +59,7 @@ public abstract class ExtendableWidget implements Drawable, Element, Selectable 
     }
 
     public int findLeftEdge(int width, int backgroundWidth) {
-        int i = this.open && !this.narrow ? 177 + (width - backgroundWidth - 200) / 2 : (width - backgroundWidth) / 2;
-        return i;
+        return this.open && !this.narrow ? 177 + (width - backgroundWidth - 200) / 2 : (width - backgroundWidth) / 2;
     }
 
     protected void reset() {
@@ -53,16 +68,12 @@ public abstract class ExtendableWidget implements Drawable, Element, Selectable 
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        if (!this.isOpen()) {
-            return;
-        }
+        if (!this.isOpen()) return;
         context.getMatrices().push();
         context.getMatrices().translate(0.0f, 0.0f, 100.0f);
-
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
         int j = (this.parentHeight) / 2;
         context.drawTexture(texture, i, j, 1, 1, 147, 166);
-
         context.getMatrices().pop();
     }
 

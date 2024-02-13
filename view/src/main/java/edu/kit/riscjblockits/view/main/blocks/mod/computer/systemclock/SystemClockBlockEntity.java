@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.SystemClockController;
+import edu.kit.riscjblockits.model.blocks.SystemClockModel;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -15,6 +16,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
+import static edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlock.CURSORPOS;
+import static edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlock.MAX_CURSORPOS;
+
 /**
  * This class represents a system clock entity from our mod in the game.
  * Every system clock has its own unique SystemClockBlockEntity while it is loaded.
@@ -22,6 +26,8 @@ import org.jetbrains.annotations.Nullable;
 public class SystemClockBlockEntity extends ComputerBlockEntity implements ExtendedScreenHandlerFactory {
 
     private boolean powered;
+    private int cursorSide = 0;
+    private int tickCounter = 0;
 
     /**
      * Creates a new SystemClockBlockEntity with the given settings.
@@ -59,10 +65,30 @@ public class SystemClockBlockEntity extends ComputerBlockEntity implements Exten
 
     public void setPowered(boolean powered) {
         if (powered && !this.powered) {
+            if (getController() == null)
+                return;
             ((SystemClockController) getController()).onUserTickTriggered();
         }
         this.powered = powered;
     }
 
 
+
+    @Override
+    public void updateUI() {
+        if (getModel() != null && ((SystemClockModel) getModel()).getVisualisationState())
+            updateCursor();
+
+        super.updateUI();
+
+
+
+    }
+
+    private void updateCursor() {
+        if (world != null) {
+            cursorSide = (cursorSide + 1) % (MAX_CURSORPOS + 1);
+            world.setBlockState(pos, world.getBlockState(pos).with(CURSORPOS, cursorSide));
+        }
+    }
 }
