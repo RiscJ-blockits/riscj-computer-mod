@@ -65,6 +65,7 @@ class ClusterArchitectureHandlerTest {
     static IQueryableInstructionSetModel istModel;
 
 
+    @BeforeAll
     static void setUp() {
         blockController = new ArrayList<>();
         istModel = InstructionSetBuilder.buildInstructionSetModelMima();
@@ -81,8 +82,6 @@ class ClusterArchitectureHandlerTest {
     @Order(1)
     @Test
     void checkArchitectureMIMA1_4() {
-        setUp();
-
         blockController.add(getR("IAR"));
         blockController.add(getR("IR"));
         ArchiCheckStub_ClusterHandler clusterHandler = new ArchiCheckStub_ClusterHandler(blockController);

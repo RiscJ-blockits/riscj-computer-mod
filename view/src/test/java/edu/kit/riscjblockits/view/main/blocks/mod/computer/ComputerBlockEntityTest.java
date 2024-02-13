@@ -61,11 +61,11 @@ class ComputerBlockEntityTest {
     private static void setup() {
         world = mock(World.class);
         when(world.isClient()).thenReturn(false);
-        BlockPos posAlu = new BlockPos(0,0, 0);
+        BlockPos posAlu = new BlockPos(0,0, 4);
         BlockPos posControlUnit = new BlockPos(0,0, 1);
         BlockPos posMemory = new BlockPos(0,0, 2);
         BlockPos posRegister1 = new BlockPos(0,0, 3);
-        BlockPos posClock = new BlockPos(0,0,4);
+        BlockPos posClock = new BlockPos(0,0,0);
         BlockPos posBus0 = new BlockPos(1,0,0);
         BlockPos posBus1 = new BlockPos(1,0,1);
         BlockPos posBus2 = new BlockPos(1,0,2);
@@ -179,14 +179,14 @@ class ComputerBlockEntityTest {
     }
 
     private void setupRegisters() {
-        BlockPos posRegister2 = new BlockPos(0,0, 5);
+        BlockPos posRegister2 = new BlockPos(0,0, 10);
         BlockPos posRegister3 = new BlockPos(0,0, 6);
         BlockPos posRegister4 = new BlockPos(0,0, 7);
         BlockPos posRegister5 = new BlockPos(0,0, 8);
         BlockPos posRegister6 = new BlockPos(0,0, 9);
-        BlockPos posRegister7 = new BlockPos(0,0, 10);
-        BlockPos posRegister8 = new BlockPos(0,0, 11);
-        BlockPos posRegister9 = new BlockPos(0,0, 12);
+        BlockPos posRegister7 = new BlockPos(0,0, 5);
+        BlockPos posRegister8 = new BlockPos(0,1, 4);
+        BlockPos posRegister9 = new BlockPos(0,0, 11);
         BlockPos posBus5 = new BlockPos(1,0, 5);
         BlockPos posBus6 = new BlockPos(1,0, 6);
         BlockPos posBus7 = new BlockPos(1,0, 7);
@@ -194,7 +194,7 @@ class ComputerBlockEntityTest {
         BlockPos posBus9 = new BlockPos(1,0, 9);
         BlockPos posBus10 = new BlockPos(1,0, 10);
         BlockPos posBus11 = new BlockPos(1,0, 11);
-        BlockPos posBus12 = new BlockPos(1,0, 12);
+        BlockPos posBus12 = new BlockPos(1,1, 4);
         //we place the bus blocks
         ComputerBlock busBlock = (ComputerBlock) RISCJ_blockits.BUS_BLOCK;
         ComputerBlockEntity busEntity5 = (ComputerBlockEntity) busBlock.createBlockEntity(posBus5, RISCJ_blockits.BUS_BLOCK.getDefaultState());
