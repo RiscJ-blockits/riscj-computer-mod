@@ -78,20 +78,20 @@ public class TerminalSelectionWidget extends RegSelectWidget{
 
         switch (this.displayMode){
             case IN:
-                context.drawTexture(IOM_BUTTON_HIGHLIGHTED_TEXTURE, i, j, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT);
+                context.drawTexture(IOM_BUTTON_HIGHLIGHTED_TEXTURE, i, j, 0,0, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT);
                 break;
             case OUT:
-                context.drawTexture(IOM_BUTTON_HIGHLIGHTED_TEXTURE, i, j + IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT);
+                context.drawTexture(IOM_BUTTON_HIGHLIGHTED_TEXTURE, i, j + IOM_BUTTON_HEIGHT, 0, 0, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT);
                 break;
             case MODE:
-                context.drawTexture(IOM_BUTTON_HIGHLIGHTED_TEXTURE, i, j + IOM_BUTTON_HEIGHT * 2, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT);
+                context.drawTexture(IOM_BUTTON_HIGHLIGHTED_TEXTURE, i, j + IOM_BUTTON_HEIGHT * 2, 0, 0, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT);
                 break;
             default: break;
         }
 
 
-        context.getMatrices().push();
-        context.getMatrices().translate(0.0f, 0.0f, 100.0f);
+        //context.getMatrices().push();
+        //context.getMatrices().translate(0.0f, 0.0f, 100.0f);
 
         MinecraftClient client = MinecraftClient.getInstance();
         TextRenderer textRenderer = client.textRenderer;
@@ -101,7 +101,7 @@ public class TerminalSelectionWidget extends RegSelectWidget{
         context.drawText(textRenderer,
             Text.literal(MODE), i + 8, j + IOM_BUTTON_HEIGHT * 2 + (IOM_BUTTON_HEIGHT - 6) / 2, 0xffffff, false);
 
-        context.getMatrices().pop();
+        //context.getMatrices().pop();
 
     }
 

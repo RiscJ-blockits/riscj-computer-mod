@@ -91,8 +91,8 @@ public class RegSelectWidget extends ExtendableWidget{
         if (!this.isOpen()) {
             return;
         }
-        context.getMatrices().push();
-        context.getMatrices().translate(0.0f, 0.0f, 100.0f);
+        //context.getMatrices().push();
+        //context.getMatrices().translate(0.0f, 0.0f, 100.0f);
 
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
         int j = (this.parentHeight - 166) / 2;
@@ -106,7 +106,7 @@ public class RegSelectWidget extends ExtendableWidget{
             ((Drawable) element).render(context, mouseX, mouseY, delta);
         }
 
-        context.getMatrices().pop();
+        //context.getMatrices().pop();
     }
 
     public void update(){
