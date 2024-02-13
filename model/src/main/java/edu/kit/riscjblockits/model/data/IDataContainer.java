@@ -35,4 +35,7 @@ public interface IDataContainer extends IDataElement {
      * @return a set of all keys stored in this container
      */
     Set<String> getKeys();
+
+    void remove(String key);
+
 }

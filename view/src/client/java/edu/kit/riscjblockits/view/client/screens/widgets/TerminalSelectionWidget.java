@@ -1,11 +1,17 @@
 package edu.kit.riscjblockits.view.client.screens.widgets;
 
+import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+
+import static edu.kit.riscjblockits.model.blocks.RegisterModel.UNASSIGNED_REGISTER;
 
 public class TerminalSelectionWidget extends RegSelectWidget{
 
@@ -13,16 +19,19 @@ public class TerminalSelectionWidget extends RegSelectWidget{
     private static final Identifier IOM_BUTTON_HIGHLIGHTED_TEXTURE = new Identifier("riscj_blockits", "textures/gui/register/io/tab_selected.png");
     private static final int IOM_BUTTON_WIDTH = 35;
     private static final int IOM_BUTTON_HEIGHT = 26;
-    public static final String MODE = "Mode"; //TODO make it clenaer with translatable (?)
+    public static final String MODE = "Mode";   //TODO make it clenaer with translatable (?)
     public static final String OUT = "Out";
     public static final String IN = "In";
     private IconButtonWidget inButton;
     private IconButtonWidget outButton;
     private IconButtonWidget modeButton;
 
+    private DisplayMode displayMode;
+
 
     public TerminalSelectionWidget(){
         super();
+        displayMode = DisplayMode.IN;
     }
 
     @Override
@@ -34,25 +43,20 @@ public class TerminalSelectionWidget extends RegSelectWidget{
         int j = (this.parentHeight - 166) / 2 + 17;
 
         inButton = new IconButtonWidget(i, j, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, (button) -> {
-            //set Mode
-            //TODO implement
+            displayMode = DisplayMode.IN;
         }, IOM_BUTTON_TEXTURE);
 
         outButton = new IconButtonWidget(i, j + IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, (button) -> {
-            //set  MOde
-            //TODO implement
+            displayMode = DisplayMode.OUT;
         }, IOM_BUTTON_TEXTURE);
 
         modeButton = new IconButtonWidget(i, j + IOM_BUTTON_HEIGHT * 2, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, (button) -> {
-            //set Mode
-            //TODO implement
+            displayMode = DisplayMode.MODE;
         }, IOM_BUTTON_TEXTURE);
 
         addChild(inButton);
         addChild(outButton);
         addChild(modeButton);
-
-
     }
 
     @Override
@@ -66,19 +70,19 @@ public class TerminalSelectionWidget extends RegSelectWidget{
             return;
         }
 
-        /*switch (this.registerScreenHandler.getTerminalBlockEntity().getMode()){ //TODO GET mode
-            case TerminalBlockEntity.MODE_IN: //TODO check modes
+        switch (this.displayMode){
+            case IN:
                 context.drawTexture(IOM_BUTTON_HIGHLIGHTED_TEXTURE, i, j, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT);
                 break;
-            case TerminalBlockEntity.MODE_OUT:
+            case OUT:
                 context.drawTexture(IOM_BUTTON_HIGHLIGHTED_TEXTURE, i, j + IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT);
                 break;
-            case TerminalBlockEntity.MODE_MODE:
+            case MODE:
                 context.drawTexture(IOM_BUTTON_HIGHLIGHTED_TEXTURE, i, j + IOM_BUTTON_HEIGHT * 2, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT);
                 break;
+            default: break;
         }
-        //TODO implement @Leon
-         */
+
 
         context.getMatrices().push();
         context.getMatrices().translate(0.0f, 0.0f, 100.0f);
@@ -89,9 +93,38 @@ public class TerminalSelectionWidget extends RegSelectWidget{
         context.drawText(textRenderer,
             OUT, i + 8, j + IOM_BUTTON_HEIGHT + (IOM_BUTTON_HEIGHT - 6) / 2, 0xffffff, false);
         context.drawText(textRenderer,
-            Text.literal(MODE), i + 8, j + IOM_BUTTON_HEIGHT * 2 + (IOM_BUTTON_HEIGHT - 6) / 2, 0xffffff, false); //TODO Replace with translateable
+            Text.literal(MODE), i + 8, j + IOM_BUTTON_HEIGHT * 2 + (IOM_BUTTON_HEIGHT - 6) / 2, 0xffffff, false);
 
         context.getMatrices().pop();
 
     }
+
+    @Override
+    public void deselectRegister() {
+        assignRegister(UNASSIGNED_REGISTER);
+    }
+
+    @Override
+    public void assignRegister(String name) {
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeBlockPos(pos);
+        switch (displayMode){
+            case IN:
+                buf.writeString(IN +"_"+ name);
+                break;
+            case OUT:
+                buf.writeString(OUT +"_"+ name);
+                break;
+            case MODE:
+                buf.writeString(MODE +"_"+ name);
+                break;
+        }
+        ClientPlayNetworking.send(NetworkingConstants.SYNC_REGISTER_SELECTION, buf);
+    }
+
+
+    enum DisplayMode {
+        IN, OUT, MODE
+    }
+
 }

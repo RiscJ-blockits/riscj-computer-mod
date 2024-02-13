@@ -1,14 +1,7 @@
 package edu.kit.riscjblockits.view.client.screens.widgets;
 
-import edu.kit.riscjblockits.view.main.NetworkingConstants;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-
-import static edu.kit.riscjblockits.model.blocks.RegisterModel.UNASSIGNED_REGISTER;
 
 public class RegisterEntry extends ListEntry {
 
@@ -17,11 +10,11 @@ public class RegisterEntry extends ListEntry {
     private boolean missing;
     private boolean currentReg;
     private String name;
-    private BlockPos pos;
+    private RegSelectWidget parent;
 
-    public RegisterEntry(String name, boolean missing, boolean currentReg, BlockPos pos) {
+    public RegisterEntry(String name, boolean missing, boolean currentReg, RegSelectWidget parent) {
         this.name = name;
-        this.pos = pos;
+        this.parent = parent;
         this.missing = missing;
         this.currentReg = currentReg;
         this.selectButton = new TextIconToggleWidget(Text.literal(name), button -> {
@@ -95,10 +88,7 @@ public class RegisterEntry extends ListEntry {
      * Result: This register is [NOT_ASSIGNED]
      */
     public void deselectRegister() {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeBlockPos(pos);
-        buf.writeString(UNASSIGNED_REGISTER);
-        ClientPlayNetworking.send(NetworkingConstants.SYNC_REGISTER_SELECTION, buf);
+        parent.deselectRegister();
     }
 
     /**
@@ -108,10 +98,7 @@ public class RegisterEntry extends ListEntry {
      * @param name the name of the overwritten register
      */
     public void overwriteRegister(String name) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeBlockPos(pos);
-        buf.writeString(name);
-        ClientPlayNetworking.send(NetworkingConstants.SYNC_REGISTER_SELECTION, buf);
+        parent.assignRegister(name);
     }
 
     /**
@@ -120,9 +107,6 @@ public class RegisterEntry extends ListEntry {
      * @param name the name of the assigned register
      */
     public void assignRegister(String name) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeBlockPos(pos);
-        buf.writeString(name);
-        ClientPlayNetworking.send(NetworkingConstants.SYNC_REGISTER_SELECTION, buf);
+        parent.assignRegister(name);
     }
 }

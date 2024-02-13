@@ -4,6 +4,8 @@ import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
+import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
@@ -11,6 +13,7 @@ import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_INPUT;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMNAL_MODE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGTH;
 
 //main terminal controller
@@ -53,12 +56,33 @@ public class TerminalModeController extends RegisterController {
 
     @Override
     public void setData(IDataElement data) {
+        if (data.isContainer()) {
+            for (String s : ((IDataContainer) data).getKeys()) {
+                if (s.equals(REGISTER_TYPE)) {
+                    String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+                    String first = type.split("_")[0];
+                    String second = type.split("_")[1];
+                    if (first.equals("In")) {
+                        IDataContainer input = new Data();
+                        input.set(REGISTER_TYPE, new DataStringEntry(second));
+                        inputController.setData(input);
+                    } else if (first.equals("Out")) {
+                        IDataContainer input = new Data();
+                        input.set(REGISTER_TYPE, new DataStringEntry(second));
+                        outputController.setData(input);
+                    } else if (first.equals("Mode")) {
+                        IDataContainer input = new Data();
+                        input.set(REGISTER_TYPE, new DataStringEntry(second));
+                        ((RegisterModel) getModel()).setRegisterType(second);
+                    }
+                }
+            }
+            ((IDataContainer) data).remove(REGISTER_TYPE);      //we need to remove the type from the data so that it does not get processed again
+        }
         super.setData(data);
         inputController.setData(data);
         outputController.setData(data);
-        if (!data.isContainer()) {
-            return;
-        }
+        if (!data.isContainer()) return;
         int wordLength;
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(REGISTER_TERMNAL_MODE)) {
