@@ -28,11 +28,21 @@ import java.util.regex.Pattern;
  */
 public class Executor implements IExecutor {
 
+    /**
+     * String representation of the memory visualisation placeholder.
+     */
     private static final String MEM_VISUALISATION = "<mem_vis>";
 
+    /**
+     * Pattern to match memory access strings.
+     */
     private static final Pattern MEMORY_ACCES_PATTERN = Pattern.compile("Mem\\[(?<register>\\w+)]");
 
+    /**
+     * Pattern to match binary strings.
+     */
     private static final Pattern BINARY_PATTERN = Pattern.compile("[01]+");
+
     /**
      * Contains the block controllers of the associated computer blocks.
      */
@@ -42,9 +52,20 @@ public class Executor implements IExecutor {
      * Map of the register controllers for faster access and resolving string references.
      */
     private final Map<String, RegisterController> registerControllerMap;
+
+    /**
+     * The word length of the computer.
+     */
     private final int wordLength;
+
+    /**
+     * The bus system of the computer.
+     */
     private final IBusSystem busSystem;
 
+    /**
+     * The control unit controller of the computer.
+     */
     private ComputerBlockController controlUnitController;
 
     /**
