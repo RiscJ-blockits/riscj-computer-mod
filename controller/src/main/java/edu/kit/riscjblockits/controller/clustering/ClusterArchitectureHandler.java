@@ -5,6 +5,7 @@ import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
@@ -53,6 +54,11 @@ public class ClusterArchitectureHandler {
         int foundALU = 0;
         int foundSystemClock = 0;
         int foundControlUnit = 0;
+
+        String[] aluRegisterNames = istModel.getAluRegisters();
+        List<RegisterController> aluRegister = new ArrayList<>();
+        BlockController alu = null;
+
         List<String> availableRegisters = new ArrayList<>();
         for (IQueryableClusterController block : blocks) {
             switch (block.getControllerType()) {
@@ -64,9 +70,15 @@ public class ClusterArchitectureHandler {
                     break;
                 case REGISTER:
                     availableRegisters.add(((RegisterController) block).getRegisterType());
+                    for (String aluRegisterName : aluRegisterNames) {
+                        if (aluRegisterName.equals(((RegisterController) block).getRegisterType())) {
+                            aluRegister.add((RegisterController) block);
+                        }
+                    }
                     break;
                 case ALU:
                     foundALU++;
+                    alu = (BlockController) block;
                     break;
                 case CONTROL_UNIT:
                     foundControlUnit++;
@@ -80,6 +92,19 @@ public class ClusterArchitectureHandler {
                     throw new IllegalStateException("Unexpected value: " + block.getControllerType());
             }
         }
+        //check if the ALU registers are connected to the ALU
+        if (alu != null) {
+            for (RegisterController register : aluRegister) {
+                if (!clusterHandler.isNeighbourPosition(alu, register)) {
+                    System.out.println("ALU Register not connected to ALU");
+                    correctArchitecture = false;
+                    availableRegisters.remove(register.getRegisterType());
+                }
+            }
+        } else {
+            correctArchitecture = false;
+        }
+
         //check Registers
         boolean rightAmountOfRegisters = (availableRegisters.size() == istModel.getRegisterNames().size());       //we could have more registers if we connect IO registers
         Collections.sort(availableRegisters);
