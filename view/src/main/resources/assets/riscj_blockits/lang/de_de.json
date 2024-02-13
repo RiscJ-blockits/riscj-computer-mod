@@ -21,6 +21,7 @@
 
   "manual.title": "Handbuch",
   "istItem.title": "Befehlssatz",
+  "ist_error": "Fehler beim Laden des Befehlssatzes",
 
   "programming_pretext": "hier könnte ihre Werbung stehen",
   "block.riscj_blockits.text_output_block": "Konsole"

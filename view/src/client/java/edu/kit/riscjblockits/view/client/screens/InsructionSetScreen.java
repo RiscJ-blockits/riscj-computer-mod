@@ -107,7 +107,6 @@ public class InsructionSetScreen extends Screen {
         inputBox = new EditBoxWidget(textRenderer, x + 9, y +8,  229, 143,Text.literal(""), Text.of(""));
         addDrawableChild(inputBox);
         inputBox.setText(istString);
-
         //ToDo don't jump to the end of the input box
         inputBox.setFocused(false);
         // add the build button to the screen
@@ -139,14 +138,15 @@ public class InsructionSetScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        if (tickCounter > 0) {
-            context.getMatrices().push();
-            context.getMatrices().scale(0.5f, 0.5f, 0.5f);
-            errorText.draw(context, (this.x + 64) * 2 , (this.y + 152) * 2 , 9, 0xCC0000);
-            context.getMatrices().pop();
+        if (tickCounter > 0) {          //an error has happened
+            //context.getMatrices().push();
+            //context.getMatrices().scale(0.5f, 0.5f, 0.5f);
+            //errorText.draw(context, (this.x + 64) * 2 , (this.y + 152) * 2 , 40, 0xCC0000);
+            context.drawText(textRenderer, Text.translatable("ist_error"), this.x + 45, this.y + 157, 0xCC0000, false);
+            //context.getMatrices().pop();
             tickCounter--;
         }
-        if (edited) {           //ToDo display this?
+        if (edited) {
             context.drawText(textRenderer, Text.literal("edited"), this.x + 10, this.y + 157, 0xffffff, false);
         }
     }
@@ -212,7 +212,8 @@ public class InsructionSetScreen extends Screen {
             instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(ist);
         }catch (UnsupportedEncodingException | InstructionBuildException e) {
             tickCounter = 100;
-            errorText = MultilineText.create(textRenderer,Text.of(e.getMessage()) , 182 * 2);
+            //errorText = MultilineText.create(textRenderer,Text.of(e.getMessage()) , 182 * 2);
+            errorText = MultilineText.create(textRenderer,Text.translatable("ist_error") , 200);
             return;
         }
         assert this.client != null;
