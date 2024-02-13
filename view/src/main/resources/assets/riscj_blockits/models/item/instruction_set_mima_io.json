@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "riscj_blockits:item/mima_item_texture"
+  }
+}
