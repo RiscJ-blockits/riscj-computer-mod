@@ -57,9 +57,7 @@ public class ClusterArchitectureHandler {
         int foundControlUnit = 0;
 
         String[] aluRegisterNames = istModel.getAluRegisters();
-        String programCounterName = istModel.getProgramCounter();
         List<RegisterController> aluRegister = new ArrayList<>();
-        RegisterController programCounter = null;
         BlockController alu = null;
 
         List<String> availableRegisters = new ArrayList<>();
@@ -73,14 +71,10 @@ public class ClusterArchitectureHandler {
                     break;
                 case REGISTER:
                     availableRegisters.add(((RegisterController) block).getRegisterType());
-                    System.out.println("Adding " + ((RegisterController) block).getRegisterType() + " to available registers");
                     for (String aluRegisterName : aluRegisterNames) {
                         if (aluRegisterName.equals(((RegisterController) block).getRegisterType())) {
                             aluRegister.add((RegisterController) block);
                         }
-                    }
-                    if (((RegisterController) block).getRegisterType().equals(programCounterName)) {
-                        programCounter = (RegisterController) block;
                     }
                     break;
                 case ALU:
@@ -107,16 +101,6 @@ public class ClusterArchitectureHandler {
                     correctArchitecture = false;
                     availableRegisters.remove(register.getRegisterType());
                 }
-            }
-        } else {
-            correctArchitecture = false;
-        }
-        //check if the program counter is connected to the control unit
-        if (programCounter != null && !controlUnit.isEmpty()) {
-            if (!clusterHandler.isNeighbourPosition(controlUnit.get(0), programCounter)) {
-                System.out.println("Program Counter not connected to Control Unit");
-                correctArchitecture = false;
-                availableRegisters.remove(programCounter.getRegisterType());
             }
         } else {
             correctArchitecture = false;
