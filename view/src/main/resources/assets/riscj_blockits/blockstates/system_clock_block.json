@@ -1,7 +1,106 @@
 {
-  "variants": {
-    "": {
-      "model": "riscj_blockits:block/system_clock_block"
+  "multipart": [
+    {
+      "when": {
+        "active": "false"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/system_clock_block"
+      }
+    },
+    {
+      "when": {
+        "active": "true"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/system_clock_block"
+      }
+    },
+    {
+      "when": {
+        "active": "true|false",
+        "cursorpos": 0
+      },
+      "apply": {
+        "model": "riscj_blockits:block/system_clock_block_hands",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "active": "true|false",
+        "cursorpos": 1
+      },
+      "apply": {
+        "model": "riscj_blockits:block/system_clock_block_hands_diagonal",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "active": "true|false",
+        "cursorpos": 2
+      },
+      "apply": {
+        "model": "riscj_blockits:block/system_clock_block_hands",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "active": "true|false",
+        "cursorpos": 3
+      },
+      "apply": {
+        "model": "riscj_blockits:block/system_clock_block_hands_diagonal",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "active": "true|false",
+        "cursorpos": 4
+      },
+      "apply": {
+        "model": "riscj_blockits:block/system_clock_block_hands",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "active": "true|false",
+        "cursorpos": 5
+      },
+      "apply": {
+        "model": "riscj_blockits:block/system_clock_block_hands_diagonal",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "active": "true|false",
+        "cursorpos": 6
+      },
+      "apply": {
+        "model": "riscj_blockits:block/system_clock_block_hands",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "active": "true|false",
+        "cursorpos": 7
+      },
+      "apply": {
+        "model": "riscj_blockits:block/system_clock_block_hands_diagonal",
+        "y": 270,
+        "uvlock": false
+      }
     }
-  }
+  ]
 }
