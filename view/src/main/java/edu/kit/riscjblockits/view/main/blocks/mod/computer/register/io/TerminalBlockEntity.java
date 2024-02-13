@@ -183,4 +183,14 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
 
     }
 
+    @Override
+    public void onBroken() {
+        super.onBroken();
+        assert world != null;
+        if (!world.isClient && getController() != null) {       //break additional controllers
+            inputController.onBroken();
+            outputController.onBroken();
+        }
+    }
+
 }

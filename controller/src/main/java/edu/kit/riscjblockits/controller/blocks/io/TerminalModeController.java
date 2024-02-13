@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.controller.blocks.io;
 
 import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.controller.clustering.ClusterHandler;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
 import edu.kit.riscjblockits.model.data.Data;
@@ -50,8 +51,11 @@ public class TerminalModeController extends RegisterController {
     public void startClustering(BlockPosition pos) {
         super.startClustering(pos);
         //This is the controller that gets first registered with the cluster. It needs to start the clustering in the other controllers
-        inputController.startClustering(pos);
-        outputController.startClustering(pos);
+        ClusterHandler cluster = getClusterHandler();
+        inputController.setClusterHandler(cluster);
+        outputController.setClusterHandler(cluster);
+        cluster.addBlocks(inputController);
+        cluster.addBlocks(outputController);
     }
 
     @Override

@@ -61,6 +61,7 @@ public class ClusterHandler implements IArchitectureCheckable {
         }
 
         combineToNeighbours(blockController);
+        System.out.println("Blocks: " + blocks.size() + " | BusBlocks: " + busBlocks.size());
     }
 
     /**
@@ -207,10 +208,12 @@ public class ClusterHandler implements IArchitectureCheckable {
 
 
     /**
-     * method to add a block to the cluster
+     * Method to add a block to the cluster.
+     * Only add it to the blocklist.
+     * Should only be used for blocks with multiple registers
      * @param blockController BlockController to add
      */
-    private void addBlocks(IQueryableClusterController blockController) {
+    public void addBlocks(IQueryableClusterController blockController) {
         blocks.add(blockController);
     }
 
