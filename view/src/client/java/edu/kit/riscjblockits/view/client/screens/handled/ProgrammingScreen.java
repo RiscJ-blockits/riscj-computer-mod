@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import edu.kit.riscjblockits.view.client.screens.widgets.DualTexturedIconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.InstructionsWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
@@ -15,6 +16,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
@@ -34,6 +36,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
      */
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/programming_block_gui.png");
     private static final Identifier ASSEMBLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/write_button_unpressed.png");
+    private static final Identifier ASSEMBLE_BUTTON_TEXTURE_FAILED = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/write_button_unpressed_failed.png");
     private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/instructions_button.png");
 
     /**
@@ -44,7 +47,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     /**
      * The button that is used to assemble the code.
      */
-    private IconButtonWidget assembleButton;
+    private DualTexturedIconButtonWidget assembleButton;
 
     /**
      * The edit box widget that is used to enter the code.
@@ -68,6 +71,32 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         this.backgroundHeight = 222;
         this.backgroundWidth = 176;
         this.playerInventoryTitleY = this.backgroundHeight - 94;
+
+
+
+        assembleButton = new DualTexturedIconButtonWidget(
+                0, 0,
+                15, 25,
+                button -> {
+                    syncCode(editBox.getText());
+                    assert client != null;
+                    assert client.interactionManager != null;
+                    client.interactionManager.clickButton(handler.syncId, ProgrammingScreenHandler.ASSEMBLE_BUTTON_ID);
+                },
+                ASSEMBLE_BUTTON_TEXTURE,
+                ASSEMBLE_BUTTON_TEXTURE_FAILED
+        );
+
+    }
+
+    private void showError(String s) {
+        assembleButton.setTooltip((MutableText) Text.of(s));
+        assembleButton.setTexture(false);
+    }
+
+    private void removeError() {
+        assembleButton.setTooltip((MutableText) null);
+        assembleButton.setTexture(true);
     }
 
     /**
@@ -86,17 +115,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         editBox.setText(handler.getCode());
         instructionsWidget.initialize(this.width, this.height - backgroundHeight, this.client, this.narrow, this.handler);
         // add the assembly button to the screen
-        assembleButton = new IconButtonWidget(
-                this.x + 151, this.y + 63,
-                15, 25,
-                button -> {
-                    syncCode(editBox.getText());
-                    assert client != null;
-                    assert client.interactionManager != null;
-                    client.interactionManager.clickButton(handler.syncId, ProgrammingScreenHandler.ASSEMBLE_BUTTON_ID);
-                },
-                ASSEMBLE_BUTTON_TEXTURE
-        );
+        assembleButton.setX(this.x + 151);
+        assembleButton.setY(this.y + 63);
         addDrawableChild(assembleButton);
         IconButtonWidget instructionSetButton = new IconButtonWidget(
             this.x + 8, this.y + 111,
@@ -112,6 +132,11 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         );
         addDrawableChild(instructionSetButton);
         handler.enableSyncing();
+
+        ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION);
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION, (client1, handler1, buf, responseSender) -> {
+            showError(buf.readString());
+        });
     }
 
     /**
@@ -180,6 +205,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        removeError();
         // close the screen if the escape key is pressed
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             syncCode(editBox.getText());
