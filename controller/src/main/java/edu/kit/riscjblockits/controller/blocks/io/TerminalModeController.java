@@ -12,9 +12,13 @@ import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_FOUND;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_MISSING;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_INPUT;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMNAL_MODE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGTH;
 
 //main terminal controller
@@ -60,9 +64,17 @@ public class TerminalModeController extends RegisterController {
 
     @Override
     public void setData(IDataElement data) {
-        if (data.isContainer()) {
-            for (String s : ((IDataContainer) data).getKeys()) {
-                if (s.equals(REGISTER_TYPE)) {
+        getModel().onStateChange();
+        //
+        //
+        if (!data.isContainer()) {
+            return;
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            switch (s) {
+                case REGISTER_TYPE -> {
+//                    String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+//                    ((RegisterModel) getModel()).setRegisterType(type);
                     String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
                     String first = type.split("_")[0];
                     String second = type.split("_")[1];
@@ -79,34 +91,52 @@ public class TerminalModeController extends RegisterController {
                         input.set(REGISTER_TYPE, new DataStringEntry(second));
                         ((RegisterModel) getModel()).setRegisterType(second);
                     }
+                    if (getClusterHandler() != null) {
+                        this.getClusterHandler().checkFinished();
+                    }
                 }
-            }
-            ((IDataContainer) data).remove(REGISTER_TYPE);      //we need to remove the type from the data so that it does not get processed again
-        }
-        super.setData(data);
-        inputController.setData(data);
-        outputController.setData(data);
-        if (!data.isContainer()) return;
-        int wordLength;
-        for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals(REGISTER_TERMNAL_MODE)) {
-                try {
-                    wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(REGISTER_WORD_LENGTH)).getContent());
-                } catch (NumberFormatException e) {
-                    continue;
+                case REGISTER_REGISTERS -> {
+                    IDataContainer registers = (IDataContainer) ((IDataContainer) data).get(s);
+                    String[] missingAvailableRegisters = new String[2];
+                    missingAvailableRegisters[0] = ((IDataStringEntry) registers.get(REGISTER_MISSING)).getContent();
+                    missingAvailableRegisters[1] = ((IDataStringEntry) registers.get(REGISTER_FOUND)).getContent();
+                    ((RegisterModel) getModel()).setMissingAvailableRegisters(missingAvailableRegisters);
+                    ((RegisterModel) outputController.getModel()).setMissingAvailableRegisters(
+                        missingAvailableRegisters);
+                    ((RegisterModel) inputController.getModel()).setMissingAvailableRegisters(
+                        missingAvailableRegisters);
                 }
-                Value value = Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
-                ((RegisterModel) getModel()).setValue(value);
-            } else if (s.equals(REGISTER_TERMINAL_INPUT)) {
-                try {
-                    wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(REGISTER_WORD_LENGTH)).getContent());
-                } catch (NumberFormatException e) {
-                    continue;
+                case REGISTER_WORD_LENGTH -> {
+                    int wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
+                    ((RegisterModel) getModel()).setWordLength(wordLength);
+                    ((RegisterModel) outputController.getModel()).setWordLength(wordLength);
+                    ((RegisterModel) inputController.getModel()).setWordLength(wordLength);
                 }
-                Value value = Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
-                inputController.setNewValue(value);
+                case REGISTER_VALUE, REGISTER_TERMNAL_MODE -> {
+                    int wordLength;
+                    try {
+                        wordLength = Integer.parseInt(
+                            ((IDataStringEntry) ((IDataContainer) data).get(REGISTER_WORD_LENGTH)).getContent());
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
+                    Value value =
+                        Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
+                    ((RegisterModel) getModel()).setValue(value);
+                }
+                case REGISTER_TERMINAL_INPUT -> {
+                    int wordLength;
+                    try {
+                        wordLength = Integer.parseInt(
+                            ((IDataStringEntry) ((IDataContainer) data).get(REGISTER_WORD_LENGTH)).getContent());
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
+                    Value value =
+                        Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
+                    inputController.setNewValue(value);
+                }
             }
         }
     }
-
 }

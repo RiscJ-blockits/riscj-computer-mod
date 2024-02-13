@@ -29,13 +29,10 @@ public class RegSelectWidget extends ExtendableWidget{
 
     public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier("recipe_book/button"), new Identifier("recipe_book/button_highlighted"));
     private static final String TO_DO_TEXT = "Select Register";
-    /*private List<String> configuredRegisters;
-    private List<String> missingRegisters;
-    private ToggleButtonWidget toggleNeededButton; // future implementation*/
-    private RegisterScreenHandler registerScreenHandler;
+    protected RegisterScreenHandler registerScreenHandler;
     private MinecraftClient client;
     private int cachedInvChangeCount;
-    private RegisterListWidget registerList;
+    protected RegisterListWidget registerList;
     private int width;
     private int height;
     private final List<Element> children = new ArrayList<>();

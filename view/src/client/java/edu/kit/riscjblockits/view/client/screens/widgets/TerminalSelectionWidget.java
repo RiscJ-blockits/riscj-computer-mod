@@ -1,7 +1,9 @@
 package edu.kit.riscjblockits.view.client.screens.widgets;
 
+import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
@@ -10,6 +12,10 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler.DisplayMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static edu.kit.riscjblockits.model.blocks.RegisterModel.UNASSIGNED_REGISTER;
 
@@ -122,9 +128,28 @@ public class TerminalSelectionWidget extends RegSelectWidget{
         ClientPlayNetworking.send(NetworkingConstants.SYNC_REGISTER_SELECTION, buf);
     }
 
+    @Override
+    public void update(){
+        super.update();
+        registerList.updateEntries(getEntries());
+    }
 
-    enum DisplayMode {
-        IN, OUT, MODE
+    private List<RegisterEntry> getEntries() {
+        List<RegisterEntry> entries = new ArrayList<>();
+        for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING)) {
+            RegisterEntry entry = new RegisterEntry(register, true, false, this);
+            entries.add(entry);
+        }
+        for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_FOUND)) {
+            RegisterEntry entry;
+            if(register.equals(((TerminalScreenHandler) registerScreenHandler).getCurrentRegister(displayMode))){
+                entry = new RegisterEntry(register, false, true, this);
+            } else {
+                entry = new RegisterEntry(register, false, false, this);
+            }
+            entries.add(entry);
+        }
+        return entries;
     }
 
 }
