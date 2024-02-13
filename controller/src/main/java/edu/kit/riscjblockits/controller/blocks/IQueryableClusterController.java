@@ -14,6 +14,7 @@ public interface IQueryableClusterController extends IQueryableComputerControlle
     void setClusterHandler(ClusterHandler clusterHandler);
 
     /**
+     * Getter for the associated ClusterHandler.
      * @return The associated ClusterHandler.
      */
 
@@ -33,7 +34,14 @@ public interface IQueryableClusterController extends IQueryableComputerControlle
      * @return An {@link BlockPosition} with the position of the block.
      */
 
+    /**
+     * Getter for the position of the block in the minecraft world.
+     * @return An {@link BlockPosition} with the position of the block.
+     */
     BlockPosition getBlockPosition();
 
+    /**
+     * Method to update the neighbors of the block entity.
+     */
     void neighborUpdate();
 }

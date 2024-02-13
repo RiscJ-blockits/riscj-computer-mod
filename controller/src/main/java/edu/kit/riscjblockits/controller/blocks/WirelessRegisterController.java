@@ -11,22 +11,41 @@ import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.*;
 
+/**
+ * The controller for a WirelessRegisterBlock.
+ */
 public class WirelessRegisterController extends RegisterController {
 
+    /**
+     * Creates a new WirelessRegisterController.
+     * @param blockEntity The block entity that the controller is responsible for.
+     */
     public WirelessRegisterController(IConnectableComputerBlockEntity blockEntity) {
         super(blockEntity);
     }
 
+    /**
+     * Creates the WirelessRegister-specific model.
+     * @return The model for the WirelessRegister.
+     */
     @Override
     protected IControllerQueryableBlockModel createBlockModel() {
         return new WirelessRegisterModel();
     }
 
+    /**
+     * Sets the shared RegisterModel in the WirelessRegisterModel.
+     * @param registerController The controller of the WirelessRegister that is connected with the WirelessRegister.
+     */
     public void setRegisterModel(WirelessRegisterController registerController) {
         ((WirelessRegisterModel)getModel()).setRegisterModel(
                 ((WirelessRegisterModel)registerController.getModel()).getRegisterModel());
     }
 
+    /**
+     * Sets the Position of the connected WirelessRegister.
+     * @param blockPosition The position of the connected WirelessRegister.
+     */
     public void setWirelessNeighbourPosition(BlockPosition blockPosition) {
         ((WirelessRegisterModel)getModel()).setWirelessNeighbourPosition(blockPosition);
     }
@@ -69,6 +88,10 @@ public class WirelessRegisterController extends RegisterController {
         }
     }
 
+    /**
+     * Getter for the position of the connected WirelessRegister.
+      * @return The position of the connected WirelessRegister.
+     */
     public BlockPosition getConnectedPos() {
         return ((WirelessRegisterModel) getModel()).getWirelessNeighbourPosition();
     }

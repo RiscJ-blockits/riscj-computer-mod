@@ -36,6 +36,9 @@ public interface IConnectableComputerBlockEntity {
      */
     IDataElement getBlockEntityData();
 
+    /**
+     * Method to update the neighbors of the block entity.
+     */
     void neighborUpdate();
 
     /**
@@ -48,7 +51,6 @@ public interface IConnectableComputerBlockEntity {
      * Defines the possible effects that can be spawned in the minecraft world by a block controller.
      */
     enum ComputerEffect {
-
         EXPLODE,
         SMOKE,
     }
