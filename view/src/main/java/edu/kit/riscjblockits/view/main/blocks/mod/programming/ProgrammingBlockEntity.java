@@ -61,23 +61,6 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
             });
         });
 
-        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.ASSEMBLE_PROGRAMMING_CODE, (server, player, handler, buf, responseSender) -> {
-
-            server.execute(() -> {
-                BlockPos blockPos = buf.readBlockPos();
-
-                if (player.getServerWorld().getBlockEntity(blockPos) instanceof ProgrammingBlockEntity blockEntity) {
-                    try {
-                        blockEntity.assemble();
-                    } catch (AssemblyException e) {
-                        PacketByteBuf packetByteBuf = PacketByteBufs.create();
-                        packetByteBuf.writeBlockPos(blockPos);
-                        packetByteBuf.writeString(e.getMessage());
-                        responseSender.sendPacket((Packet<?>) packetByteBuf);
-                    }
-                }
-            });
-        });
     }
 
     /**

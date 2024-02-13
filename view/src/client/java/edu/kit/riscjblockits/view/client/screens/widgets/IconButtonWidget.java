@@ -1,14 +1,27 @@
 package edu.kit.riscjblockits.view.client.screens.widgets;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.MutableText;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A simple button with an icon texture on top.
  */
 public class IconButtonWidget extends ButtonWidget {
+
+    /**
+     * The text renderer to use for tooltips.
+     */
+    private TextRenderer textRenderer;
+
+    /**
+     * The tooltip to display when the button is hovered.
+     */
+    private MutableText tooltip;
 
     /**
      * For narration support.
@@ -18,7 +31,7 @@ public class IconButtonWidget extends ButtonWidget {
     /**
      * The texture on top of the button.
      */
-    private final Identifier texture;
+    protected Identifier texture;
 
     /**
      * Constructor for the icon button widget.
@@ -33,6 +46,7 @@ public class IconButtonWidget extends ButtonWidget {
     public IconButtonWidget(int x, int y, int width, int height, PressAction onPress, Identifier texture) {
         super(x, y, width, height, null, onPress, DEFAULT_NARRATION_SUPPLIER);
         this.texture = texture;
+        textRenderer = MinecraftClient.getInstance().textRenderer;
     }
 
     /**
@@ -45,6 +59,17 @@ public class IconButtonWidget extends ButtonWidget {
     @Override
     protected void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
         context.drawTexture(texture, getX(), getY(), 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
+        if (this.tooltip != null && this.isHovered()) {
+            context.drawTooltip(textRenderer, this.tooltip, mouseX, mouseY);
+        }
+    }
+
+    /**
+     * Sets the tooltip of the button.
+     * @param text The Text to display as a tooltip.
+     */
+    public void setTooltip(@Nullable MutableText text) {
+        this.tooltip = text;
     }
 
 }

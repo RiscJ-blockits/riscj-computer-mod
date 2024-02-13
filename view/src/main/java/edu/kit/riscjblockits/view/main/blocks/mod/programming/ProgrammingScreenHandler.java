@@ -5,11 +5,13 @@ import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
+import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlockEntity;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -17,9 +19,8 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
      * The inventory of the programming block.
      */
     private final Inventory inventory;
+    private final PlayerEntity player;
 
 
     /**
@@ -78,6 +80,7 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
         super(RISCJ_blockits.PROGRAMMING_SCREEN_HANDLER,syncId, blockEntity);
         this.inventory = inventory;
         this.blockEntity = blockEntity;
+        this.player = playerInventory.player;
         // add for GUI required Slots
         addInstructionSetSlot();
         addProgramSlots();
@@ -111,7 +114,10 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
      * @param message the message to show
      */
     private void showError(String message) {
-        // TODO: show error
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeString(message);
+
+        ServerPlayNetworking.send((ServerPlayerEntity) player, NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION, buf);
     }
 
     /**
