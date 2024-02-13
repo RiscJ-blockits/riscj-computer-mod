@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "riscj_blockits:block/wireless_register_block"
+    }
+  }
+}

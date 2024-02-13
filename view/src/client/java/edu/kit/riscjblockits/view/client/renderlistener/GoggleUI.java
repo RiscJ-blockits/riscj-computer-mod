@@ -2,7 +2,6 @@ package edu.kit.riscjblockits.view.client.renderlistener;
 
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.IGoggleQueryable;
 import edu.kit.riscjblockits.view.main.items.goggles.GogglesItem;
-import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -11,22 +10,21 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
-
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class is responsible for rendering the UI when the player is looking at a block that implements {@link IGoggleQueryable}.
  */
 public final class GoggleUI {
-    private boolean visible;
+
     private final TextRenderer textRenderer;
     private final MinecraftClient minecraft;
 
     /**
      * Creates a new GoggleUI.
-     * will save the minecraft instance and the text renderer instance.
+     * Will save the minecraft instance and the text renderer instance.
      */
     public GoggleUI() {
         minecraft = MinecraftClient.getInstance();
@@ -39,42 +37,39 @@ public final class GoggleUI {
      * @param context the drawing context
      */
     public void onRenderGameOverlay(DrawContext context) {
+        AtomicBoolean visible = new AtomicBoolean(false);
         HitResult crosshairTarget = minecraft.crosshairTarget;
         // check if goggles are worn, only visible when worn
-        visible = false;
+        visible.set(false);
+        assert minecraft.player != null;
         minecraft.player.getArmorItems().forEach(itemStack -> {
             if (itemStack.getItem() instanceof GogglesItem) {
-                //visible.set(true);
-                visible = true;
+                visible.set(true);
             }
         });
-        if (!visible) {
+        if (!visible.get()) {
             return;
         }
-
+        assert crosshairTarget != null;
         if (crosshairTarget.getType() != HitResult.Type.BLOCK) {
             return;
         }
         BlockHitResult target = (BlockHitResult) crosshairTarget;
-
-        BlockPos pos = target.getBlockPos();
+        assert minecraft.world != null;
         BlockEntity blockEntity = minecraft.world.getBlockEntity(target.getBlockPos());
-        Block block = minecraft.world.getBlockState(pos).getBlock();
         if (blockEntity == null) {
             return;
         }
-
-        if (!(blockEntity instanceof IGoggleQueryable goggleQueriable)) {
+        if (!(blockEntity instanceof IGoggleQueryable goggleQueryable)) {
             return;
         }
-
-        drawUI(context, goggleQueriable.getGoggleText());
+        drawUI(context, goggleQueryable.getGoggleText());
     }
 
     /**
      * Draws the UI.
-     * will draw the given text in the top-middle of the screen.
-     * multiple lines will be wrapped.
+     * Will draw the given text in the top-middle of the screen.
+     * Multiple lines will be wrapped.
      * @param context the drawing context
      * @param text the text to draw
      */

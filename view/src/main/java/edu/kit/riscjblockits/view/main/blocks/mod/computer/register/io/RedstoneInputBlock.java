@@ -1,5 +1,6 @@
-package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
+package edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io;
 
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -27,24 +28,6 @@ public class RedstoneInputBlock extends RegisterBlock {
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new RedstoneInputBlockEntity(pos, state);
-    }
-
-    /**
-     * This method is called when the block is right-clicked.
-     * We override it because unlike a normal register, a redstone output block has no screen.
-     * @param state The state of the minecraft block.
-     * @param world The world in which the block is placed.
-     * @param pos The position of the block in the minecraft world.
-     * @param player The player that right-clicked on the block.
-     * @param hand The hand with which the player right-clicked on the block.
-     * @param hit The hit result of the ray cast that was used to determine the block that was right-clicked on.
-     * @return A PASS action result to indicate that we don't want to do anything when the block is right-clicked.
-     */
-    @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-                              BlockHitResult hit) {
-        //we don't want to do anything when the block is right-clicked
-        return ActionResult.PASS;
     }
 
     /**

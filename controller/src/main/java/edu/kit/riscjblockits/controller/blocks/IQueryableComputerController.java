@@ -4,4 +4,7 @@ public interface IQueryableComputerController {
 
     BlockControllerType getControllerType();
 
+    //ToDo nicht im Entwurf
+    void stopVisualisation();
+
 }

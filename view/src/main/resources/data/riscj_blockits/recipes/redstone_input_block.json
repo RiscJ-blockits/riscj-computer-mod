@@ -1,16 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "redstone",
   "pattern": [
-    "   ",
-    " R ",
-    " E "
+    "CEC",
+    "CRC",
+    "COC"
   ],
   "key": {
     "E": {
-      "tag": "minecraft:redstone"
+      "item": "minecraft:redstone"
     },
     "R": {
       "item": "riscj_blockits:register_block"
+    },
+    "O": {
+      "item": "minecraft:observer"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
     }
   },
   "result": {

@@ -7,6 +7,7 @@ import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
@@ -61,6 +62,7 @@ public class ControlUnitController extends ComputerBlockController{
      */
     @Override
     public void setData(IDataElement data) {
+        super.setData(data);
         if (!data.isContainer()) {
             return;
         }
@@ -77,13 +79,11 @@ public class ControlUnitController extends ComputerBlockController{
                 IQueryableInstructionSetModel istModel = null;
                 try {
                     istModel = InstructionSetBuilder.buildInstructionSetModel(ist);
-                } catch (UnsupportedEncodingException e) {
+                } catch (UnsupportedEncodingException |  InstructionBuildException e) {
                     return;
                 }
-                ((ControlUnitModel) getModel()).setIstModel(istModel);
-                if (getClusterHandler() != null) {
-                    updateClusterHandler();
-                }
+                boolean newIstModel = ((ControlUnitModel) getModel()).setIstModel(istModel);
+                if (getClusterHandler() != null && newIstModel) updateClusterHandler();
             }
         }
     }

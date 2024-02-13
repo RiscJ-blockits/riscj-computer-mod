@@ -1,13 +1,10 @@
-package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
+package edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io;
 
-import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
-import edu.kit.riscjblockits.controller.blocks.IORegisterController;
-import edu.kit.riscjblockits.model.blocks.IORegisterModel;
 import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.tick.TickPriority;
@@ -15,7 +12,7 @@ import net.minecraft.world.tick.TickPriority;
 /**
  * This class defines the block entity for a register that always outputs the redstone power it has stored.
  */
-public class RedstoneOutputBlockEntity extends ComputerBlockEntity {
+public class RedstoneOutputBlockEntity extends RegisterBlockEntity {
 
     /**
      * The redstone power that the block should output.
@@ -34,15 +31,6 @@ public class RedstoneOutputBlockEntity extends ComputerBlockEntity {
     }
 
     /**
-     * Creates a new IORegisterController.
-     * @return A new IORegisterController bound to this block entity.
-     */
-    @Override
-    protected ComputerBlockController createController() {
-        return new IORegisterController(this, false, IORegisterModel.REDSTONE_OUTPUT);
-    }
-
-    /**
      * Getter for the redstone power that the block should output.
      * @return The redstone power that the block should output.
      */
@@ -58,12 +46,15 @@ public class RedstoneOutputBlockEntity extends ComputerBlockEntity {
         super.updateUI();
         if (getModel() == null || world == null || !getModel().hasUnqueriedStateChange()) return;
         String powerString = ((IDataStringEntry)((IDataContainer) getModel().getData()).get(DataConstants.REGISTER_VALUE)).getContent();
+        int newPower = 0;
         try {
-            power = Integer.parseInt(powerString);
-            power = Math.max(Math.min(power, 15), 0);
+            newPower = Integer.parseInt(powerString);
+            newPower = Math.max(Math.min(newPower, 15), 0);
         } catch (NumberFormatException e) {
             return;
         }
+        if (newPower == power) return;
+        power = newPower;
         world.scheduleBlockTick(pos, getCachedState().getBlock(), 0, TickPriority.byIndex(1));      //update the block
         getModel().onStateQuery();
     }

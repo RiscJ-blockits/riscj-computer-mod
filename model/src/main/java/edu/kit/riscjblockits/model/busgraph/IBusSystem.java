@@ -15,4 +15,11 @@ public interface IBusSystem {
      * @param presentData is the data that is present on the bus
      */
     public void setBusDataPath(BlockPosition startPos, BlockPosition endPos, Value presentData);
+
+    //ToDo nicht im Entwurfs Wiki
+    public void resetVisualisation();
+
+    //ToDo nicht im Entwurfs Wiki
+    void activateVisualisation();
+
 }

@@ -111,4 +111,6 @@ public interface IQueryableInstructionSetModel {
      */
     List<String> getRegisterNames();
 
+    String getRegisterInitialValue(String key);
+
 }

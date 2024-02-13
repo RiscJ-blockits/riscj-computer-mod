@@ -55,7 +55,7 @@ public class SystemClockController extends ComputerBlockController {
      */
     public void setSimulationTimeHandler(SimulationTimeHandler simulationTimeHandler) {
         this.simulationTimeHandler = simulationTimeHandler;
-        simStarted = true;
+        simStarted = simulationTimeHandler != null;
     }
 
     /**
@@ -67,6 +67,9 @@ public class SystemClockController extends ComputerBlockController {
         if (simStarted) {
             simulationTimeHandler.onMinecraftTick();
         }
+        if (getClockMode() == ClockMode.REALTIME) {
+            spawnEffect(IConnectableComputerBlockEntity.ComputerEffect.SMOKE);
+        }
     }
 
     /**
@@ -77,6 +80,7 @@ public class SystemClockController extends ComputerBlockController {
         if (simStarted) {
             simulationTimeHandler.onUserTickTrigger();
         }
+        ((SystemClockModel) getModel()).setActiveTick(true);
     }
 
     /**
@@ -88,6 +92,7 @@ public class SystemClockController extends ComputerBlockController {
      */
     @Override
     public void setData(IDataElement data) {
+        super.setData(data);
         if (!data.isContainer()) {
             return;
         }
@@ -100,6 +105,14 @@ public class SystemClockController extends ComputerBlockController {
                 ((SystemClockModel) getModel()).setClockMode(ClockMode.valueOf(value));         //ToDo error handling hier nötig?
             }
         }
+    }
+
+    /**
+     * Setter for the simulation mode in the model, can be used if the simulation mode got changed during the simulation
+     * @param mode
+     */
+    public void setSimulationMode(ClockMode mode) {
+        ((SystemClockModel) getModel()).setClockMode(mode);
     }
 
     public void registerModelObserver(ISimulationTimingObserver simulationTimingObserver) {

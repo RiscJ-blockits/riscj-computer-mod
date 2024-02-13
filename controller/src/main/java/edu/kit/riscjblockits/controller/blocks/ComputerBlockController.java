@@ -77,6 +77,14 @@ public abstract class ComputerBlockController extends BlockController implements
     }
 
     /**
+     * Getter for the block entity.
+     * @return The block entity that the controller is responsible for.
+     */
+    protected IConnectableComputerBlockEntity getBlockEntity() {
+        return blockEntity;
+    }
+
+    /**
      * Getter for the position of the block in the minecraft world.
      * @return An {@link BlockPosition} with the position of the block.
      */
@@ -125,5 +133,30 @@ public abstract class ComputerBlockController extends BlockController implements
      * Overwritten by the controller of the system clock.
      */
     public void tick() {};
+
+    //ToDo nicht im Entwurfs wiki
+    public void activateVisualisation() {
+        blockModel.setVisualisationState(true);
+    }
+
+    //ToDo nicht im Entwurfs wiki
+    public void stopVisualisation() {
+        blockModel.setVisualisationState(false);
+    }
+
+    /**
+     * Update the block state of neighbourBusses.
+     */
+    public void neighborUpdate() {
+        blockEntity.neighborUpdate();
+    }
+
+    /** ToDo nicht im Entwurfs wiki
+     * Creates a new effect at position of the block entity.
+     * @param effect The effect that should be spawned.
+     */
+    protected void spawnEffect(IConnectableComputerBlockEntity.ComputerEffect effect) {
+        blockEntity.spawnEffect(effect);
+    }
 
 }

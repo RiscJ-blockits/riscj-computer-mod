@@ -1,9 +1,25 @@
 package edu.kit.riscjblockits.controller.simulation;
 
-import edu.kit.riscjblockits.controller.blocks.*;
-import edu.kit.riscjblockits.model.blocks.*;
+import edu.kit.riscjblockits.controller.blocks.AluController;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
+import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
+import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
+import edu.kit.riscjblockits.controller.blocks.MemoryController;
+import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.controller.blocks.SystemClockController;
+import edu.kit.riscjblockits.model.blocks.AluModel;
+import edu.kit.riscjblockits.model.blocks.BlockPosition;
+import edu.kit.riscjblockits.model.blocks.ClockMode;
+import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
+import edu.kit.riscjblockits.model.blocks.MemoryModel;
+import edu.kit.riscjblockits.model.blocks.RegisterModel;
+import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import edu.kit.riscjblockits.model.data.IDataElement;
-import edu.kit.riscjblockits.model.instructionset.*;
+import edu.kit.riscjblockits.model.instructionset.AluInstruction;
+import edu.kit.riscjblockits.model.instructionset.ConditionedInstruction;
+import edu.kit.riscjblockits.model.instructionset.DataMovementInstruction;
+import edu.kit.riscjblockits.model.instructionset.InstructionCondition;
+import edu.kit.riscjblockits.model.instructionset.MemoryInstruction;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import org.junit.jupiter.api.AfterEach;
@@ -26,13 +42,14 @@ class ExecutorTest {
     private RegisterController registerController4;
     private RegisterController registerController5;
     private MemoryController memoryController;
+    private SystemClockController systemClockController;
 
     //copied from Nils @ AluControllerTest
     private IConnectableComputerBlockEntity getBlockEntityMock() {
         IConnectableComputerBlockEntity blockEntity = new IConnectableComputerBlockEntity() {
             @Override
             public void setBlockModel(IViewQueryableBlockModel model) {
-
+                //
             }
 
             @Override
@@ -49,34 +66,51 @@ class ExecutorTest {
             public IDataElement getBlockEntityData() {
                 return null;
             }
+
+            @Override
+            public void neighborUpdate() {}
+
+            @Override
+            public void spawnEffect(ComputerEffect effect) {
+                //
+            }
         };
         return blockEntity;
     }
 
     @BeforeEach
     void setUp() {
-
         MemoryController memoryController = new MemoryController(getBlockEntityMock());
-        ((MemoryModel) (memoryController.getModel())).setMemory(new Memory(4, 12));
-        memoryController.writeMemory(Value.fromHex("00", 4), Value.fromHex("0456", 12));
+        ((MemoryModel) (memoryController.getModel())).setMemory(new Memory(4, 4));
+        memoryController.writeMemory(Value.fromHex("00", 4), Value.fromHex("0456", 4));
         AluController aluController = new AluController(getBlockEntityMock());
-        ((AluModel) aluController.getModel()).setOperand1(Value.fromHex("0100", 12));
-        ((AluModel) aluController.getModel()).setOperand2(Value.fromHex("0023", 12));
+        ((AluModel) aluController.getModel()).setOperand1(Value.fromHex("0100", 4));
+        ((AluModel) aluController.getModel()).setOperand2(Value.fromHex("0023", 4));
         RegisterController registerController1 = new RegisterController(getBlockEntityMock());
         ((RegisterModel) registerController1.getModel()).setRegisterType("R1");
-        registerController1.setNewValue(Value.fromHex("0100", 12));
+        registerController1.setNewValue(Value.fromHex("0100", 4));
         RegisterController registerController2 = new RegisterController(getBlockEntityMock());
         ((RegisterModel) registerController2.getModel()).setRegisterType("R2");
-        registerController2.setNewValue(Value.fromHex("0023", 12));
+        registerController2.setNewValue(Value.fromHex("0023", 4));
         RegisterController registerController3 = new RegisterController(getBlockEntityMock());
         ((RegisterModel) registerController3.getModel()).setRegisterType("R3");
-        registerController3.setNewValue(Value.fromHex("0345", 12));
+        registerController3.setNewValue(Value.fromHex("0345", 4));
         RegisterController registerController4 = new RegisterController(getBlockEntityMock());
         ((RegisterModel) registerController4.getModel()).setRegisterType("R4");
-        registerController4.setNewValue(Value.fromHex("1111", 12));
+        registerController4.setNewValue(Value.fromHex("1111", 4));
         RegisterController registerController5 = new RegisterController(getBlockEntityMock());
         ((RegisterModel) registerController5.getModel()).setRegisterType("R5");
-        registerController5.setNewValue(Value.fromHex("1101", 12));
+        registerController5.setNewValue(Value.fromHex("1101", 4));
+        SystemClockController systemClockController = new SystemClockController(getBlockEntityMock());
+        systemClockController.setSimulationMode(ClockMode.MC_TICK);
+
+        memoryController.startClustering(new BlockPosition());
+        aluController.startClustering(new BlockPosition());
+        registerController1.startClustering(new BlockPosition());
+        registerController2.startClustering(new BlockPosition());
+        registerController3.startClustering(new BlockPosition());
+        registerController4.startClustering(new BlockPosition());
+        registerController5.startClustering(new BlockPosition());
 
         List<IQueryableSimController> blockControllers = new LinkedList<>();
         blockControllers.add(memoryController);
@@ -86,8 +120,9 @@ class ExecutorTest {
         blockControllers.add(registerController3);
         blockControllers.add(registerController4);
         blockControllers.add(registerController5);
+        blockControllers.add(systemClockController);
 
-        this.executor = new Executor(blockControllers);
+        this.executor = new Executor(blockControllers, 4, new BusSystemModel(new BlockPosition()));
         this.memoryController = memoryController;
         this.aluController = aluController;
         this.registerController1 = registerController1;
@@ -95,6 +130,7 @@ class ExecutorTest {
         this.registerController3 = registerController3;
         this.registerController4 = registerController4;
         this.registerController5 = registerController5;
+        this.systemClockController = systemClockController;
 
     }
 
@@ -105,36 +141,38 @@ class ExecutorTest {
     @Test
     void executeAluInstructionBaseCase() {
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0023", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0023", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
 
         AluInstruction aluInstruction = new AluInstruction(new String[]{"R1", "R2"}, "R2", "r", null, "ADD");
 
         executor.execute(aluInstruction);
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0123", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0123", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
 
     }
 
     @Test
     void executeAluInstructionWithMemoryInstruction() {
 
-        assertEquals(Value.fromHex("0456", 12), memoryController.getValue(Value.fromHex("00", 4)));
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0023", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0456", 4), memoryController.getValue(Value.fromHex("00", 4)));
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0023", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
 
-        MemoryInstruction memoryInstruction = new MemoryInstruction(new String[]{"0000000000000000"}, "R3", "r");
-        AluInstruction aluInstruction = new AluInstruction(new String[]{"R1", "R2"}, "R2", "r", memoryInstruction, "ADD");
+        registerController1.setNewValue(Value.fromHex("00", 4));
+
+        MemoryInstruction memoryInstruction = new MemoryInstruction(new String[]{"Mem[R1]"}, "R3", "r");
+        AluInstruction aluInstruction = new AluInstruction(new String[]{"R3", "R2"}, "R2", "r", memoryInstruction, "ADD");
 
         executor.execute(aluInstruction);
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0123", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0456", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("00", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0368", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0456", 4), registerController3.getValue());
 
 
     }
@@ -142,98 +180,110 @@ class ExecutorTest {
     @Test
     void executeDataMovementInstructionBaseCase() {
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0023", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0023", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
 
         DataMovementInstruction dataMovementInstruction = new DataMovementInstruction(new String[]{"R1"}, "R2", "r", null);
 
         executor.execute(dataMovementInstruction);
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0100", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
 
     }
 
     @Test
     void executeConditionedInstructionBaseCaseSignedConditionTrue() {
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0023", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
-        assertEquals(Value.fromHex("1111", 12), registerController4.getValue());
-        assertEquals(Value.fromHex("1101", 12), registerController5.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0023", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
+        assertEquals(Value.fromHex("1111", 4), registerController4.getValue());
+        assertEquals(Value.fromHex("1101", 4), registerController5.getValue());
 
         InstructionCondition condition = new InstructionCondition("s<", "R5", "R4");
         ConditionedInstruction conditionedInstruction = new ConditionedInstruction(new String[]{"R1"}, "R2", "", null, condition);
 
         executor.execute(conditionedInstruction);
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0100", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
 
     }
 
     @Test
     void executeConditionedInstructionBaseCaseSignedConditionFalse() {
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0023", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
-        assertEquals(Value.fromHex("1111", 12), registerController4.getValue());
-        assertEquals(Value.fromHex("1101", 12), registerController5.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0023", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
+        assertEquals(Value.fromHex("1111", 4), registerController4.getValue());
+        assertEquals(Value.fromHex("1101", 4), registerController5.getValue());
 
         InstructionCondition condition = new InstructionCondition("s<", "R4", "R5");
         ConditionedInstruction conditionedInstruction = new ConditionedInstruction(new String[]{"R1"}, "R2", "", null, condition);
 
         executor.execute(conditionedInstruction);
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0023", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0023", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
 
     }
 
     @Test
     void executeConditionedInstructionBaseCaseUnsignedConditionTrue() {
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0023", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0023", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
 
         InstructionCondition condition = new InstructionCondition("u<", "R1", "R3");
         ConditionedInstruction conditionedInstruction = new ConditionedInstruction(new String[]{"R1"}, "R2", "", null, condition);
 
         executor.execute(conditionedInstruction);
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0100", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
 
     }
 
     @Test
     void executeConditionedInstructionBaseCaseUnsignedConditionFalse() {
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0023", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0023", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
 
         InstructionCondition condition = new InstructionCondition("u<", "R3", "R1");
         ConditionedInstruction conditionedInstruction = new ConditionedInstruction(new String[]{"R1"}, "R2", "", null, condition);
 
         executor.execute(conditionedInstruction);
 
-        assertEquals(Value.fromHex("0100", 12), registerController1.getValue());
-        assertEquals(Value.fromHex("0023", 12), registerController2.getValue());
-        assertEquals(Value.fromHex("0345", 12), registerController3.getValue());
+        assertEquals(Value.fromHex("0100", 4), registerController1.getValue());
+        assertEquals(Value.fromHex("0023", 4), registerController2.getValue());
+        assertEquals(Value.fromHex("0345", 4), registerController3.getValue());
 
     }
 
     @Test
     void executeMemoryInstructionBaseCase() {
         executeAluInstructionWithMemoryInstruction();
+    }
+
+    @Test
+    void executeAluInstructionPauseCase() {
+
+        assertEquals(ClockMode.MC_TICK, systemClockController.getClockMode());
+
+        AluInstruction aluInstruction = new AluInstruction(new String[]{"", ""}, "", "r", null, "PAUSE");
+        executor.execute(aluInstruction);
+
+        assertEquals(ClockMode.STEP, systemClockController.getClockMode());
+
     }
 }

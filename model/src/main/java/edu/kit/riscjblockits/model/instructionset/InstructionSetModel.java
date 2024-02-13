@@ -2,9 +2,7 @@ package edu.kit.riscjblockits.model.instructionset;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -180,7 +178,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public int getMemoryWordSize() {
-        return instructionSetMemory.getWordSize();
+        return instructionSetMemory.getWordSize() / 8 + (instructionSetMemory.getWordSize() % 8 > 0 ? 1 : 0);
     }
 
     /**
@@ -189,7 +187,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public int getMemoryAddressSize() {
-        return instructionSetMemory.getAddressSize();
+        return instructionSetMemory.getAddressSize() / 8 + (instructionSetMemory.getAddressSize() % 8 > 0 ? 1 : 0);
     }
 
     /**
@@ -344,4 +342,39 @@ InstructionSetModel implements IQueryableInstructionSetModel {
     public List<String> getRegisterNames() {
         return instructionSetRegisters.getRegisterNames();
     }
+
+    public String getRegisterInitialValue(String key) {
+        return instructionSetRegisters.getInitialValue(key);
+    }
+
+    /**
+     * Get the Instructions offered by the instruction set to present in the view.
+     * @return List of instructions.
+     */
+    public ArrayList<String[]> getPossibleInstructions() {
+        ArrayList<String[]> instructionList = new ArrayList<>();
+        if(commandHashMap == null) return instructionList;
+        for(String instructionKey : commandHashMap.keySet()) {
+            instructionList.add(new String[]{instructionKey,
+                    Arrays.stream(commandHashMap.get(instructionKey).getArguments()).reduce("", (a, b) -> (a == null || a.isEmpty()) ? b : a + ", " + b)});
+        }
+
+        return instructionList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InstructionSetModel that = (InstructionSetModel) o;
+
+        if (instructionLength != that.instructionLength) return false;
+        assert name != null;
+        if (!name.equals(that.name)) return false;
+        assert programStartLabel != null;
+        if (!programStartLabel.equals(that.programStartLabel)) return false;
+        //ToDo finish
+        return true;
+    }
+
 }

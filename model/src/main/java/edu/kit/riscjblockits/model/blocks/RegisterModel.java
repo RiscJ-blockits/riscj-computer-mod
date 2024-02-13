@@ -44,7 +44,7 @@ public class RegisterModel extends BlockModel {
         setType(ModelType.REGISTER);
         registerType = UNASSIGNED_REGISTER;
         //ToDo remove Test code
-        wordLength = 32;
+        wordLength = 10;
     }
 
     /**
@@ -69,7 +69,6 @@ public class RegisterModel extends BlockModel {
             registersData.set(REGISTER_FOUND, new DataStringEntry(missingAvailableRegisters[1]));
             regData.set(REGISTER_REGISTERS, registersData);
         }
-        //setUnqueriedStateChange(false);
         return regData;
     }
 
@@ -104,6 +103,22 @@ public class RegisterModel extends BlockModel {
     public void setMissingAvailableRegisters(String[] missingAvailableRegisters) {
         this.missingAvailableRegisters = missingAvailableRegisters;
         setUnqueriedStateChange(true);
+    }
+
+    /**
+     * Getter for the word length of the register.
+     * @return The word length of the register.
+     */
+    protected int getWordLength() {
+        return wordLength;
+    }
+
+    /**
+     * Getter for the missing and available registers.
+     * @return [0] missing for a valid architecture. [1] already present in the cluster.
+     */
+    protected String[] getMissingAvailableRegisters() {
+        return missingAvailableRegisters;
     }
 
 }
