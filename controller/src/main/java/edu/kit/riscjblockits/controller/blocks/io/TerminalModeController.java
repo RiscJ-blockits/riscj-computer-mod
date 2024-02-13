@@ -73,11 +73,16 @@ public class TerminalModeController extends RegisterController {
         for (String s : ((IDataContainer) data).getKeys()) {
             switch (s) {
                 case REGISTER_TYPE -> {
-//                    String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
-//                    ((RegisterModel) getModel()).setRegisterType(type);
                     String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
-                    String first = type.split("_")[0];
-                    String second = type.split("_")[1];
+                    //((RegisterModel) getModel()).setRegisterType(type);     //when we reload the world, we need to set the register type for the mode register
+                    String first;
+                    String second;
+                    try {
+                        first = type.split("_")[0];
+                        second = type.split("_")[1];
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        continue;
+                    }
                     if (first.equals("In")) {
                         IDataContainer input = new Data();
                         input.set(REGISTER_TYPE, new DataStringEntry(second));
@@ -136,7 +141,20 @@ public class TerminalModeController extends RegisterController {
                         Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
                     inputController.setNewValue(value);
                 }
+//                case REGISTER_TERMINAL_IN_TYPE -> {
+//                    String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+//                    IDataContainer input = new Data();
+//                    input.set(REGISTER_TYPE, new DataStringEntry(type));
+//                    inputController.setData(input);
+//                }
+//                case REGISTER_TERMINAL_OUT_TYPE -> {
+//                    String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+//                    IDataContainer input = new Data();
+//                    input.set(REGISTER_TYPE, new DataStringEntry(type));
+//                    outputController.setData(input);
+//                }
             }
         }
     }
+
 }

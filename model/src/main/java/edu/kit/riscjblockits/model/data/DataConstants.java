@@ -61,6 +61,8 @@ public class DataConstants {
 
     public static final String REGISTER_TERMNAL_MODE = "terminal_mode";
     public static final String REGISTER_TERMINAL_INPUT = "terminal_input";
+    public static final String REGISTER_TERMINAL_IN_TYPE = "terminal_in_type";
+    public static final String REGISTER_TERMINAL_OUT_TYPE = "terminal_out_type";
 
     //SystemClock Constants
     /**

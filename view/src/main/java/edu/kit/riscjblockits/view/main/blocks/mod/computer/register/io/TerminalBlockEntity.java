@@ -29,7 +29,10 @@ import org.jetbrains.annotations.Nullable;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_INPUT;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_IN_TYPE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_OUT_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMNAL_MODE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 
 /**
@@ -151,13 +154,10 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
 
     @Override
     public void writeNbt(NbtCompound nbt) {
+        super.writeNbt(nbt);
         if (getModel() != null) {                       //we are in the server, so we send the data in the model
             nbt.put(MOD_DATA, new DataNbtConverter(collectData()).getNbtElement());
         }
-        if (world != null && world.isClient && getClientData() != null) {          //we are in the client, so we send local data
-            nbt.put(MOD_DATA, new DataNbtConverter(getClientData()).getNbtElement());
-        }
-        super.writeNbt(nbt);
         markDirty();
     }
 
@@ -167,20 +167,18 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
         IDataContainer modeData = (IDataContainer) modeController.getModel().getData();
         outData.set(REGISTER_TERMNAL_MODE, modeData.get(REGISTER_VALUE));
         outData.set(REGISTER_TERMINAL_INPUT, inData.get(REGISTER_VALUE));
+        outData.set(REGISTER_TERMINAL_IN_TYPE, inData.get(REGISTER_TYPE));
+        outData.set(REGISTER_TERMINAL_OUT_TYPE, outData.get(REGISTER_TYPE));
         return outData;
     }
 
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        if (world != null && world.isClient &&  nbt.contains(MOD_DATA)) {     //we are in the client and want to save the data
-            setClientData(new NbtDataConverter(nbt.get(MOD_DATA)).getData());
-        }
         if (world != null && world.isClient) {         //we are in the client
             String newValue = getRegisterValue(nbt);
             persistentText = persistentText + translateHexToAscii(newValue);
         }
-
     }
 
     @Override

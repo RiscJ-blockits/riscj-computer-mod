@@ -12,6 +12,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_IN_TYPE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_OUT_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 
 public class TerminalScreenHandler extends RegisterScreenHandler {
@@ -36,7 +38,11 @@ public class TerminalScreenHandler extends RegisterScreenHandler {
             return "";
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals(REGISTER_TYPE)) {
+            if (s.equals(REGISTER_TYPE ) && (mode == DisplayMode.MODE)) {
+                return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+            } else if (s.equals(REGISTER_TERMINAL_IN_TYPE) && (mode == DisplayMode.IN)) {
+                return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+            } else if (s.equals(REGISTER_TERMINAL_OUT_TYPE) && (mode == DisplayMode.OUT)) {
                 return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
             }
         }
