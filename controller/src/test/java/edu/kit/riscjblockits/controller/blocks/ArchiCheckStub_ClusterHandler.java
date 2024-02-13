@@ -19,4 +19,9 @@ public class ArchiCheckStub_ClusterHandler extends ClusterHandler {
         return blockController;
     }
 
+    @Override
+    public boolean isNeighbourPosition(BlockController block1, BlockController block2) {
+        return true;
+    }
+
 }
