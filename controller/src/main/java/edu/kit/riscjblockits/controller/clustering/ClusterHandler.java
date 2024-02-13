@@ -255,6 +255,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     public boolean setIstModel(IQueryableInstructionSetModel istModel) {
         if (istModel == null) {
             removeIstModel();
+            checkFinished();
             return false;
         }
         int cuCount = 0;
@@ -265,6 +266,7 @@ public class ClusterHandler implements IArchitectureCheckable {
         }
         if (cuCount > 1) {
             removeIstModel();
+            checkFinished();
             return false;
         }
         this.istModel = istModel;
