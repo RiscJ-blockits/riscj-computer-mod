@@ -100,7 +100,25 @@
         "DIV",
         "DIVU",
         "REM",
-        "REMU"
+        "REMU",
+        "FADD",
+        "FSUB",
+        "FMUL",
+        "FDIV",
+        "FSQRT",
+        "FSGNJ",
+        "FSGNJN",
+        "FSGNJX",
+        "FMIN",
+        "FMAX",
+        "FCVTW",
+        "FCVTWU",
+        "FEQ",
+        "FLT",
+        "FLE",
+        "FCVTS",
+        "FCVTSU"
+
 
     ],
     "fetch": [
@@ -848,7 +866,12 @@
         "flw": {
             "opcode": "0000111",
             "arguments": ["[f1]", "[const](t1)"],
-            "execution": [], // TODO RV32F
+            "execution": [
+                ["A", "&[t1]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["", "", "r", "&f[f1]", "Mem[OUT]"]
+            ],
             "translation": [
                 "[const]<11:0>",
                 "[t1]<5>",
@@ -860,7 +883,12 @@
         "fsw": {
             "opcode": "0100111",
             "arguments": ["[f1]", "[const](t1)"],
-            "execution": [], // TODO RV32F
+            "execution": [
+                ["A", "&[t1]", "", "", ""],
+                ["B", "[const]", "", "", ""],
+                ["ADD", "OUT", "A", "B", "", "", ""],
+                ["", "", "w", "Mem[OUT]", "&f[f1]"]
+            ],
             "translation": [
                 "[const]<11:5>",
                 "[t1]<5>",
@@ -873,7 +901,12 @@
         "fadd.s": {
             "opcode": "1010011",
             "arguments": ["[f1]", "[f2]", "[f3]"],
-            "execution": [], // TODO RV32F
+            "execution": [
+                ["A", "&f[f2]", "", "", ""],
+                ["B", "&f[f3]", "", "", ""],
+                ["FADD", "OUT", "A", "B", "", "", ""],
+                ["&f[f1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "0000000",
                 "[f3]<5>",
@@ -886,7 +919,12 @@
         "fsub.s": {
             "opcode": "1010011",
             "arguments": ["[f1]", "[f2]", "[f3]"],
-            "execution": [], // TODO RV32F
+            "execution": [
+                ["A", "&f[f2]", "", "", ""],
+                ["B", "&f[f3]", "", "", ""],
+                ["FSUB", "OUT", "A", "B", "", "", ""],
+                ["&f[f1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "0000100",
                 "[f3]<5>",
@@ -899,7 +937,12 @@
         "fmul.s": {
             "opcode": "1010011",
             "arguments": ["[f1]", "[f2]", "[f3]"],
-            "execution": [], // TODO RV32F
+            "execution": [
+                ["A", "&f[f2]", "", "", ""],
+                ["B", "&f[f3]", "", "", ""],
+                ["FMUL", "OUT", "A", "B", "", "", ""],
+                ["&f[f1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "0001000",
                 "[f3]<5>",
@@ -912,7 +955,12 @@
         "fdiv.s": {
             "opcode": "1010011",
             "arguments": ["[f1]", "[f2]", "[f3]"],
-            "execution": [], // TODO RV32F
+            "execution": [
+                ["A", "&f[f2]", "", "", ""],
+                ["B", "&f[f3]", "", "", ""],
+                ["FDIV", "OUT", "A", "B", "", "", ""],
+                ["&f[f1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "0001100",
                 "[f3]<5>",
@@ -925,7 +973,11 @@
         "fsqrt.s": {
             "opcode": "1010011",
             "arguments": ["[f1]", "[f2]"],
-            "execution": [], // TODO RV32F
+            "execution": [
+                ["A", "&f[f2]", "", "", ""],
+                ["FSQRT", "OUT", "A", "", "", "", ""],
+                ["&f[f1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "0101100",
                 "00000",
@@ -937,8 +989,13 @@
 
         "fsgnj.s": {
             "opcode": "1010011",
-            "arguments": ["[f1]", "[f2]", "[f3]"], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[f1]", "[f2]", "[f3]"],
+            "execution": [
+                ["A", "&f[f2]", "", "", ""],
+                ["B", "&f[f3]", "", "", ""],
+                ["FSGNJ", "OUT", "A", "B", "", "", ""],
+                ["&f[f1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "0010000",
                 "[rs2]<5>",
@@ -950,11 +1007,16 @@
 
         "fsgnjn.s": {
             "opcode": "1010011",
-            "arguments": ["[f1]", "[f2]", "[f3]"], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[f1]", "[f2]", "[f3]"],
+            "execution": [
+                ["A", "&f[f2]", "", "", ""],
+                ["B", "&f[f3]", "", "", ""],
+                ["FSGNJN", "OUT", "A", "B", "", "", ""],
+                ["&f[f1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "0010000",
-                "[rs2]<5>",
+                "[f3]<5>",
                 "[f2]<5>",
                 "001",
                 "[f1]<5>",
@@ -963,8 +1025,13 @@
 
         "fsgnjx.s": {
             "opcode": "1010011",
-            "arguments": ["[f1]", "[f2]", "[f3]"], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[f1]", "[f2]", "[f3]"],
+            "execution": [
+                ["A", "&f[f2]", "", "", ""],
+                ["B", "&f[f3]", "", "", ""],
+                ["FSGNJX", "OUT", "A", "B", "", "", ""],
+                ["&f[f1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "0010000",
                 "[f3]<5>",
@@ -976,8 +1043,13 @@
 
         "fmin.s": {
             "opcode": "1010011",
-            "arguments": ["[f1]", "[f2]", "[f3]"], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[f1]", "[f2]", "[f3]"],
+            "execution": [
+                ["A", "&f[f2]", "", "", ""],
+                ["B", "&f[f3]", "", "", ""],
+                ["FMIN", "OUT", "A", "B", "", "", ""],
+                ["&f[f1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "0010100",
                 "[f3]<5>",
@@ -989,8 +1061,13 @@
 
         "fmax.s": {
             "opcode": "1010011",
-            "arguments": ["[f1]", "[f2]", "[f3]"], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[f1]", "[f2]", "[f3]"],
+            "execution": [
+                ["A", "&f[f2]", "", "", ""],
+                ["B", "&f[f3]", "", "", ""],
+                ["FMAX", "OUT", "A", "B", "", "", ""],
+                ["&f[f1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "0010100",
                 "[f3]<5>",
@@ -1002,118 +1079,153 @@
 
         "fcvt.w.s": {
             "opcode": "1010011",
-            "arguments": [], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[t1]", "[f1]"],
+            "execution": [
+                ["A", "&f[f1]", "", "", ""],
+                ["FCVTW", "OUT", "A", "B", "", "", ""],
+                ["&[t1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "1100000",
                 "00000",
-                "[rs1]<5>",
-                "[rm]",
-                "[rd]<5>",
+                "[f1]<5>",
+                "000",
+                "[t1]<5>",
                 "1010011"]
         },
 
         "fcvt.wu.s": {
             "opcode": "1010011",
-            "arguments": [], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[t1]", "[f1]"],
+            "execution": [
+                ["A", "&f[f1]", "", "", ""],
+                ["FCVTWU", "OUT", "A", "B", "", "", ""],
+                ["&[t1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "1100000",
                 "00001",
-                "[rs1]<5>",
-                "[rm]",
-                "[rd]<5>",
+                "[f1]<5>",
+                "000",
+                "[t1]<5>",
                 "1010011"]
         },
 
         "fmv.x.w": {
             "opcode": "1010011",
-            "arguments": [], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[t1]", "[f1]"],
+            "execution": [
+                ["&[t1]", "&f[f1]", "", "", ""]
+            ],
             "translation": [
                 "1110000",
                 "00000",
-                "[rs1]<5>",
+                "[f1]<5>",
                 "000",
-                "[rd]<5>",
+                "[t1]<5>",
                 "1010011"]
         },
 
         "feq.s": {
             "opcode": "1010011",
-            "arguments": [], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[t1]", "[f1]", "[f2]"],
+            "execution": [
+                ["A", "&f[f1]", "", "", ""],
+                ["B", "&f[f2]", "", "", ""],
+                ["FEQ", "OUT", "A", "B", "", "", ""],
+                ["&[t1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "1010000",
-                "[rs2]<5>",
-                "[rs1]<5>",
+                "[f2]<5>",
+                "[f1]<5>",
                 "010",
-                "[rd]<5>",
+                "[t1]<5>",
                 "1010011"]
         },
 
         "flt.s": {
             "opcode": "1010011",
-            "arguments": [], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[t1]", "[f1]", "[f2]"],
+            "execution": [
+                ["A", "&f[f1]", "", "", ""],
+                ["B", "&f[f2]", "", "", ""],
+                ["FLT", "OUT", "A", "B", "", "", ""],
+                ["&[t1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "1010000",
-                "[rs2]<5>",
-                "[rs1]<5>",
+                "[f2]<5>",
+                "[f1]<5>",
                 "001",
-                "[rd]<5>",
+                "[t1]<5>",
                 "1010011"]
         },
 
         "fle.s": {
             "opcode": "1010011",
-            "arguments": [], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[t1]", "[f1]", "[f2]"],
+            "execution": [
+                ["A", "&f[f1]", "", "", ""],
+                ["B", "&f[f2]", "", "", ""],
+                ["FLE", "OUT", "A", "B", "", "", ""],
+                ["&[t1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "1010000",
-                "[rs2]<5>",
-                "[rs1]<5>",
+                "[f2]<5>",
+                "[f1]<5>",
                 "000",
-                "[rd]<5>",
+                "[t1]<5>",
                 "1010011"]
         },
 
         "fcvt.s.w": {
             "opcode": "1010011",
-            "arguments": [], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[f1]", "[t1]"],
+            "execution": [
+                ["A", "&[t1]", "", "", ""],
+                ["FCVTS", "OUT", "A", "B", "", "", ""],
+                ["&f[f1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "1101000",
                 "00000",
-                "[rs1]<5>",
-                "[rm]",
-                "[rd]<5>",
+                "[t1]<5>",
+                "000",
+                "[f1]<5>",
                 "1010011"]
         },
 
         "fcvt.s.wu": {
             "opcode": "1010011",
-            "arguments": [], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[f1]", "[t1]"],
+            "execution": [
+                ["A", "&[t1]", "", "", ""],
+                ["FCVTSU", "OUT", "A", "B", "", "", ""],
+                ["&f[f1]", "OUT", "", "", ""]
+            ],
             "translation": [
                 "1101000",
                 "00001",
-                "[rs1]<5>",
-                "[rm]",
-                "[rd]<5>",
+                "[t1]<5>",
+                "000",
+                "[f1]<5>",
                 "1010011"]
         },
 
         "fmv.w.x": {
             "opcode": "1010011",
-            "arguments": [], // TODO RV32F
-            "execution": [], // TODO RV32F
+            "arguments": ["[f1]", "[t1]"],
+            "execution": [
+                ["&f[f1]", "&[t1]", "", "", ""]
+            ],
             "translation": [
                 "1111000",
                 "00000",
-                "[rs1]<5>",
+                "[t1]<5>",
                 "000",
-                "[rd]<5>",
+                "[f1]<5>",
                 "1010011"]
         }
 
