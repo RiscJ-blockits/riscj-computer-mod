@@ -31,12 +31,12 @@ public class BusBlock extends ConnectingComputerBlock {
         super((float) 3 /16, settings);
         this.setDefaultState(
                 this.stateManager.getDefaultState()
-                    .with(NORTH, false)
-                    .with(EAST, false)
-                    .with(SOUTH, false)
-                    .with(WEST, false)
-                    .with(UP, false)
-                    .with(DOWN, false));
+                    .with(NORTH, Side.NONE)
+                    .with(EAST, Side.NONE)
+                    .with(SOUTH, Side.NONE)
+                    .with(WEST, Side.NONE)
+                    .with(UP, Side.NONE)
+                    .with(DOWN, Side.NONE));
 
     }
 
@@ -47,12 +47,12 @@ public class BusBlock extends ConnectingComputerBlock {
         super((float) 3 /16);
         this.setDefaultState(
                 this.stateManager.getDefaultState()
-                        .with(NORTH, false)
-                        .with(EAST, false)
-                        .with(SOUTH, false)
-                        .with(WEST, false)
-                        .with(UP, false)
-                        .with(DOWN, false)
+                        .with(NORTH, Side.NONE)
+                        .with(EAST, Side.NONE)
+                        .with(SOUTH, Side.NONE)
+                        .with(WEST, Side.NONE)
+                        .with(UP, Side.NONE)
+                        .with(DOWN, Side.NONE)
                         .with(ACTIVE, false));
 
     }
