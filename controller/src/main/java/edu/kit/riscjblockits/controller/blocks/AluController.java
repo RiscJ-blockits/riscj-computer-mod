@@ -8,6 +8,7 @@ import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.ALU_OPERATION;
 import static java.lang.Math.max;
@@ -116,6 +117,26 @@ public class AluController extends ComputerBlockController {
         "DIVU",
         "REM",
         "REMU"
+
+
+        RISC-V FLOAT:
+        FADD
+        FSUB
+        FMUL
+        FDIV
+        FSQRT
+        FSGNJ
+        FSGNJN
+        FSGNJX
+        FMIN
+        FMAX
+        FCVTW
+        FCVTWU
+        FEQ
+        FLT
+        FLE
+        FCVTS
+        FCVTSU
          */
 
 
@@ -134,7 +155,7 @@ public class AluController extends ComputerBlockController {
                 result = sub(operand1, operand2);
                 break;
             case "RR":
-                result = rr(operand1, operand2);
+                result = rr(operand1);
                 break;
             case "AND":
                 result = and(operand1, operand2);
@@ -146,7 +167,7 @@ public class AluController extends ComputerBlockController {
                 result = xor(operand1, operand2);
                 break;
             case "NEG":
-                result = neg(operand1, operand2);
+                result = neg(operand1);
                 break;
             case "SLL":
                 result = sll(operand1, operand2);
@@ -181,6 +202,57 @@ public class AluController extends ComputerBlockController {
             case "REMU":
                 result = remu(operand1, operand2);
                 break;
+            case "FADD":
+                result = fadd(operand1, operand2);
+                break;
+            case "FSUB":
+                result = fsub(operand1, operand2);
+                break;
+            case "FMUL":
+                result = fmul(operand1, operand2);
+                break;
+            case "FDIV":
+                result = fdiv(operand1, operand2);
+                break;
+            case "FSQRT":
+                result = fsqrt(operand1);
+                break;
+            case "FSGNJ":
+                result = fsgnj(operand1, operand2);
+                break;
+            case "FSGNJN":
+                result = fsgnjn(operand1, operand2);
+                break;
+            case "FSGNJX":
+                result = fsgnjx(operand1, operand2);
+                break;
+            case "FMIN":
+                result = fmin(operand1, operand2);
+                break;
+            case "FMAX":
+                result = fmax(operand1, operand2);
+                break;
+            case "FCVTW":
+                result = fcvtw(operand1);
+                break;
+            case "FCVTWU":
+                result = fcvtwu(operand1);
+                break;
+            case "FEQ":
+                result = feq(operand1, operand2);
+                break;
+            case "FLT":
+                result = flt(operand1, operand2);
+                break;
+            case "FLE":
+                result = fle(operand1, operand2);
+                break;
+            case "FCVTS":
+                result = fcvts(operand1);
+                break;
+            case "FCVTSU":
+                result = fcvtsu(operand1);
+                break;
             default:
                 //null by default, considering exception
                 break;
@@ -188,6 +260,195 @@ public class AluController extends ComputerBlockController {
 
         ((AluModel) getModel()).setResult(result);
         return result;
+    }
+
+    private Value fcvtsu(Value operand1) {
+
+        //TODO check if this is correct
+        ByteBuffer wrapped = ByteBuffer.wrap(operand1.getByteValue());
+        long num = wrapped.getLong();
+        num = Math.abs(num);
+        float float1 = (float) num;
+        return getFloatAsValue(float1);
+
+    }
+
+    private Value fcvts(Value operand1) {
+
+        ByteBuffer wrapped = ByteBuffer.wrap(operand1.getByteValue());
+        int num = wrapped.getInt();
+        float float1 = (float) num;
+
+        return getFloatAsValue(float1);
+
+    }
+
+    private Value fle(Value operand1, Value operand2) {
+
+        float float1 = getValueAsFloat(operand1);
+        float float2 = getValueAsFloat(operand2);
+
+        if(float1 <= float2) {
+            return new Value(new byte[]{1});
+        }
+
+        return new Value(new byte[]{0});
+
+    }
+
+    private Value flt(Value operand1, Value operand2) {
+
+        float float1 = getValueAsFloat(operand1);
+        float float2 = getValueAsFloat(operand2);
+
+        if(float1 < float2) {
+            return new Value(new byte[]{1});
+        }
+
+        return new Value(new byte[]{0});
+
+    }
+
+    private Value feq(Value operand1, Value operand2) {
+
+        float float1 = getValueAsFloat(operand1);
+        float float2 = getValueAsFloat(operand2);
+
+        if(float1 == float2) {
+            return new Value(new byte[]{1});
+        }
+
+        return new Value(new byte[]{0});
+    }
+
+    private Value fcvtwu(Value operand1) {
+
+        float float1 = getValueAsFloat(operand1);
+        float1 = Math.round(float1);
+        float1 = Math.abs(float1);
+        int result = (int) float1;
+
+        return new Value(ByteBuffer.allocate(Integer.BYTES).putInt(result).array());
+    }
+
+    private Value fcvtw(Value operand1) {
+
+        float float1 = getValueAsFloat(operand1);
+        int result = (int) float1;
+
+        return new Value(ByteBuffer.allocate(Integer.BYTES).putInt(result).array());
+    }
+
+    private Value fmax(Value operand1, Value operand2) {
+
+        float float1 = getValueAsFloat(operand1);
+        float float2 = getValueAsFloat(operand2);
+
+        if(float1 > float2) {
+            return operand1;
+        }
+
+        return operand2;
+
+    }
+
+    private Value fmin(Value operand1, Value operand2) {
+
+        float float1 = getValueAsFloat(operand1);
+        float float2 = getValueAsFloat(operand2);
+
+        if(float1 < float2) {
+            return operand1;
+        }
+
+        return operand2;
+
+    }
+
+    private Value fsgnjx(Value operand1, Value operand2) {
+
+        if(getValueAsFloat(operand2) > 0) {
+            return operand1;
+        }
+
+        return getFloatAsValue(0 - getValueAsFloat(operand1));
+    }
+
+    private Value fsgnjn(Value operand1, Value operand2) {
+        if(getValueAsFloat(operand2) < 0 ^ getValueAsFloat(operand1) < 0) {
+            return operand1;
+        }
+
+        return getFloatAsValue(0 - getValueAsFloat(operand1));
+    }
+
+    private Value fsgnj(Value operand1, Value operand2) {
+
+        if(getValueAsFloat(operand2) < 0 ^ getValueAsFloat(operand1) < 0) {
+            return getFloatAsValue(0 - getValueAsFloat(operand1));
+        }
+
+        return operand1;
+    }
+
+    private Value fsqrt(Value operand1) {
+
+        float float1 = getValueAsFloat(operand1);
+
+        float result = (float) Math.sqrt(float1);
+
+        return getFloatAsValue(result);
+    }
+
+    private Value fdiv(Value operand1, Value operand2) {
+
+        float float1 = getValueAsFloat(operand1);
+        float float2 = getValueAsFloat(operand2);
+
+        float result = float1 / float2;
+
+        return getFloatAsValue(result);
+    }
+
+    private Value fmul(Value operand1, Value operand2) {
+
+        float float1 = getValueAsFloat(operand1);
+        float float2 = getValueAsFloat(operand2);
+
+        float result = float1 * float2;
+
+        return getFloatAsValue(result);
+    }
+
+    private Value fsub(Value operand1, Value operand2) {
+
+        float float1 = getValueAsFloat(operand1);
+        float float2 = getValueAsFloat(operand2);
+
+        float result = float1 - float2;
+
+        return getFloatAsValue(result);
+    }
+
+    private Value fadd(Value operand1, Value operand2) {
+
+        float float1 = getValueAsFloat(operand1);
+        float float2 = getValueAsFloat(operand2);
+
+        float result = float1 + float2;
+
+        return getFloatAsValue(result);
+    }
+
+    private float getValueAsFloat(Value value) {
+        ByteBuffer buffer = ByteBuffer.wrap(value.getByteValue());
+        return buffer.getFloat();
+    }
+
+    private Value getFloatAsValue(float value) {
+        ByteBuffer buffer = ByteBuffer.allocate(Float.BYTES);
+        buffer.putFloat(value);
+        return new Value(buffer.array());
     }
 
     /**
@@ -530,10 +791,9 @@ public class AluController extends ComputerBlockController {
     /**
      * Rotate first value right by one
      * @param operand1 first value
-     * @param operand2 second value, unused
      * @return rotated operand1
      */
-    private Value rr(Value operand1, Value operand2) {
+    private Value rr(Value operand1) {
 
             byte[] array1 = operand1.getByteValue();
 
@@ -612,10 +872,9 @@ public class AluController extends ComputerBlockController {
     /**
      * Logical negation of first value
      * @param operand1 first value
-     * @param operand2 second value, unused
      * @return negated operand1
      */
-    private Value neg(Value operand1, Value operand2) {
+    private Value neg(Value operand1) {
 
         byte[] array1 = operand1.getByteValue();
         byte[] result = new byte[array1.length];
