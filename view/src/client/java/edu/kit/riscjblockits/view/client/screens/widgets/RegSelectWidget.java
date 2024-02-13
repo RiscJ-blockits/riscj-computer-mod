@@ -7,6 +7,7 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalS
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -100,7 +101,9 @@ public class RegSelectWidget extends ExtendableWidget{
         TextRenderer textRenderer = minecraftClient.textRenderer;
         context.drawText(textRenderer, Text.literal(TO_DO_TEXT), i + 8, j + 8, 0x555555, false);
 
-        this.registerList.render(context, mouseX, mouseY, delta);
+        for (Element element : this.children) {
+            ((Drawable) element).render(context, mouseX, mouseY, delta);
+        }
 
         context.getMatrices().pop();
     }
@@ -133,5 +136,7 @@ public class RegSelectWidget extends ExtendableWidget{
         return true;//mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 
-
+    protected void addChild(Element child) {
+        this.children.add(child);
+    }
 }

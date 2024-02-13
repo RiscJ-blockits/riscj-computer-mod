@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.view.client.screens.handled;
 import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.RegSelectWidget;
+import edu.kit.riscjblockits.view.client.screens.widgets.TerminalSelectionWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalBlockEntity;
@@ -28,7 +29,7 @@ import org.lwjgl.glfw.GLFW;
  */
 public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/register/terminal_block_gui.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/register/io/terminal_block_gui.png");
     private static final Identifier BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/instructions_button.png");
 
     /**
@@ -45,7 +46,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
      * A Minecraft class that is used to display the output string.
      */
     private MultilineText outputtedText;
-    private RegSelectWidget regSelectWidget;
+    private TerminalSelectionWidget terminalSelectionWidget;
     private IconButtonWidget regSelectButton;
     private boolean narrow;
 
@@ -83,23 +84,23 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         handler.enableSyncing();
         //init the RegSelectWidget
         this.narrow = this.width < 379;
-        regSelectWidget = new RegSelectWidget();
+        terminalSelectionWidget = new TerminalSelectionWidget();
         assert this.client != null;
-        regSelectWidget.initialize(this.width, this.height, this.client, this.narrow, this.handler);
+        terminalSelectionWidget.initialize(this.width, this.height, this.client, this.narrow, this.handler);
         regSelectButton = new IconButtonWidget(
             this.x + 7, this.y + 99,
             13, 13,
             button -> {
-                this.regSelectWidget.toggleOpen();
-                this.x = this.regSelectWidget.findLeftEdge(this.width, this.backgroundWidth);
+                this.terminalSelectionWidget.toggleOpen();
+                this.x = this.terminalSelectionWidget.findLeftEdge(this.width, this.backgroundWidth);
                 button.setPosition(this.x + 7, this.y + 99);
                 inputBox.setPosition(this.x + 108, this.y + 99);
             }, BUTTON_TEXTURE);
 
 
         this.addDrawableChild(regSelectButton);
-        this.addSelectableChild(this.regSelectWidget);
-        this.setInitialFocus(this.regSelectWidget);
+        this.addSelectableChild(this.terminalSelectionWidget);
+        this.setInitialFocus(this.terminalSelectionWidget);
         this.titleX = 29;
     }
 
@@ -114,12 +115,12 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        if(this.regSelectWidget.isOpen() && this.narrow) {
+        if(this.terminalSelectionWidget.isOpen() && this.narrow) {
             this.renderBackground(context, mouseX, mouseY, delta);
         } else {
             super.render(context, mouseX, mouseY, delta);
         }
-        this.regSelectWidget.render(context, mouseX, mouseY, delta);
+        this.terminalSelectionWidget.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);  // render the tooltip of the button if the mouse is over it
 
         if(outputtedText != null){
@@ -192,7 +193,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
      */
     @Override
     public void handledScreenTick() {
-        this.regSelectWidget.update();
+        this.terminalSelectionWidget.update();
         output = ((TerminalBlockEntity) handler.getBlockEntity()).getDisplayedString();
         outputtedText = MultilineText.create(textRenderer, Text.literal(output) , 160, 8);
     }
