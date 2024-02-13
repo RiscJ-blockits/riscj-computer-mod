@@ -34,6 +34,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_RE
 import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_MISSING_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_ITEM_PRESENT;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
 /**
@@ -64,7 +65,7 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
             }
         });
         addPlayerInventorySlotsLarge(playerInventory);
-        if (inventory.getStack(0).getCount() == 1) {
+        if (inventory.getStack(0).getCount() == 0) {
             opened = true;
         }
         addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
@@ -178,6 +179,10 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
                         default:
                             break;
                     }
+                }
+            } else if (s.equals(CONTROL_ITEM_PRESENT)) {
+                if ( ((IDataStringEntry) ((IDataContainer) data).get(CONTROL_ITEM_PRESENT)).getContent().equals("false") ) {
+                    return new List[]{new ArrayList<>(), new ArrayList<>()};
                 }
             }
         }
