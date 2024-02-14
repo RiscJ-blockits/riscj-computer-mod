@@ -6,9 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
@@ -20,11 +18,15 @@ import org.jetbrains.annotations.Nullable;
  */
 public class SystemClockBlock extends ComputerBlock {
 
+    /**
+     * The texture has eight different cursor positions.
+     */
     public static final int MAX_CURSORPOS = 7;
 
+    /**
+     * The cursor position is saved as a block state property.
+     */
     public static final IntProperty CURSORPOS = IntProperty.of("cursorpos", 0, MAX_CURSORPOS);
-
-
 
     /**
      * Creates a new SystemClockBlock with the given settings.
@@ -57,17 +59,39 @@ public class SystemClockBlock extends ComputerBlock {
         return new SystemClockBlockEntity(pos, state);
     }
 
+    /**
+     * We can schedule a tick for this block to update the powered state.
+     * @param state The state of the block.
+     * @param world The world in which the block is located.
+     * @param pos The position of the block in the world.
+     * @param random A random number generator.
+     */
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        updatePowered(state, world, pos);
+        updatePowered(world, pos);
     }
 
+    /**
+     * This method is called by minecraft when a neighbor block changes.
+     * That happens when a redstone signal changes.
+     * @param state The state of the block.
+     * @param world The world in which the block is located.
+     * @param pos The position of the block in the world.
+     * @param sourceBlock The block that caused the update.
+     * @param sourcePos The position of the block that is receiving the update.
+     * @param notify Not specified.
+     */
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
-        updatePowered(state, world, pos);
+        updatePowered(world, pos);
     }
 
-    private void updatePowered(BlockState state, World world, BlockPos pos) {
+    /**
+     * Helper method to update the powered state of the block entity at this position.
+     * @param world The world in which the block is located.
+     * @param pos The position of the block in the world.
+     */
+    private void updatePowered(World world, BlockPos pos) {
         ((SystemClockBlockEntity) world.getBlockEntity(pos)).setPowered(world.isReceivingRedstonePower(pos));
     }
 
@@ -80,4 +104,5 @@ public class SystemClockBlock extends ComputerBlock {
         builder.add(CURSORPOS);
         super.appendProperties(builder);
     }
+
 }

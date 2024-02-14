@@ -6,6 +6,10 @@
 4) use Gradle Task fabric/runClient to test
 (https://fabricmc.net/wiki/tutorial:setup)
 
+## Install
+1) Install fabric launcher and api: https://fabricmc.net/wiki/player:tutorials:install_mcl:windows
+2) Download our .jar and move it into the mods folder in your minecraft installation
+
 ## Features:
 ### Introduction
 This mod is designed to provide a hands-on understanding of computer architecture. It allows you to construct a virtual computer within the Minecraft universe using specific blocks that represent different components of a computer system. These components include registers, a control unit, an arithmetic logic unit (ALU), and memory. 
@@ -46,7 +50,7 @@ The Instruction Set: Defining Computer Commands \
 Welcome to the instruction set section, where you’ll learn about specifying the different types of commands available for programming your virtual computer in Minecraft.
 
 Understanding the Instruction Set \
-In computer architecture, the instruction set is a specification a group of commands that a CPU can understand and execute. These commands are the building blocks of programs, allowing the CPU to perform operations such as arithmetic, logic, data transfer, and control flow. In our Minecraft mod, you can choose between two instruction sets: MIMA and RISC-V. You can also manipulate these and define your own instruction set.
+In computer architecture, the instruction set is a specification of a group of commands that a CPU can understand and execute. These commands are the building blocks of programs, allowing the CPU to perform operations such as arithmetic, logic, data transfer, and control flow. In our Minecraft mod, you can choose between two instruction sets: MIMA and RISC-V. You can also manipulate these and define your own instruction set.
 
 MIMA Instruction Set \
 The MIMA instruction set is based on the Minimal Machine architecture, a simplified model of a computer system. It includes commands such as ADD, SUB, LDC, STV, and JMP, among others. For a full list of the instructions, insert the instruction set item in the programming block and click the ?-Symbol. The MIMA instruction set provides a straightforward introduction to computer architecture, making it an ideal starting point for learning about programming and execution in Minecraft.
@@ -62,7 +66,7 @@ You can also define your own instruction set by modifying the MIMA or RISC-V ins
 To write your own instruction set, please adhere to the following guidelines:
 
 - Each instruction should have a unique name.
-- The .json structure should include the sections name, instruction_length, registers, memory, alu_operations, fetch, address_change, program_start_label, data_storage_keywords, and instructions.
+- The .json structure should include the section name, instruction_length, registers, memory, alu_operations, fetch, address_change, program_start_label, data_storage_keywords, and instructions.
 - The instruction_length section should specify the length of the instruction in bits.
 - The registers section should include the subsections program_counter, alu, float, integer, and initial_values.
 - The memory section should include the subsections word_length, address_length, access_delay, byte_order, possible_opcode_lengths, and opcode_position.

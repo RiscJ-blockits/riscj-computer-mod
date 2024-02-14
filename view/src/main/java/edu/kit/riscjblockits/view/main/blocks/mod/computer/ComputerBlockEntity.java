@@ -34,7 +34,8 @@ import java.util.List;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
-/** BlockEntity for all @link ComputerBlocks.
+/**
+ * BlockEntity for all @link ComputerBlocks.
  * Every {@link ComputerBlock} has its own unique ComputerBlockEntity during runtime.
  */
 public abstract class ComputerBlockEntity extends ModBlockEntity implements IConnectableComputerBlockEntity,
@@ -47,6 +48,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
 
     /**
      * Will create a new {@link ComputerBlockController} for this block.
+     * Is called by {@link ModBlockEntity#setController()}.
      */
     protected abstract IUserInputReceivableComputerController createController();
 
@@ -56,7 +58,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     private IDataElement data;
 
     /**
-     * Determines if the register is active in visualisation or not.
+     * Determines if the block has an active visualization.
      */
     private boolean active;
 
@@ -66,7 +68,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      */
     public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
         if(!world.isClient) {               //used to make sure we always have a controller
-            entity.setController();         //this could eat a lot of performance
+            entity.setController();         //this could eat a lot of performances, but should be ok
         }
         if (!world.isClient && entity.getController() != null) {
             ((IUserInputReceivableComputerController)entity.getController()).tick();
@@ -75,14 +77,13 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         entity.syncToClient();
     }
 
-
     /**
      * Creates a new ComputerBlockEntity with the given settings.
      * @param type The type of the block entity.
      * @param pos The position of the block in the minecraft world.
      * @param state The state of the minecraft block.
      */
-    public ComputerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    protected ComputerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         setType(EntityType.CONNECTABLE);
         active = false;
@@ -90,11 +91,10 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
 
     /**
      * Get the {@link BlockController} of this block's neighbors, which are {@link BusBlock}.
-     * Method is only overwritten in the BusEntity.
      * @return all BlockControllers of this block's neighbors, which are BusBlocks.
      */
     public List<ComputerBlockController> getComputerNeighbours() {
-        List<ComputerBlockController> neigbhours = new ArrayList<>();
+        List<ComputerBlockController> neighbours = new ArrayList<>();
         List<BlockEntity> blockEntities = new ArrayList<>();
         World world = getWorld();
         assert world != null;       //because controllers only exist in the server, this is always true.
@@ -106,22 +106,22 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         blockEntities.add(world.getBlockEntity(getPos().west()));
         //
         for (BlockEntity entity:blockEntities) {
-            if (entity instanceof ComputerBlockEntity) {               //FixMe instanceof schöner machen (geht das)
-                if (((ComputerBlockEntity) entity).getModblockType() == EntityType.CONNECTABLE) {
+            if (entity instanceof ComputerBlockEntity && (((ComputerBlockEntity) entity).getModblockType() == EntityType.CONNECTABLE)) {
                     if (((ComputerBlockEntity) entity).getController() == null                //don't start clustering too early when chunk is still loading
                         ||((ComputerBlockController) ((ComputerBlockEntity) entity).getController()).getClusterHandler() == null) {
                         //do nothing
                     } else {
-                        neigbhours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
+                        neighbours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
                     }
-                }
+
             }
         }
-        return neigbhours;
+        return neighbours;
     }
 
     /**
      * Sets the model for this block.
+     * Is called from the controller on controller creation.
      * @param model The model for this block.
      */
     public void setBlockModel(IViewQueryableBlockModel model) {
@@ -147,20 +147,14 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         return Text.of("Goggle Text " + getPos().toString());
     }
 
-    @Override
-    public IDataElement getBlockEntityData() {
-        return null;
-    }
-
     /**
-     * Getter for the model of this block.
-     * @return
+     * @return the model of this block.
      */
     protected IQueryableBlockModel getModel() {
         return model;
     }
 
-    /** Nicht im Entwurf
+    /** ToDo Nicht im Entwurf
      * Gets called every tick.
      * Used to update ui elements.
      */
@@ -238,7 +232,12 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         }
     }
 
-    //todo nicht im Entwurfs wiki
+    /** todo nicht im Entwurfs wiki
+     * Requests data for the block entity.
+     * It sets a new {@link Data} object to the block entity's controller.
+     * When new data s revived,
+     * the controller will call the model's onStateChange method which will trigger a sync to the client.
+     */
     public void requestData() {
         getController().setData(new Data());
     }
@@ -255,7 +254,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             case EXPLODE:
                 world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 10.0f, World.ExplosionSourceType.BLOCK);
                 break;
-            case SMOKE: //17 6
+            case SMOKE:
                 if (!world.isClient) {
                     ((ServerWorld) world).spawnParticles(
                         ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,5, 0.0D, 0.0D, 0.0D,0);

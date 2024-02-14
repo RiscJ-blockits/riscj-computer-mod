@@ -25,9 +25,15 @@ import static edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.Sy
  */
 public class SystemClockBlockEntity extends ComputerBlockEntity implements ExtendedScreenHandlerFactory {
 
+    /**
+     * Determines if the system clock is receiving redstone power.
+     */
     private boolean powered;
+
+    /**
+     * The position of the clock hand on the texture inside the world.
+     */
     private int cursorSide = 0;
-    private int tickCounter = 0;
 
     /**
      * Creates a new SystemClockBlockEntity with the given settings.
@@ -40,29 +46,50 @@ public class SystemClockBlockEntity extends ComputerBlockEntity implements Exten
 
     /**
      * Every entity needs its own controller.
-     * @return An SystemClockController bound to this entity.
+     * @return A SystemClockController bound to this entity.
      */
     @Override
     protected ComputerBlockController createController() {
         return new SystemClockController(this);
     }
 
+    /**
+     * Called when the screen is opened.
+     * We send the position to the screen.
+     * @param player the player that is opening the screen
+     * @param buf    the packet buffer to write the data to
+     */
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
         buf.writeBlockPos(this.pos);
     }
 
+    /**
+     * @return The display name of the system clock. Is a translatable text.
+     */
     @Override
     public Text getDisplayName() {
-        return Text.literal("System Clock");
+        return Text.translatable("block.riscj_blockits.system_clock_block");
     }
 
+    /**
+     * Creates a new SystemClockScreenHandler for the player.
+     * @param syncId The id of the screen.
+     * @param playerInventory The inventory of the player.
+     * @param player The player that is opening the screen.
+     * @return super.createMenu(syncId, playerInventory, player);
+     */
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new SystemClockScreenHandler(syncId, playerInventory, this);
     }
 
+    /**
+     * Is called when the redstone power state of the block changes.
+     * Updates the controller.
+     * @param powered if the block is powered or not.
+     */
     public void setPowered(boolean powered) {
         if (powered && !this.powered) {
             if (getController() == null)
@@ -72,23 +99,25 @@ public class SystemClockBlockEntity extends ComputerBlockEntity implements Exten
         this.powered = powered;
     }
 
-
-
+    /**
+     * Is called every tick.
+     * Updates the in world texture.
+     */
     @Override
     public void updateUI() {
         if (getModel() != null && ((SystemClockModel) getModel()).getVisualisationState())
             updateCursor();
-
         super.updateUI();
-
-
-
     }
 
+    /**
+     * Sets the clock hand in the in world texture to the next position.
+     */
     private void updateCursor() {
         if (world != null) {
             cursorSide = (cursorSide + 1) % (MAX_CURSORPOS + 1);
             world.setBlockState(pos, world.getBlockState(pos).with(CURSORPOS, cursorSide));
         }
     }
+
 }

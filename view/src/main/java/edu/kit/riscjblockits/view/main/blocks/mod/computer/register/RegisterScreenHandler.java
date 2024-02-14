@@ -1,17 +1,13 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
-import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
@@ -25,6 +21,9 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 
+/** ToDo javadoc
+ *
+ */
 public class RegisterScreenHandler extends ModScreenHandler {
 
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, ModBlockEntity blockEntity) {
@@ -38,11 +37,6 @@ public class RegisterScreenHandler extends ModScreenHandler {
 
     public RegisterScreenHandler(ScreenHandlerType<?> type, int syncId, ModBlockEntity blockEntity) {
         super(type, syncId, blockEntity);
-    }
-
-    @Override
-    public boolean canUse(PlayerEntity player) {
-        return true;
     }
 
     public String getRegisterValue() {
@@ -63,8 +57,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
     }
 
     /**
-     * Gets the register Type of the currently opened RegisterBLock
-     * @return
+     * @return the register Type of the currently opened RegisterBlock.
      */
     public String getCurrentRegister(){
         NbtCompound nbt = getBlockEntity().createNbt();
@@ -86,11 +79,11 @@ public class RegisterScreenHandler extends ModScreenHandler {
     public List<String> getRegisters(String key) {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
         IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         if (!data.isContainer()) {
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             if (!s.equals(REGISTER_REGISTERS)) {
@@ -114,7 +107,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
                 return registers;
             }
         }
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 
 }

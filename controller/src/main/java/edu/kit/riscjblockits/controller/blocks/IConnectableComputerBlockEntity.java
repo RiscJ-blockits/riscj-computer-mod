@@ -31,12 +31,6 @@ public interface IConnectableComputerBlockEntity {
     BlockPosition getBlockPosition();
 
     /**
-     * The Controllers can get initial Data from NBT.
-     * @return
-     */
-    IDataElement getBlockEntityData();
-
-    /**
      * Spawns an effect at the position of the block entity.
      * @param effect The effect that should be spawned.
      */

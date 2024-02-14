@@ -46,21 +46,18 @@ public abstract class ComputerBlock extends ModBlock {
 
     /**
      * Called on every block state change.
-     * Used to update the block entity, prior to its destruction after the block has been broken.
-     *
+     * Used to update the block entity prior to its destruction after the block has been broken.
      * @param state the old block state.
      * @param world the minecraft world the block is placed in.
      * @param pos the position of the block.
      * @param newState the new block state.
      * @param moved true if the block was moved, false otherwise.
-     *
      */
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         //check if the block has been broken
         if (!world.isClient && state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            //TODO: instanceof entfernen
             if (blockEntity instanceof ComputerBlockEntity) {
                 ((ComputerBlockEntity) blockEntity).onBroken();
             }
@@ -68,13 +65,14 @@ public abstract class ComputerBlock extends ModBlock {
         super.onStateReplaced(state, world, pos, newState, moved);
     }
 
-    /** TODO Javadoc - Get help from Nils
-     *
+    /**
+     * When we want to get a block entity to receive every world tick,
+     * we can register a receiving method inside the entity here.
      * @param world the minecraft world the block is placed in.
      * @param state the state of the block.
      * @param type the type of the block entity.
-     * @return
-     * @param <T>
+     * @return the block entity ticker for the block entity.
+     * @param <T> the type of the block entity.
      */
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
