@@ -26,6 +26,7 @@ public class DualTexturedIconButtonWidget extends IconButtonWidget{
      * @param height       The height of the button.
      * @param onPress      The action to perform when the button is pressed.
      * @param texture1     The default texture of the button.
+     * @param texture2     The alternative texture of the button.
      */
     public DualTexturedIconButtonWidget(int x, int y, int width, int height, PressAction onPress, Identifier texture1, Identifier texture2) {
         super(x, y, width, height, onPress, texture1);

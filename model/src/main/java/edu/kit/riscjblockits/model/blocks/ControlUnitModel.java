@@ -52,7 +52,8 @@ public class ControlUnitModel extends BlockModel{
         if (clusteringData != null) {
             cuData.set(CONTROL_CLUSTERING, clusteringData);
         }
-        if (istModel != null) {             //ToDo auch hier wäre boolean besser
+        if (istModel != null) {
+            //ToDo auch hier wäre boolean besser
             cuData.set(CONTROL_ITEM_PRESENT, new DataStringEntry("true"));
         } else {
             cuData.set(CONTROL_ITEM_PRESENT, new DataStringEntry("false"));
@@ -75,7 +76,8 @@ public class ControlUnitModel extends BlockModel{
             setUnqueriedStateChange(true);
             return true;
         }
-        this.istModel = istModel;              //just to be safe
+        //just to be safe
+        this.istModel = istModel;
         setUnqueriedStateChange(true);
         return false;
     }

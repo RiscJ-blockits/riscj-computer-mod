@@ -11,12 +11,13 @@ import net.minecraft.item.ItemStack;
  */
 public class CategoryEntry extends ListEntry{
     private static final float MAX_TEXT_WIDTH = 70f;
+    private static final int HEIGHT = 20;
+    private static final int WIDTH = 100;
     private final String name;
     private final String key;
     private final ScrollableTextWidget textWidget;
     private final TextRenderer textRenderer;
-    private static final int HEIGHT = 20;
-    private static final int WIDTH = 100;
+
     private ItemStack icon;
 
     /**
@@ -37,6 +38,16 @@ public class CategoryEntry extends ListEntry{
         this.textRenderer = textRenderer;
     }
 
+    /**
+     * Constructor for a category entry with an icon.
+     * @param x x button position
+     * @param y y button position
+     * @param name name key of the category
+     * @param key key of the category
+     * @param textWidget the text widget
+     * @param textRenderer the text renderer
+     * @param icon identifier for the icon
+     */
     public CategoryEntry(int x, int y, String name, String key, ScrollableTextWidget textWidget, TextRenderer textRenderer, ItemStack icon) {
         this(x, y, name, key, textWidget, textRenderer);
         this.icon = icon;
@@ -73,6 +84,9 @@ public class CategoryEntry extends ListEntry{
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+    /**
+     * Selects the category. Set the manual text to the category name.
+     */
     public void select() {
         textWidget.setText(I18n.translate(key));
     }

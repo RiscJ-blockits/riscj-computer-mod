@@ -14,51 +14,51 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * this class represents an assembler that translates assembly code into machine code
- * it will write the machine code to a memory
+ * This class represents an assembler that translates assembly code into machine code.
+ * It will write the machine code to a memory.
  */
 public class Assembler {
 
     /**
-     * regex pattern to separate a lines label and command
+     * Regex pattern to separate a lines label and command.
      */
     private static final Pattern LABEL_COMMAND_PATTERN = Pattern.compile(" *(?:(?<label>\\w+):)? *(?<command>[^;# ][^;#]*)? *(?:[;#].*)?");
     private static final Pattern ARGUMENT_REGISTER_PATTERN = Pattern.compile("-?\\d*\\((?<register>\\w+)\\)");
     private static final Pattern RELATIVE_LABEL_PATTERN = Pattern.compile("~\\[\\w+]");
 
     /**
-     * the {@link IQueryableInstructionSetModel} that is used for the assembly
+     * The {@link IQueryableInstructionSetModel} that is used for the assembly.
      */
     private final IQueryableInstructionSetModel instructionSetModel;
 
 
     /**
-     * the {@link Memory} to write the assembled code to
+     * The {@link Memory} to write the assembled code to.
      */
     private final Memory memory;
 
     /**
-     * the current address to write to
+     * The current address to write to.
      */
     private Value currentAddress;
 
     /**
-     * the size of the memory address in bytes
+     * The size of the memory address in bytes.
      */
     private int calculatedMemoryAddressSize;
 
     /**
-     * the size of the memory word in bytes
+     * The size of the memory word in bytes.
      */
     private int calculatedMemoryWordSize;
 
     /**
-     * the Map of all labels and their addresses labeling to
+     * The Map of all labels and their addresses labeling to.
      */
     private final Map<String, Value> labels;
 
     /**
-     * Constructor for an {@link Assembler}
+     * Constructor for an {@link Assembler}.
      * will create a new {@link Memory} with the address and word size of the {@link IQueryableInstructionSetModel}
      * @param instructionSetModel the instruction set model to use for the assembly
      */
@@ -77,7 +77,7 @@ public class Assembler {
     }
 
     /**
-     * Assembles the given assembly code and writes it to the {@link Memory}
+     * Assembles the given assembly code and writes it to the {@link Memory}.
      * @param assemblyCode the assembly code to assemble
      * @throws AssemblyException if the assembly code cant be assembled
      */
@@ -155,7 +155,7 @@ public class Assembler {
 
 
     /**
-     * Gets the {@link Command} for a given line
+     * Gets the {@link Command} for a given line.
      * will also detect and save labels
      * @param command the line to get the command for
      * @return the command for the given line
@@ -254,7 +254,7 @@ public class Assembler {
     }
 
     /**
-     * uses the detected Labels to fill those, when given as an argument
+     * Uses the detected Labels to fill those, when given as an argument.
      *
      * @param arguments array of arguments that may have labels, in need to be replaced
      */
@@ -269,7 +269,7 @@ public class Assembler {
     }
 
     /**
-     * writes the instruction-set's register addresses to the arguments
+     * Writes the instruction-set's register addresses to the arguments.
      *
      * @param arguments array of arguments that may have registers, in need to be replaced
      */
@@ -310,7 +310,7 @@ public class Assembler {
     }
 
     /**
-     * Gets Data of the {@link Memory} that was written to if code was assembled
+     * Gets Data of the {@link Memory} that was written to if code was assembled.
      * @return the memory that was written to
      */
     public IDataElement getMemoryData() {
