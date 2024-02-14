@@ -204,6 +204,9 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
     }
 
     public String getExample() {
+        if(inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
+            return "";
+        }
         String ist = inventory.getStack(0).getOrCreateNbt().get("riscj_blockits.instructionSet").toString();
         InstructionSetModel instructionSetModel;
         try {
