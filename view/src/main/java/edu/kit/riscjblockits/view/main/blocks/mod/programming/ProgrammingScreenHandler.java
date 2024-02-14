@@ -204,11 +204,11 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
     }
 
     public String getExample() {
-        inventory.getStack(0).getOrCreateNbt();
-        String s ="";
+        String ist = inventory.getStack(0).getOrCreateNbt().get("riscj_blockits.instructionSet").toString();
         InstructionSetModel instructionSetModel;
         try {
-            instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(s);
+            instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(ist);
+
         }catch (UnsupportedEncodingException | InstructionBuildException e) {
             return "";
         }
