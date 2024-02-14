@@ -47,12 +47,6 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     private IViewQueryableBlockModel model;
 
     /**
-     * Will create a new {@link ComputerBlockController} for this block.
-     * Is called by {@link ModBlockEntity#setController()}.
-     */
-    protected abstract IUserInputReceivableComputerController createController();
-
-    /**
      * Only exists on the client side. Holds the data displayed on the client.
      */
     private IDataElement data;
@@ -61,6 +55,25 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Determines if the block has an active visualization.
      */
     private boolean active;
+
+    /**
+     * Creates a new ComputerBlockEntity with the given settings.
+     * @param type The type of the block entity.
+     * @param pos The position of the block in the minecraft world.
+     * @param state The state of the minecraft block.
+     */
+    protected ComputerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
+        setType(EntityType.CONNECTABLE);
+        active = false;
+    }
+
+    /**
+     * Will create a new {@link ComputerBlockController} for this block.
+     * Is called by {@link ModBlockEntity#setController()}.
+     * @return The new {@link ComputerBlockController} for this block.
+     */
+    protected abstract IUserInputReceivableComputerController createController();
 
     /**
      * Method that Minecraft calls every tick.
@@ -79,18 +92,6 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         }
         entity.updateUI();
         entity.syncToClient();
-    }
-
-    /**
-     * Creates a new ComputerBlockEntity with the given settings.
-     * @param type The type of the block entity.
-     * @param pos The position of the block in the minecraft world.
-     * @param state The state of the minecraft block.
-     */
-    protected ComputerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state);
-        setType(EntityType.CONNECTABLE);
-        active = false;
     }
 
     /**
@@ -152,13 +153,15 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     }
 
     /**
+     * Getter for the model of this block.
      * @return the model of this block.
      */
     protected IQueryableBlockModel getModel() {
         return model;
     }
 
-    /** ToDo Nicht im Entwurf
+    //ToDo Nicht im Entwurf
+    /**
      * Gets called every tick.
      * Used to update ui elements.
      */
@@ -236,7 +239,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         }
     }
 
-    /** todo nicht im Entwurfs wiki
+    //todo nicht im Entwurfs wiki
+    /**
      * Requests data for the block entity.
      * It sets a new {@link Data} object to the block entity's controller.
      * When new data s revived,

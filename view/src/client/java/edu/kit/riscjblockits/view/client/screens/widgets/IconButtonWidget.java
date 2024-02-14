@@ -14,16 +14,6 @@ import org.jetbrains.annotations.Nullable;
 public class IconButtonWidget extends ButtonWidget {
 
     /**
-     * The text renderer to use for tooltips.
-     */
-    private TextRenderer textRenderer;
-
-    /**
-     * The tooltip to display when the button is hovered.
-     */
-    private MutableText tooltip;
-
-    /**
      * For narration support.
      */
     protected static final NarrationSupplier DEFAULT_NARRATION_SUPPLIER = textSupplier -> (MutableText)textSupplier.get();
@@ -32,6 +22,16 @@ public class IconButtonWidget extends ButtonWidget {
      * The texture on top of the button.
      */
     protected Identifier texture;
+
+    /**
+     * The text renderer to use for tooltips.
+     */
+    private TextRenderer textRenderer;
+
+    /**
+     * The tooltip to display when the button is hovered.
+     */
+    private MutableText tooltip;
 
     /**
      * Constructor for the icon button widget.

@@ -17,6 +17,7 @@ public abstract class BlockController implements IUserInputReceivableController 
 
     /**
      * Default Constructor. Creates an Undefined Controller.
+     * @param controllerType The type of the controller.
      */
     protected BlockController(BlockControllerType controllerType) {
         this.controllerType = controllerType;
@@ -27,11 +28,10 @@ public abstract class BlockController implements IUserInputReceivableController 
      * Triggered by a reload of the minecraft block or a user input.
      * @param data The data to be set.
      */
-    public void setData(IDataElement data) {
-        //ToDo
-    }
+    public void setData(IDataElement data) {}
 
     /**
+     * Getter for the controller type.
      * @return The controller type.
      */
     public BlockControllerType getControllerType() {
@@ -39,6 +39,7 @@ public abstract class BlockController implements IUserInputReceivableController 
     }
 
     /**
+     * Setter for the controller type.
      * @param controllerType Sets a new controller type.
      */
     protected void setControllerType(BlockControllerType controllerType) {

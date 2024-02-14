@@ -79,6 +79,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     }
 
     /**
+     * Getter for the name of the ControlUnit Screen.
      * @return The name on the ControlUnit Screen.
      */
     @Override
@@ -174,6 +175,10 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
 
     }
 
+    /**
+     * Getter for a List of missing Blocks and a List of found Blocks.
+     * @return A List[] with the first entry being the missing Blocks and the second entry being the found Blocks.
+     */
     public List[] getStructure(){
         List<String> listFound = new ArrayList<>();
         List<String> listMissing = new ArrayList<>();

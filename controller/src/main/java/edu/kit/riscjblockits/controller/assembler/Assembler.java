@@ -272,6 +272,7 @@ public class Assembler {
      * Writes the instruction-set's register addresses to the arguments.
      *
      * @param arguments array of arguments that may have registers, in need to be replaced
+     * @throws AssemblyException thrown if the Code can not be assembled.
      */
     private void writeRegistersToArguments(String[] arguments) throws AssemblyException {
         // for each argument:

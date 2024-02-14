@@ -4,8 +4,6 @@ import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.blocks.BusModel;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
-import edu.kit.riscjblockits.model.busgraph.IQueryableBusSystem;
-import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.List;
 
@@ -33,14 +31,9 @@ public class BusController extends ComputerBlockController{
     }
 
     /**
-     * Used from the view if it wants to update Data in the model.
-     * @param data The data that should be set.
+     * Returns the neighbors of the bus in the BusSystemModel.
+     * @return The neighbors of the bus in the BusSystemModel.
      */
-    @Override
-    public void setData(IDataElement data) {
-        //Todo noch leer //remove?
-    }
-
     public List<BlockPosition> getBusSystemNeighbors() {
         if (getClusterHandler() == null) {
             return null;

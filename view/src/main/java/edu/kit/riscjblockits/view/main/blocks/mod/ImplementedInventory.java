@@ -15,6 +15,7 @@ public interface ImplementedInventory extends Inventory {
     /**
      * Retrieves the item list of this inventory.
      * Must return the same instance every time it's called.
+     * @return a list of all items in this inventory.
      */
     DefaultedList<ItemStack> getItems();
 
@@ -125,6 +126,7 @@ public interface ImplementedInventory extends Inventory {
     }
 
     /**
+     * Determines whether the player can use the inventory.
      * @return true if the player can use the inventory, false otherwise.
      */
     @Override
