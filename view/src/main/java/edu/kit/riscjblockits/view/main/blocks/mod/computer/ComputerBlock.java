@@ -79,7 +79,8 @@ public abstract class ComputerBlock extends ModBlock {
         return (world1, pos, state1, be) -> ComputerBlockEntity.tick(world1, pos, state1, (ComputerBlockEntity) be);
     }
 
-    /** Is called by minecraft. We add our custom block state.
+    /**
+     * Is called by minecraft. We add our custom block state.
      * @param builder {@link net.minecraft.block.Block#appendProperties(StateManager.Builder)} for this block.
      */
     @Override

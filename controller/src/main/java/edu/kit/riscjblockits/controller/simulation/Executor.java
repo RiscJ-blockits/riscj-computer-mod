@@ -1,7 +1,13 @@
 package edu.kit.riscjblockits.controller.simulation;
 
 
-import edu.kit.riscjblockits.controller.blocks.*;
+import edu.kit.riscjblockits.controller.blocks.AluController;
+import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
+import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
+import edu.kit.riscjblockits.controller.blocks.MemoryController;
+import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstructionException;
 import edu.kit.riscjblockits.model.busgraph.IBusSystem;
 import edu.kit.riscjblockits.model.blocks.ClockMode;
@@ -69,8 +75,10 @@ public class Executor implements IExecutor {
     private ComputerBlockController controlUnitController;
 
     /**
-     * Constructor. Initializes the {@link BlockController}s list and the {@link RegisterController}s map.
+     * Constructor. Initializes the BlockControllers list and the {@link RegisterController}s map.
      * @param blockControllers Controllers of the associated computer blocks.
+     * @param wordLength Word length of the computer.
+     * @param busSystem BusSystemModel of the computer.
      */
     public Executor(List<IQueryableSimController> blockControllers, int wordLength, IBusSystem busSystem) {
         this.blockControllers = blockControllers;
@@ -87,12 +95,12 @@ public class Executor implements IExecutor {
                 this.controlUnitController = (ComputerBlockController) blockController;
             }
         }
-        
     }
 
     /**
      * Executes a memory instruction.
      * @param memoryInstruction Memory instruction to be executed.
+     * @throws NonExecutableMicroInstructionException if the instruction is not executable.
      */
     public void execute(MemoryInstruction memoryInstruction) {
         //ToDo Mima wartetaktvisualisierung
@@ -133,8 +141,7 @@ public class Executor implements IExecutor {
                         Value value = ((MemoryController) blockController).getValue(fromAddress);
                         registerControllerMap.get(to).setNewValue(value);
 
-                    }
-                    else if(flag.equals("w")) {
+                    } else if(flag.equals("w")) {
                         Value value = registerControllerMap.get(from).getValue();
 
                         Matcher matcher = MEMORY_ACCES_PATTERN.matcher(to);
@@ -185,6 +192,7 @@ public class Executor implements IExecutor {
     /**
      * Executes an alu instruction.
      * @param aluInstruction Alu instruction to be executed.
+     * @throws NonExecutableMicroInstructionException if the instruction is not executable.
      */
     public void execute(AluInstruction aluInstruction) {
         //check if the instruction is a pause instruction
@@ -219,7 +227,7 @@ public class Executor implements IExecutor {
                 if (!from2.isBlank())
                     aluController.setOperand2(registerControllerMap.get(from2).getValue());
                 else
-                    aluController.setOperand2(Value.fromBinary("0", wordLength ,true));
+                    aluController.setOperand2(Value.fromBinary("0", wordLength,true));
 
                 Value result = ((AluController) blockController).executeAluOperation(aluInstruction.getAction());
 
@@ -251,6 +259,7 @@ public class Executor implements IExecutor {
      * Checks the condition of a conditioned instruction.
      * @param condition Condition to be checked.
      * @return True if the condition is met, false otherwise.
+     * @throws NonExecutableMicroInstructionException if the condition is not executable.
      */
     private boolean checkCondition(InstructionCondition condition) {
 
@@ -259,9 +268,7 @@ public class Executor implements IExecutor {
         // first Comparator is a register --> load value from there
         if (registerControllerMap.containsKey(condition.getCompare1())) {
             firstValue = registerControllerMap.get(condition.getCompare1()).getValue();
-        }
-        // Comparator is not a register --> extract value from binary constant
-        else {
+        } else { // Comparator is not a register --> extract value from binary constant
             if (!BINARY_PATTERN.matcher(condition.getCompare1()).matches()) {
                 throw new NonExecutableMicroInstructionException(
                         "DataMovementInstruction has no valid from value, does not match pattern");
@@ -273,9 +280,7 @@ public class Executor implements IExecutor {
         // second Comparator is a register --> load value from there
         if (registerControllerMap.containsKey(condition.getCompare2())) {
             secondValue = registerControllerMap.get(condition.getCompare2()).getValue();
-        }
-        // Comparator is not a register --> extract value from binary constant
-        else {
+        } else { // Comparator is not a register --> extract value from binary constant
             if (!BINARY_PATTERN.matcher(condition.getCompare2()).matches()) {
                 throw new NonExecutableMicroInstructionException(
                         "DataMovementInstruction has no valid from value, does not match pattern");
@@ -334,6 +339,7 @@ public class Executor implements IExecutor {
      * Moves data from one register to another.
      * @param from from where the data should be moved
      * @param to to where the data should be moved
+     * @throws NonExecutableMicroInstructionException if the instruction is not executable.
      */
     private void moveData(String from, String to) {
 
@@ -346,9 +352,7 @@ public class Executor implements IExecutor {
             if (registerControllerMap.containsKey(from)) {
                 movedValue = registerControllerMap.get(from).getValue();
                 visualizeableData = true;
-            }
-            // from is not a register --> extract value from binary constant
-            else {
+            } else { // from is not a register --> extract value from binary constant
                 if (!BINARY_PATTERN.matcher(from).matches()) {
                     throw new NonExecutableMicroInstructionException(
                             "Cannot move Data, MicroInstruction has no valid from value, does not match pattern");
@@ -369,9 +373,7 @@ public class Executor implements IExecutor {
                 busSystem.setBusDataPath(registerControllerMap.get(from).getBlockPosition(), registerControllerMap.get(to).getBlockPosition(), movedValue);
                 registerControllerMap.get(from).activateVisualisation();
                 registerControllerMap.get(to).activateVisualisation();
-            }
-            // visualization of loading of immediate
-            else {
+            } else { // visualization of loading of immediate
                 busSystem.setBusDataPath(controlUnitController.getBlockPosition(), registerControllerMap.get(to).getBlockPosition(), movedValue);
                 controlUnitController.activateVisualisation();
                 registerControllerMap.get(to).activateVisualisation();

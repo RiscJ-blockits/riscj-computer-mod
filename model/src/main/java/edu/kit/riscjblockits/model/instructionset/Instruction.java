@@ -113,8 +113,7 @@ public class Instruction implements IQueryableInstruction {
                 argumentsInstructionMap.put(argument, sb.toString());
                 binaryPosition += to - from + 1;
                 continue;
-            }
-            else if (matcher.matches()) {
+            } else if (matcher.matches()) {
                 String argument = matcher.group("argument");
                 int length = Integer.parseInt(matcher.group("length"));
                 argumentsInstructionMap.put(argument, binary.substring(binaryPosition, binaryPosition + length));
@@ -186,17 +185,13 @@ public class Instruction implements IQueryableInstruction {
                         to -= from;
                     }
                     offset += to - from + 1;
-                }
-
-                else {
+                } else {
                     Matcher matcher = ARGUMENT_TRANSLATION_PATTERN.matcher(arg);
                     if (matcher.matches()) {
                         offset += Integer.parseInt(matcher.group("length"));
                     }
                 }
-            }
-            // check if binaryValue matches translation, increment offset
-            else {
+            } else { // check if binaryValue matches translation, increment offset
                 if (!arg.equals(binaryValue.substring(offset, offset + arg.length()))) {
                     return false;
                 }

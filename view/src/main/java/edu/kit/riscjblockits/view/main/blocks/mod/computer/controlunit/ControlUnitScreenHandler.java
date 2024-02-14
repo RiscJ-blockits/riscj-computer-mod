@@ -198,7 +198,8 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
                             break;
                     }
                 }
-            } else if (s.equals(CONTROL_ITEM_PRESENT) && ( ((IDataStringEntry) ((IDataContainer) data).get(CONTROL_ITEM_PRESENT)).getContent().equals("false") )) {
+            } else if (s.equals(CONTROL_ITEM_PRESENT) &&
+                    (((IDataStringEntry) ((IDataContainer) data).get(CONTROL_ITEM_PRESENT)).getContent().equals("false") )) {
                 return new List[]{new ArrayList<>(), new ArrayList<>()};
 
             }
@@ -207,6 +208,7 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
     }
 
     /**
+     * Getter for the instruction set type.
      * @return The name of the InstructionSet or "" if the fetch fails.
      */
     public String getInstructionSetType() {

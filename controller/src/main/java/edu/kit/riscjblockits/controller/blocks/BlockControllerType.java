@@ -35,6 +35,6 @@ public enum BlockControllerType {
     /**
      * The controller for an ALU.
      */
-    ALU,
+    ALU
 
 }

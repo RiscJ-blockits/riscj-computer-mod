@@ -11,8 +11,6 @@ import net.minecraft.util.math.BlockPos;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.ALU_OPERATION;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
-import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
-import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 
 /**
  * This class represents an alu from our mod in the game.
