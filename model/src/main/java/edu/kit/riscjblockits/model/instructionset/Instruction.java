@@ -48,6 +48,13 @@ public class Instruction implements IQueryableInstruction {
      */
     private final String[] translation;
 
+    /**
+     * Constructor for the instruction.
+     * @param arguments The arguments of the instruction.
+     * @param opcode The opcode of the instruction.
+     * @param execution The execution of the instruction as a sequence of micro instructions.
+     * @param translation The translation of the instruction to binary.
+     */
     public Instruction(String[] arguments, String opcode, MicroInstruction[] execution, String[] translation) {
         this.arguments = arguments;
         this.opcode = opcode;
@@ -55,6 +62,13 @@ public class Instruction implements IQueryableInstruction {
         this.translation = translation;
     }
 
+    /**
+     * Constructor to create a copy of an instruction.
+     * @param instruction The instruction to copy.
+     * @param binary The binary value of the instruction.
+     * @param intRegisters The integer registers of the instruction.
+     * @param floatRegisters The float registers of the instruction.
+     */
     public Instruction(Instruction instruction, String binary, HashMap<Integer, String> intRegisters, HashMap<Integer, String> floatRegisters) {
         this.arguments = instruction.arguments.clone();
         this.opcode = instruction.opcode;
