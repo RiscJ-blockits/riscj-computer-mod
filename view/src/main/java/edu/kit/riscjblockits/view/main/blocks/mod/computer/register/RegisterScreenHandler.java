@@ -59,6 +59,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
     }
 
     /**
+     * Getter for the value of the currently opened Register from the model.
      * @return The value of the currently opened Register from the model. As a hex string.
      */
     public String getRegisterValue() {
@@ -79,6 +80,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
     }
 
     /**
+     * Getter for the register type of the currently opened RegisterBlock.
      * @return the register Type of the currently opened RegisterBlock.
      */
     public String getCurrentRegister(){
@@ -99,6 +101,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
     }
 
     /**
+     * Getter for the registers inside the cluster.
      * @param key can be {@link edu.kit.riscjblockits.model.data.DataConstants#REGISTER_MISSING} or {@link edu.kit.riscjblockits.model.data.DataConstants#REGISTER_FOUND}.
      * @return All registers inside the cluster matching the given key.
      */

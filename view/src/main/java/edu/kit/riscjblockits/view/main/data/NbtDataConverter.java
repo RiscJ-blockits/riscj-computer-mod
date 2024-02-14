@@ -27,12 +27,12 @@ import net.minecraft.nbt.visitor.NbtElementVisitor;
 public class NbtDataConverter implements NbtElementVisitor {
 
     /**
-     * The data element
+     * The data element.
      */
     private IDataElement data;
 
     /**
-     * Creates a new NbtDataConverter with the given NbtCompound
+     * Creates a new NbtDataConverter with the given NbtCompound.
      *
      * @param compound The NbtCompound to convert
      */
@@ -40,27 +40,26 @@ public class NbtDataConverter implements NbtElementVisitor {
         this.data = new Data();
         compound.accept(this);
     }
-
     /**
-     * Visits a NbtString and creates a DataStringEntry
+     * Visits a NbtString and creates a DataStringEntry.
      * @param element The NbtString to visit
      */
     @Override
     public void visitString(NbtString element) {
         data = new DataStringEntry(element.asString());
     }
-
-    /** NOT SUPPORTED BY US
-     * Visits a NbtByte
+    /**
+     * NOT SUPPORTED BY US.
+     * Visits a NbtByte.
      * @param element The NbtByte to visit
      */
     @Override
     public void visitByte(NbtByte element) {
         //NOT SUPPORTED BY US
     }
-
-    /** NOT SUPPORTED BY US
-     * Visits a NbtShort
+    /**
+     * NOT SUPPORTED BY US.
+     * Visits a NbtShort.
      * @param element The NbtShort to visit
      */
     @Override
@@ -68,8 +67,9 @@ public class NbtDataConverter implements NbtElementVisitor {
         //NOT SUPPORTED BY US
     }
 
-    /** NOT SUPPORTED BY US
-     * Visits a NbtInt
+    /**
+     * NOT SUPPORTED BY US.
+     * Visits a NbtInt.
      * @param element The NbtInt to visit
      */
     @Override
@@ -77,8 +77,9 @@ public class NbtDataConverter implements NbtElementVisitor {
         //NOT SUPPORTED BY US
     }
 
-    /** NOT SUPPORTED BY US
-     * Visits a NbtLong
+    /**
+     * NOT SUPPORTED BY US.
+     * Visits a NbtLong.
      * @param element The NbtLong to visit
      */
     @Override
@@ -86,8 +87,9 @@ public class NbtDataConverter implements NbtElementVisitor {
         //NOT SUPPORTED BY US
     }
 
-    /** NOT SUPPORTED BY US
-     * Visits a NbtFloat
+    /**
+     * NOT SUPPORTED BY US.
+     * Visits a NbtFloat.
      * @param element The NbtFloat to visit
      */
     @Override
@@ -95,8 +97,9 @@ public class NbtDataConverter implements NbtElementVisitor {
         //NOT SUPPORTED BY US
     }
 
-    /** NOT SUPPORTED BY US
-     * Visits a NbtDouble
+    /**
+     * NOT SUPPORTED BY US.
+     * Visits a NbtDouble.
      * @param element The NbtDouble to visit
      */
     @Override
@@ -104,8 +107,9 @@ public class NbtDataConverter implements NbtElementVisitor {
         //NOT SUPPORTED BY US
     }
 
-    /** NOT SUPPORTED BY US
-     * Visits a NbtByteArray
+    /**
+     * NOT SUPPORTED BY US.
+     * Visits a NbtByteArray.
      * @param element The NbtByteArray to visit
      */
     @Override
@@ -113,8 +117,9 @@ public class NbtDataConverter implements NbtElementVisitor {
         //NOT SUPPORTED BY US
     }
 
-    /** NOT SUPPORTED BY US
-     * Visits a NbtIntArray
+    /**
+     * NOT SUPPORTED BY US.
+     * Visits a NbtIntArray.
      * @param element The NbtIntArray to visit
      */
     @Override
@@ -122,8 +127,9 @@ public class NbtDataConverter implements NbtElementVisitor {
         //NOT SUPPORTED BY US
     }
 
-    /** NOT SUPPORTED BY US
-     * Visits a NbtLongArray
+    /**
+     * NOT SUPPORTED BY US.
+     * Visits a NbtLongArray.
      * @param element The NbtLongArray to visit
      */
     @Override
@@ -131,8 +137,9 @@ public class NbtDataConverter implements NbtElementVisitor {
         //NOT SUPPORTED BY US
     }
 
-    /** NOT SUPPORTED BY US
-     * Visits a NbtList
+    /**
+     * NOT SUPPORTED BY US.
+     * Visits a NbtList.
      * @param element The NbtList to visit
      */
     @Override
@@ -141,8 +148,8 @@ public class NbtDataConverter implements NbtElementVisitor {
     }
 
     /**
-     * Visits a NbtCompound
-     * Creates a new Data and visits all keys
+     * Visits a NbtCompound.
+     * Creates a new Data and visit all keys.
      * @param compound The NbtCompound to visit
      */
     @Override
@@ -154,8 +161,9 @@ public class NbtDataConverter implements NbtElementVisitor {
         });
     }
 
-    /** NOT SUPPORTED BY US
-     * Visits a NbtEnd
+    /**
+     * NOT SUPPORTED BY US.
+     * Visits a NbtEnd.
      * @param element The NbtEnd to visit
      */
     @Override
@@ -164,7 +172,7 @@ public class NbtDataConverter implements NbtElementVisitor {
     }
 
     /**
-     * Returns the converted IDataElement
+     * Returns the converted IDataElement.
      * @return The converted IDataElement
      */
     public IDataElement getData() {

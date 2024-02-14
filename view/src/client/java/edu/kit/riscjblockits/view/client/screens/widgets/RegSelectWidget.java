@@ -15,32 +15,48 @@ import net.minecraft.util.math.BlockPos;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegSelectWidget extends ExtendableWidget{
-    public static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID,"textures/gui/register/reg_select_widget.png");
-    //public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier(RISCJ_blockits.MOD_ID,
-        //"textures/gui/register/button.png"), new Identifier(RISCJ_blockits.MOD_ID,"textures/gui/register/button_highlighted.png")); //path does not work fsr!!! :( TODO fix path
+/**
+ * A RegSelectWidget is a widget that displays a list of register types.
+ * It is used inside the RegisterScreen to allow the user to select a register type
+ */
+public class RegSelectWidget extends ExtendableWidget {
 
+    /**
+     * The texture of the widget.
+     */
+    public static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID,"textures/gui/register/reg_select_widget.png");
+    /**
+     * The texture of the button.
+     */
     public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier("recipe_book/button"), new Identifier("recipe_book/button_highlighted"));
     private static final String TO_DO_TEXT = "Select Register";
-    /*private List<String> configuredRegisters;
-    private List<String> missingRegisters;
-    private ToggleButtonWidget toggleNeededButton; // future implementation*/
     private RegisterScreenHandler registerScreenHandler;
     private MinecraftClient client;
     private int cachedInvChangeCount;
     private RegisterListWidget registerList;
-    private int width;
-    private int height;
     private final List<Element> children = new ArrayList<>();
 
+    /**
+     * Creates a new RegSelectWidget.
+     */
     public RegSelectWidget() {
+        //do nothing
     }
 
+    /**
+     * Adds all the components to the widget.
+     * @param parentWidth The width of the parent.
+     * @param parentHeight The height of the parent.
+     * @param client The client.
+     * @param narrow Only used by minecraft.
+     * @param registerScreenHandler The screen handler for all the widgets.
+     */
     public void initialize(int parentWidth, int parentHeight, MinecraftClient client, boolean narrow, RegisterScreenHandler registerScreenHandler) {
         super.initialize(parentWidth, parentHeight, narrow, TEXTURE);
 
         this.client = client;
         this.registerScreenHandler = registerScreenHandler;
+        assert client.player != null;
         client.player.currentScreenHandler = registerScreenHandler;
         this.cachedInvChangeCount = client.player.getInventory().getChangeCount();
 
@@ -70,16 +86,13 @@ public class RegSelectWidget extends ExtendableWidget{
         }
         return entries;
     }
-
-
     @Override
     protected void reset() {
         this.leftOffset = this.narrow ? 0 : 86;
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
-        int j = (this.parentHeight - 166) / 2 ;
+        int j = (this.parentHeight - 166) / 2;
         registerList.setPosition(i +8, j+ 18);
     }
-    
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         if (!this.isOpen()) {
@@ -101,10 +114,15 @@ public class RegSelectWidget extends ExtendableWidget{
         context.getMatrices().pop();
     }
 
+    /**
+     * Updates the widget.
+     * Is called every tick.
+     */
     public void update(){
         if (!this.open) {
             return;
         }
+        assert this.client.player != null;
         if (this.cachedInvChangeCount != this.client.player.getInventory().getChangeCount()) {
             this.cachedInvChangeCount = this.client.player.getInventory().getChangeCount();
         }
@@ -122,10 +140,5 @@ public class RegSelectWidget extends ExtendableWidget{
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         return registerList.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
-    }
-
-    @Override
-    public boolean isMouseOver(double mouseX, double mouseY) {
-        return true;//mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 }

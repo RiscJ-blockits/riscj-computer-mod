@@ -4,7 +4,8 @@ import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
-import edu.kit.riscjblockits.view.main.RISCJ_blockits;import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
+import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 

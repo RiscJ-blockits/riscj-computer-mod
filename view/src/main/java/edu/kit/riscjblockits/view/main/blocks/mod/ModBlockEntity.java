@@ -64,8 +64,7 @@ public abstract class ModBlockEntity extends BlockEntity {
         }
         if (world == null && controller == null) {
             controller = createController();
-        }
-        else if (world != null && controller == null && entitytype == EntityType.CONNECTABLE) {
+        } else if (world != null && controller == null && entitytype == EntityType.CONNECTABLE) {
             controller = createController();
             ((ComputerBlockController) controller).startClustering(new BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
         } else if ((world != null && controller != null
@@ -95,6 +94,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     }
 
     /**
+     * Getter for the position.
      * @return The Block Position of this block entity.
      */
     public BlockPosition getBlockPosition() {
@@ -103,6 +103,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     }
 
     /**
+     * Getter for the type of this block entity.
      * @return Returns the type of this block entity.
      */
     public EntityType getModblockType() {
@@ -110,6 +111,7 @@ public abstract class ModBlockEntity extends BlockEntity {
     }
 
     /**
+     * Getter for the controller of this block entity.
      * @return Returns the controller of this block entity. If in client context, it returns null.
      */
     public IUserInputReceivableController getController() {

@@ -44,6 +44,7 @@ public abstract class ModScreenHandler extends ScreenHandler {
     }
 
     /**
+     * Checks if the player can use the block.
      * @param player the player that wants to use the block.
      * @return always true, because everyone can use our blocks.
      */
@@ -52,7 +53,8 @@ public abstract class ModScreenHandler extends ScreenHandler {
         return true;
     }
 
-    /** Version for normal screens.
+    /**
+     * Version for normal screens.
      * We display the player inventory on the bottom of all our block screens.
      * This adds the player inventory slots to the screen.
      * @param playerInventory the player inventory.
@@ -70,7 +72,8 @@ public abstract class ModScreenHandler extends ScreenHandler {
         }
     }
 
-    /** Version for large screens.
+    /**
+     * Version for large screens.
      * We display the player inventory on the bottom of all our block screens.
      * This adds the player inventory slots to the screen.
      * @param playerInventory the player inventory.

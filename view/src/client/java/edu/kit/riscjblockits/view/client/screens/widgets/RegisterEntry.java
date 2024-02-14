@@ -10,15 +10,29 @@ import net.minecraft.util.math.BlockPos;
 
 import static edu.kit.riscjblockits.model.blocks.RegisterModel.UNASSIGNED_REGISTER;
 
+/**
+ * A RegisterEntry is a widget that represents a register in a list.
+ * It can be selected and deselected.
+ */
 public class RegisterEntry extends ListEntry {
 
+    /**
+     * The height of a register entry.
+     */
     public static final int ENTRY_HEIGHT = 20;
     private final TextIconToggleWidget selectButton;
     private boolean missing;
     private boolean currentReg;
-    private String name;
-    private BlockPos pos;
+    private final String name;
+    private final BlockPos pos;
 
+    /**
+     * Creates a new RegisterEntry.
+     * @param name The name of the register.
+     * @param missing true if the register is missing
+     * @param currentReg true if the register is the current register
+     * @param pos The position of the register.
+     */
     public RegisterEntry(String name, boolean missing, boolean currentReg, BlockPos pos) {
         this.name = name;
         this.pos = pos;
@@ -47,7 +61,7 @@ public class RegisterEntry extends ListEntry {
 
     @Override
     public int getHeight() {
-       return ENTRY_HEIGHT;
+        return ENTRY_HEIGHT;
     }
 
     @Override
@@ -85,13 +99,19 @@ public class RegisterEntry extends ListEntry {
         this.currentReg = currentReg;
     }
 
+    /**
+     * Updates the state of the register entry.
+     * @param missing true if the register is missing
+     * @param currentReg true if the register is the current register
+     */
     public void update(boolean missing, boolean currentReg){
         this.missing = missing;
         this.currentReg = currentReg;
         this.selectButton.update(!this.missing, this.currentReg);
     }
 
-    /** Initial situation: The selected button represents this registers selection
+    /**
+     * Initial situation: The selected button represents this registers selection.
      * Result: This register is [NOT_ASSIGNED]
      */
     public void deselectRegister() {
@@ -115,8 +135,8 @@ public class RegisterEntry extends ListEntry {
     }
 
     /**
-     * Initial situation: The selected button represents a missing register Type
-     * Result: Register is configured to be the selected register
+     * Initial situation: The selected button represents a missing register Type.
+     * Result: Register is configured to be the selected register.
      * @param name the name of the assigned register
      */
     public void assignRegister(String name) {

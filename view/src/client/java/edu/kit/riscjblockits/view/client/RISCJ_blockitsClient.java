@@ -4,7 +4,6 @@ import edu.kit.riscjblockits.view.client.screens.InsructionSetScreen;
 import edu.kit.riscjblockits.view.client.screens.ManualScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.ControlUnitScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.MemoryScreen;
-import edu.kit.riscjblockits.view.client.screens.handled.ProgrammingScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.RegisterScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.SystemClockScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.TerminalScreen;
@@ -72,7 +71,7 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 	 */
 	private void registerManualScreenReceiver() {
 		ClientPlayNetworking.registerGlobalReceiver(
-				NetworkingConstants.OPEN_MANUAL_SCREEN, (client, handler, buf, responseSender) -> client.execute(() -> client.setScreen(new ManualScreen(Text.translatable("manual.title")))
+			NetworkingConstants.OPEN_MANUAL_SCREEN, (client, handler, buf, responseSender) -> client.execute(() -> client.setScreen(new ManualScreen(Text.translatable("manual.title")))
                 ));
 	}
 

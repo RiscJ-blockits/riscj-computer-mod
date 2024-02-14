@@ -325,7 +325,34 @@ public class RISCJ_blockits implements ModInitializer {
     public static ScreenHandlerType<TerminalScreenHandler> TERMINAL_SCREEN_HANDLER =
         Registry.register(Registries.SCREEN_HANDLER, new Identifier(MOD_ID, "terminal_screen"),
             new ExtendedScreenHandlerType<>(TerminalScreenHandler::new));
-
+    /**
+     * This attribute defines the item-group for all items and blocks of this mod.
+     * The item-group is used to group items and blocks in the creative inventory.
+     */
+    private static final ItemGroup ITEM_GROUP = FabricItemGroup.builder()
+        .icon(() -> new ItemStack(ALU_BLOCK_ITEM))
+        .displayName(Text.translatable("itemGroup.riscj_blockits.computer_components"))
+        .entries((context, entries) -> {
+            entries.add(ALU_BLOCK_ITEM);
+            entries.add(BUS_BLOCK_ITEM);
+            entries.add(CONTROL_UNIT_BLOCK_ITEM);
+            entries.add(MEMORY_BLOCK_ITEM);
+            entries.add(PROGRAMMING_BLOCK_ITEM);
+            entries.add(REGISTER_BLOCK_ITEM);
+            entries.add(SYSTEM_CLOCK_BLOCK_ITEM);
+            entries.add(REDSTONE_OUTPUT_BLOCK_ITEM);
+            entries.add(REDSTONE_INPUT_BLOCK_ITEM);
+            entries.add(WIRELESS_REGISTER_BLOCK_ITEM);
+            entries.add(TEXT_OUTPUT_BLOCK_ITEM);
+            //Items
+            entries.add(INSTRUCTION_SET_ITEM_MIMA);
+            entries.add(INSTRUCTION_SET_ITEM_MIMA_IO);
+            entries.add(INSTRUCTION_SET_ITEM_RISCV);
+            entries.add(GOGGLES_ITEM);
+            entries.add(PROGRAM_ITEM);
+            entries.add(MANUAL_ITEM);
+        })
+        .build();
     /**
      * This method is called when the mod is initialized.
      * The call happens while the game is loading a world.
@@ -450,34 +477,4 @@ public class RISCJ_blockits implements ModInitializer {
             }
         );
     }
-
-    /**
-     * This attribute defines the item-group for all items and blocks of this mod.
-     * The item-group is used to group items and blocks in the creative inventory.
-     */
-    private static final ItemGroup ITEM_GROUP = FabricItemGroup.builder()
-        .icon(() -> new ItemStack(ALU_BLOCK_ITEM))
-        .displayName(Text.translatable("itemGroup.riscj_blockits.computer_components"))
-        .entries((context, entries) -> {
-            entries.add(ALU_BLOCK_ITEM);
-            entries.add(BUS_BLOCK_ITEM);
-            entries.add(CONTROL_UNIT_BLOCK_ITEM);
-            entries.add(MEMORY_BLOCK_ITEM);
-            entries.add(PROGRAMMING_BLOCK_ITEM);
-            entries.add(REGISTER_BLOCK_ITEM);
-            entries.add(SYSTEM_CLOCK_BLOCK_ITEM);
-            entries.add(REDSTONE_OUTPUT_BLOCK_ITEM);
-            entries.add(REDSTONE_INPUT_BLOCK_ITEM);
-            entries.add(WIRELESS_REGISTER_BLOCK_ITEM);
-            entries.add(TEXT_OUTPUT_BLOCK_ITEM);
-            //Items
-            entries.add(INSTRUCTION_SET_ITEM_MIMA);
-            entries.add(INSTRUCTION_SET_ITEM_MIMA_IO);
-            entries.add(INSTRUCTION_SET_ITEM_RISCV);
-            entries.add(GOGGLES_ITEM);
-            entries.add(PROGRAM_ITEM);
-            entries.add(MANUAL_ITEM);
-        })
-        .build();
-
 }

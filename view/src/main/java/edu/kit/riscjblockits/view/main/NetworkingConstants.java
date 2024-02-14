@@ -9,13 +9,6 @@ import net.minecraft.util.Identifier;
 public abstract class NetworkingConstants {
 
     /**
-     * This class should not be instantiated.
-     */
-    private NetworkingConstants() {
-        throw new IllegalStateException("Utility class");
-    }
-
-    /**
      * Used by the server when it sends its data to the client.
      * A nbt with data is sent as a parameter.
      * The position of the block must be sent as a parameter.
@@ -63,4 +56,11 @@ public abstract class NetworkingConstants {
      */
     public static final Identifier SYNC_IST_INPUT = new Identifier(RISCJ_blockits.MOD_ID, "sync_ist_input");
 
+    /**
+     * This class should not be instantiated.
+     * @throws IllegalStateException if the class is instantiated.
+     */
+    private NetworkingConstants() {
+        throw new IllegalStateException("Utility class");
+    }
 }

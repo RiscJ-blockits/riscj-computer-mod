@@ -69,6 +69,7 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
     }
 
     /**
+     * Getter for the headline that is displayed ion the screen.
      * @return The display name of the register.
      */
     @Override
@@ -78,7 +79,7 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
     }
 
     /**
-     * Creates a RegisterScreenHandler
+     * Creates a RegisterScreenHandler.
      * @param syncId the synchronization ID for the menu
      * @param playerInventory the player's inventory
      * @param player the player opening the menu

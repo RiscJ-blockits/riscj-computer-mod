@@ -11,6 +11,9 @@ import java.util.regex.Pattern;
  */
 public abstract class MicroInstruction implements IExecutableMicroInstruction {
 
+    /**
+     * Pattern to match the register part of a micro instruction.
+     */
     protected static final Pattern REGISTER_PATTERN = Pattern.compile("(?<isregister>&)?(?<isFloat>f)?(?<name>\\[\\w+])");
 
     /**
@@ -23,8 +26,12 @@ public abstract class MicroInstruction implements IExecutableMicroInstruction {
      */
     private final String to;
 
-
-    public MicroInstruction(String[] from, String to) {
+    /**
+     * Creates a new MicroInstruction with the given registers.
+     * @param from The registers to read from.
+     * @param to The register to write to.
+     */
+    protected MicroInstruction(String[] from, String to) {
         this.from = from;
         this.to = to;
     }
@@ -45,7 +52,13 @@ public abstract class MicroInstruction implements IExecutableMicroInstruction {
         return to;
     }
 
-
+    /**
+     * Clones the MicroInstruction and replaces replaceable fields with the given values.
+     * @param argumentsInstructionMap
+     * @param intRegisters
+     * @param floatRegisters
+     * @return
+     */
     public MicroInstruction getFilled(Map<String, String> argumentsInstructionMap,
                                       HashMap<Integer, String> intRegisters, HashMap<Integer, String> floatRegisters) {
         String[] filledFrom = new String[from.length];

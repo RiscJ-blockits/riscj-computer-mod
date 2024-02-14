@@ -151,7 +151,8 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
     }
 
     /**
-     * @return the code that should currently be displayed in the test editor on the screen.
+     * Getter for the code that should currently be displayed in the test editor on the screen.
+     * @return a String with the code.
      */
     public String getCode() {
         return blockEntity.getCode();
