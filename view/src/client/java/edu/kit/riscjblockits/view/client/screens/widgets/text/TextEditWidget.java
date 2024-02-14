@@ -509,14 +509,14 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
     private void updateWindow() {
         // cursor going out the top
-        if ((cursorY) * LINE_HEIGHT < scrollPosition) {
+        if ((cursorY + 1) * LINE_HEIGHT < scrollPosition) {
             // calculate the length of the lines that are not displayed
             int lineLengthSum = 0;
             for (int j = cursorY; j > (scrollPosition / LINE_HEIGHT -cursorY); j--) {
                 lineLengthSum += lines.get(j).getContent().length();
             }
             windowStartTextIndex -= lineLengthSum;
-            scrollPosition = (cursorY) * LINE_HEIGHT;
+            scrollPosition = (cursorY + 1) * LINE_HEIGHT;
         }
 
         // cursor going out the bottom
