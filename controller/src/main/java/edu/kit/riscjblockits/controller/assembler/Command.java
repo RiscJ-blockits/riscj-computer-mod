@@ -13,27 +13,30 @@ import java.util.regex.Pattern;
  */
 public class Command {
     /**
-     * regex pattern to match argument translation parts
+     * regex pattern to match argument translation parts.
      */
-    private static final Pattern ARGUMENT_TRANSLATION_PATTERN = Pattern.compile("(?<argument>\\[\\w+\\])<(?<length>\\d+(:?\\d+)?)>");
-    private static final Pattern ARGUMENT_TRANSLATION_PATTERN_RANGE = Pattern.compile("(?<argument>\\[\\w+\\])<(?<from>\\d+):(?<to>\\d+)>");
-    private static final Pattern MULTI_ARGUMENT_PATTERN = Pattern.compile("(?<arg1>\\[\\w+])\\((?<arg2>\\w+)\\)");
+    private static final Pattern ARGUMENT_TRANSLATION_PATTERN
+        = Pattern.compile("(?<argument>\\[\\w+\\])<(?<length>\\d+(:?\\d+)?)>");
+    private static final Pattern ARGUMENT_TRANSLATION_PATTERN_RANGE
+        = Pattern.compile("(?<argument>\\[\\w+\\])<(?<from>\\d+):(?<to>\\d+)>");
+    private static final Pattern MULTI_ARGUMENT_PATTERN
+        = Pattern.compile("(?<arg1>\\[\\w+])\\((?<arg2>\\w+)\\)");
     private static final Pattern RELATIVE_LABEL_PATTERN = Pattern.compile("~\\[\\w+]");
 
 
 
     /**
-     * the assembled translation of the command
+     * the assembled translation of the command.
      */
     private final String[] assembledTranslation;
 
     /**
-     * map of arguments to their values
+     * map of arguments to their values.
      */
     private final Map<String, String> argumentsInstructionMap = new HashMap<>();
 
     /**
-     * Constructor for a command
+     * Constructor for a command.
      * @param instruction the instruction of the command
      * @param arguments the arguments of the command
      * @throws AssemblyException if the given command cant be assembled
@@ -66,7 +69,7 @@ public class Command {
     }
 
     /**
-     * Assembles a single translation part
+     * Assembles a single translation part.
      * @param translationPart the translation part to assemble
      * @return the assembled translation part
      * @throws AssemblyException if the translation part cant be assembled
@@ -109,7 +112,7 @@ public class Command {
             // get value from arguments map
             String argumentValue = argumentsInstructionMap.get(argument);
             if (argumentValue == null) {
-                throw new AssemblyException("Argument " + argument + " not found --> invalid Instruction-Set");
+                throw new AssemblyException("Argument " + argument + " not found");
             }
             // extract value from argument
             Value argumentValueObject = ValueExtractor.extractValue(argumentValue, length);
@@ -125,6 +128,7 @@ public class Command {
     }
 
     /**
+     * returns the assembled translation of the command.
      * @return the assembled translation of the command
      */
     public Value asValue() {

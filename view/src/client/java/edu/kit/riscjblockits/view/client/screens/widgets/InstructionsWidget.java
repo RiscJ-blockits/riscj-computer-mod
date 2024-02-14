@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class InstructionsWidget extends ExtendableWidget {
 
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID,"textures/gui/programming/instructions_widget.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID,"textures/gui/programming/instructions_widget.png");
     private static final String TO_DO_TEXT = "Available Instructions";
     private static final String ID_TITLE = "ID";
     private static final String ARGUMENTS_TITLE = "Arguments";
