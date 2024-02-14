@@ -8,7 +8,7 @@ public interface IUserInputReceivableComputerController extends IUserInputReceiv
     /**
      * Must be called every tick from the view.
      */
-    void tick();       //tick == UserInput
+    void tick(); //tick == UserInput
 
     /**
      * Must be called when the block is broken.

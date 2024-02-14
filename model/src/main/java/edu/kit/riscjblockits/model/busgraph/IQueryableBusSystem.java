@@ -83,7 +83,7 @@ public interface IQueryableBusSystem {
     void resetVisualisation();
 
     /**
-     * Checks if two BlockPositions are Neighbours
+     * Checks if two BlockPositions are Neighbours.
      * @param blockPosition The first BlockPosition.
      * @param blockPosition1 The second BlockPosition.
      * @return true if the two BlockPositions are neighbours.

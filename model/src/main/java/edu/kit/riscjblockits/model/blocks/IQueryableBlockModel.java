@@ -3,6 +3,9 @@ package edu.kit.riscjblockits.model.blocks;
 import edu.kit.riscjblockits.model.data.IDataElement;
 
 
+/**
+ * Defines all block models that can be queried by the view.
+ */
 public interface IQueryableBlockModel {
     /**
      * Getter for the type of the model.
@@ -24,7 +27,6 @@ public interface IQueryableBlockModel {
     boolean hasUnqueriedStateChange();
 
     //ToDo nicht im Entwurfs wiki
-
     /**
      * Resets the state change flag.
      */
