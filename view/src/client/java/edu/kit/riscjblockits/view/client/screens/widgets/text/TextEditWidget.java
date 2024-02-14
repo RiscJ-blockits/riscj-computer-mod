@@ -518,6 +518,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             windowStartTextIndex -= lineLengthSum;
             scrollPosition = (cursorY) * LINE_HEIGHT;
         }
+
         // cursor going out the bottom
         if (cursorY + 1 > (scrollPosition + height) / LINE_HEIGHT) {
             // calculate the length of the lines that are not displayed
@@ -530,15 +531,16 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             scrollPosition = ((cursorY + 1) * LINE_HEIGHT) - height;
         }
 
-        int lineLengthTillCursor = textRenderer.getWidth(lines.get(cursorY).getContentUntil(cursorX));
         // cursor going out of left side
-        if (lineLengthTillCursor < windowStartX) {
-            windowStartX = lineLengthTillCursor;
+        int totalCharacters = lines.get(cursorY).getContent().length();
+        if (cursorX <= windowStartX) {
+            windowStartX = MathHelper.clamp(cursorX - 1, 0, totalCharacters);
         }
 
         // cursor going out of right side
-        if (lineLengthTillCursor > windowStartX + width)
-            windowStartX = lineLengthTillCursor - width;
+        int shownCharacters = textRenderer.trimToWidth(lines.get(cursorY).getContent().substring(windowStartX), width).length();
+        if (cursorX > windowStartX + shownCharacters)
+            windowStartX = cursorX - shownCharacters;
     }
 
 }
