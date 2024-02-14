@@ -4,6 +4,7 @@ import edu.kit.riscjblockits.view.client.screens.InstructionSetScreen;
 import edu.kit.riscjblockits.view.client.screens.ManualScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.ControlUnitScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.MemoryScreen;
+import edu.kit.riscjblockits.view.client.screens.handled.ProgrammingScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.RegisterScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.SystemClockScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.TerminalScreen;
