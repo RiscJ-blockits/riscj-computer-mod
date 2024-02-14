@@ -67,7 +67,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         matrixStack.scale(TEXT_SCALE, TEXT_SCALE, TEXT_SCALE);
         // draw lines with their index
         for (int i = start; i < lines.size(); i++) {
-            if ((i - start) * LINE_HEIGHT > height) {
+            if ((i - start) * LINE_HEIGHT >= height) {
                 break;
             }
             int displayY = (int) (y * INVERSE_TEXT_SCALE + (i - start) * LINE_HEIGHT);
