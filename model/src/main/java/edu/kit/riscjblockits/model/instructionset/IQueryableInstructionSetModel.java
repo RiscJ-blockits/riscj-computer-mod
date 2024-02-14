@@ -113,4 +113,9 @@ public interface IQueryableInstructionSetModel {
 
     String getRegisterInitialValue(String key);
 
+    /**
+     * Gets the example code for the instruction set.
+     * @return the example code for the instruction set as a string.
+     */
+    String getExample();
 }

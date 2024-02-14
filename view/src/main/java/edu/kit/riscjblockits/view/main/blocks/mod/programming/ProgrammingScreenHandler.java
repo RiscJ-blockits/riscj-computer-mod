@@ -208,11 +208,10 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
         InstructionSetModel instructionSetModel;
         try {
             instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(ist);
-
+            return instructionSetModel.getExample();
         }catch (UnsupportedEncodingException | InstructionBuildException e) {
             return "";
         }
-        return "";
     }
 
 }

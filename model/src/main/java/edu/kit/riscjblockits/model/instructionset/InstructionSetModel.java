@@ -347,6 +347,12 @@ InstructionSetModel implements IQueryableInstructionSetModel {
         return instructionSetRegisters.getInitialValue(key);
     }
 
+    @Override
+    public String getExample() {
+        //TODO implement
+        return "";
+    }
+
     /**
      * Get the Instructions offered by the instruction set to present in the view.
      * @return List of instructions.
