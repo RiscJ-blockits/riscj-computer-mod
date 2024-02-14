@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.view.client.screens.widgets.DualTexturedIconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.InstructionsWidget;
+import edu.kit.riscjblockits.view.client.screens.widgets.text.TextEditWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
@@ -11,7 +12,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.EditBoxWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtCompound;
@@ -52,7 +52,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     /**
      * The edit box widget that is used to enter the code.
      */
-    private EditBoxWidget editBox;
+    private TextEditWidget editBox;
     private boolean codeHasChanged = false;
 
     /**
@@ -109,7 +109,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         super.init();
         this.narrow = this.width < 379;
         // add the edit box widget to the screen
-        editBox = new EditBoxWidget(textRenderer, this.x + 8, this.y + 18, 129, 91, Text.translatable("programming_pretext"), Text.of("Code"));
+        editBox = new TextEditWidget(textRenderer, this.x + 8, this.y + 18, 129, 91);
         addDrawableChild(editBox);
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
@@ -137,6 +137,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION, (client1, handler1, buf, responseSender) -> {
             showError(buf.readString());
         });
+        // set selection focus to edit box
+        setFocused(editBox);
     }
 
     /**
