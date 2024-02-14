@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.view.main.blocks.mod.programming;
 import edu.kit.riscjblockits.controller.assembler.AssemblyException;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
@@ -21,6 +22,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
     private final ProgrammingBlockEntity blockEntity;
 
     /**
-     * The inventory of the programming block.
+     * The inventory of the programming block. Slot 0 holds the InstructionSet, Slot 1 the program and Slot 2 the result.
      */
     private final Inventory inventory;
     private final PlayerEntity player;
@@ -199,6 +201,18 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
             }
         }
         return newStack;
+    }
+
+    public String getExample() {
+        inventory.getStack(0).getOrCreateNbt();
+        String s ="";
+        InstructionSetModel instructionSetModel;
+        try {
+            instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(s);
+        }catch (UnsupportedEncodingException | InstructionBuildException e) {
+            return "";
+        }
+        return "";
     }
 
 }

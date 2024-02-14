@@ -38,6 +38,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     private static final Identifier ASSEMBLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/write_button_unpressed.png");
     private static final Identifier ASSEMBLE_BUTTON_TEXTURE_FAILED = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/write_button_unpressed_failed.png");
     private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/instructions_button.png");
+    private static final Identifier EXAMPLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/example_button.png");
 
     /**
      * Can display information about all available instructions.
@@ -48,6 +49,11 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
      * The button that is used to assemble the code.
      */
     private DualTexturedIconButtonWidget assembleButton;
+
+    /**
+     * The button that is used to load example code.
+     */
+    private IconButtonWidget exampleButton;
 
     /**
      * The edit box widget that is used to enter the code.
@@ -131,6 +137,13 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
             INSTRUCTIONS_BUTTON_TEXTURE
         );
         addDrawableChild(instructionSetButton);
+
+
+        exampleButton = new IconButtonWidget(this.x + 20, this.y + 111, 13, 13, button ->{
+            editBox.setText(this.handler.getExample());
+        }, EXAMPLE_BUTTON_TEXTURE);
+        addDrawableChild(exampleButton);
+
         handler.enableSyncing();
 
         ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION);
@@ -158,6 +171,11 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         instructionsWidget.render(context, mouseX, mouseY, delta);
         // render the tooltip of the button if the mouse is over it
         drawMouseoverTooltip(context, mouseX, mouseY);
+        if(!this.handler.getExample().equals("")){
+            exampleButton.visible = true;
+        } else {
+            exampleButton.visible = true;
+        }
     }
 
     /**
