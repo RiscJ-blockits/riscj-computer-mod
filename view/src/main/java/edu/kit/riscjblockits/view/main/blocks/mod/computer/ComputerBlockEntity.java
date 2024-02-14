@@ -160,7 +160,6 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         return model;
     }
 
-    //ToDo Nicht im Entwurf
     /**
      * Gets called every tick.
      * Used to update ui elements.
@@ -239,7 +238,6 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         }
     }
 
-    //todo nicht im Entwurfs wiki
     /**
      * Requests data for the block entity.
      * It sets a new {@link Data} object to the block entity's controller.

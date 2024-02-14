@@ -8,12 +8,13 @@ import net.minecraft.client.gui.widget.Widget;
 
 import java.util.function.Consumer;
 
-/** ToDo javadoc
+/**
  * An abstract class representing an entry in a list. It implements the Widget, Drawable, and Element interfaces.
  */
 public abstract class ListEntry implements Widget, Drawable, Element {
 
     protected int x;
+
     protected int y;
 
     @Override

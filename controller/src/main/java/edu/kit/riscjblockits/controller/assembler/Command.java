@@ -22,9 +22,6 @@ public class Command {
     private static final Pattern MULTI_ARGUMENT_PATTERN
         = Pattern.compile("(?<arg1>\\[\\w+])\\((?<arg2>\\w+)\\)");
     private static final Pattern RELATIVE_LABEL_PATTERN = Pattern.compile("~\\[\\w+]");
-
-
-
     /**
      * the assembled translation of the command.
      */

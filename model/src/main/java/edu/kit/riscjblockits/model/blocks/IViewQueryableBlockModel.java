@@ -5,10 +5,9 @@ package edu.kit.riscjblockits.model.blocks;
  */
 public interface IViewQueryableBlockModel extends IQueryableBlockModel {
 
-    //ToDo nicht im Entwurfs wiki
     /**
-     * Methode to get the visualisation state of the block.
-     * @return The visualisation state of the block.
+     * Methode to get the visualization state of the block.
+     * @return The visualization state of the block.
      */
     boolean getVisualisationState();
 }

@@ -45,7 +45,8 @@ public class ConditionedInstruction extends ComplexMicroInstruction {
     }
 
     @Override
-    public MicroInstruction getFilled(Map<String, String> argumentsInstructionMap, HashMap<Integer, String> intRegisters, HashMap<Integer, String> floatRegisters) {
+    public MicroInstruction getFilled(Map<String, String> argumentsInstructionMap, HashMap<Integer, String> intRegisters,
+                                      HashMap<Integer, String> floatRegisters) {
         ConditionedInstruction inst = (ConditionedInstruction) super.getFilled(argumentsInstructionMap, intRegisters, floatRegisters);
         inst.condition = new InstructionCondition(
             getFilledExecutionPart(condition.getComparator(), argumentsInstructionMap, intRegisters, floatRegisters),

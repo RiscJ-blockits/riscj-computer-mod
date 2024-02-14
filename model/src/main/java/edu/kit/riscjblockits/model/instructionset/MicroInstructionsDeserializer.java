@@ -37,7 +37,6 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
             return parseJsonArray(asJsonArray);
         }
         return null;
-
     }
 
     /**
@@ -138,7 +137,5 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
                 memoryFlag);
 
         return new ConditionedInstruction(thenFrom, thenTo, memoryFlag, memoryInstruction, instructionCondition);
-
-
     }
 }

@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(TestSetupMain.class)
 class TerminalBlockEntityTest {
 
-    @Disabled
+    @Disabled("fails because of refactoring")
     @Test
     void readNbt() {
         NbtCompound nbt = new NbtCompound();
@@ -39,7 +39,7 @@ class TerminalBlockEntityTest {
     }
 
     @Test
-    public void translateHexToAscii() {
+    void translateHexToAscii() {
         TerminalBlockEntity terminalBlockEntity =
             new TerminalBlockEntity(new BlockPos(0, 0, 0), RISCJ_blockits.REGISTER_BLOCK.getDefaultState());
         String test1 = "2b";

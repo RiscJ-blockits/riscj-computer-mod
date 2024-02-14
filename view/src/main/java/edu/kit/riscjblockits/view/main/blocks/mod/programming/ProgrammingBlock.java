@@ -58,11 +58,6 @@ public class ProgrammingBlock extends ModBlock {
         builder.add(Properties.HORIZONTAL_FACING);
     }
 
-    /**
-     * ToDo ??
-     * @param ctx {@link  ItemPlacementContext}
-     * @return super.getPlacementState with an appended state for the diretional textures.
-     */
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {

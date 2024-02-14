@@ -102,7 +102,6 @@ public final class ClusterArchitectureHandler {
         if (alu != null) {
             for (RegisterController register : aluRegister) {
                 if (!BlockPosition.isNeighbourPosition(alu.getBlockPosition(), register.getBlockPosition())) {
-                    System.out.println("ALU Register not connected to ALU");
                     correctArchitecture = false;
                     availableRegisters.remove(register.getRegisterType());
                 }

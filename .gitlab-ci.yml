@@ -1,34 +1,7 @@
-qodana:
-  tags:
-    - docker
-  stage: qodana
-  image:
-    name: jetbrains/qodana-jvm-community
-    entrypoint: [""]
-  cache:
-    - key: qodana-2023.2-$CI_DEFAULT_BRANCH-$CI_COMMIT_REF_SLUG
-      fallback_keys:
-        - qodana-2023.2-$CI_DEFAULT_BRANCH-
-        - qodana-2023.2-
-      paths:
-        - .qodana/cache
-  variables:
-    QODANA_TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdhbml6YXRpb24iOiIzMWJYeCIsInByb2plY3QiOiJwMjFCbiIsInRva2VuIjoiM3l4YmwifQ.ECLsuFCJ3ogjXDNR1p333VNDGkOixdPRKnLt2k-FoGo
-  script:
-    - qodana --save-report --results-dir=$CI_PROJECT_DIR/.qodana/results
-      --cache-dir=$CI_PROJECT_DIR/.qodana/cache
-  artifacts:
-    expire_in: 5 day
-    paths:
-      - qodana/report/
-    expose_as: 'Qodana report'
-    when: always
-
 stages:
   - build
   - test
   - sonarqube-check
-  - qodana
 
 build:
   tags:
@@ -55,11 +28,6 @@ test:
       - model/build/reports/
       - view/build/reports/
     when: always
-
-include:
-  - template: Jobs/SAST.gitlab-ci.yml
-variables:
-  SEARCH_MAX_DEPTH: 15
 
 sonarqube-check:
   stage: sonarqube-check

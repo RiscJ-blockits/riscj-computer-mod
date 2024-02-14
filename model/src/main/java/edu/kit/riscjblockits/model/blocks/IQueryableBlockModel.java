@@ -21,12 +21,11 @@ public interface IQueryableBlockModel {
 
     /**
      * Checks if the model has changed since the last query.
-     * returns whether the state of the block has changed since the last query
+     * Returns whether the state of the block has changed since the last query
      * @return true if the state has changed, false otherwise
      */
     boolean hasUnqueriedStateChange();
 
-    //ToDo nicht im Entwurfs wiki
     /**
      * Resets the state change flag.
      */

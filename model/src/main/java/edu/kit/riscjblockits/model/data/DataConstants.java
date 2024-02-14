@@ -6,7 +6,6 @@ import edu.kit.riscjblockits.model.blocks.RegisterModel;
  * Defines constants used as keys in data and nbt elements.
  */
 public final class DataConstants {
-    //ToDo write Javadoc
 
     //General Constants
     /**

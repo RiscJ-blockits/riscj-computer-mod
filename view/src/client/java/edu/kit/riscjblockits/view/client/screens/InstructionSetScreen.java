@@ -141,11 +141,7 @@ public class InstructionSetScreen extends Screen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         if (tickCounter > 0) {          //an error has happened
-            //context.getMatrices().push();
-            //context.getMatrices().scale(0.5f, 0.5f, 0.5f);
-            //errorText.draw(context, (this.x + 64) * 2 , (this.y + 152) * 2 , 40, 0xCC0000);
             context.drawText(textRenderer, Text.translatable("ist_error"), this.x + 45, this.y + 157, 0xCC0000, false);
-            //context.getMatrices().pop();
             tickCounter--;
         }
         if (edited) {
@@ -158,9 +154,8 @@ public class InstructionSetScreen extends Screen {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - backgroundWidth) / 2;
-        int y = (height - backgroundHeight) / 2;
-        context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight, backgroundWidth, backgroundHeight);
+        context.drawTexture(TEXTURE, (width - backgroundWidth) / 2, (height - backgroundHeight) / 2, 0, 0,
+            backgroundWidth, backgroundHeight, backgroundWidth, backgroundHeight);
     }
 
     @Override

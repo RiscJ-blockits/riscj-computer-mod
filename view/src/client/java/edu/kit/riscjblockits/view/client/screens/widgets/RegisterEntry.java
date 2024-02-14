@@ -42,13 +42,11 @@ public class RegisterEntry extends ListEntry {
             if(RegisterEntry.this.missing) {
                 RegisterEntry.this.assignRegister(RegisterEntry.this.name);
             } else if (!RegisterEntry.this.currentReg) {
-                RegisterEntry.this.overwriteRegister(RegisterEntry.this.name);
+                RegisterEntry.this.assignRegister(RegisterEntry.this.name);
             } else {
                 RegisterEntry.this.deselectRegister();
             }
-
         }, !missing, currentReg);
-
     }
 
     @Override
@@ -76,8 +74,6 @@ public class RegisterEntry extends ListEntry {
     public boolean isMouseOver(double mouseX, double mouseY) {
         return this.selectButton.isMouseOver(mouseX, mouseY);
     }
-
-
 
     public Object getName() {
         return this.name;
@@ -118,19 +114,6 @@ public class RegisterEntry extends ListEntry {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeBlockPos(pos);
         buf.writeString(UNASSIGNED_REGISTER);
-        ClientPlayNetworking.send(NetworkingConstants.SYNC_REGISTER_SELECTION, buf);
-    }
-
-    /**
-     * Initial situation: The selected button represents a different configured register
-     * Result: The register is configured to be the selected register, this registers previous configuration is deselected.
-     * The diffrent already configured register is deselected and not configured anymore.
-     * @param name the name of the overwritten register
-     */
-    public void overwriteRegister(String name) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeBlockPos(pos);
-        buf.writeString(name);
         ClientPlayNetworking.send(NetworkingConstants.SYNC_REGISTER_SELECTION, buf);
     }
 

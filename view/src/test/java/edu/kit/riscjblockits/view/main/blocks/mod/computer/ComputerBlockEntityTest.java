@@ -284,7 +284,7 @@ class ComputerBlockEntityTest {
         blocks.put("REGISTER9", registerEntity9);
     }
 
-    @Disabled
+    @Disabled("Because of refactored funktionality")
     @Test
     @Order(5)
     void startSimualtion() {

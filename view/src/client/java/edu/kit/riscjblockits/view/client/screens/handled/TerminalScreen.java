@@ -188,7 +188,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
             return;
         }
         char input = text.charAt(0);
-        String hexInput = Integer.toHexString((int) input);
+        String hexInput = Integer.toHexString(input);
         PacketByteBuf packet = PacketByteBufs.create();
         packet.writeBlockPos(handler.getBlockEntity().getPos());
         packet.writeString(hexInput);

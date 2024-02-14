@@ -43,10 +43,9 @@ public abstract class ComputerBlockController extends BlockController
         super(controllerType);
         this.blockEntity = blockEntity;
         this.blockModel = createBlockModel();
-        blockEntity.setBlockModel((IViewQueryableBlockModel) this.blockModel);      //FixMe cast sehr unschön
+        blockEntity.setBlockModel((IViewQueryableBlockModel) this.blockModel);
     }
 
-    //ToDo nicht im entwurf
     /**
      * Starts the clustering process.
      * @param pos The position of the block in the minecraft world.
@@ -103,7 +102,7 @@ public abstract class ComputerBlockController extends BlockController
      * Gather the neighbors of the block.
      * Only returns bus blocks if the block is a computer block.
      * Returns all computer blocks if the block is a bus block.
-     * Returns an empty list if the block is not a computer block. ToDo not implemented yet.
+     * Returns an empty list if the block is not a computer block.
      * @return List of neighbors.
      */
     public List<IQueryableClusterController> getNeighbours() {
@@ -131,7 +130,6 @@ public abstract class ComputerBlockController extends BlockController
      * Removes the block from the cluster.
      */
     public void onBroken() {
-        System.out.println("Block broken");
         clusterHandler.blockDestroyed(this);
     }
 
@@ -141,23 +139,20 @@ public abstract class ComputerBlockController extends BlockController
      */
     public void tick() {}
 
-    //ToDo nicht im Entwurfs wiki
     /**
-     * Activates the visualisation of the block.
+     * Activates the visualization of the block.
      */
     public void activateVisualisation() {
         blockModel.setVisualisationState(true);
     }
 
     /**
-     * Deactivates the visualisation of the block.
+     * Deactivates the visualization of the block.
      */
-    //ToDo nicht im Entwurfs wiki
     public void stopVisualisation() {
         blockModel.setVisualisationState(false);
     }
 
-    //ToDo nicht im Entwurfs wiki
     /**
      * Creates a new effect at position of the block entity.
      * @param effect The effect that should be spawned.

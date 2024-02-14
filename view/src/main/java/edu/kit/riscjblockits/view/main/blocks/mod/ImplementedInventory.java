@@ -22,6 +22,7 @@ public interface ImplementedInventory extends Inventory {
     /**
      * Creates an inventory from the item list.
      * @param items the item list to use.
+     * @return a new inventory of the same type as the default.
      */
     static ImplementedInventory of(DefaultedList<ItemStack> items) {
         return () -> items;

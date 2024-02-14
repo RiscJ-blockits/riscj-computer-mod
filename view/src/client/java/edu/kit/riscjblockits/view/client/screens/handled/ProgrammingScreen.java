@@ -139,9 +139,10 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         handler.enableSyncing();
 
         ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION);
-        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION, (client1, handler1, buf, responseSender) -> {
-            showError(buf.readString());
-        });
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION,
+            (client1, handler1, buf, responseSender) -> {
+                showError(buf.readString());
+            });
     }
 
     /**
@@ -235,8 +236,4 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         this.instructionsWidget.update();
     }
 
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
-    }
 }

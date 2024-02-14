@@ -46,6 +46,15 @@ public class InstructionSetRegisters {
     private HashMap<Integer, String> intRegisterAddressMap;
     private HashMap<Integer, String> floatRegisterAddressMap;
 
+    /**
+     * Constructor for the instruction set registers.
+     * Here all available registers are stored.
+     * @param programCounter The program counter register name.
+     * @param aluRegs The ALU register names.
+     * @param floatRegs The floating point register mapping of addresses and names.
+     * @param intRegs The integer register mapping of addresses and names.
+     * @param initialValues The initial values of registers that are to have one.
+     */
     public InstructionSetRegisters(String programCounter, String[] aluRegs, HashMap<String, Integer> floatRegs, HashMap<String, Integer> intRegs,
                                    HashMap<String, String> initialValues) {
         this.programCounter = programCounter;
@@ -55,6 +64,9 @@ public class InstructionSetRegisters {
         this.initialValues = initialValues;
     }
 
+    /**
+     * Generates the register address maps from the register maps.
+     */
     public void generateRegisterAddressMaps() {
         intRegisterAddressMap = generateRegisterAddressMap(intRegs);
         floatRegisterAddressMap = generateRegisterAddressMap(floatRegs);
@@ -101,7 +113,7 @@ public class InstructionSetRegisters {
     }
 
     /**
-     * ToDo nicht im Entwurf
+     * Collects and returns the names of all registers.
      * @return Returns the names of all registers.
      */
     public List<String> getRegisterNames() {
@@ -115,6 +127,11 @@ public class InstructionSetRegisters {
         return names;
     }
 
+    /**
+     * Some registers have initial values. This method returns the initial value of a register.
+     * @param key The name of the register.
+     * @return The initial value of the register.
+     */
     public String getInitialValue(String key) {
         if (initialValues == null)
             return null;

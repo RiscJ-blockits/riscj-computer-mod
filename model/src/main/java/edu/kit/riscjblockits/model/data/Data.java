@@ -22,7 +22,7 @@ public class Data implements IDataContainer {
      * Creates a new empty Data container.
      */
     public Data () {
-
+        //create empty data
     }
 
     /**

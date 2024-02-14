@@ -88,6 +88,9 @@ public class WirelessRegisterController extends RegisterController {
                     BlockPosition blockPosition = new BlockPosition(x, y, z);
                     ((WirelessRegisterModel) getModel()).setWirelessNeighbourPosition(blockPosition);
                 }
+                default -> {
+                    //do nothing
+                }
             }
         }
     }
@@ -123,7 +126,7 @@ public class WirelessRegisterController extends RegisterController {
      * Getter for the current value inside the register.
      * @return The Value stored in the register.
      */
-    //@Override
+    @Override
     public Value getValue() {
         return ((WirelessRegisterModel)getModel()).getValue();
     }

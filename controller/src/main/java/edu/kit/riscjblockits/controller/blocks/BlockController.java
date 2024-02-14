@@ -21,7 +21,11 @@ public abstract class BlockController implements IUserInputReceivableController 
      */
     protected BlockController(BlockControllerType controllerType) {
         this.controllerType = controllerType;
-    }
+    }/**
+     * ToDo ??
+     * @param ctx {@link  ItemPlacementContext}
+     * @return super.getPlacementState with an appended state for the directional textures.
+     */
 
     /**
      * Used from the view if it wants to update Data in the model.

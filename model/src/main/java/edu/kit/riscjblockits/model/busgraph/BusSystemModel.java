@@ -270,7 +270,6 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     /**
      * Resets the list of bus nodes that transport data.
      */
-    //ToDo nicht im Entwurf Wiki
     public void resetVisualisation() {
         activeVisualization.clear();
     }

@@ -103,7 +103,6 @@ public class Executor implements IExecutor {
      * @throws NonExecutableMicroInstructionException if the instruction is not executable.
      */
     public void execute(MemoryInstruction memoryInstruction) {
-        //ToDo Mima wartetaktvisualisierung
         if(memoryInstruction.getFlag().isEmpty()) {
             return;
         }
@@ -244,7 +243,6 @@ public class Executor implements IExecutor {
      * @param dataMovementInstruction Data movement instruction to be executed.
      */
     public void execute(DataMovementInstruction dataMovementInstruction) {
-        //ToDo
         String from = dataMovementInstruction.getFrom()[0];
         String to = dataMovementInstruction.getTo();
 
@@ -258,14 +256,14 @@ public class Executor implements IExecutor {
     /**
      * Checks the condition of a conditioned instruction.
      * @param condition Condition to be checked.
-     * @return True if the condition is met, false otherwise.
+     * @return True, if the condition is met, false otherwise.
      * @throws NonExecutableMicroInstructionException if the condition is not executable.
      */
     private boolean checkCondition(InstructionCondition condition) {
 
         String comparisonCondition = condition.getComparator();
         Value firstValue;
-        // first Comparator is a register --> load value from there
+        // the first Comparator is a register --> load value from there
         if (registerControllerMap.containsKey(condition.getCompare1())) {
             firstValue = registerControllerMap.get(condition.getCompare1()).getValue();
         } else { // Comparator is not a register --> extract value from binary constant
@@ -277,7 +275,7 @@ public class Executor implements IExecutor {
         }
 
         Value secondValue;
-        // second Comparator is a register --> load value from there
+        // the second Comparator is a register --> load value from there
         if (registerControllerMap.containsKey(condition.getCompare2())) {
             secondValue = registerControllerMap.get(condition.getCompare2()).getValue();
         } else { // Comparator is not a register --> extract value from binary constant

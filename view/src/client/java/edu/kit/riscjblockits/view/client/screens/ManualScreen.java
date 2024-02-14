@@ -63,7 +63,11 @@ public class ManualScreen extends Screen {
     }
 
     /**
-     * Adds all categories to the manual screen.
+     * Adds the categories to the screen.
+     * @param x the x position of the list
+     * @param y the y position of the list
+     * @param width the width of the list
+     * @param height the height of the list
      */
     private void addCategories(int x, int y, int width, int height) {
         List<CategoryEntry> categories = new ArrayList<>();

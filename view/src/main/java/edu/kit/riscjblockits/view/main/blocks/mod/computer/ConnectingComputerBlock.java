@@ -114,6 +114,7 @@ public abstract class ConnectingComputerBlock extends ComputerBlock {
             this.name = name;
         }
 
+        @Override
         public String toString() {
             return this.asString();
         }
