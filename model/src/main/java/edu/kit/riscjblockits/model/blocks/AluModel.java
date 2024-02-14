@@ -19,19 +19,6 @@ public class AluModel extends BlockModel{
      * Current alu operation.
      */
     private String operation;
-
-    public String getOperation() {
-        return operation;
-    }
-
-    public Value getOperand1() {
-        return operand1;
-    }
-
-    public Value getOperand2() {
-        return operand2;
-    }
-
     /**
      * First alu operand.
      */
@@ -52,6 +39,17 @@ public class AluModel extends BlockModel{
      */
     public AluModel() {
         setType(ModelType.ALU);
+    }
+    public String getOperation() {
+        return operation;
+    }
+
+    public Value getOperand1() {
+        return operand1;
+    }
+
+    public Value getOperand2() {
+        return operand2;
     }
 
     /**
@@ -82,6 +80,7 @@ public class AluModel extends BlockModel{
 
     /**
      * See {@link edu.kit.riscjblockits.controller.blocks.AluController#executeAluOperation(String)} for implemented operations.
+     * @param operation The operation to be executed.
      */
     public void setOperation(String operation) {
         this.operation = operation;
@@ -89,6 +88,7 @@ public class AluModel extends BlockModel{
     }
 
     /**
+     * Setter for the first operand of the alu.
      * @param operand1 First operand of the alu.
      */
     public void setOperand1(Value operand1) {
@@ -97,6 +97,7 @@ public class AluModel extends BlockModel{
     }
 
     /**
+     * Setter for the second operand of the alu.
      * @param operand2 Second operand of the alu.
      */
     public void setOperand2(Value operand2) {
@@ -105,6 +106,7 @@ public class AluModel extends BlockModel{
     }
 
     /**
+     * Getter for the result of the alu operation.
      * @return The result of the alu operation.
      */
     public Value getResult() {
@@ -112,6 +114,7 @@ public class AluModel extends BlockModel{
     }
 
     /**
+     * Setter for the result of the alu operation.
      * @param result The result of the alu operation.
      */
     public void setResult(Value result) {

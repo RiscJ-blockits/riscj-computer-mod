@@ -1,5 +1,8 @@
 package edu.kit.riscjblockits.model.data;
 
+/**
+ * This interface defines the methods that a data string entry provides.
+ */
 public interface IDataStringEntry extends IDataEntry {
 
     /**

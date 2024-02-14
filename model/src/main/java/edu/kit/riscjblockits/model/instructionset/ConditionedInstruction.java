@@ -14,6 +14,14 @@ public class ConditionedInstruction extends ComplexMicroInstruction {
      */
     private InstructionCondition condition;
 
+    /**
+     * Creates a new conditioned instruction with the given settings.
+     * @param from origin of the instruction data
+     * @param to destination of the instruction data
+     * @param memoryFlag flag for memory access
+     * @param memoryInstruction instruction for memory access
+     * @param condition condition of the instruction
+     */
     public ConditionedInstruction(String[] from, String to, String memoryFlag,
                                   MemoryInstruction memoryInstruction, InstructionCondition condition) {
         super(from, to, memoryFlag, memoryInstruction);
@@ -49,6 +57,7 @@ public class ConditionedInstruction extends ComplexMicroInstruction {
 
     @Override
     public MicroInstruction clone(String[] from, String to) {
-        return new ConditionedInstruction(from, to, getMemoryFlag(), getMemoryInstruction()==null ? null : getMemoryInstruction().clone(), condition);
+        return new ConditionedInstruction(from, to, getMemoryFlag(),
+                getMemoryInstruction()==null ? null : getMemoryInstruction().clone(), condition);
     }
 }

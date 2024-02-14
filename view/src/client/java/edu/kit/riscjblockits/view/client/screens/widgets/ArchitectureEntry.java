@@ -12,13 +12,28 @@ import net.minecraft.util.Identifier;
  */
 public class ArchitectureEntry extends ListEntry{
 
+    /**
+     * The texture for missing components.
+     */
     public static final Identifier COMPONENT_MISSING = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/control_unit/controlunit_gui_entry_missing.png");
+    /**
+     * The texture for found components.
+     */
     public static final Identifier COMPONENT_FOUND = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/control_unit/controlunit_gui_entry_found.png");
-    private final String name;
-    private final boolean missing;
+
+
+    /**
+     * The height of the entry.
+     */
     private static final int ENTRY_HEIGHT = 20;
+
+    /**
+     * The width of the entry.
+     */
     private static final int ENTRY_WIDTH = 120;
 
+    private final String name;
+    private final boolean missing;
     /**
      * Constructor for the ArchitectureEntry.
      * @param name the name of the component
@@ -53,6 +68,7 @@ public class ArchitectureEntry extends ListEntry{
     }
 
     /**
+     * Getter for the height of the entry.
      * @return the height of the entry
      */
     @Override
