@@ -14,7 +14,6 @@ import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.MemoryModel;
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
-import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.instructionset.AluInstruction;
 import edu.kit.riscjblockits.model.instructionset.ConditionedInstruction;
 import edu.kit.riscjblockits.model.instructionset.DataMovementInstruction;
@@ -60,11 +59,6 @@ class ExecutorTest {
             @Override
             public BlockPosition getBlockPosition() {
                 return new BlockPosition(0,0,0);
-            }
-
-            @Override
-            public IDataElement getBlockEntityData() {
-                return null;
             }
 
             @Override
