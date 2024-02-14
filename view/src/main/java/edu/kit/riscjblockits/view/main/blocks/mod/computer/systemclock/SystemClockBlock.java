@@ -82,7 +82,8 @@ public class SystemClockBlock extends ComputerBlock {
      * @param notify Not specified.
      */
     @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+    public void neighborUpdate(BlockState state, World world, BlockPos pos,
+                               Block sourceBlock, BlockPos sourcePos, boolean notify) {
         updatePowered(world, pos);
     }
 

@@ -86,6 +86,7 @@ public class TerminalBlockEntity extends ComputerBlockEntity implements Extended
     }
 
     /**
+     * Getter for the Terminal output text.
      * @return The string that should be displayed on the screen.
      */
     public String getDisplayedString() {

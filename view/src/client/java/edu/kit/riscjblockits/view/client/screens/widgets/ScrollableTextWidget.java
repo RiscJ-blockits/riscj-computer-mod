@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-
+/**
+ * A widget that displays text that can be scrolled. The text can be larger than the widget itself.
+ */
 public class ScrollableTextWidget implements Widget, Drawable, Element, Selectable {
     private static final int SCROLL_MULTIPLIER = 6;
 
@@ -30,9 +32,19 @@ public class ScrollableTextWidget implements Widget, Drawable, Element, Selectab
 
     private int x;
     private int y;
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
+    /**
+     * Creates a new scrollable text widget.
+     * It can hold text that is larger than the widget itself.
+     * The text can be scrolled using the mouse wheel.
+     * @param textRenderer The text renderer to use.
+     * @param x The x position of the widget.
+     * @param y The y position of the widget.
+     * @param width The width of the widget.
+     * @param height The height of the widget.
+     */
     public ScrollableTextWidget(TextRenderer textRenderer, int x, int y, int width, int height) {
         this.textRenderer = textRenderer;
         this.x = x;
@@ -49,13 +61,14 @@ public class ScrollableTextWidget implements Widget, Drawable, Element, Selectab
         matrixStack.push();
         matrixStack.scale(TEXT_SCALE, TEXT_SCALE, TEXT_SCALE);
         for (int i = start; i < lines.size(); i++) {
-            context.drawText(textRenderer, lines.get(i), (int) (x * INVERSE_TEXT_SCALE), (int) (y * INVERSE_TEXT_SCALE + (i - start) * 2 * LINE_HEIGHT * TEXT_SCALE), 0x000000, false);
+            context.drawText(textRenderer, lines.get(i),
+                (int) (x * INVERSE_TEXT_SCALE), (int) (y * INVERSE_TEXT_SCALE + (i - start) * 2 * LINE_HEIGHT * TEXT_SCALE),
+                0x000000, false);
             if ((i - start) * LINE_HEIGHT > height) {
                 break;
             }
         }
         matrixStack.pop();
-
     }
 
     @Override
@@ -71,7 +84,7 @@ public class ScrollableTextWidget implements Widget, Drawable, Element, Selectab
 
     @Override
     public void setFocused(boolean focused) {
-
+        //do nothing
     }
 
     @Override
@@ -116,13 +129,17 @@ public class ScrollableTextWidget implements Widget, Drawable, Element, Selectab
 
     @Override
     public void forEachChild(Consumer<ClickableWidget> consumer) {
-
+        //do nothing
     }
 
     private int getContentsHeight() {
         return (int) ((lines.size() + 5) * LINE_HEIGHT * TEXT_SCALE);
     }
 
+    /**
+     * Sets the text to display inside the widget.
+     * @param text The text to display.
+     */
     public void setText(String text) {
         this.lines = wrapText(text);
         scrollPosition = 0;
@@ -130,12 +147,11 @@ public class ScrollableTextWidget implements Widget, Drawable, Element, Selectab
 
     /**
      * Wraps the given text into lines that fit into the given width.
-     * partially written by Github Copilot
+     * Partially written by GitHub Copilot
      *
      * @param text The text to wrap.
      * @return A list of texts that fit into the given width.
      */
-
     private List<Text> wrapText(String text) {
         List<Text> result = new ArrayList<>();
         String[] words = text.split(" ");
@@ -148,8 +164,7 @@ public class ScrollableTextWidget implements Widget, Drawable, Element, Selectab
                     if (i != 0) {
                         result.add(Text.of(line.toString()));
                         line = new StringBuilder(split[i]);
-                    }
-                    else {
+                    } else {
                         // split over 2 lines when the word wouldn't fit into the last line
                         if (textRenderer.getWidth(line + " " + split[i]) > width * INVERSE_TEXT_SCALE) {
                             result.add(Text.of(line.toString()));
@@ -163,9 +178,7 @@ public class ScrollableTextWidget implements Widget, Drawable, Element, Selectab
                             result.add(Text.of(line.toString()));
                         }
                         line = new StringBuilder();
-
                     }
-
                 }
                 continue;
             }
@@ -196,6 +209,6 @@ public class ScrollableTextWidget implements Widget, Drawable, Element, Selectab
 
     @Override
     public void appendNarrations(NarrationMessageBuilder builder) {
-
+        //do nothing
     }
 }

@@ -80,7 +80,8 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         //init the RegSelectWidget
         this.narrow = this.width < 379;
         this.regSelectWidget.initialize(this.width, this.height, this.client, this.narrow, this.handler);
-        this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, RegSelectWidget.BUTTON_TEXTURES, button -> {
+        this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.height / 2 - 49,
+            20, 18, RegSelectWidget.BUTTON_TEXTURES, button -> {
             this.regSelectWidget.toggleOpen();
             this.x = this.regSelectWidget.findLeftEdge(this.width, this.backgroundWidth);
             button.setPosition(this.x + 5, this.height / 2 - 49);
@@ -107,7 +108,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
             super.render(context, mouseX, mouseY, delta);
         }
         this.regSelectWidget.render(context, mouseX, mouseY, delta);
-        drawMouseoverTooltip(context, mouseX, mouseY);  // render the tooltip of the button if the mouse is over it
+        drawMouseoverTooltip(context, mouseX, mouseY); //render the tooltip of the button if the mouse is over it
         outputtedText.drawWithShadow(context, 10, height / 2, 16, 0xffffff);
     }
 
@@ -157,9 +158,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
             assert this.client != null;
             assert this.client.player != null;
             this.client.player.closeHandledScreen();
-        }
-        //Send Data on Enter
-        else if (keyCode == GLFW.GLFW_KEY_ENTER) {
+        } else if (keyCode == GLFW.GLFW_KEY_ENTER) { //Send Data on Enter
             sendData(inputBox.getText());
             //ToDo reset Text inside the box
         }
@@ -177,7 +176,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     public void handledScreenTick() {
         this.regSelectWidget.update();
         output = ((TerminalBlockEntity) handler.getBlockEntity()).getDisplayedString();
-        outputtedText = MultilineText.create(textRenderer, Text.literal(output) , width - 20);
+        outputtedText = MultilineText.create(textRenderer, Text.literal(output), width - 20);
     }
 
     /**

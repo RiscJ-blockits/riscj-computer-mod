@@ -39,7 +39,7 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     /**
      * This translates the different speeds into ticks per second.
      */
-    private static final double[][] SECONDS_TRANSLATIONS = {{0,0}, {80,0.25}, {40,0.5}, {20,1}, {15,1.5}, {10,2}, {5,4}, {2,10}, {1,20}, {9,NaN}};        //assuming 20 ticks per second
+    private static final double[][] SECONDS_TRANSLATIONS = {{0,0}, {80,0.25}, {40,0.5}, {20,1}, {15,1.5}, {10,2}, {5,4}, {2,10}, {1,20}, {9,NaN}}; //assuming 20 ticks per second
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/system_clock/system_clock_gui.png");
     private static final Identifier MODE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/system_clock/system_clock_button.png");
     private static final String MODE_TEXTURE = "textures/gui/system_clock/system_clock_lever_%d.png";
@@ -50,9 +50,10 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     private static final int LEVER_Y_OFFSET = 23;
     private static final int LEVER_WIDTH = 58;
     private static final int LEVER_HEIGHT = 39;
-    private final ArrayList<IconButtonWidget> modeButtons = new ArrayList<>(10);
     private static final int SPEED_TEXT_FIELD_OFFSET_X = 9;
     private static final int SPEED_TEXT_FIELD_OFFSET_Y = 18;
+    private final ArrayList<IconButtonWidget> modeButtons = new ArrayList<>(10);
+
     private Identifier leverTexture = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/system_clock/system_clock_lever_0.png");
     private Text clockSpeed = Text.literal("0");
 
@@ -152,10 +153,10 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         String clockMode = String.valueOf(MC_TICK);
         int speed = 0;
         switch (step) {
-            case 0:          //Step mode
+            case 0:         //Step mode
                 clockMode = String.valueOf(STEP);
                 break;
-            case 9:     //Real time mode//Real time mode
+            case 9:         //Real time mode//Real time mode
                 clockMode = String.valueOf(REALTIME);
                 break;
             default:
@@ -170,8 +171,9 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     }
 
     /**
-     * @return the step of the button that is currently selected.
+     * Gets the step of the button that is currently selected.
      * The Information is taken from the handler.
+     * @return the step of the button that is currently selected.
      */
     private int getButtonStep() {
         String mode = ((SystemClockBlockEntity) handler.getBlockEntity()).getSystemClockMode();

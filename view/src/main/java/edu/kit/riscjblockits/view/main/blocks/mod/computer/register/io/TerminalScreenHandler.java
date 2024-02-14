@@ -6,14 +6,28 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScre
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 
+/**
+ * Handles an {@link edu.kit.riscjblockits.view.client.screens.handled.TerminalScreen}.
+ */
 public class TerminalScreenHandler extends RegisterScreenHandler {
 
-
+    /**
+     * Constructor for the terminal screen handler.
+     * @param syncId The sync id.
+     * @param inventory The player inventory.
+     * @param blockEntity The block entity.
+     */
     public TerminalScreenHandler(int syncId, PlayerInventory inventory, ModBlockEntity blockEntity) {
         super(RISCJ_blockits.TERMINAL_SCREEN_HANDLER, syncId, blockEntity);
         addPlayerInventorySlots(inventory);
     }
 
+    /**
+     * Constructor for the terminal screen handler.
+     * @param syncId The sync id.
+     * @param inventory The player inventory.
+     * @param buf The packet byte buffer with the location of the block entity.
+     */
     public TerminalScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
         this(syncId, inventory, (ModBlockEntity) inventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
     }

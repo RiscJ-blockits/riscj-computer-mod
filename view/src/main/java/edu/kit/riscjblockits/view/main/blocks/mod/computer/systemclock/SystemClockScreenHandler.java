@@ -44,6 +44,7 @@ public class SystemClockScreenHandler extends ModScreenHandler {
     }
 
     /**
+     * Getter for the system clock speed.
      * @return the speed of the system clock from the model.
      */
     public int getSystemClockSpeed() {
@@ -64,6 +65,7 @@ public class SystemClockScreenHandler extends ModScreenHandler {
     }
 
     /**
+     * Getter for the system clock mode.
      * @return the mode of the system clock from the model.
      */
     public String getSystemClockMode() {

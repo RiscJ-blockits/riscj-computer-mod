@@ -29,7 +29,6 @@ import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 import static edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlock.CURSORPOS;
 import static edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlock.MAX_CURSORPOS;
 
-
 /**
  * This class represents a system clock entity from our mod in the game.
  * Every system clock has its own unique SystemClockBlockEntity while it is loaded.
@@ -76,6 +75,7 @@ public class SystemClockBlockEntity extends ComputerBlockEntity implements Exten
     }
 
     /**
+     * On the top of the display is a heading text.
      * @return The display name of the system clock. Is a translatable text.
      */
     @Override
@@ -121,6 +121,10 @@ public class SystemClockBlockEntity extends ComputerBlockEntity implements Exten
         this.powered = powered;
     }
 
+    /**
+     * Getter for the current speed from the model.
+     * @return The current speed of the system clock.
+     */
     public int getSystemClockSpeed() {
         NbtCompound nbt = this.createNbt();
         if (!nbt.contains(MOD_DATA)) {
@@ -138,6 +142,10 @@ public class SystemClockBlockEntity extends ComputerBlockEntity implements Exten
         return 0;
     }
 
+    /**
+     * Getter for the current mode from the model.
+     * @return The current mode of the system clock.
+     */
     public String getSystemClockMode() {
         NbtCompound nbt = this.createNbt();
         if (!nbt.contains(MOD_DATA)) {

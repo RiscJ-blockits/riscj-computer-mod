@@ -10,10 +10,8 @@ import edu.kit.riscjblockits.model.blocks.SystemClockModel;
 import edu.kit.riscjblockits.model.busgraph.IBusSystem;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Handling of the simulation execution timing. Uses the observer pattern to keep track of the clock state as
@@ -52,7 +50,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver, IRealti
     /**
      * Constructor. Creates a new {@link SimulationSequenceHandler} and registers itself as an observer
      * of the {@link SystemClockModel}.
-     *
+     * @param busSystem The bus system that is used for the simulation.
      * @param blockControllers List of all {@link BlockController}s of the associated computer blocks.
      */
     public SimulationTimeHandler(List<IQueryableSimController> blockControllers, IBusSystem busSystem) {
@@ -122,20 +120,15 @@ public class SimulationTimeHandler implements ISimulationTimingObserver, IRealti
         if(clockMode != ClockMode.REALTIME) {
             realtimeSimulationRunning = false;
         }
-
         clockSpeed = systemClockController.getClockSpeed();
         clockMode = systemClockController.getClockMode();
-
         if(clockMode == ClockMode.REALTIME) {
             simulationSequenceHandler.setVisualizationMode(SimulationSequenceHandler.VisualisationMode.FAST);
-        }
-        else if (clockMode == ClockMode.MC_TICK) {
+        } else if (clockMode == ClockMode.MC_TICK) {
+            simulationSequenceHandler.setVisualizationMode(SimulationSequenceHandler.VisualisationMode.NORMAL);
+        } else if (clockMode == ClockMode.STEP) {
             simulationSequenceHandler.setVisualizationMode(SimulationSequenceHandler.VisualisationMode.NORMAL);
         }
-        else if (clockMode == ClockMode.STEP) {
-            simulationSequenceHandler.setVisualizationMode(SimulationSequenceHandler.VisualisationMode.NORMAL);
-        }
-
     }
 
 }
