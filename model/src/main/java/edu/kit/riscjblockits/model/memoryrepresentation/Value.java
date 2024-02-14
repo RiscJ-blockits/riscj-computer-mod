@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.model.memoryrepresentation;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.HexFormat;
 
@@ -88,7 +89,11 @@ public class Value {
      * @return the value
      */
     public static Value fromFloat(String s, int length) {
-        return null;
+        byte[] bytes = new byte[length];
+        ByteBuffer buffer = ByteBuffer.allocate(4);
+        buffer.putFloat(Float.parseFloat(s));
+        System.arraycopy(buffer.array(), 0, bytes, 0, length);
+        return new Value(bytes);
     }
 
     /**
@@ -140,8 +145,9 @@ public class Value {
      * @return the value as floating point decimal string
      */
     public String getFloatValue() {
-        //ToDo
-        return null;
+        ByteBuffer wrapped = ByteBuffer.wrap(value);
+        int num = wrapped.getInt();
+        return Float.toString((float) num);
     }
 
     /**
@@ -195,7 +201,7 @@ public class Value {
         return thisValue.compareTo(comparatorValue) < 0;
     }
 
-    public boolean lowerThanUnsigned(Value comparator) {;
+    public boolean lowerThanUnsigned(Value comparator) {
         byte[] valueUnsigned = new byte[value.length + 1];
         System.arraycopy(value, 0, valueUnsigned, 1, value.length);
         byte[] compUnsigned = new byte[value.length + 1];
@@ -206,8 +212,13 @@ public class Value {
     }
 
     public boolean lowerThanFloat(Value comparator) {
-        //TODO implement
-        return false;
+        ByteBuffer wrapped = ByteBuffer.wrap(comparator.getByteValue());
+        int num = wrapped.getInt();
+        float other = (float) num;
+        wrapped = ByteBuffer.wrap(comparator.getByteValue());
+        num = wrapped.getInt();
+        float me = (float) num;
+        return me < other;
     }
 
     public boolean greaterThan(Value comparator) {
@@ -227,8 +238,14 @@ public class Value {
     }
 
     public boolean greaterThanFloat(Value comparator) {
-        //TODO implement
-        return false;
+        ByteBuffer wrapped = ByteBuffer.wrap(comparator.getByteValue());
+        int num = wrapped.getInt();
+        float other = (float) num;
+        wrapped = ByteBuffer.wrap(comparator.getByteValue());
+        num = wrapped.getInt();
+        float me = (float) num;
+
+        return me > other;
     }
 
     public Value negate() {
