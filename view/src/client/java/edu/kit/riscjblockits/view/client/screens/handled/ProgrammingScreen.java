@@ -114,6 +114,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
         instructionsWidget.initialize(this.width, this.height - backgroundHeight, this.client, this.narrow, this.handler);
+        addDrawableChild(instructionsWidget);
         // add the assembly button to the screen
         assembleButton.setX(this.x + 151);
         assembleButton.setY(this.y + 63);
@@ -230,4 +231,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         this.instructionsWidget.update();
     }
 
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
 }

@@ -1,5 +1,8 @@
 package edu.kit.riscjblockits.model.instructionset;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Holds a conditioned instruction like a jump or branch operation.
  * [JavaDoc in this class with minor support by GitHub Copilot]
@@ -9,7 +12,7 @@ public class ConditionedInstruction extends ComplexMicroInstruction {
     /**
      * Condition of the instruction.
      */
-    private final InstructionCondition condition;
+    private InstructionCondition condition;
 
     public ConditionedInstruction(String[] from, String to, String memoryFlag,
                                   MemoryInstruction memoryInstruction, InstructionCondition condition) {
@@ -31,6 +34,17 @@ public class ConditionedInstruction extends ComplexMicroInstruction {
      */
     public InstructionCondition getCondition() {
         return condition;
+    }
+
+    @Override
+    public MicroInstruction getFilled(Map<String, String> argumentsInstructionMap, HashMap<Integer, String> intRegisters, HashMap<Integer, String> floatRegisters) {
+        ConditionedInstruction inst = (ConditionedInstruction) super.getFilled(argumentsInstructionMap, intRegisters, floatRegisters);
+        inst.condition = new InstructionCondition(
+            getFilledExecutionPart(condition.getComparator(), argumentsInstructionMap, intRegisters, floatRegisters),
+            getFilledExecutionPart(condition.getCompare1(), argumentsInstructionMap, intRegisters, floatRegisters),
+            getFilledExecutionPart(condition.getCompare2(), argumentsInstructionMap, intRegisters, floatRegisters)
+        );
+        return inst;
     }
 
     @Override

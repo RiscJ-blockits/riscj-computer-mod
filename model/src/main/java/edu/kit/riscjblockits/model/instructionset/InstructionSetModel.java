@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 public class
 InstructionSetModel implements IQueryableInstructionSetModel {
 
+    private static final Pattern DATA_GROUP_PATTERN = Pattern.compile("\\[(?<name>\\w+)]<(?<length>\\d+)>(?<asciiRepeat>\\+)?");
+
     /**
      * Name of the instruction set.
      */
@@ -75,7 +77,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
     /**
      * Instructions of the instruction set, mapped by opcode.
      */
-    private HashMap<String, Instruction> opcodeHashMap;
+    private HashMap<String, List<Instruction>> opcodeHashMap;
 
     public InstructionSetModel() {
         this.name = null;
@@ -96,7 +98,7 @@ InstructionSetModel implements IQueryableInstructionSetModel {
                                MicroInstruction[] fetchPhase, HashMap<String, String> addressChangeHashMap,
                                String programStartLabel, HashMap<String, String> dataStorageKeywords,
                                HashMap<String, Instruction> commandHashMap,
-                               HashMap<String, Instruction> opcodeHashMap) {
+                               HashMap<String, List<Instruction>> opcodeHashMap) {
         this.name = name;
         this.instructionLength = instructionLength;
         this.instructionSetRegisters = instructionSetRegisters;
@@ -113,10 +115,16 @@ InstructionSetModel implements IQueryableInstructionSetModel {
     /**
      * Generates the opcode hashmap from the command hashmap.
      */
-    public void generateOpcodeHashmap(){
+    public void generateHashMaps(){
         this.opcodeHashMap = new HashMap<>();
         if(this.commandHashMap == null) return;
-        this.commandHashMap.values().forEach(e -> opcodeHashMap.put(e.getOpcode(), e));
+        this.commandHashMap.values().forEach(e -> {
+            if (!opcodeHashMap.containsKey(e.getOpcode())) {
+                opcodeHashMap.put(e.getOpcode(), new ArrayList<>());
+            }
+            opcodeHashMap.get(e.getOpcode()).add(e);
+        });
+        instructionSetRegisters.generateRegisterAddressMaps();
     }
 
     /**
@@ -269,6 +277,9 @@ InstructionSetModel implements IQueryableInstructionSetModel {
 
     /**
      * Resolves a data storage command to the data that shall be stored in the needed format.
+     * when the data is a constant, it is returned as is.
+     * when the data is dynamic, it is returned as a string with the format "data~length".
+     * when the pattern defines that there can be multiple entries, these will be seperated by a semicolon
      * @param s The data storage command.
      * @return The data to be stored.
      */
@@ -279,9 +290,28 @@ InstructionSetModel implements IQueryableInstructionSetModel {
             Matcher m = p.matcher(s);
             if (m.matches()) {
                 // check if data needs dynamic replacing
-                Pattern groupPattern = Pattern.compile("\\[(?<name>\\w+)]<(?<length>\\d+)>");
-                Matcher groupMatcher = groupPattern.matcher(dataStorageKeywords.get(key));
+
+                Matcher groupMatcher = DATA_GROUP_PATTERN.matcher(dataStorageKeywords.get(key));
                 if (groupMatcher.matches()) {
+                    // check if data needs dynamic repeating
+                    if (groupMatcher.group("asciiRepeat") != null) {
+                        String data = m.group(groupMatcher.group("name"));
+
+                        StringBuilder result = new StringBuilder();
+                        for (int i = 0; i < data.length(); i++){
+                            char c = data.charAt(i);
+                            if (c > 127) {
+                                throw new IllegalArgumentException("Data contains non-ASCII characters");
+                            }
+                            result.append(Integer.toString(c));
+                            result.append("~");
+                            result.append(groupMatcher.group("length"));
+                            if (i < data.length() - 1) {
+                                result.append(";");
+                            }
+                        }
+                        return result.toString();
+                    }
                     String groupName = groupMatcher.group("name");
                     return m.group(groupName) + "~" + groupMatcher.group("length");
                 }
@@ -327,9 +357,17 @@ InstructionSetModel implements IQueryableInstructionSetModel {
             String opCode = binaryValue.substring(opCodeStart, opCodeStart + opCodeLength);
             // if no instruction is found, the next opcode length is tried
             if (!opcodeHashMap.containsKey(opCode)) continue;
-            Instruction instruction = opcodeHashMap.get(opCode);
+            // find instruction in list of instructions with the same opcode
+            List<Instruction> instructions = opcodeHashMap.get(opCode);
+            Instruction instruction = null;
+            for (Instruction possibleInstruction : instructions) {
+                if (possibleInstruction.matchesBinary(binaryValue)) {
+                    instruction = possibleInstruction;
+                    break;
+                }
+            }
             if (instruction != null) {
-                return new Instruction(instruction, binaryValue);
+                return new Instruction(instruction, binaryValue, instructionSetRegisters.getIntRegisterAddressMap(), instructionSetRegisters.getFloatRegisterAddressMap());
             }
         }
         return null;
