@@ -219,7 +219,7 @@ public class Executor implements IExecutor {
                 if (!from2.isBlank())
                     aluController.setOperand2(registerControllerMap.get(from2).getValue());
                 else
-                    aluController.setOperand2(Value.fromBinary("0", wordLength));
+                    aluController.setOperand2(Value.fromBinary("0", wordLength ,true));
 
                 Value result = ((AluController) blockController).executeAluOperation(aluInstruction.getAction());
 
@@ -266,7 +266,7 @@ public class Executor implements IExecutor {
                 throw new NonExecutableMicroInstructionException(
                         "DataMovementInstruction has no valid from value, does not match pattern");
             }
-            firstValue = Value.fromBinary(condition.getCompare1(), wordLength);
+            firstValue = Value.fromBinary(condition.getCompare1(), wordLength, true);
         }
 
         Value secondValue;
@@ -280,7 +280,7 @@ public class Executor implements IExecutor {
                 throw new NonExecutableMicroInstructionException(
                         "DataMovementInstruction has no valid from value, does not match pattern");
             }
-            secondValue = Value.fromBinary(condition.getCompare2(), wordLength);
+            secondValue = Value.fromBinary(condition.getCompare2(), wordLength, true);
         }
 
         String comparatorType = comparisonCondition.substring(0, 1);
@@ -353,7 +353,7 @@ public class Executor implements IExecutor {
                     throw new NonExecutableMicroInstructionException(
                             "Cannot move Data, MicroInstruction has no valid from value, does not match pattern");
                 }
-                movedValue = Value.fromBinary(from, wordLength);
+                movedValue = Value.fromBinary(from, wordLength, true);
             }
 
             // check to and set after

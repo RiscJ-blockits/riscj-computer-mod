@@ -33,7 +33,7 @@ public class InstructionSetBuilder {
         } catch (JsonSyntaxException e) {
             throw new InstructionBuildException("Error while parsing the instruction set: " + e.getMessage());
         }
-        instructionSet.generateOpcodeHashmap();
+        instructionSet.generateHashMaps();
         return instructionSet;
     }
 

@@ -6,8 +6,6 @@ package edu.kit.riscjblockits.model.instructionset;
  */
 public class MemoryInstruction extends MicroInstruction {
 
-    //ToDo: Check
-
     private final String flag;
 
     public MemoryInstruction(String[] from, String to, String flag) {

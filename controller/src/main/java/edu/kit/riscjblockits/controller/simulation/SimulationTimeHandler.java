@@ -10,8 +10,10 @@ import edu.kit.riscjblockits.model.blocks.SystemClockModel;
 import edu.kit.riscjblockits.model.busgraph.IBusSystem;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Handling of the simulation execution timing. Uses the observer pattern to keep track of the clock state as

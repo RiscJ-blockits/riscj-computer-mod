@@ -43,6 +43,9 @@ public class InstructionSetRegisters {
     @SerializedName(value = "initial_values")
     private final HashMap<String, String> initialValues;
 
+    private HashMap<Integer, String> intRegisterAddressMap;
+    private HashMap<Integer, String> floatRegisterAddressMap;
+
     public InstructionSetRegisters(String programCounter, String[] aluRegs, HashMap<String, Integer> floatRegs, HashMap<String, Integer> intRegs,
                                    HashMap<String, String> initialValues) {
         this.programCounter = programCounter;
@@ -50,6 +53,11 @@ public class InstructionSetRegisters {
         this.floatRegs = floatRegs;
         this.intRegs = intRegs;
         this.initialValues = initialValues;
+    }
+
+    public void generateRegisterAddressMaps() {
+        intRegisterAddressMap = generateRegisterAddressMap(intRegs);
+        floatRegisterAddressMap = generateRegisterAddressMap(floatRegs);
     }
 
     /**
@@ -113,4 +121,19 @@ public class InstructionSetRegisters {
         return initialValues.get(key);
     }
 
+    private HashMap<Integer, String> generateRegisterAddressMap(HashMap<String, Integer> registers) {
+        HashMap<Integer, String> map = new HashMap<>();
+        for (String key : registers.keySet()) {
+            map.put(registers.get(key), key);
+        }
+        return map;
+    }
+
+    public HashMap<Integer, String> getIntRegisterAddressMap() {
+        return intRegisterAddressMap;
+    }
+
+    public HashMap<Integer, String> getFloatRegisterAddressMap() {
+        return floatRegisterAddressMap;
+    }
 }
