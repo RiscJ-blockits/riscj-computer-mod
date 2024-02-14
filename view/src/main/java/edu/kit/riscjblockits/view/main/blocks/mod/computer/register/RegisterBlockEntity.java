@@ -61,7 +61,7 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
      * Called when the screen is opened.
      * We send the position to the screen.
      * @param player the player that is opening the screen
-     * @param buf    the packet buffer to write the data to
+     * @param buf the packet buffer to write the data to
      */
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {

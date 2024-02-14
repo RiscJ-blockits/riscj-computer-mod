@@ -10,7 +10,6 @@ import edu.kit.riscjblockits.view.main.blocks.mod.ImplementedInventory;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntityWithInventory;
 import edu.kit.riscjblockits.view.main.data.DataNbtConverter;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -19,7 +18,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -27,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_PROGRAMM_ITEM;
 import static edu.kit.riscjblockits.model.data.DataConstants.PROGRAMMING_BLOCK_CODE;
 
 /**
@@ -134,7 +133,7 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
         NbtCompound nbt = instructionSetStack.getOrCreateNbt();
         IDataElement instructionSetData = new NbtDataConverter(nbt.get(CONTROL_IST_ITEM)).getData();
         IDataElement memoryData = ((ProgrammingController) getController()).assemble(code, instructionSetData);
-        memoryStack.setSubNbt("riscj_blockits.memory", new DataNbtConverter(memoryData).getNbtElement());
+        memoryStack.setSubNbt(MEMORY_PROGRAMM_ITEM, new DataNbtConverter(memoryData).getNbtElement());
         setStack(2, memoryStack);
         setStack(1, ItemStack.EMPTY);
     }
@@ -157,15 +156,26 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
         return code;
     }
 
+    /**
+     * Writes the inputted code to the nbt.
+     * Calls super.writeNbt(nbt) to write the other data to the nbt.
+     * @param nbt the nbt compound to write to.
+     */
     @Override
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
-        nbt.putString("code", code);
+        nbt.putString(PROGRAMMING_BLOCK_CODE, code);
     }
 
+    /**
+     * Reads previously written code from the nbt.
+     * Calls super.readNbt(nbt) to read the other data from the nbt.
+     * @param nbt The nbt compound to read from.
+     */
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        code = nbt.getString("code");
+        code = nbt.getString(PROGRAMMING_BLOCK_CODE);
     }
+
 }

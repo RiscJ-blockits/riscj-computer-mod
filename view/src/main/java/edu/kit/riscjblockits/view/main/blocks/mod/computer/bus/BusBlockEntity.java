@@ -6,7 +6,6 @@ import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.ConnectingComputerBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 
@@ -41,6 +40,7 @@ public class BusBlockEntity extends ComputerBlockEntity {
      * This method updates the block state of the bus.
      */
     public void updateBlockState() {
+        assert world != null;   //when states are updated, the world is already loaded
         if (world.isClient || getController() == null || world.getBlockState(pos) == null) {
             return;
         }
@@ -59,7 +59,7 @@ public class BusBlockEntity extends ComputerBlockEntity {
 
     /**
      * Method to get the state of a side of the bus.
-     * @param neighbours The list of neighbours of the bus.
+     * @param neighbours The list of neighbors of the bus.
      * @param pos The position of the NeighbourBlock at the side of the bus.
      * @return The state of the side.
      */
@@ -99,4 +99,5 @@ public class BusBlockEntity extends ComputerBlockEntity {
         super.updateUI();
         updateBlockState();
     }
+
 }

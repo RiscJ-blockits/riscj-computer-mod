@@ -65,13 +65,17 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     /**
      * Method that Minecraft calls every tick.
      * Will call the {@link ComputerBlockController#tick()} method.
+     * @param world the world in which the block is located.
+     * @param pos the position of the block in the world.
+     * @param state the state of the block.
+     * @param entity the block entity.
      */
     public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
-        if(!world.isClient) {               //used to make sure we always have a controller
+        if (!world.isClient) {               //used to make sure we always have a controller
             entity.setController();         //this could eat a lot of performances, but should be ok
         }
         if (!world.isClient && entity.getController() != null) {
-            ((IUserInputReceivableComputerController)entity.getController()).tick();
+            ((IUserInputReceivableComputerController) entity.getController()).tick();
         }
         entity.updateUI();
         entity.syncToClient();
@@ -107,12 +111,12 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         //
         for (BlockEntity entity:blockEntities) {
             if (entity instanceof ComputerBlockEntity && (((ComputerBlockEntity) entity).getModblockType() == EntityType.CONNECTABLE)) {
-                    if (((ComputerBlockEntity) entity).getController() == null                //don't start clustering too early when chunk is still loading
-                        ||((ComputerBlockController) ((ComputerBlockEntity) entity).getController()).getClusterHandler() == null) {
+                if (((ComputerBlockEntity) entity).getController() == null                //don't start clustering too early when chunk is still loading
+                        || ((ComputerBlockController) ((ComputerBlockEntity) entity).getController()).getClusterHandler() == null) {
                         //do nothing
-                    } else {
-                        neighbours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
-                    }
+                } else {
+                    neighbours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
+                }
 
             }
         }
@@ -134,7 +138,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     public void onBroken() {
         assert world != null;
         if (!world.isClient && getController() != null) {
-            ((IUserInputReceivableComputerController)getController()).onBroken();
+            ((IUserInputReceivableComputerController) getController()).onBroken();
         }
     }
 
@@ -186,7 +190,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (world == null || world.isClient || model == null) return;
         if (model.hasUnqueriedStateChange()) {
             if (world.getPlayers().isEmpty()) {
-               return;       //we are too early in the loading process
+                return;       //we are too early in the loading process
             }
             NbtCompound nbt = new NbtCompound();
             writeNbt(nbt);
@@ -248,7 +252,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * @param effect The effect that should be spawned.
      */
     @Override
-    public void spawnEffect(ComputerEffect effect){
+    public void spawnEffect(ComputerEffect effect) {
         if (world == null) return;
         switch (effect) {
             case EXPLODE:
@@ -257,7 +261,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             case SMOKE:
                 if (!world.isClient) {
                     ((ServerWorld) world).spawnParticles(
-                        ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,5, 0.0D, 0.0D, 0.0D,0);
+                        ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 5, 0.0D, 0.0D, 0.0D, 0);
                 }
                 break;
             default:

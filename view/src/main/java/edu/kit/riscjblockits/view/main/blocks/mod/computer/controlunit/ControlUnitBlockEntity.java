@@ -31,6 +31,9 @@ import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_ITEM_PRESEN
 public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory implements
     ExtendedScreenHandlerFactory {
 
+    /**
+     * The slot for the instruction set.
+     */
     private static final int INSTRUCTION_SET_SLOT = 1;
 
     /**
@@ -52,9 +55,10 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     }
 
     /**
-     * ToDo
-     * @param player
-     * @return
+     * Called when the screen is opened.
+     * We send the position to the screen.
+     * @param player the player that is opening the screen
+     * @param buf the packet buffer to write the data to
      */
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
@@ -66,7 +70,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
      */
     @Override
     public Text getDisplayName() {
-        return Text.literal("Control Unit");
+        return Text.translatable("block.riscj_blockits.control_unit_block");
     }
 
     /**
@@ -88,7 +92,6 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     @Override
     public void inventoryChanged() {
         if (getController() != null) {             //only on the server
-            System.out.println("IST Item changed");
             if (getItems().get(0).getCount() == 0) {        //Item is removed when there are zero 'air' items
                 Data cuData = new Data();
                 cuData.set(CONTROL_IST_MODEL, null);

@@ -21,14 +21,14 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BusBlock extends ConnectingComputerBlock {
 
-    private static final BooleanProperty ACTIVE = RISCJ_blockits.ACTIVE_STATE_PROPERTY;
+    private static final BooleanProperty ACTIVE = RISCJ_blockits.ACTIVE_STATE_PROPERTY;     //ToDo can this be removed??
 
     /**
      * Creates a new BusBlock with the given settings.
      * @param settings The settings for the block as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
      */
     public BusBlock(Settings settings) {
-        super((float) 3 /16, settings);
+        super((float) 3 / 16, settings);
         this.setDefaultState(
                 this.stateManager.getDefaultState()
                     .with(NORTH, Side.NONE)
@@ -37,14 +37,13 @@ public class BusBlock extends ConnectingComputerBlock {
                     .with(WEST, Side.NONE)
                     .with(UP, Side.NONE)
                     .with(DOWN, Side.NONE));
-
     }
 
     /**
      * Creates a new BusBlock with default settings.
      */
     public BusBlock() {
-        super((float) 3 /16);
+        super((float) 3 / 16);
         this.setDefaultState(
                 this.stateManager.getDefaultState()
                         .with(NORTH, Side.NONE)
@@ -54,7 +53,6 @@ public class BusBlock extends ConnectingComputerBlock {
                         .with(UP, Side.NONE)
                         .with(DOWN, Side.NONE)
                         .with(ACTIVE, false));
-
     }
 
     /**
@@ -73,7 +71,6 @@ public class BusBlock extends ConnectingComputerBlock {
         return new BusBlockEntity(pos, state);
     }
 
-
     /**
      * This method is called when the block is placed in the world.
      * The Block initializes the creation of his Block Controller and updates the bus-block state.
@@ -90,26 +87,25 @@ public class BusBlock extends ConnectingComputerBlock {
         ((BusBlockEntity) world.getBlockEntity(pos)).updateBlockState();
     }
 
-
     /**
      * Will update the block-state when a neighbor block changes.
      * @param state the own block state.
-     * @param direction the direction of the neighbor block.
-     * @param neighborState the state of the neighbor block.
+     * @param direction the direction of the neighborhood block.
+     * @param neighborState the state of the neighborhood block.
      * @param world the world the block is placed in.
      * @param pos the position of the block.
-     * @param neighborPos the position of the neighbor block.
+     * @param neighborPos the position of the neighborhood block.
      * @return the updated block-state.
      */
     @Override
-    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState,
+                                                WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (!state.canPlaceAt(world, pos)) {
             world.scheduleBlockTick(pos, this, 1);
-            return state;
         } else {
             ((BusBlockEntity) world.getBlockEntity(pos)).updateBlockState();
-            return state;
         }
+        return state;
     }
 
     /**

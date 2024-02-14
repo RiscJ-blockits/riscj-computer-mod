@@ -21,24 +21,46 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 
-/** ToDo javadoc
- *
+/**
+ * The {@link ModScreenHandler} for the {@link RegisterBlock} and a {@link  edu.kit.riscjblockits.view.client.screens.handled.RegisterScreen}.
  */
 public class RegisterScreenHandler extends ModScreenHandler {
 
+    /**
+     * Creates a new {@link RegisterScreenHandler} for the given {@link ModBlockEntity}.
+     * @param syncId the syncId
+     * @param inventory the player inventory
+     * @param blockEntity the block entity opening the screen.
+     */
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, ModBlockEntity blockEntity) {
         super(RISCJ_blockits.REGISTER_SCREEN_HANDLER, syncId, blockEntity);
         addPlayerInventorySlots(inventory);
     }
 
+    /**
+     * Creates a new {@link RegisterScreenHandler}.
+     * @param syncId the syncId
+     * @param inventory the player inventory
+     * @param buf the buffer with the block position
+     */
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
         this(syncId, inventory, (ModBlockEntity) inventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
     }
 
-    public RegisterScreenHandler(ScreenHandlerType<?> type, int syncId, ModBlockEntity blockEntity) {
+    /**
+     * Creates a new {@link RegisterScreenHandler}.
+     * Used by subclasses who have their own type.
+     * @param type the type of the screen handler
+     * @param syncId the syncId
+     * @param blockEntity the block entity opening the screen.
+     */
+    protected RegisterScreenHandler(ScreenHandlerType<?> type, int syncId, ModBlockEntity blockEntity) {
         super(type, syncId, blockEntity);
     }
 
+    /**
+     * @return The value of the currently opened Register from the model. As a hex string.
+     */
     public String getRegisterValue() {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
@@ -76,6 +98,10 @@ public class RegisterScreenHandler extends ModScreenHandler {
         return "";
     }
 
+    /**
+     * @param key can be {@link edu.kit.riscjblockits.model.data.DataConstants#REGISTER_MISSING} or {@link edu.kit.riscjblockits.model.data.DataConstants#REGISTER_FOUND}.
+     * @return All registers inside the cluster matching the given key.
+     */
     public List<String> getRegisters(String key) {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {

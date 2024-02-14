@@ -48,7 +48,7 @@ public abstract class ConnectingComputerBlock extends ComputerBlock {
         VoxelShape voxelShape = Block.createCuboidShape((double)(f * 16.0F), (double)(f * 16.0F), (double)(f * 16.0F), (double)(g * 16.0F), (double)(g * 16.0F), (double)(g * 16.0F));
         VoxelShape[] voxelShapes = new VoxelShape[FACINGS.length];
 
-        for(int i = 0; i < FACINGS.length; ++i) {
+        for (int i = 0; i < FACINGS.length; ++i) {
             Direction direction = FACINGS[i];
             voxelShapes[i] = VoxelShapes.cuboid(0.5 + Math.min((double)(-radius), (double)direction.getOffsetX() * 0.5), 0.5 + Math.min((double)(-radius), (double)direction.getOffsetY() * 0.5), 0.5 + Math.min((double)(-radius), (double)direction.getOffsetZ() * 0.5), 0.5 + Math.max((double)radius, (double)direction.getOffsetX() * 0.5), 0.5 + Math.max((double)radius, (double)direction.getOffsetY() * 0.5), 0.5 + Math.max((double)radius, (double)direction.getOffsetZ() * 0.5));
         }
@@ -81,9 +81,9 @@ public abstract class ConnectingComputerBlock extends ComputerBlock {
     protected int getConnectionMask(BlockState state) {
         int i = 0;
 
-        for(int j = 0; j < FACINGS.length; ++j) {
+        for (int j = 0; j < FACINGS.length; ++j) {
             if ((state.get((EnumProperty<Side>)FACING_PROPERTIES.get(FACINGS[j])) == Side.PRESENT
-            || state.get((EnumProperty<Side>)FACING_PROPERTIES.get(FACINGS[j])) == Side.ACTIVE)) {
+                || state.get((EnumProperty<Side>)FACING_PROPERTIES.get(FACINGS[j])) == Side.ACTIVE)) {
                 i |= 1 << j;
             }
         }

@@ -79,7 +79,7 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
      * @param blockEntity the block entity that created this screenHandler
      */
     public ProgrammingScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, ProgrammingBlockEntity blockEntity) {
-        super(RISCJ_blockits.PROGRAMMING_SCREEN_HANDLER,syncId, blockEntity);
+        super(RISCJ_blockits.PROGRAMMING_SCREEN_HANDLER, syncId, blockEntity);
         this.inventory = inventory;
         this.blockEntity = blockEntity;
         this.player = playerInventory.player;
@@ -162,31 +162,33 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
      * @return ArrayList of String[] with the instructions
      */
     public List<String[]> getInstructions() {
-        if(inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
+        if (inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt()
+            || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
             return new ArrayList<>();
         }
-
         NbtElement nbt = inventory.getStack(0).getOrCreateNbt().get(CONTROL_IST_ITEM);
-
-        if(nbt == null) {
+        if (nbt == null) {
             return new ArrayList<>();
         }
-
         IDataElement instructionSetData = new NbtDataConverter(nbt).getData();
-
         InstructionSetModel instructionSet;
         try {
             instructionSet = InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
         } catch (UnsupportedEncodingException e) {
             return new ArrayList<>();
         }
-
         return instructionSet.getPossibleInstructions();
     }
 
+    /**
+     * Called when a player attempts to quickly move an item.
+     * @param player The player that wants to quickly move an item.
+     * @param invSlot The slot that the player wants to quickly move to.
+     * @return the item stack of the item that was moved
+     */
     @Override
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
-        ItemStack newStack = ItemStack.EMPTY;
+        ItemStack newStack = ItemStack.EMPTY;   //ToDo duplicate code
         Slot slot = this.slots.get(invSlot);
         if (slot != null && slot.hasStack()) {
             ItemStack originalStack = slot.getStack();

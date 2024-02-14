@@ -24,8 +24,11 @@ import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
  * This class represents a memory entity from our mod in the game.
  * Every memory block has its own unique MemoryBlockEntity while it is loaded.
  */
-public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implements ExtendedScreenHandlerFactory{
+public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implements ExtendedScreenHandlerFactory {
 
+    /**
+     * The slot in the inventory where the program is stored.
+     */
     private static final int PROGRAM_SLOT = 1;
 
     /**
@@ -46,7 +49,12 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
         return new MemoryController(this);
     }
 
-
+    /**
+     * Called when the screen is opened.
+     * We send the position to the screen.
+     * @param player the player that is opening the screen
+     * @param buf    the packet buffer to write the data to
+     */
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
         buf.writeBlockPos(pos);
