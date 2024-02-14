@@ -1,5 +1,8 @@
 package edu.kit.riscjblockits.model.data;
 
+/**
+ * This interface defines the methods that a data entry provides.
+ */
 public interface IDataEntry extends IDataElement {
     @Override
     default boolean isContainer(){

@@ -287,7 +287,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
      * @param blockPosition1 is the second node
      * @return true if the nodes are connected with an edge
      */
-    public boolean isNeighbourPosition(BlockPosition blockPosition, BlockPosition blockPosition1) {
+    public static boolean isNeighbourPosition(BlockPosition blockPosition, BlockPosition blockPosition1) {
         if (blockPosition.getX() - blockPosition1.getX() == 1 || blockPosition.getX() - blockPosition1.getX() == -1) {
             return blockPosition.getY() == blockPosition1.getY() && blockPosition.getZ() == blockPosition1.getZ();
         }

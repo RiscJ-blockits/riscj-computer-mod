@@ -8,6 +8,7 @@ import net.minecraft.text.Text;
 public interface IGoggleQueryable {
 
     /**
+     * Getter for the Text who should be displayed by the goggle.
      * @return the Text displayed by the google.
      */
     Text getGoggleText();

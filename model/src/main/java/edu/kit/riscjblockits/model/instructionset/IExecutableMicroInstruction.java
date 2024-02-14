@@ -1,6 +1,8 @@
 package edu.kit.riscjblockits.model.instructionset;
 
-//zwischen Simulation und InstructionSet
+/**
+ * This interface defines the methods that an executable micro instruction provides.
+ */
 public interface IExecutableMicroInstruction {
 
     /**
@@ -9,5 +11,11 @@ public interface IExecutableMicroInstruction {
      */
     void execute(IExecutor executor);
 
+    /**
+     * Abstract method to clone the micro instruction.
+     * @param from The source register.
+     * @param to The destination register.
+     * @return The cloned micro instruction.
+     */
     MicroInstruction clone(String[] from, String to);
 }

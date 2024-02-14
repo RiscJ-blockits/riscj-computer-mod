@@ -2,7 +2,6 @@ package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
-import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.List;
 
@@ -12,6 +11,7 @@ import java.util.List;
 public interface IConnectableComputerBlockEntity {
 
     /**
+     * Sets the model of the block entity, so it can query the model for visualization.
      * @param model Sets the model of the block entity, so it can query the model for visualization.
      */
     void setBlockModel(IViewQueryableBlockModel model);
@@ -26,6 +26,7 @@ public interface IConnectableComputerBlockEntity {
     List<ComputerBlockController> getComputerNeighbours();
 
     /**
+     * Returns the position of the block in the minecraft world.
      * @return The position of the block in the minecraft world.
      */
     BlockPosition getBlockPosition();
@@ -40,8 +41,13 @@ public interface IConnectableComputerBlockEntity {
      * Defines the possible effects that can be spawned in the minecraft world by a block controller.
      */
     enum ComputerEffect {
+        /**
+         * The block explodes.
+         */
         EXPLODE,
-        SMOKE,
+        /**
+         * The block smokes.
+         */
+        SMOKE
     }
-
 }
