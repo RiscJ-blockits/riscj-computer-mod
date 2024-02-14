@@ -203,6 +203,9 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
         return newStack;
     }
 
+    /**
+     * Get the example code of the instruction set, from the InstructionSet-Item in the inventory.
+     */
     public String getExample() {
         if(inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
             return "";
