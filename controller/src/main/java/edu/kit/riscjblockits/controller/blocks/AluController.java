@@ -262,6 +262,11 @@ public class AluController extends ComputerBlockController {
         return result;
     }
 
+    /**
+     * Converts an unsigned int value to a float
+     * @param operand1 unsigned int value
+     * @return float value
+     */
     private Value fcvtsu(Value operand1) {
 
         //TODO check if this is correct
@@ -273,6 +278,11 @@ public class AluController extends ComputerBlockController {
 
     }
 
+    /**
+     * Converts an int value to a float
+     * @param operand1 int value
+     * @return float value
+     */
     private Value fcvts(Value operand1) {
 
         ByteBuffer wrapped = ByteBuffer.wrap(operand1.getByteValue());
@@ -283,6 +293,12 @@ public class AluController extends ComputerBlockController {
 
     }
 
+    /**
+     * Compares two values and returns 1 if operand1 is less than operand2, 0 otherwise
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return 1 if operand1 is less than operand2, 0 otherwise
+     */
     private Value fle(Value operand1, Value operand2) {
 
         float float1 = getValueAsFloat(operand1);
@@ -296,6 +312,12 @@ public class AluController extends ComputerBlockController {
 
     }
 
+    /**
+     * Compares two values and returns 1 if operand1 is less than or equal to operand2, 0 otherwise
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return 1 if operand1 is less than or equal to operand2, 0 otherwise
+     */
     private Value flt(Value operand1, Value operand2) {
 
         float float1 = getValueAsFloat(operand1);
@@ -309,6 +331,12 @@ public class AluController extends ComputerBlockController {
 
     }
 
+    /**
+     * Compares two values and returns 1 if operand1 is equal to operand2, 0 otherwise
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return 1 if operand1 is equal to operand2, 0 otherwise
+     */
     private Value feq(Value operand1, Value operand2) {
 
         float float1 = getValueAsFloat(operand1);
@@ -321,6 +349,11 @@ public class AluController extends ComputerBlockController {
         return new Value(new byte[]{0});
     }
 
+    /**
+     * Converts an unsigned float value to an int
+     * @param operand1 unsigned float value
+     * @return int value
+     */
     private Value fcvtwu(Value operand1) {
 
         float float1 = getValueAsFloat(operand1);
@@ -331,6 +364,11 @@ public class AluController extends ComputerBlockController {
         return new Value(ByteBuffer.allocate(Integer.BYTES).putInt(result).array());
     }
 
+    /**
+     * Converts a float value to an int
+     * @param operand1 float value
+     * @return int value
+     */
     private Value fcvtw(Value operand1) {
 
         float float1 = getValueAsFloat(operand1);
@@ -339,6 +377,12 @@ public class AluController extends ComputerBlockController {
         return new Value(ByteBuffer.allocate(Integer.BYTES).putInt(result).array());
     }
 
+    /**
+     * Returns the maximum of two values
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return maximum of operand1 and operand2
+     */
     private Value fmax(Value operand1, Value operand2) {
 
         float float1 = getValueAsFloat(operand1);
@@ -352,6 +396,12 @@ public class AluController extends ComputerBlockController {
 
     }
 
+    /**
+     * Returns the minimum of two values
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return minimum of operand1 and operand2
+     */
     private Value fmin(Value operand1, Value operand2) {
 
         float float1 = getValueAsFloat(operand1);
@@ -365,6 +415,12 @@ public class AluController extends ComputerBlockController {
 
     }
 
+    /**
+     * XOR the sign bits of operand1 and operand2 and return operand 1 with the xor value as sign bit
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return operand1 with the xor value as sign bit
+     */
     private Value fsgnjx(Value operand1, Value operand2) {
 
         if(getValueAsFloat(operand2) > 0) {
@@ -374,6 +430,12 @@ public class AluController extends ComputerBlockController {
         return getFloatAsValue(0 - getValueAsFloat(operand1));
     }
 
+    /**
+     * Inject the inverse sign bit of operand2 into operand1
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return operand1 with the inverse sign bit of operand2
+     */
     private Value fsgnjn(Value operand1, Value operand2) {
         if(getValueAsFloat(operand2) < 0 ^ getValueAsFloat(operand1) < 0) {
             return operand1;
@@ -382,6 +444,12 @@ public class AluController extends ComputerBlockController {
         return getFloatAsValue(0 - getValueAsFloat(operand1));
     }
 
+    /**
+     * Inject the sign bit of operand2 into operand1
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return operand1 with the sign bit of operand2
+     */
     private Value fsgnj(Value operand1, Value operand2) {
 
         if(getValueAsFloat(operand2) < 0 ^ getValueAsFloat(operand1) < 0) {
@@ -391,6 +459,11 @@ public class AluController extends ComputerBlockController {
         return operand1;
     }
 
+    /**
+     * Square root of operand1
+     * @param operand1 value
+     * @return square root of operand1
+     */
     private Value fsqrt(Value operand1) {
 
         float float1 = getValueAsFloat(operand1);
@@ -400,6 +473,12 @@ public class AluController extends ComputerBlockController {
         return getFloatAsValue(result);
     }
 
+    /**
+     * Divide two values
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return quotient of operand1 and operand2
+     */
     private Value fdiv(Value operand1, Value operand2) {
 
         float float1 = getValueAsFloat(operand1);
@@ -410,6 +489,12 @@ public class AluController extends ComputerBlockController {
         return getFloatAsValue(result);
     }
 
+    /**
+     * Multiply two values
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return product of operand1 and operand2
+     */
     private Value fmul(Value operand1, Value operand2) {
 
         float float1 = getValueAsFloat(operand1);
@@ -420,6 +505,12 @@ public class AluController extends ComputerBlockController {
         return getFloatAsValue(result);
     }
 
+    /**
+     * Subtract two values
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return difference of operand1 and operand2
+     */
     private Value fsub(Value operand1, Value operand2) {
 
         float float1 = getValueAsFloat(operand1);
@@ -430,6 +521,12 @@ public class AluController extends ComputerBlockController {
         return getFloatAsValue(result);
     }
 
+    /**
+     * Add two values
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return sum of operand1 and operand2
+     */
     private Value fadd(Value operand1, Value operand2) {
 
         float float1 = getValueAsFloat(operand1);
@@ -440,11 +537,21 @@ public class AluController extends ComputerBlockController {
         return getFloatAsValue(result);
     }
 
+    /**
+     * Convert Value to Float for floating point alu instructions
+     * @param value Value to convert
+     * @return Float value
+     */
     private float getValueAsFloat(Value value) {
         ByteBuffer buffer = ByteBuffer.wrap(value.getByteValue());
         return buffer.getFloat();
     }
 
+    /**
+     * Convert float to Value for floating point alu instructions
+     * @param value float to convert
+     * @return Value
+     */
     private Value getFloatAsValue(float value) {
         ByteBuffer buffer = ByteBuffer.allocate(Float.BYTES);
         buffer.putFloat(value);
@@ -486,6 +593,11 @@ public class AluController extends ComputerBlockController {
         return reconvertToByteArrayOfOriginalLength(array1.length, result);
     }
 
+    /**
+     * Get the unsigned value of a value
+     * @param value value to convert
+     * @return unsigned value as big integer
+     */
     private BigInteger getUnsignedBigInteger(Value value) {
         byte[] array1signed = value.getByteValue();
         byte[] array1unsigned = new byte[array1signed.length + 1];
@@ -609,7 +721,13 @@ public class AluController extends ComputerBlockController {
         return new Value(fullLengthResultArray);
     }
 
-    // wrote by github Copilot
+    /**
+     * Sign extends a byte array to a given length
+     * written by GitHub Copilot
+     * @param array byte array to extend
+     * @param length length to extend to
+     * @return sign extended byte array
+     */
     private byte[] signExtend(byte[] array, int length) {
         byte[] result = new byte[length];
         if (array.length >= length) {
