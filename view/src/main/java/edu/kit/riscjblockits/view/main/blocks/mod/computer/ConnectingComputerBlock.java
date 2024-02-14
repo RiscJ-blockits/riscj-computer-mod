@@ -6,9 +6,8 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.state.property.Property;
+import net.minecraft.state.property.EnumProperty;
+import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -18,20 +17,19 @@ import net.minecraft.world.BlockView;
 
 import java.util.Map;
 
-/**
- * A computer block that can change its appearance depending on its neighbors.
- *
+/** ToDo javadoc
+ * A {@link ComputerBlock} that can change its appearance depending on its neighbors.
  * Copied from {@link net.minecraft.block.ConnectingBlock}.
  */
-public abstract class ConnectingComputerBlock extends ComputerBlock{
+public abstract class ConnectingComputerBlock extends ComputerBlock {
     private static final Direction[] FACINGS = Direction.values();
-    public static final BooleanProperty NORTH;
-    public static final BooleanProperty EAST;
-    public static final BooleanProperty SOUTH;
-    public static final BooleanProperty WEST;
-    public static final BooleanProperty UP;
-    public static final BooleanProperty DOWN;
-    public static final Map<Direction, BooleanProperty> FACING_PROPERTIES;
+    public static final EnumProperty<Side> NORTH = EnumProperty.of("north", Side.class);
+    public static final EnumProperty<Side> EAST = EnumProperty.of("east", Side.class);
+    public static final EnumProperty<Side> SOUTH = EnumProperty.of("south", Side.class);
+    public static final EnumProperty<Side> WEST = EnumProperty.of("west", Side.class);
+    public static final EnumProperty<Side> UP = EnumProperty.of("up", Side.class);
+    public static final EnumProperty<Side> DOWN = EnumProperty.of("down", Side.class);
+    public static final Map<Direction, EnumProperty<Side>> FACING_PROPERTIES;
     protected final VoxelShape[] facingsToShape;
 
     protected ConnectingComputerBlock(float radius) {
@@ -50,7 +48,7 @@ public abstract class ConnectingComputerBlock extends ComputerBlock{
         VoxelShape voxelShape = Block.createCuboidShape((double)(f * 16.0F), (double)(f * 16.0F), (double)(f * 16.0F), (double)(g * 16.0F), (double)(g * 16.0F), (double)(g * 16.0F));
         VoxelShape[] voxelShapes = new VoxelShape[FACINGS.length];
 
-        for(int i = 0; i < FACINGS.length; ++i) {
+        for (int i = 0; i < FACINGS.length; ++i) {
             Direction direction = FACINGS[i];
             voxelShapes[i] = VoxelShapes.cuboid(0.5 + Math.min((double)(-radius), (double)direction.getOffsetX() * 0.5), 0.5 + Math.min((double)(-radius), (double)direction.getOffsetY() * 0.5), 0.5 + Math.min((double)(-radius), (double)direction.getOffsetZ() * 0.5), 0.5 + Math.max((double)radius, (double)direction.getOffsetX() * 0.5), 0.5 + Math.max((double)radius, (double)direction.getOffsetY() * 0.5), 0.5 + Math.max((double)radius, (double)direction.getOffsetZ() * 0.5));
         }
@@ -83,8 +81,9 @@ public abstract class ConnectingComputerBlock extends ComputerBlock{
     protected int getConnectionMask(BlockState state) {
         int i = 0;
 
-        for(int j = 0; j < FACINGS.length; ++j) {
-            if ((Boolean)state.get((Property)FACING_PROPERTIES.get(FACINGS[j]))) {
+        for (int j = 0; j < FACINGS.length; ++j) {
+            if ((state.get((EnumProperty<Side>)FACING_PROPERTIES.get(FACINGS[j])) == Side.PRESENT
+                || state.get((EnumProperty<Side>)FACING_PROPERTIES.get(FACINGS[j])) == Side.ACTIVE)) {
                 i |= 1 << j;
             }
         }
@@ -93,12 +92,7 @@ public abstract class ConnectingComputerBlock extends ComputerBlock{
     }
 
     static {
-        NORTH = Properties.NORTH;
-        EAST = Properties.EAST;
-        SOUTH = Properties.SOUTH;
-        WEST = Properties.WEST;
-        UP = Properties.UP;
-        DOWN = Properties.DOWN;
+
         FACING_PROPERTIES = ImmutableMap.copyOf((Map) Util.make(Maps.newEnumMap(Direction.class), (directions) -> {
             directions.put(Direction.NORTH, NORTH);
             directions.put(Direction.EAST, EAST);
@@ -107,5 +101,25 @@ public abstract class ConnectingComputerBlock extends ComputerBlock{
             directions.put(Direction.UP, UP);
             directions.put(Direction.DOWN, DOWN);
         }));
+    }
+
+    public enum Side implements StringIdentifiable {
+        NONE("none"),
+        PRESENT("present"),
+        ACTIVE("active");
+
+        private final String name;
+
+        Side(String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return this.asString();
+        }
+
+        public String asString() {
+            return this.name;
+        }
     }
 }

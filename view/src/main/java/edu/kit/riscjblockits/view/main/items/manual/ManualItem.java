@@ -16,6 +16,7 @@ import net.minecraft.world.World;
  * This class defines the manual item in the game.
  */
 public class ManualItem extends Item {
+
     /**
      * Creates a new manual item with the given settings.
      * @param settings The settings for the item as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
@@ -24,6 +25,14 @@ public class ManualItem extends Item {
         super(settings);
     }
 
+    /**
+     * Is called when the player right-clicks with the manual item in hand.
+     * Opens the manual screen.
+     * @param world The world in which the player is.
+     * @param user The player that right-clicked.
+     * @param hand The hand in which the player is holding the manual.
+     * @return super.use(world, user, hand)
+     */
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (world.isClient) {
@@ -31,7 +40,6 @@ public class ManualItem extends Item {
         }
         PacketByteBuf buf = PacketByteBufs.create();
         ServerPlayNetworking.send((ServerPlayerEntity) user, NetworkingConstants.OPEN_MANUAL_SCREEN, buf);
-
         return super.use(world, user, hand);
     }
 

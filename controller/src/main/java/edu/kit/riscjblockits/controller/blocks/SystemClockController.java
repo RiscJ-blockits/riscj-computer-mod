@@ -109,7 +109,7 @@ public class SystemClockController extends ComputerBlockController {
 
     /**
      * Setter for the simulation mode in the model, can be used if the simulation mode got changed during the simulation
-     * @param mode
+     * @param mode The new simulation mode.
      */
     public void setSimulationMode(ClockMode mode) {
         ((SystemClockModel) getModel()).setClockMode(mode);
@@ -119,10 +119,18 @@ public class SystemClockController extends ComputerBlockController {
         ((SystemClockModel) getModel()).registerObserver(simulationTimingObserver);
     }
 
+    /**
+     * Getter for the clock speed.
+     * @return The clock speed.
+     */
     public int getClockSpeed() {
         return ((SystemClockModel) getModel()).getClockSpeed();
     }
 
+    /**
+     * Getter for the clock mode.
+     * @return The clock mode.
+     */
     public ClockMode getClockMode() {
         return ((SystemClockModel) getModel()).getClockMode();
     }

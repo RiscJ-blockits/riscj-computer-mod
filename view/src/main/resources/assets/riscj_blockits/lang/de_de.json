@@ -16,11 +16,13 @@
 
   "block.riscj_blockits.redstone_input_block": "Redstone Eingang",
   "block.riscj_blockits.redstone_output_block": "Redstone Ausgang",
+  "block.riscj_blockits.wireless_register_block": "Quanten Register",
 
   "itemGroup.riscj_blockits.computer_components": "Computer Gegenstände",
 
   "manual.title": "Handbuch",
   "istItem.title": "Befehlssatz",
+  "ist_error": "Fehler beim Laden des Befehlssatzes",
 
   "programming_pretext": "hier könnte ihre Werbung stehen",
   "block.riscj_blockits.text_output_block": "Konsole"

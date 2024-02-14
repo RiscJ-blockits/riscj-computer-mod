@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.view.client.screens.widgets;
 
-import edu.kit.riscjblockits.view.client.screens.handled.MemoryScreen;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -10,6 +9,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
+/** ToDo javadoc
+ * The MemoryListWidget class represents a widget that displays a list of memory entries.
+ * It implements the Drawable interface for rendering purposes.
+ */
 public class MemoryListWidget implements Drawable {
 
     private static final Identifier SCROLLER_TEXTURE = new Identifier("container/creative_inventory/scroller");
@@ -21,14 +24,29 @@ public class MemoryListWidget implements Drawable {
     private static final int ENTRY_OFFSET = 2;
     private static final int SCROLLBAR_OFFSET = 1;
     private static final int SCROLL_MULTIPLIER = 4;
+
+    /**
+     * The handler for the memory screen.
+     */
     private final MemoryScreenHandler handler;
     private int x;
     private int y;
     private final int width;
     private final int height;
+
+    /**
+     * The current scroll position.
+     */
     private int scrollPosition;
 
-
+    /**
+     * Constructor for the MemoryListWidget.
+     * @param handler The handler for the memory screen.
+     * @param x The x position of the widget.
+     * @param y The y position of the widget.
+     * @param width The width of the widget.
+     * @param height The height of the widget.
+     */
     public MemoryListWidget(MemoryScreenHandler handler, int x, int y, int width, int height) {
         this.handler = handler;
         this.x = x;
@@ -46,7 +64,7 @@ public class MemoryListWidget implements Drawable {
         for (int i = 0 ; i <  ENTRY_AMOUNT; i++) {
 
             int line = (scrollPosition / ENTRY_HEIGHT + i);
-            // only draw an entry when it is between top and bottom of scroll widget
+            // only draw an entry when it is between top and bottom of the scroll widget
             if ((line + 1) * ENTRY_HEIGHT >= scrollPosition && line * ENTRY_HEIGHT < scrollPosition + height) {
 
                 context.drawText(textRenderer, Text.literal(line + ""), this.x + 2, this.y + 2 + i * ENTRY_HEIGHT, 0xffffff, true);
@@ -69,18 +87,18 @@ public class MemoryListWidget implements Drawable {
         return Math.max(this.handler.getMemorySize() * ENTRY_HEIGHT, ENTRY_HEIGHT * ENTRY_AMOUNT);
     }
 
-    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+    public void mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         scrollPosition -= (int) (SCROLL_MULTIPLIER * verticalAmount);
         if (scrollPosition < 0) {
             scrollPosition = 0;
         } else if (scrollPosition > getContentsHeight() - height) {
             scrollPosition = getContentsHeight() - height;
         }
-        return true;
     }
 
     public void updatePos(int x, int y) {
         this.x = x;
         this.y = y;
     }
+
 }

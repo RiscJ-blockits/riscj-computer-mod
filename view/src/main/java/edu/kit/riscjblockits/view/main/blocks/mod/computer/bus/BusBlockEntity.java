@@ -40,6 +40,7 @@ public class BusBlockEntity extends ComputerBlockEntity {
      * This method updates the block state of the bus.
      */
     public void updateBlockState() {
+        assert world != null;   //when states are updated, the world is already loaded
         if (world.isClient || getController() == null || world.getBlockState(pos) == null) {
             return;
         }
@@ -47,13 +48,31 @@ public class BusBlockEntity extends ComputerBlockEntity {
         if (neighbours == null) {
             return;
         }
-        BlockState state = world.getBlockState(pos).with(BusBlock.NORTH, listContainsPos(neighbours, pos.north()))
-                .with(BusBlock.EAST, listContainsPos(neighbours, pos.east()))
-                .with(BusBlock.SOUTH, listContainsPos(neighbours, pos.south()))
-                .with(BusBlock.WEST, listContainsPos(neighbours, pos.west()))
-                .with(BusBlock.UP, listContainsPos(neighbours, pos.up()))
-                .with(BusBlock.DOWN, listContainsPos(neighbours, pos.down()));
+        BlockState state = world.getBlockState(pos).with(BusBlock.NORTH, getSideState(neighbours, pos.north()))
+                .with(BusBlock.EAST, getSideState(neighbours, pos.east()))
+                .with(BusBlock.SOUTH, getSideState(neighbours, pos.south()))
+                .with(BusBlock.WEST, getSideState(neighbours, pos.west()))
+                .with(BusBlock.UP, getSideState(neighbours, pos.up()))
+                .with(BusBlock.DOWN, getSideState(neighbours, pos.down()));
         world.setBlockState(pos, state);
+    }
+
+    /**
+     * Method to get the state of a side of the bus.
+     * @param neighbours The list of neighbors of the bus.
+     * @param pos The position of the NeighbourBlock at the side of the bus.
+     * @return The state of the side.
+     */
+    private BusBlock.Side getSideState(List<BlockPosition> neighbours, BlockPos pos) {
+        BusBlock.Side side = BusBlock.Side.NONE;
+        if (listContainsPos(neighbours, pos)) {
+            if (this.isActive() && ((ComputerBlockEntity) world.getBlockEntity(pos)).isActive()) {
+                side = BusBlock.Side.ACTIVE;
+            } else {
+                side = BusBlock.Side.PRESENT;
+            }
+        }
+        return side;
     }
 
     /**
@@ -69,6 +88,16 @@ public class BusBlockEntity extends ComputerBlockEntity {
             }
         }
         return false;
+    }
+
+    /**
+     * Gets called every tick.
+     * Used to update ui elements.
+     */
+    @Override
+    public void updateUI() {
+        super.updateUI();
+        updateBlockState();
     }
 
 }

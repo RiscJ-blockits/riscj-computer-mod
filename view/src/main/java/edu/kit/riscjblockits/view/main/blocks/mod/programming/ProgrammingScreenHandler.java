@@ -5,11 +5,13 @@ import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
+import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlockEntity;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
 import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -17,9 +19,8 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -27,11 +28,10 @@ import java.util.List;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
 
-
 /**
  * This class provides functionality to sync the programming screen between client and server.
  * It will add all slots and buttons on the screen.
- * provides functionality to handle button clicks on the screen.
+ * Provides functionality to handle button clicks on the screen.
  */
 public class ProgrammingScreenHandler extends ModScreenHandler {
 
@@ -41,7 +41,7 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
     public static final int ASSEMBLE_BUTTON_ID = 0;
 
     /**
-     * The block entity, that created this screenHandler.
+     * The block entity that created this screenHandler.
      */
     private final ProgrammingBlockEntity blockEntity;
 
@@ -50,10 +50,14 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
      */
     private final Inventory inventory;
 
+    /**
+     * The player that opened the screen.
+     */
+    private final PlayerEntity player;
 
     /**
      * Creates a new ProgrammingScreenHandler.
-     * This constructor is used by the client-side to create a new screenHandler.
+     * The client-side uses this constructor to create a new screenHandler.
      * @param syncId the sync id
      * @param playerInventory the player inventory
      * @param buf the packet buffer, additional information is to be loaded from
@@ -68,16 +72,17 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
 
     /**
      * Creates a new ProgrammingScreenHandler.
-     * This constructor is used by the server-side to create a new screenHandler.
+     * The server-side uses this constructor to create a new screenHandler.
      * @param syncId the sync id
      * @param playerInventory the player inventory
      * @param inventory the inventory of the programming block
      * @param blockEntity the block entity that created this screenHandler
      */
     public ProgrammingScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, ProgrammingBlockEntity blockEntity) {
-        super(RISCJ_blockits.PROGRAMMING_SCREEN_HANDLER,syncId, blockEntity);
+        super(RISCJ_blockits.PROGRAMMING_SCREEN_HANDLER, syncId, blockEntity);
         this.inventory = inventory;
         this.blockEntity = blockEntity;
+        this.player = playerInventory.player;
         // add for GUI required Slots
         addInstructionSetSlot();
         addProgramSlots();
@@ -99,7 +104,6 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
                 syncState();
                 return true;
             } catch (AssemblyException e) {
-                System.out.println("Assembler-Error: " + e.getMessage());
                 showError(e.getMessage());
             }
         }
@@ -111,19 +115,23 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
      * @param message the message to show
      */
     private void showError(String message) {
-        // TODO: show error
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeString(message);
+        ServerPlayNetworking.send((ServerPlayerEntity) player, NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION, buf);
     }
 
     /**
-     * will add the slot for the program-Item to the screen.
+     * Adds the slot for the program-Item to the screen.
      */
     private void addProgramSlots() {
         this.addSlot(new Slot(this.inventory, 1, 151, 40) {
+            @Override
             public boolean canInsert(ItemStack stack) {
                 return stack.isOf(RISCJ_blockits.PROGRAM_ITEM);
             }
         });
         this.addSlot(new Slot(this.inventory, 2, 151, 93) {
+            @Override
             public boolean canInsert(ItemStack stack) {
                 return false;
             }
@@ -131,16 +139,20 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
     }
 
     /**
-     * will add the slot for the instruction set to the screen.
+     * Adds the slot for the instruction set to the screen.
      */
     private void addInstructionSetSlot() {
         this.addSlot(new Slot(this.inventory, 0, 151, 18) {
+            @Override
             public boolean canInsert(ItemStack stack) {
                 return stack.getItem().getClass() == InstructionSetItem.class;
             }
         });
     }
 
+    /**
+     * @return the code that should currently be displayed in the test editor on the screen.
+     */
     public String getCode() {
         return blockEntity.getCode();
     }
@@ -150,25 +162,51 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
      * @return ArrayList of String[] with the instructions
      */
     public List<String[]> getInstructions() {
-        if(inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
+        if (inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt()
+            || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
             return new ArrayList<>();
         }
-
         NbtElement nbt = inventory.getStack(0).getOrCreateNbt().get(CONTROL_IST_ITEM);
-
-        if(nbt == null) {
+        if (nbt == null) {
             return new ArrayList<>();
         }
-
         IDataElement instructionSetData = new NbtDataConverter(nbt).getData();
-
         InstructionSetModel instructionSet;
         try {
             instructionSet = InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
         } catch (UnsupportedEncodingException e) {
             return new ArrayList<>();
         }
-
         return instructionSet.getPossibleInstructions();
     }
+
+    /**
+     * Called when a player attempts to quickly move an item.
+     * @param player The player that wants to quickly move an item.
+     * @param invSlot The slot that the player wants to quickly move to.
+     * @return the item stack of the item that was moved
+     */
+    @Override
+    public ItemStack quickMove(PlayerEntity player, int invSlot) {
+        ItemStack newStack = ItemStack.EMPTY;   //ToDo duplicate code
+        Slot slot = this.slots.get(invSlot);
+        if (slot != null && slot.hasStack()) {
+            ItemStack originalStack = slot.getStack();
+            newStack = originalStack.copy();
+            if (invSlot < this.inventory.size()) {
+                if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
+                return ItemStack.EMPTY;
+            }
+            if (originalStack.isEmpty()) {
+                slot.setStack(ItemStack.EMPTY);
+            } else {
+                slot.markDirty();
+            }
+        }
+        return newStack;
+    }
+
 }

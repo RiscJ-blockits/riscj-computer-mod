@@ -28,7 +28,7 @@ import org.lwjgl.glfw.GLFW;
  */
 public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/programming_block_gui.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/programming_block_gui.png");
 
     /**
      * The edit box widget that is used to enter chars.

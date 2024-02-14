@@ -3,6 +3,8 @@ package edu.kit.riscjblockits.view.client.screens.widgets;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
+
 
 public class InstructionEntry extends ListEntry{
 
@@ -10,17 +12,33 @@ public class InstructionEntry extends ListEntry{
     private static final int ENTRY_WIDTH = 113;
     private static final int OFFSET = 34;
     private final String arguments;
+
+    /**
+     * The identifier of the instruction.
+     */
     private final String identifier;
     private final InstructionListWidget parent;
 
+    /**
+     * Constructor for the instruction entry.
+     * @param identifier The identifier of the instruction.
+     * @param arguments The argument of the instruction.
+     */
     public InstructionEntry(String identifier, String arguments, InstructionListWidget parent) {
         this.arguments = arguments;
         this.identifier = identifier;
         this.parent = parent;
     }
 
+    /**
+     * Renders the instruction entry.
+     * @param context The context to render in.
+     * @param mouseX The x position of the mouse.
+     * @param mouseY The y position of the mouse.
+     * @param delta Not specified in the documentation.
+     */
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull DrawContext context, int mouseX, int mouseY, float delta) {
         MinecraftClient client = MinecraftClient.getInstance();
 
         if(this.identifier.length() > 5){
@@ -51,7 +69,6 @@ public class InstructionEntry extends ListEntry{
             //context.enableScissor(parent.getX(), parent.getY(), parent.getX() + parent.getWidth(), parent.getY() + parent.getHeight());
         }*/
 
-
     }
 
     @Override
@@ -80,4 +97,5 @@ public class InstructionEntry extends ListEntry{
             //context.enableScissor(parent.getX(), parent.getY(), parent.getX() + parent.getWidth(), parent.getY() + parent.getHeight());
         }
     }
+
 }

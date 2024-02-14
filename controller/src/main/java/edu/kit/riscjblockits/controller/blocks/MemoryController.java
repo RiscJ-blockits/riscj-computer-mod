@@ -61,6 +61,9 @@ public class MemoryController extends ComputerBlockController {
         }
     }
 
+    /**
+     * Method to call checkFinished in the associated clusterHandler.
+     */
     private void onUpdate() {
         ClusterHandler clusterHandler = getClusterHandler();
         if (clusterHandler != null)
@@ -87,6 +90,10 @@ public class MemoryController extends ComputerBlockController {
         ((MemoryModel) getModel()).setMemoryAt(address, value);
     }
 
+    /**
+     * Getter for the initial program counter.
+     * @return The initial program counter.
+     */
     public Value getInitialProgramCounter() {
         return ((MemoryModel) getModel()).getInitialProgramCounter();
     }

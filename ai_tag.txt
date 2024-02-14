@@ -1,5 +1,6 @@
-All AI Usage is documented inside the JavaDoc:
-
+All files are written with minor support by GitHub Copilot.
+---
+AI usage documentation:
 Example:
    [JavaDoc in this class with minor support by GitHub Copilot]
    [code in this method mostly generated with GitHub Copilot]

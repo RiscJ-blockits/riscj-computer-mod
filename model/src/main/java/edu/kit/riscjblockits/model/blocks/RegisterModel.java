@@ -104,4 +104,20 @@ public class RegisterModel extends BlockModel {
         setUnqueriedStateChange(true);
     }
 
+    /**
+     * Getter for the word length of the register.
+     * @return The word length of the register.
+     */
+    protected int getWordLength() {
+        return wordLength;
+    }
+
+    /**
+     * Getter for the missing and available registers.
+     * @return [0] missing for a valid architecture. [1] already present in the cluster.
+     */
+    protected String[] getMissingAvailableRegisters() {
+        return missingAvailableRegisters;
+    }
+
 }

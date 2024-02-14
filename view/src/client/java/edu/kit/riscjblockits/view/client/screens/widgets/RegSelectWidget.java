@@ -3,15 +3,11 @@ package edu.kit.riscjblockits.view.client.screens.widgets;
 import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.ButtonTextures;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.widget.ToggleButtonWidget;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -20,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RegSelectWidget extends ExtendableWidget{
-    public static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID,"textures/gui/register/reg_select_widget.png");
-    //public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier(RISCJ_blockits.MODID,
-        //"textures/gui/register/button.png"), new Identifier(RISCJ_blockits.MODID,"textures/gui/register/button_highlighted.png")); //path does not work fsr!!! :( TODO fix path
+    public static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID,"textures/gui/register/reg_select_widget.png");
+    //public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier(RISCJ_blockits.MOD_ID,
+        //"textures/gui/register/button.png"), new Identifier(RISCJ_blockits.MOD_ID,"textures/gui/register/button_highlighted.png")); //path does not work fsr!!! :( TODO fix path
 
     public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier("recipe_book/button"), new Identifier("recipe_book/button_highlighted"));
     private static final String TO_DO_TEXT = "Select Register";

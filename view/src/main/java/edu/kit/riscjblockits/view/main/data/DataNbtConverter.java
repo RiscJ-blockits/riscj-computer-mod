@@ -1,6 +1,5 @@
 package edu.kit.riscjblockits.view.main.data;
 
-
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;

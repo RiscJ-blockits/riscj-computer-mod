@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * This class will be injected into Minecraft's {@link InGameHud} class.
- * will create and call the {@link GoggleUI} class.
+ * Will create and call the {@link GoggleUI} class.
  */
 @Mixin(InGameHud.class)
 public abstract class RenderMixin {

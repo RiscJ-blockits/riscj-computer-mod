@@ -52,6 +52,11 @@ public class DataConstants {
      */
     public static final String REGISTER_WORD_LENGTH = "word";
 
+    //WirelessRegister Constants
+    public static final String REGISTER_WIRELESS_XPOS = "WirelessRegister_XPos";
+    public static final String REGISTER_WIRELESS_YPOS = "WirelessRegister_YPos";
+    public static final String REGISTER_WIRELESS_ZPOS = "WirelessRegister_ZPos";
+    public static final String REGISTER_WIRELESS = "WirelessRegister";
     public static final String REGISTER_IO_TIME = "register_io_time";
 
     //SystemClock Constants
@@ -152,5 +157,11 @@ public class DataConstants {
      * NBT-Tag of the Programm Item.
      */
     public static final String MEMORY_PROGRAMM_ITEM = "riscj_blockits.memory";  //Don't change this!
+
+    //ProgrammingBlock Constants
+    /**
+     * Used inside the nbt of the programming block to store inputted code.
+     */
+    public static final String PROGRAMMING_BLOCK_CODE = "code";
 
 }

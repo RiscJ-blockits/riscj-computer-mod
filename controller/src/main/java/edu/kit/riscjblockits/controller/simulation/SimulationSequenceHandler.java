@@ -51,10 +51,6 @@ public class SimulationSequenceHandler implements Runnable {
      */
     private RegisterController programCounterController;
     /**
-     * Controller of the instruction register.
-     */
-    private RegisterController iarController;
-    /**
      * Controller of the memory.
      */
     private MemoryController memoryController;
@@ -62,9 +58,20 @@ public class SimulationSequenceHandler implements Runnable {
      * Executor for the microinstructions.
      */
     private final Executor executor;
+
+    /**
+     * The bus system of the computer.
+     */
     private final IBusSystem busSystem;
 
+    /**
+     * The callback receivable for the simulation sequence handler to notify after every real-time simulation tick.
+     */
     private final IRealtimeSimulationCallbackReceivable callbackReceivable;
+
+    /**
+     * The current visualisation mode of the simulation sequence handler.
+     */
     private VisualisationMode visualisationMode = VisualisationMode.NORMAL;
 
     /**
@@ -88,7 +95,11 @@ public class SimulationSequenceHandler implements Runnable {
             }
         }
 
-        //ToDo: Null-Exception werfen und an entsprechender Stelle abfangen
+        //ToDo: Catch exception somewhere
+        if (instructionSetModel == null) {
+            throw new NullPointerException("No instruction set model found");
+        }
+
         String programCounterTag = instructionSetModel.getProgramCounter();
         for(IQueryableSimController blockController: blockControllers) {
             if (Objects.requireNonNull(blockController.getControllerType()) == BlockControllerType.REGISTER) {
@@ -191,6 +202,9 @@ public class SimulationSequenceHandler implements Runnable {
         busSystem.resetVisualisation();
     }
 
+    /**
+     * Activates the visualization of all computer blocks and the bus system.
+     */
     public void fullVisualisation() {
         for (IQueryableSimController blockController : blockControllers) {
             blockController.activateVisualisation();
@@ -198,6 +212,10 @@ public class SimulationSequenceHandler implements Runnable {
         busSystem.activateVisualisation();
     }
 
+    /**
+     * Sets the visualisation mode.
+     * @param mode The visualisation mode to set.
+     */
     public void setVisualizationMode(VisualisationMode mode) {
         this.visualisationMode = mode;
         if(visualisationMode == VisualisationMode.OFF || visualisationMode == VisualisationMode.NORMAL) {
@@ -217,7 +235,7 @@ public class SimulationSequenceHandler implements Runnable {
         try {
             instruction.execute(executor);
         } catch (NonExecutableMicroInstructionException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -229,6 +247,9 @@ public class SimulationSequenceHandler implements Runnable {
         EXECUTE
     }
 
+    /**
+     * Defines the visualisation modes.
+     */
     public enum VisualisationMode {
         FAST,
         NORMAL,

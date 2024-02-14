@@ -7,11 +7,14 @@ import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
  */
 public interface IQueryableSimController extends IQueryableComputerController {
 
-    //ToDo nicht im Entwurfs wiki
+    /** //ToDo nicht im Entwurfs wiki
+     * Method to start the visualisation of the block of the controller.
+     */
     public void activateVisualisation();
 
-
-    //ToDo nicht im Entwurfs wiki
+    /** //ToDo nicht im Entwurfs wiki
+     * Method to stop the visualisation of the block of the controller.
+     */
     public void stopVisualisation();
 
 }

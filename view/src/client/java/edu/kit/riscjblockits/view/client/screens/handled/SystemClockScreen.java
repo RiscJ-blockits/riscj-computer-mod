@@ -22,6 +22,10 @@ import static edu.kit.riscjblockits.model.blocks.ClockMode.REALTIME;
 import static edu.kit.riscjblockits.model.blocks.ClockMode.STEP;
 import static java.lang.Double.NaN;
 
+/**
+ * The screen for the system clock block.
+ * In it, you can see the speed of the system clock and change the system clock mode.
+ */
 public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
 
     /**
@@ -30,9 +34,13 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
      * The representing ticks one computer tick should take can be configured here.
      */
     private static final int[][] MODE_TRANSLATIONS = {{0,0}, {1,80}, {2,40}, {3,20}, {4,15}, {5,10}, {6,5}, {7,2}, {8,1}, {9,0}};
+
+    /**
+     * This translates the different speeds into ticks per second.
+     */
     private static final double[][] SECONDS_TRANSLATIONS = {{0,0}, {80,0.25}, {40,0.5}, {20,1}, {15,1.5}, {10,2}, {5,4}, {2,10}, {1,20}, {9,NaN}};        //assuming 20 ticks per second
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_gui.png");
-    private static final Identifier MODE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_button.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/system_clock/system_clock_gui.png");
+    private static final Identifier MODE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/system_clock/system_clock_button.png");
     private static final String MODE_TEXTURE = "textures/gui/system_clock/system_clock_lever_%d.png";
     private static final int MODE_BUTTON_SIZE = 6;
     private static final int[] MODE_BUTTON_X_OFFSETS = {86, 84, 90, 98, 109, 122, 135, 146, 154, 160};
@@ -42,38 +50,52 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     private static final int LEVER_WIDTH = 58;
     private static final int LEVER_HEIGHT = 39;
     private final ArrayList<IconButtonWidget> modeButtons = new ArrayList<>(10);
-    private static final int SPEED_TEXTFIELD_OFFSET_X = 9;
-    private static final int SPEED_TEXTFIELD_OFFSET_Y = 18;
-    private Identifier leverTexture = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_lever_0.png");
-
+    private static final int SPEED_TEXT_FIELD_OFFSET_X = 9;
+    private static final int SPEED_TEXT_FIELD_OFFSET_Y = 18;
+    private Identifier leverTexture = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/system_clock/system_clock_lever_0.png");
     private Text clockSpeed = Text.literal("0");
 
-    public SystemClockScreen(SystemClockScreenHandler handler, PlayerInventory inventory,
-                             Text title) {
+    /**
+     * Constructor for the system clock screen.
+     * In it, you can see the speed of the system clock and change the system clock mode.
+     * @param handler The handler for the screen.
+     * @param inventory The player inventory.
+     * @param title The title of the screen.
+     */
+    public SystemClockScreen(SystemClockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
     }
 
+    /**
+     * Initializes the screen.
+     * It sends a request to the server to update the data of the block entity.
+     * It also initializes the buttons for the different modes.
+     */
     @Override
     protected void init() {
         super.init();
         ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(handler.getBlockEntity().getPos()));
         int mode = getButtonStep();
-        leverTexture = new Identifier(RISCJ_blockits.MODID, String.format(MODE_TEXTURE, mode));
-
+        leverTexture = new Identifier(RISCJ_blockits.MOD_ID, String.format(MODE_TEXTURE, mode));
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
-
         for(int i = 0; i < 10; i++) {
             int setMode = i;
             modeButtons.add(new IconButtonWidget(x + MODE_BUTTON_X_OFFSETS[setMode], y + MODE_BUTTON_Y_OFFSETS[setMode], MODE_BUTTON_SIZE, MODE_BUTTON_SIZE, button -> {
                 updateModel(setMode);
-                leverTexture = new Identifier(RISCJ_blockits.MODID, String.format(MODE_TEXTURE, setMode));
+                leverTexture = new Identifier(RISCJ_blockits.MOD_ID, String.format(MODE_TEXTURE, setMode));
             }, MODE_BUTTON_TEXTURE));
-
             addDrawableChild(modeButtons.get(i));
         }
     }
 
+    /**
+     * Draws the background of the screen.
+     * @param context The context to draw in.
+     * @param delta Not specified in the documentation.
+     * @param mouseX The x position of the mouse.
+     * @param mouseY The y position of the mouse.
+     */
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
@@ -85,14 +107,22 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
     }
 
+    /**
+     * Draws the foreground of the screen.
+     * Is called every frame.
+     * Draws the clock pointer in the correct position.
+     * @param context The context to draw in.
+     * @param mouseX The x position of the mouse.
+     * @param mouseY The y position of the mouse.
+     * @param delta Not specified in the documentation.
+     */
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
-
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
-        context.drawText(textRenderer, clockSpeed, x + SPEED_TEXTFIELD_OFFSET_X, y + SPEED_TEXTFIELD_OFFSET_Y, 0xffffff, false);
+        context.drawText(textRenderer, clockSpeed, x + SPEED_TEXT_FIELD_OFFSET_X, y + SPEED_TEXT_FIELD_OFFSET_Y, 0xffffff, false);
         context.drawTexture(leverTexture, x + LEVER_X_OFFSET, y + LEVER_Y_OFFSET, 0, 0, LEVER_WIDTH, LEVER_HEIGHT, LEVER_WIDTH, LEVER_HEIGHT);
         for(int i = 0; i < 10; i++) {
             modeButtons.get(i).setPosition(x + MODE_BUTTON_X_OFFSETS[i], y + MODE_BUTTON_Y_OFFSETS[i]);
@@ -100,10 +130,13 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
+    /**
+     * Updates the screen every tick.
+     */
     @Override
     public void handledScreenTick() {
         super.handledScreenTick();
-        clockSpeed = Text.literal(String.valueOf(handler.getSystemClockSpeed()));
+        clockSpeed = Text.literal(String.valueOf(handler.getSystemClockSpeed()));       //FixMe: why two times?
         clockSpeed = Text.literal(String.valueOf(SECONDS_TRANSLATIONS[getButtonStep()][1]));
     }
 
@@ -135,6 +168,10 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         ClientPlayNetworking.send(NetworkingConstants.SYNC_CLOCK_MODE_SELECTION, buf);
     }
 
+    /**
+     * @return the step of the button that is currently selected.
+     * The Information is taken from the handler.
+     */
     private int getButtonStep() {
         String mode = handler.getSystemClockMode();
         int speed = handler.getSystemClockSpeed();

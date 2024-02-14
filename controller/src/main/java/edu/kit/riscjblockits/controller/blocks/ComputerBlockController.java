@@ -44,7 +44,10 @@ public abstract class ComputerBlockController extends BlockController implements
         blockEntity.setBlockModel((IViewQueryableBlockModel) this.blockModel);      //FixMe cast sehr unschön
     }
 
-    //ToDo nicht im entwurf
+    /** //ToDo nicht im entwurf
+     * Starts the clustering process.
+     * @param pos The position of the block in the minecraft world.
+     */
     public void startClustering(BlockPosition pos) {
         blockModel.setPosition(pos);
         //Create a new Cluster and check if it is complete. This check can trigger a simulation start.
@@ -74,6 +77,14 @@ public abstract class ComputerBlockController extends BlockController implements
      */
     public IControllerQueryableBlockModel getModel() {
         return blockModel;
+    }
+
+    /**
+     * Getter for the block entity.
+     * @return The block entity that the controller is responsible for.
+     */
+    protected IConnectableComputerBlockEntity getBlockEntity() {
+        return blockEntity;
     }
 
     /**
@@ -124,23 +135,22 @@ public abstract class ComputerBlockController extends BlockController implements
      * Gets called every tick by the entity.
      * Overwritten by the controller of the system clock.
      */
-    public void tick() {};
+    public void tick() {}
 
-    //ToDo nicht im Entwurfs wiki
+
+    /** //ToDo nicht im Entwurfs wiki
+     * Activates the visualisation of the block.
+     */
     public void activateVisualisation() {
         blockModel.setVisualisationState(true);
     }
 
+    /**
+     * Deactivates the visualisation of the block.
+     */
     //ToDo nicht im Entwurfs wiki
     public void stopVisualisation() {
         blockModel.setVisualisationState(false);
-    }
-
-    /**
-     * Update the block state of neighbourBusses.
-     */
-    public void neighborUpdate() {
-        blockEntity.neighborUpdate();
     }
 
     /** ToDo nicht im Entwurfs wiki

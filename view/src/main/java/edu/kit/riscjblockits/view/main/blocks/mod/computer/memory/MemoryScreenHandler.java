@@ -23,30 +23,63 @@ import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_ADDRESS;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
+/**
+ * This class represents the screen handler for the memory block.
+ * It is used to handle the interaction between the memory screen and the memory block entity.
+ */
 public class MemoryScreenHandler extends ModScreenHandler {
 
+    /**
+     * The inventory of the memory entity.
+     */
     private final Inventory inventory;
-    private  final MemoryBlockEntity blockEntity;
 
+    /**
+     * Is set to true after the screen is opened.
+     */
+    private boolean opened = false;
+
+    /**
+     * Creates a new MemoryScreenHandler with the given settings.
+     * @param syncId the syncId
+     * @param inventory the player inventory
+     * @param buf the buffer with the block position
+     */
     public MemoryScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
         this(syncId, inventory, (ModBlockEntity) inventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
     }
 
+    /**
+     * Creates a new MemoryScreenHandler for the given ModBlockEntity.
+     * @param syncId the syncId
+     * @param playerInventory the inventory of the player opening the screen
+     * @param blockEntity the block entity opening the screen.
+     */
     public MemoryScreenHandler(int syncId, PlayerInventory playerInventory, ModBlockEntity blockEntity) {
         super(RISCJ_blockits.MEMORY_BLOCK_SCREEN_HANDLER, syncId, blockEntity);
         checkSize(((Inventory) blockEntity), 1);
         this.inventory = ((Inventory) blockEntity);
         inventory.onOpen(playerInventory.player);
-        this.blockEntity = ((MemoryBlockEntity) blockEntity);
-
-        this.addSlot(new Slot(inventory, 0, 135, 6));
-
+        this.addSlot(new Slot(inventory, 0, 135, 6) {
+            @Override
+            public boolean canInsert(ItemStack stack) {
+                return stack.isOf(RISCJ_blockits.PROGRAM_ITEM);
+            }
+        });
         addPlayerInventorySlotsLarge(playerInventory);
-
+        if (inventory.getStack(0).getCount() == 0) {
+            opened = true;
+        }
         addListener(new ScreenHandlerListener() {           //listener for changes in the inventory
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
                 if (slotId == 0) {
+                    //On SlotUpdate gets sometimes called on screen open even when the item is not changed.
+                    // We don't want to update the memory in this case because it would reset the simulation
+                    if (!opened) {
+                        opened = true;
+                        return;
+                    }
                     ((MemoryBlockEntity) blockEntity).inventoryChanged();
                 }
             }
@@ -57,9 +90,15 @@ public class MemoryScreenHandler extends ModScreenHandler {
         });
     }
 
+    /**
+     * Called when a player attempts to quickly move an item.
+     * @param player The player that wants to quickly move an item.
+     * @param invSlot The slot that the player wants to quickly move to.
+     * @return the item stack of the item that was moved
+     */
     @Override
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
-        ItemStack newStack = ItemStack.EMPTY;
+        ItemStack newStack = ItemStack.EMPTY;       //ToDo duplicated code
         Slot slot = this.slots.get(invSlot);
         if (slot != null && slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
@@ -109,9 +148,9 @@ public class MemoryScreenHandler extends ModScreenHandler {
 
 
     /**
-     * @return the size of the memory in adressable units
+     * @return the size of the memory in addressable units
      */
-    public int getMemorySize(){
+    public int getMemorySize() {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
             return 9;

@@ -20,14 +20,12 @@ import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
  */
 public abstract class ModBlockEntity extends BlockEntity {
 
-    private static final String CONTROLLER_NBT_TAG = "riscj_blockits.controller";
     /**
      * The controller of this block entity.
      * It can be null if the block is in the process of being loaded.
      * The controller handles the computer logic of the block and the communication with the model.
      * Is null on the client side.
      */
-
     private IUserInputReceivableController controller;
 
     /**
@@ -53,11 +51,11 @@ public abstract class ModBlockEntity extends BlockEntity {
      */
     protected abstract IUserInputReceivableController createController();
 
-    /**
-     * The method is called when the block is placed in the world.
-     * ToDo anders als Entwurf
-     *
-     */
+    /** ToDo anders als im Entwurf
+     * this method is responsible for creating the controller and starting the clustering.
+     * It does this at different times depending if the world is loading or the block is placed at runtime.
+     * is called at different events to cover all cases.
+     * */
     public void setController() {
         //We need the controller when the world is still loading, but the clustering can only start when the world is finished loading.
         //If we place a new block, both things can happen at the same time.
@@ -96,6 +94,9 @@ public abstract class ModBlockEntity extends BlockEntity {
         }
     }
 
+    /**
+     * @return The Block Position of this block entity.
+     */
     public BlockPosition getBlockPosition() {
         BlockPos pos = getPos();
         return new BlockPosition(pos.getX(), pos.getY(), pos.getZ());
@@ -120,7 +121,7 @@ public abstract class ModBlockEntity extends BlockEntity {
 
     /**
      * Sets the type of this block entity.
-     * @param type
+     * @param type {@link EntityType} of this block entity.
      */
     public void setType(EntityType type) {
         this.entitytype = type;

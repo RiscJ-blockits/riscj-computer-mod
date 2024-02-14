@@ -5,6 +5,7 @@ import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
+import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
@@ -41,20 +42,22 @@ public class ClusterArchitectureHandler {
     /**
      * Checks a given cluster if it is a specific valid architecture.
      */
-    public static boolean checkArchitecture(IQueryableInstructionSetModel istModel, ClusterHandler clusterHandler){
+    public static boolean checkArchitecture(IQueryableInstructionSetModel istModel, ClusterHandler clusterHandler) {         //ToDo im ugly code please reformat me
         //is called after every block modification
         //should not eat too much performance because even RiscV is not that big
-
         List<IQueryableClusterController> blocks = clusterHandler.getBlocks();
         boolean correctArchitecture = true;
         List<ControlUnitController> controlUnit = new ArrayList<>();
         //we could count all blocks first for better performance
-
         //check Blocks
         int foundMemory = 0;
         int foundALU = 0;
         int foundSystemClock = 0;
         int foundControlUnit = 0;
+
+        String[] aluRegisterNames = istModel.getAluRegisters();
+        List<RegisterController> aluRegister = new ArrayList<>();
+        BlockController alu = null;
 
         List<String> availableRegisters = new ArrayList<>();
         for (IQueryableClusterController block : blocks) {
@@ -67,9 +70,15 @@ public class ClusterArchitectureHandler {
                     break;
                 case REGISTER:
                     availableRegisters.add(((RegisterController) block).getRegisterType());
+                    for (String aluRegisterName : aluRegisterNames) {
+                        if (aluRegisterName.equals(((RegisterController) block).getRegisterType())) {
+                            aluRegister.add((RegisterController) block);
+                        }
+                    }
                     break;
                 case ALU:
                     foundALU++;
+                    alu = (BlockController) block;
                     break;
                 case CONTROL_UNIT:
                     foundControlUnit++;
@@ -83,6 +92,19 @@ public class ClusterArchitectureHandler {
                     throw new IllegalStateException("Unexpected value: " + block.getControllerType());
             }
         }
+        //check if the ALU registers are connected to the ALU
+        if (alu != null) {
+            for (RegisterController register : aluRegister) {
+                if (!clusterHandler.isNeighbourPosition(alu, register)) {
+                    System.out.println("ALU Register not connected to ALU");
+                    correctArchitecture = false;
+                    availableRegisters.remove(register.getRegisterType());
+                }
+            }
+        } else {
+            correctArchitecture = false;
+        }
+
         //check Registers
         boolean rightAmountOfRegisters = (availableRegisters.size() == istModel.getRegisterNames().size());       //we could have more registers if we connect IO registers
         Collections.sort(availableRegisters);
@@ -107,13 +129,11 @@ public class ClusterArchitectureHandler {
                     Value.fromHex(initialValue, istModel.getMemoryWordSize()));
             }
         }
-
         //check if everything is correct
         if (foundControlUnit != 1 || foundALU != 1 || foundMemory != 1
             ||!requiredRegisters.isEmpty() || foundSystemClock != 1 || !rightAmountOfRegisters){      //we only allow one block
             correctArchitecture = false;
         }
-
         //send missing/current blocks to controlUnit model for display
         for (ControlUnitController controlUnitController : controlUnit) {
             Data clusterignData = new Data();
@@ -127,31 +147,13 @@ public class ClusterArchitectureHandler {
             cucData.set(CONTROL_CLUSTERING, clusterignData);
             controlUnitController.setData(cucData);
         }
-        System.out.println("CheckArchitecture: " + correctArchitecture + " Missing Registers: " + listToString(requiredRegisters));
         return correctArchitecture;
     }
 
     /**
-     * Counts the blocks of a specific type in a list of blocks.
-     * @param blocks
-     * @param blockType
-     * @return
-     */
-    @Deprecated
-    private static int countBlocksOfType(List<IQueryableClusterController> blocks, BlockControllerType blockType) {
-        int count = 0;
-        for (IQueryableClusterController block : blocks) {
-            if (block.getControllerType() == blockType) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    /**
      * Converts a list of strings to a single string with spaces between the words.
-     * @param list
-     * @return
+     * @param list list of strings
+     * @return single string with spaces between the words
      */
     private static String listToString(List<String> list) {
         StringBuilder result = new StringBuilder();

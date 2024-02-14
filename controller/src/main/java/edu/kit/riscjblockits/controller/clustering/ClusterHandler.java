@@ -129,7 +129,6 @@ public class ClusterHandler implements IArchitectureCheckable {
             for (IQueryableClusterController neighbour: block.getNeighbours()) {
                 if (neighbour.getClusterHandler().equals(this)) {
                     busSystemModel.addEdge(block.getBlockPosition(), neighbour.getBlockPosition());
-                    block.neighborUpdate();
                 } else {
                     if (!newMarkedBlocks.contains(block)) {
                         newMarkedBlocks.add(block);
@@ -255,6 +254,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     public boolean setIstModel(IQueryableInstructionSetModel istModel) {
         if (istModel == null) {
             removeIstModel();
+            checkFinished();
             return false;
         }
         int cuCount = 0;
@@ -265,6 +265,7 @@ public class ClusterHandler implements IArchitectureCheckable {
         }
         if (cuCount > 1) {
             removeIstModel();
+            checkFinished();
             return false;
         }
         this.istModel = istModel;
@@ -334,4 +335,13 @@ public class ClusterHandler implements IArchitectureCheckable {
         busSystemModel.resetVisualisation();
     }
 
+    /**
+     * checks if a given block is a neighbour of another given block
+     * @param block1 BlockController to check
+     * @param block2 BlockController to check
+     * @return true if the blocks are neighbours
+     */
+    public boolean isNeighbourPosition(BlockController block1, BlockController block2) {
+        return busSystemModel.isNeighbourPosition(((ComputerBlockController)block2).getBlockPosition(), ((ComputerBlockController)block1).getBlockPosition());
+    }
 }

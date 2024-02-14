@@ -70,4 +70,5 @@ public interface IQueryableBusSystem {
     //ToDo nicht im Entwurf
     void resetVisualisation();
 
+    boolean isNeighbourPosition(BlockPosition blockPosition, BlockPosition blockPosition1);
 }

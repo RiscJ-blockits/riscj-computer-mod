@@ -1,17 +1,13 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
-import edu.kit.riscjblockits.model.data.DataConstants;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
@@ -25,26 +21,46 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 
+/**
+ * The {@link ModScreenHandler} for the {@link RegisterBlock} and a {@link  edu.kit.riscjblockits.view.client.screens.handled.RegisterScreen}.
+ */
 public class RegisterScreenHandler extends ModScreenHandler {
 
+    /**
+     * Creates a new {@link RegisterScreenHandler} for the given {@link ModBlockEntity}.
+     * @param syncId the syncId
+     * @param inventory the player inventory
+     * @param blockEntity the block entity opening the screen.
+     */
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, ModBlockEntity blockEntity) {
         super(RISCJ_blockits.REGISTER_SCREEN_HANDLER, syncId, blockEntity);
         addPlayerInventorySlots(inventory);
     }
 
+    /**
+     * Creates a new {@link RegisterScreenHandler}.
+     * @param syncId the syncId
+     * @param inventory the player inventory
+     * @param buf the buffer with the block position
+     */
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
         this(syncId, inventory, (ModBlockEntity) inventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
     }
 
-    public RegisterScreenHandler(ScreenHandlerType<?> type, int syncId, ModBlockEntity blockEntity) {
+    /**
+     * Creates a new {@link RegisterScreenHandler}.
+     * Used by subclasses who have their own type.
+     * @param type the type of the screen handler
+     * @param syncId the syncId
+     * @param blockEntity the block entity opening the screen.
+     */
+    protected RegisterScreenHandler(ScreenHandlerType<?> type, int syncId, ModBlockEntity blockEntity) {
         super(type, syncId, blockEntity);
     }
 
-    @Override
-    public boolean canUse(PlayerEntity player) {
-        return true;
-    }
-
+    /**
+     * @return The value of the currently opened Register from the model. As a hex string.
+     */
     public String getRegisterValue() {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
@@ -63,8 +79,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
     }
 
     /**
-     * Gets the register Type of the currently opened RegisterBLock
-     * @return
+     * @return the register Type of the currently opened RegisterBlock.
      */
     public String getCurrentRegister(){
         NbtCompound nbt = getBlockEntity().createNbt();
@@ -83,14 +98,18 @@ public class RegisterScreenHandler extends ModScreenHandler {
         return "";
     }
 
+    /**
+     * @param key can be {@link edu.kit.riscjblockits.model.data.DataConstants#REGISTER_MISSING} or {@link edu.kit.riscjblockits.model.data.DataConstants#REGISTER_FOUND}.
+     * @return All registers inside the cluster matching the given key.
+     */
     public List<String> getRegisters(String key) {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
         IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         if (!data.isContainer()) {
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             if (!s.equals(REGISTER_REGISTERS)) {
@@ -114,7 +133,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
                 return registers;
             }
         }
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 
 }
