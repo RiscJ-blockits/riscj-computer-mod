@@ -2,7 +2,9 @@ package edu.kit.riscjblockits.model.instructionset;
 
 import java.util.List;
 
-//zwischen Controller und InstructionSet
+/**
+ * This interface defines the methods that an InstructionSetModel provides.
+ */
 public interface IQueryableInstructionSetModel {
 
     /**
@@ -88,7 +90,7 @@ public interface IQueryableInstructionSetModel {
      * @param s The data storage command.
      * @return The data to be stored.
      */
-    public String getStorageCommandData(String s);
+    String getStorageCommandData(String s);
 
     /**
      * Getter for the fetch phase length of the instruction set.
@@ -103,14 +105,25 @@ public interface IQueryableInstructionSetModel {
      */
     IExecutableMicroInstruction getFetchPhaseStep(int index);
 
+    /**
+     * translates a binaryRepresentation of an Instruction to an instruction.
+     * @param binaryValue the binary representation of the instruction.
+     * @return the instruction.
+     */
     IQueryableInstruction getInstructionFromBinary(String binaryValue);
 
+    //ToDo nicht im Entwurf
     /**
-     * ToDo nicht im Entwurf
+     * Getter for the names of all needed registers.
      * @return Returns the names of all registers.
      */
     List<String> getRegisterNames();
 
+    /**
+     * Getter for the initial value of a register.
+     * @param key The name of the register.
+     * @return The initial value of the register as a String.
+     */
     String getRegisterInitialValue(String key);
 
 }

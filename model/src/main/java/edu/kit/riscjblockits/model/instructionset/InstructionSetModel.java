@@ -10,8 +10,7 @@ import java.util.regex.Pattern;
  * Model of an instruction set. Contains all information on how to execute code based on the instruction set.
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
-public class
-InstructionSetModel implements IQueryableInstructionSetModel {
+public class InstructionSetModel implements IQueryableInstructionSetModel {
 
     private static final Pattern DATA_GROUP_PATTERN = Pattern.compile("\\[(?<name>\\w+)]<(?<length>\\d+)>(?<asciiRepeat>\\+)?");
 
