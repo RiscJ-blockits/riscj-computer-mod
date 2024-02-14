@@ -73,6 +73,7 @@ class ClusterArchitectureHandlerTest {
 
     public RegisterController getR(String type) {
         RegisterController registerController = new RegisterController(new ArchiCheckStub_Entity());
+        registerController.getModel().setPosition(new BlockPosition(0,0,0));
         Data rData = new Data();
         rData.set("type", new DataStringEntry(type));
         registerController.setData(rData);
@@ -103,7 +104,9 @@ class ClusterArchitectureHandlerTest {
     @Test
     void checkArchitectureMIMA3_4() {
         blockController.add(new SystemClockController(new ArchiCheckStub_Entity()));
-        blockController.add(new AluController(new ArchiCheckStub_Entity()));
+        AluController aluController = new AluController(new ArchiCheckStub_Entity());
+        aluController.getModel().setPosition(new BlockPosition(1,0,0));
+        blockController.add(aluController);
         blockController.add(getR("AKKU"));
         blockController.add(getR("X"));
         blockController.add(getR("Y"));

@@ -344,15 +344,4 @@ public class ClusterHandler {
         }
         busSystemModel.resetVisualisation();
     }
-
-    /**
-     * checks if a given block is a neighbour of another given block.
-     * @param block1 BlockController to check.
-     * @param block2 BlockController to check.
-     * @return true if the blocks are neighbours.
-     */
-    public boolean isNeighbourPosition(BlockController block1, BlockController block2) {
-        return BusSystemModel.isNeighbourPosition(
-                ((ComputerBlockController)block2).getBlockPosition(), ((ComputerBlockController)block1).getBlockPosition());
-    }
 }

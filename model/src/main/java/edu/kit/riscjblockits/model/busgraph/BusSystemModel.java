@@ -281,22 +281,4 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
             activeVisualization.put(blockPosition, true);
         }
     }
-
-    /**
-     * Checks if two nodes are connected by coordinates.
-     * @param blockPosition is the first node
-     * @param blockPosition1 is the second node
-     * @return true if the nodes are connected with an edge
-     */
-    public static boolean isNeighbourPosition(BlockPosition blockPosition, BlockPosition blockPosition1) {
-        if (blockPosition.getX() - blockPosition1.getX() == 1 || blockPosition.getX() - blockPosition1.getX() == -1) {
-            return blockPosition.getY() == blockPosition1.getY() && blockPosition.getZ() == blockPosition1.getZ();
-        }
-        if (blockPosition.getY() - blockPosition1.getY() == 1 || blockPosition.getY() - blockPosition1.getY() == -1) {
-            return blockPosition.getX() == blockPosition1.getX() && blockPosition.getZ() == blockPosition1.getZ();
-        }
-        return (blockPosition.getZ() - blockPosition1.getZ() == 1 || blockPosition.getZ() - blockPosition1.getZ() == -1)
-            && blockPosition.getX() == blockPosition1.getX() && blockPosition.getY() == blockPosition1.getY();
-    }
-
 }

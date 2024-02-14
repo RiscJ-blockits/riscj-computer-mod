@@ -81,14 +81,4 @@ public interface IQueryableBusSystem {
      * Resets the visualisation of the BusSystemModel.
      */
     void resetVisualisation();
-
-    /**
-     * Checks if two BlockPositions are Neighbours.
-     * @param blockPosition The first BlockPosition.
-     * @param blockPosition1 The second BlockPosition.
-     * @return true if the two BlockPositions are neighbours.
-     */
-    static boolean isNeighbourPosition(BlockPosition blockPosition, BlockPosition blockPosition1) {
-        return BusSystemModel.isNeighbourPosition(blockPosition, blockPosition1);
-    }
 }
