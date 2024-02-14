@@ -39,9 +39,4 @@ public interface IQueryableClusterController extends IQueryableComputerControlle
      * @return An {@link BlockPosition} with the position of the block.
      */
     BlockPosition getBlockPosition();
-
-    /**
-     * Method to update the neighbors of the block entity.
-     */
-    void neighborUpdate();
 }

@@ -129,7 +129,6 @@ public abstract class ModBlock extends BlockWithEntity {
         //assert: entity already exists
         world.getBlockEntity(pos).setWorld(world);
         ((ModBlockEntity)world.getBlockEntity(pos)).setController();
-        state.updateNeighbors(world, pos, 1);
     }
 
 

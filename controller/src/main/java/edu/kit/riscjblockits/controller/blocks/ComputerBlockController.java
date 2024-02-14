@@ -153,13 +153,6 @@ public abstract class ComputerBlockController extends BlockController implements
         blockModel.setVisualisationState(false);
     }
 
-    /**
-     * Update the block state of neighbourBusses.
-     */
-    public void neighborUpdate() {
-        blockEntity.neighborUpdate();
-    }
-
     /** ToDo nicht im Entwurfs wiki
      * Creates a new effect at position of the block entity.
      * @param effect The effect that should be spawned.

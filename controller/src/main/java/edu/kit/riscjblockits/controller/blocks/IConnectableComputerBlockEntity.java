@@ -37,11 +37,6 @@ public interface IConnectableComputerBlockEntity {
     IDataElement getBlockEntityData();
 
     /**
-     * Method to update the neighbors of the block entity.
-     */
-    void neighborUpdate();
-
-    /**
      * Spawns an effect at the position of the block entity.
      * @param effect The effect that should be spawned.
      */
