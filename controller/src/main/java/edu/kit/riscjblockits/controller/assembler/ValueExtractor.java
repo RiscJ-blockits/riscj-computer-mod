@@ -5,25 +5,32 @@ import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import java.util.regex.Pattern;
 
 /**
- * This class provides parsing of different number values into {@link Value} objects
+ * This class provides parsing of different number values into {@link Value} objects.
  */
-public class ValueExtractor {
+public final class ValueExtractor {
+
     /**
-     * regex pattern to match hex values
+     * Utility class, no instances should be created.
+     */
+    private ValueExtractor() {
+        throw new IllegalStateException("Utility class");
+    }
+    /**
+     * regex pattern to match hex values.
      */
     private static final Pattern HEX_VALUE_PATTERN = Pattern.compile("0x[0-9a-fA-F]+");
     /**
-     * regex pattern to match decimal values
+     * regex pattern to match decimal values.
      */
     private static final Pattern DEC_VALUE_PATTERN = Pattern.compile("\\d+");
     /**
-     * regex pattern to match binary values
+     * regex pattern to match binary values.
      */
     private static final Pattern BIN_VALUE_PATTERN = Pattern.compile("0b[01]+");
 
     //TODO: add support for float values
     /**
-     * regex pattern to match float values
+     * Regex pattern to match float values.
      */
     private static final Pattern FLOAT_VALUE_PATTERN = Pattern.compile("0b[01]+");
 

@@ -13,12 +13,12 @@ import java.util.HexFormat;
 public class Value {
 
     /**
-     * the value as byte array
+     * the value as byte array.
      */
     private final byte[] value;
 
     /**
-     * Creates a value from a hexadecimal string
+     * Creates a value from a hexadecimal string.
      * @param s the hexadecimal string
      * @param length the length of the value in bytes
      * @return the value
@@ -35,10 +35,11 @@ public class Value {
     }
 
     /**
-     * Creates a value from a binary string
+     * Creates a value from a binary string.
      * @param s the binary string
      * @param length the length of the value in bytes
      * @return the value
+     * @throws IllegalArgumentException if the string contains characters other than 1 and 0
      */
     public static Value fromBinary(String s, int length) {
         byte[] bytes = new byte[length];
@@ -75,7 +76,7 @@ public class Value {
     }
 
     /**
-     * Creates a value from a floating point decimal string
+     * Creates a value from a floating point decimal string.
      * @param s the float string
      * @param length the length of the value in bytes
      * @return the value
@@ -85,15 +86,15 @@ public class Value {
     }
 
     /**
-     * Constructor for a value
-     * @param initial the initial value as byte array
+     * Constructor for a value.
+     * @param initial the initial value as a byte array
      */
     public Value(byte[] initial) {
         this.value = initial;
     }
 
     /**
-     * Null-Constructor for empty value which equals empty byte array.
+     * Null-Constructor for empty value which equals an empty byte array.
      */
     public Value() {
         this.value = new byte[0];
@@ -111,25 +112,27 @@ public class Value {
     }
 
     /**
-     * @return the value as byte array
+     * Return the value as a byte array.
+     * @return value as a byte array
      */
     public byte[] getByteValue() {
         return value;
     }
 
     /**
-     * @return the value as binary string
+     * Converts the value to a binary string.
+     * @return value as binary string
      */
     public String getBinaryValue() {
         StringBuilder stringBuilder = new StringBuilder();
         for (byte val: value) {
             stringBuilder.append(String.format("%8s", Integer.toBinaryString(val & 0xFF)).replace(' ', '0'));
         }
-
         return stringBuilder.toString();
     }
 
     /**
+     * Converts the value to a float string.
      * @return the value as floating point decimal string
      */
     public String getFloatValue() {
@@ -138,6 +141,7 @@ public class Value {
     }
 
     /**
+     * Converts the value to a hexadecimal string.
      * @return the value as hexadecimal string
      */
     public String getHexadecimalValue() {
@@ -145,12 +149,11 @@ public class Value {
         for (byte val: value) {
             stringBuilder.append(String.format("%02X", val));
         }
-
         return stringBuilder.toString();
     }
 
     /**
-     * return the value incremented by 1
+     * Return the value incremented by 1.
      * @return the incremented value
      */
     public Value getIncrementedValue() {
@@ -177,18 +180,32 @@ public class Value {
         return Arrays.equals(value, value1.value);
     }
 
+    /**
+     * Hashes the value.
+     * @return the hash as an int
+     */
     @Override
     public int hashCode() {
         return Arrays.hashCode(value);
     }
 
+    /**
+     * Compares this value to another value. Signed version.
+     * @param comparator the value to compare to
+     * @return true if this value is lower than the comparator
+     */
     public boolean lowerThan(Value comparator) {
         BigInteger thisValue = new BigInteger(this.getByteValue());
         BigInteger comparatorValue = new BigInteger(comparator.getByteValue());
         return thisValue.compareTo(comparatorValue) < 0;
     }
 
-    public boolean lowerThanUnsigned(Value comparator) {;
+    /**
+     * Compares this value to another value. Unsigned version.
+     * @param comparator the value to compare to
+     * @return true if this value is lower than the comparator
+     */
+    public boolean lowerThanUnsigned(Value comparator) {
         byte[] valueUnsigned = new byte[value.length + 1];
         System.arraycopy(value, 0, valueUnsigned, 1, value.length);
         byte[] compUnsigned = new byte[value.length + 1];
@@ -198,17 +215,32 @@ public class Value {
         return thisValue.compareTo(comparatorValue) < 0;
     }
 
+    /**
+     * Compares this value to a float value.
+     * @param comparator the value to compare to
+     * @return true if this value is lower than the comparator
+     */
     public boolean lowerThanFloat(Value comparator) {
         //TODO implement
         return false;
     }
 
+    /**
+     * Compares this value to another value. Signed version.
+     * @param comparator the value to compare to
+     * @return true if this value is greater than the comparator
+     */
     public boolean greaterThan(Value comparator) {
         BigInteger thisValue = new BigInteger(this.getByteValue());
         BigInteger comparatorValue = new BigInteger(comparator.getByteValue());
         return thisValue.compareTo(comparatorValue) > 0;
     }
 
+    /**
+     * Compares this value to another value. Unsigned version.
+     * @param comparator the value to compare to
+     * @return true if this value is greater than the comparator
+     */
     public boolean greaterThanUnsigned(Value comparator) {
         byte[] valueUnsigned = new byte[value.length + 1];
         System.arraycopy(value, 0, valueUnsigned, 1, value.length);
@@ -219,8 +251,14 @@ public class Value {
         return thisValue.compareTo(comparatorValue) > 0;
     }
 
+    /** TODO Noch nicht implementiert
+     * Compares this value to a float value.
+     * @param comparator the value to compare to
+     * @return true if this value is greater than the comparator
+     */
     public boolean greaterThanFloat(Value comparator) {
         //TODO implement
         return false;
     }
+
 }

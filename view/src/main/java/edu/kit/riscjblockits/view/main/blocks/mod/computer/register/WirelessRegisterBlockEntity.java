@@ -25,6 +25,7 @@ public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
     }
 
     /**
+     * Creates a specific Controller.
      * @return A new WirelessRegisterController.
      */
     @Override
