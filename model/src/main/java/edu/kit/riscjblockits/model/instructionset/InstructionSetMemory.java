@@ -46,6 +46,15 @@ public class InstructionSetMemory {
     @SerializedName(value = "opcode_position")
     private final String opcodePosition;
 
+    /**
+     * Constructor for the instruction set memory.
+     * @param wordLength The length of a word in bits.
+     * @param addressLenght The length of an address in bits.
+     * @param accessDelay time needed to access the memory.
+     * @param byteOrder The byte order of the memory.
+     * @param possibleOpcodeLengths The possible opcode lengths in bits.
+     * @param opcodePosition The position of the opcode in the instruction.
+     */
     public InstructionSetMemory(int wordLength, int addressLenght, int accessDelay, String byteOrder, List<Integer> possibleOpcodeLengths, String opcodePosition) {
         this.wordLength = wordLength;
         this.addressLenght = addressLenght;

@@ -21,6 +21,12 @@ public class InstructionCondition {
      */
     private final String compare2;
 
+    /**
+     * Constructor for the instruction condition.
+     * @param comparator The comparing operator.
+     * @param compare1 The first value to compare.
+     * @param compare2 The second value to compare.
+     */
     public InstructionCondition(String comparator, String compare1, String compare2) {
         this.comparator = comparator;
         this.compare1 = compare1;

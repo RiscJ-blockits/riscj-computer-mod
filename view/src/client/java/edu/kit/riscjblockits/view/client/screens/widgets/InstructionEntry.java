@@ -6,7 +6,10 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 
-public class InstructionEntry extends ListEntry{
+/**
+ * Represents one instruction in the InstructionListWidget of the InstructionsWidget.
+ */
+public class InstructionEntry extends ListEntry {
 
     private static final int ENTRY_HEIGHT = 11;
     private static final int ENTRY_WIDTH = 113;
@@ -23,6 +26,7 @@ public class InstructionEntry extends ListEntry{
      * Constructor for the instruction entry.
      * @param identifier The identifier of the instruction.
      * @param arguments The argument of the instruction.
+     * @param parent The parent InstructionListWidget.
      */
     public InstructionEntry(String identifier, String arguments, InstructionListWidget parent) {
         this.arguments = arguments;
@@ -76,12 +80,23 @@ public class InstructionEntry extends ListEntry{
         return ENTRY_HEIGHT;
     }
 
+    /**
+     * Getter for the width of the entry.
+     * @return The width of the entry.
+     */
     @Override
     public int getWidth() {
         return ENTRY_WIDTH;
     }
 
-    public void drawTooltip(DrawContext context, int mouseX, int mouseY, float delta){
+    /**
+     * Method drawing a tooltip.
+     * @param context The context tooltip.
+     * @param mouseX The x position of the mouse.
+     * @param mouseY The y position of the mouse.
+     * @param delta time since drawn the last time.
+     */
+    public void drawTooltip(DrawContext context, int mouseX, int mouseY, float delta) {
         MinecraftClient client = MinecraftClient.getInstance();
 
         if(this.isMouseOver(mouseX, mouseY)) {
