@@ -66,4 +66,9 @@ public class Data implements IDataContainer {
     public Set<String> getKeys() {
         return contents.keySet();
     }
+
+    public void remove(String key) {
+        contents.remove(key);
+    }
+
 }

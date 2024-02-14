@@ -1,18 +1,18 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import edu.kit.riscjblockits.view.client.screens.widgets.RegSelectWidget;
+import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
+import edu.kit.riscjblockits.view.client.screens.widgets.TerminalSelectionWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.EditBoxWidget;
-import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
@@ -28,12 +28,13 @@ import org.lwjgl.glfw.GLFW;
  */
 public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
 
+    private static final Identifier BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/instructions_button.png");
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/programming_block_gui.png");
 
     /**
      * The edit box widget that is used to enter chars.
      */
-    private EditBoxWidget inputBox;
+    private TextFieldWidget inputBox;
 
     /**
      * The string that should be displayed on the screen.
@@ -44,7 +45,8 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
      * A Minecraft class that is used to display the output string.
      */
     private MultilineText outputtedText;
-    private final RegSelectWidget regSelectWidget = new RegSelectWidget();
+    private TerminalSelectionWidget terminalSelectionWidget;
+    private IconButtonWidget regSelectButton;
     private boolean narrow;
 
     /**
@@ -68,26 +70,36 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     @Override
     protected void init() {
         super.init();
+        if (handler.getBlockEntity().createNbt().getSize() == 0) {      //the data normally only gets send if something changed so we need to request it again
+            ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(handler.getBlockEntity().getPos()));
+        }
         // add the edit box widget to the screen
-        inputBox = new EditBoxWidget(textRenderer, this.x + 7, this.y + 17, 137, 93, Text.literal(""), Text.of(""));
+        inputBox = new TextFieldWidget(textRenderer, this.x + 108, this.y + 99, 61, 11, Text.literal(""));
         inputBox.setMaxLength(1);
         addDrawableChild(inputBox);
         inputBox.setFocused(false);
         //add text to the screen
         output = ((TerminalBlockEntity) handler.getBlockEntity()).getDisplayedString();
-        outputtedText = MultilineText.create(textRenderer, Text.literal(output), width - 20);
         handler.enableSyncing();
         //init the RegSelectWidget
         this.narrow = this.width < 379;
-        this.regSelectWidget.initialize(this.width, this.height, this.client, this.narrow, this.handler);
-        this.addDrawableChild(new TexturedButtonWidget(this.x + 5, this.height / 2 - 49,
-            20, 18, RegSelectWidget.BUTTON_TEXTURES, button -> {
-            this.regSelectWidget.toggleOpen();
-            this.x = this.regSelectWidget.findLeftEdge(this.width, this.backgroundWidth);
-            button.setPosition(this.x + 5, this.height / 2 - 49);
-        }));
-        this.addSelectableChild(this.regSelectWidget);
-        this.setInitialFocus(this.regSelectWidget);
+        terminalSelectionWidget = new TerminalSelectionWidget();
+        assert this.client != null;
+        terminalSelectionWidget.initialize(this.width, this.height, this.client, this.narrow, this.handler);
+        regSelectButton = new IconButtonWidget(
+            this.x + 7, this.y + 99,
+            13, 13,
+            button -> {
+                this.terminalSelectionWidget.toggleOpen();
+                this.x = this.terminalSelectionWidget.findLeftEdge(this.width, this.backgroundWidth);
+                button.setPosition(this.x + 7, this.y + 99);
+                inputBox.setPosition(this.x + 108, this.y + 99);
+            }, BUTTON_TEXTURE);
+
+
+        this.addDrawableChild(regSelectButton);
+        this.addSelectableChild(this.terminalSelectionWidget);
+        this.setInitialFocus(this.terminalSelectionWidget);
         this.titleX = 29;
     }
 
@@ -102,14 +114,18 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        if(this.regSelectWidget.isOpen() && this.narrow) {
+        if(this.terminalSelectionWidget.isOpen() && this.narrow) {
             this.renderBackground(context, mouseX, mouseY, delta);
         } else {
             super.render(context, mouseX, mouseY, delta);
         }
-        this.regSelectWidget.render(context, mouseX, mouseY, delta);
-        drawMouseoverTooltip(context, mouseX, mouseY); //render the tooltip of the button if the mouse is over it
-        outputtedText.drawWithShadow(context, 10, height / 2, 16, 0xffffff);
+        this.terminalSelectionWidget.render(context, mouseX, mouseY, delta);
+        drawMouseoverTooltip(context, mouseX, mouseY);  // render the tooltip of the button if the mouse is over it
+
+        if(outputtedText != null){
+            outputtedText.draw(context, this.x + 8, this.y + 18, 9, 0xffffff);
+        }
+
     }
 
     /**
@@ -124,7 +140,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - backgroundWidth) / 2;
+        int x = this.x;
         int y = (height - backgroundHeight) / 2;
         context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
     }
@@ -174,9 +190,9 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
      */
     @Override
     public void handledScreenTick() {
-        this.regSelectWidget.update();
+        this.terminalSelectionWidget.update();
         output = ((TerminalBlockEntity) handler.getBlockEntity()).getDisplayedString();
-        outputtedText = MultilineText.create(textRenderer, Text.literal(output), width - 20);
+        outputtedText = MultilineText.create(textRenderer, Text.literal(output) , 160, 8);
     }
 
     /**
@@ -184,14 +200,9 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
      * @param text the inputted char.
      */
     private void sendData(String text) {
-        if (text.length() != 1) {
-            return;
-        }
-        char input = text.charAt(0);
-        String hexInput = Integer.toHexString((int) input);
         PacketByteBuf packet = PacketByteBufs.create();
         packet.writeBlockPos(handler.getBlockEntity().getPos());
-        packet.writeString(hexInput);
+        packet.writeString(text);
         ClientPlayNetworking.send(NetworkingConstants.SYNC_TERMINAL_INPUT, packet);
     }
 

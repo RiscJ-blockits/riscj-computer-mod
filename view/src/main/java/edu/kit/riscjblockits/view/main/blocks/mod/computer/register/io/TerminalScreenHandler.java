@@ -6,6 +6,11 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScre
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_IN_TYPE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_OUT_TYPE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
+
 /**
  * Handles an {@link edu.kit.riscjblockits.view.client.screens.handled.TerminalScreen}.
  */
@@ -19,7 +24,7 @@ public class TerminalScreenHandler extends RegisterScreenHandler {
      */
     public TerminalScreenHandler(int syncId, PlayerInventory inventory, ModBlockEntity blockEntity) {
         super(RISCJ_blockits.TERMINAL_SCREEN_HANDLER, syncId, blockEntity);
-        addPlayerInventorySlots(inventory);
+        addPlayerInventorySlotsLarge(inventory);
     }
 
     /**
@@ -30,6 +35,31 @@ public class TerminalScreenHandler extends RegisterScreenHandler {
      */
     public TerminalScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
         this(syncId, inventory, (ModBlockEntity) inventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
+    }
+
+    public String getCurrentRegister(DisplayMode mode) {
+        NbtCompound nbt = getBlockEntity().createNbt();
+        if (!nbt.contains(MOD_DATA)) {
+            return "";
+        }
+        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
+        if (!data.isContainer()) {
+            return "";
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals(REGISTER_TYPE ) && (mode == DisplayMode.MODE)) {
+                return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+            } else if (s.equals(REGISTER_TERMINAL_IN_TYPE) && (mode == DisplayMode.IN)) {
+                return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+            } else if (s.equals(REGISTER_TERMINAL_OUT_TYPE) && (mode == DisplayMode.OUT)) {
+                return ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+            }
+        }
+        return "";
+    }
+
+    public enum DisplayMode {
+        IN, OUT, MODE
     }
 
 }
