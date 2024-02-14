@@ -209,6 +209,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
         removeNode(deletedNode);
         //find new connected graphs
         List<Map<BlockPosition, List<BlockPosition>>> newGraphs = new ArrayList<>();
+        if(neighbors == null) return newGraphs;
         outer: for(BlockPosition neighbor: neighbors){
             for(Map<BlockPosition, List<BlockPosition>> newGraph: newGraphs){
                 if(newGraph.containsKey(neighbor))

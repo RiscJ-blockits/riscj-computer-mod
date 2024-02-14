@@ -271,4 +271,12 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         }
     }
 
+    protected IDataElement getClientData() {
+        return data;
+    }
+
+    protected void setClientData(IDataElement data) {
+        this.data = data;
+    }
+
 }
