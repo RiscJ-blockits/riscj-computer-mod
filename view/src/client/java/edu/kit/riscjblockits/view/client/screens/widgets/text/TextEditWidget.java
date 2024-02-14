@@ -67,6 +67,9 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         matrixStack.scale(TEXT_SCALE, TEXT_SCALE, TEXT_SCALE);
         // draw lines with their index
         for (int i = start; i < lines.size(); i++) {
+            if ((i - start) * LINE_HEIGHT > height) {
+                break;
+            }
             int displayY = (int) (y * INVERSE_TEXT_SCALE + (i - start) * LINE_HEIGHT);
             // draw selection if current line is in selection
             if (selectionStart != selectionEnd && currentTextIndex >= selectionStart && currentTextIndex <= selectionEnd) {
@@ -80,9 +83,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             drawLineIndex(context, i, displayY);
             // draw line content
             context.drawText(textRenderer, lines.get(i).getContent(windowStartX), (int) (x * INVERSE_TEXT_SCALE), displayY, TEXT_COLOR, false);
-            if ((i - start) * LINE_HEIGHT > height) {
-                break;
-            }
+
             // increment text index
             currentTextIndex += lines.get(i).getContent().length();
         }
@@ -508,17 +509,17 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
     private void updateWindow() {
         // cursor going out the top
-        if (cursorY * LINE_HEIGHT < scrollPosition - 1) {
+        if ((cursorY) * LINE_HEIGHT < scrollPosition) {
             // calculate the length of the lines that are not displayed
             int lineLengthSum = 0;
             for (int j = cursorY; j > (scrollPosition / LINE_HEIGHT -cursorY); j--) {
                 lineLengthSum += lines.get(j).getContent().length();
             }
             windowStartTextIndex -= lineLengthSum;
-            scrollPosition = cursorY * LINE_HEIGHT;
+            scrollPosition = (cursorY) * LINE_HEIGHT;
         }
         // cursor going out the bottom
-        if (cursorY > (scrollPosition + height) / LINE_HEIGHT) {
+        if (cursorY + 1 > (scrollPosition + height) / LINE_HEIGHT) {
             // calculate the length of the lines that are not displayed
             int lineLengthSum = 0;
             for (int j = cursorY; j < ((scrollPosition + height) / LINE_HEIGHT - cursorY); j++) {
@@ -526,7 +527,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             }
             windowStartTextIndex += lineLengthSum;
 
-            scrollPosition = (cursorY * LINE_HEIGHT) - height;
+            scrollPosition = ((cursorY + 1) * LINE_HEIGHT) - height;
         }
 
         int lineLengthTillCursor = textRenderer.getWidth(lines.get(cursorY).getContentUntil(cursorX));
