@@ -6,6 +6,13 @@ package edu.kit.riscjblockits.model.instructionset;
  */
 public class DataMovementInstruction extends ComplexMicroInstruction {
 
+    /**
+     * Creates a new data movement instruction with the given settings.
+     * @param from origin of the instruction data
+     * @param to destination of the instruction data
+     * @param memoryFlag flag for memory access
+     * @param memoryInstruction instruction for memory access
+     */
     public DataMovementInstruction(String[] from, String to, String memoryFlag, MemoryInstruction memoryInstruction) {
         super(from, to, memoryFlag, memoryInstruction);
     }

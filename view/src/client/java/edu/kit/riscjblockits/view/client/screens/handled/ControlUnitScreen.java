@@ -7,6 +7,7 @@ import edu.kit.riscjblockits.view.client.screens.widgets.ArchitectureListWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.MIMAExWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -146,7 +147,7 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
      */
     public List<ArchitectureEntry> fetchEntries() {
         List<ArchitectureEntry> entries = new ArrayList<>();
-        List<String>[] data = this.handler.getStructure();
+        List[] data = ((ControlUnitBlockEntity) this.handler.getBlockEntity()).getStructure();
         List<String> listFound = data[1];
         List<String> listMissing = data[0];
         for (String component : listMissing) {

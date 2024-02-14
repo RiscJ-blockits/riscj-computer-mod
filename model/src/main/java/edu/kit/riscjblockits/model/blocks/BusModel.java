@@ -40,7 +40,8 @@ public class BusModel extends BlockModel{
     public IDataElement getData() {
         Data busData = new Data();
         if (belongsToSystem != null && belongsToSystem.getActiveVisualization(getPosition())) {
-            busData.set(BUS_ACTIVE, new DataStringEntry("true"));         //ToDo hier boolean data entry schlau, wollen wir eh nicht speichern
+            busData.set(BUS_ACTIVE, new DataStringEntry("true"));
+            //ToDo hier boolean data entry schlau, wollen wir eh nicht speichern
         } else {
             busData.set(BUS_ACTIVE, new DataStringEntry("false"));
         }
@@ -52,15 +53,16 @@ public class BusModel extends BlockModel{
     }
 
     /**
+     * Sets the bus system this bus belongs to. A bus system is a network of buses and connected computer blocks.
      * @param belongsToSystem The bus system this bus belongs to.
-     *                        A bus system is a network of buses and connected computer blocks.
      */
     public void setBelongingBusSystemModel(BusSystemModel belongsToSystem) {
         this.belongsToSystem = belongsToSystem;
     }
 
     /**
-     * @return Asks the Bus system if the bus is transporting data
+     * Asks the Bus system if the bus is transporting data.
+     * @return true if the bus is transporting data
      */
     @Override
     public boolean getVisualisationState() {

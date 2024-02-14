@@ -31,7 +31,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     private Value presentData;
 
     /**
-     * creates a BusSystemModel with one node
+     * Creates a BusSystemModel with one node.
      * @param firstBlock is the first node of the BusSystemModel
      */
     public BusSystemModel(BlockPosition firstBlock) {
@@ -41,7 +41,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * creates a BusSystemModel with the given graph
+     * Creates a BusSystemModel with the given graph.
      * @param adjPositions is the graph of the new BusSystemModel
      */
     private BusSystemModel(Map<BlockPosition, List<BlockPosition>> adjPositions) {
@@ -50,7 +50,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * calculates the shortest path between two nodes avoiding Non-Bus-Nodes and setting the presentData
+     * Calculates the shortest path between two nodes avoiding Non-Bus-Nodes and setting the presentData.
      * @param startPos is the start node
      * @param endPos is the end node
      * @param presentData is the data that is present on the bus
@@ -87,7 +87,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * returns the neighbors of a node
+     * Returns the neighbors of a node.
      * @param blockPosition is the node
      * @return the neighbors of the node
      */
@@ -96,7 +96,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * returns the present data on the busSystem
+     * Returns the present data on the busSystem.
      * @return the present data on the busSystem
      */
     public Value getPresentData() {
@@ -107,7 +107,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * returns if the node with the given position is active in the visualization
+     * Returns if the node with the given position is active in the visualization.
      * @param blockPosition is the position of the node.
      * @return true if the node is active in the visualization
      */
@@ -116,7 +116,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * adds a new node to the BusSystemModel
+     * Adds a new node to the BusSystemModel.
      * @param newBlock is the new node
      */
     public void addNode(BlockPosition newBlock) {
@@ -125,7 +125,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * adds an edge between two nodes
+     * Adds an edge between two nodes.
      * @param pos1 is the first node of the edge
      * @param pos2 is the second node of the edge
      */
@@ -137,7 +137,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * removes an edge between two nodes
+     * Removes an edge between two nodes.
      * @param pos1 is the first node of the edge
      * @param pos2 is the second node of the edge
      */
@@ -149,7 +149,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * removes a node and all edges connected to it
+     * Removes a node and all edges connected to it.
      * @param pos1 is the node to remove
      */
     public void removeNode(BlockPosition pos1) {
@@ -163,7 +163,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * returns the graph of the BusSystemModel
+     * Returns the graph of the BusSystemModel.
      * @return the graph of the BusSystemModel
      */
     public Map<BlockPosition, List<BlockPosition>> getBusGraph() {
@@ -185,7 +185,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * removes a node and all edges connected to it and split the graph when needed to multiple BusSystemModels
+     * Removes a node and all edges connected to it and split the graph when needed to multiple BusSystemModels.
      * @param deletedNode is the node to remove
      * @return List of new BusSystemModels
      */
@@ -259,7 +259,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * checks if a node is in the BusSystemModel
+     * Checks if a node is in the BusSystemModel.
      * @param blockPosition is the node to check
      * @return true if the node is in the BusSystemModel
      */
@@ -267,9 +267,10 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
         return adjPositions.containsKey(blockPosition);
     }
 
-    /** ToDo nicht im Entwurf Wiki
+    /**
      * Resets the list of bus nodes that transport data.
      */
+    //ToDo nicht im Entwurf Wiki
     public void resetVisualisation() {
         activeVisualization.clear();
     }
@@ -282,7 +283,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     }
 
     /**
-     * checks if two nodes are connected by coordinates
+     * Checks if two nodes are connected by coordinates.
      * @param blockPosition is the first node
      * @param blockPosition1 is the second node
      * @return true if the nodes are connected with an edge
