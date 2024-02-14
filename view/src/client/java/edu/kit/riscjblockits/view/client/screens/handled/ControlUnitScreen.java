@@ -30,7 +30,7 @@ import java.util.Map;
 public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
 
     private static final Identifier TEXTURE =
-        new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/control_unit_gui.png");
+        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/control_unit/control_unit_gui.png");
     private static final String MIMA = "MIMA";
     private static final String RISCV = "RiscV";
 

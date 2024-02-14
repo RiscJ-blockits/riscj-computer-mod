@@ -1,24 +1,20 @@
 package edu.kit.riscjblockits.view.client.screens.widgets;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextIconButtonWidget;
-import net.minecraft.client.gui.widget.ToggleButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class TextIconToggleWidget extends ButtonWidget {
     public static Identifier TEXTURE_SELECTED =
-        new Identifier(RISCJ_blockits.MODID, "textures/gui/register/reg_select_button.png");
+        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/register/reg_select_button.png");
     public static Identifier TEXTURE_UNSELECTED =
-        new Identifier(RISCJ_blockits.MODID, "textures/gui/register/reg_unselect_button.png");
+        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/register/reg_unselect_button.png");
     public static final Identifier TEXTURE_CURRENT =
-        new Identifier(RISCJ_blockits.MODID, "textures/gui/register/reg_select_button_disabled.png");
+        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/register/reg_select_button_disabled.png");
     public static final int DEFAULT_WIDTH = 113;
     public static final int DEFAULT_HEIGHT = 20;
     private boolean selected = false;

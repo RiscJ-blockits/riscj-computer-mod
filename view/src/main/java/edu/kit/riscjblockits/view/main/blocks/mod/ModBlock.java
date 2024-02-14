@@ -56,7 +56,7 @@ public abstract class ModBlock extends BlockWithEntity {
      * @param player the player that right-clicked the block.
      * @param hand the hand the player used to right-click the block.
      * @param hit the hit result of the raycast.
-     * @return {@link ActionResult#SUCCESS} if the block has a Screenhandler or the world is client side,
+     * @return {@link ActionResult#SUCCESS} if the block has a Screen-handler or the world is client side,
      * {@link ActionResult#PASS} otherwise.
      */
     @Deprecated(forRemoval = false)
@@ -64,7 +64,7 @@ public abstract class ModBlock extends BlockWithEntity {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         // open Gui if a Screenhandlerfactory is present for the block
         if (!world.isClient) {
-            //This will call the createScreenHandlerFactory method from BlockWithEntity, which will return our blockEntity casted to
+            //This will call the createScreenHandlerFactory method from BlockWithEntity, which will return our blockEntity cast to
             //a namedScreenHandlerFactory. If your block class does not extend BlockWithEntity, it needs to implement createScreenHandlerFactory.
             NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
             if (screenHandlerFactory != null) {
@@ -126,10 +126,9 @@ public abstract class ModBlock extends BlockWithEntity {
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
                          ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
-        //assert: entity already exists
+        if (world.getBlockEntity(pos) == null) return;  //assert: entity already exists in the world
         world.getBlockEntity(pos).setWorld(world);
         ((ModBlockEntity)world.getBlockEntity(pos)).setController();
     }
-
 
 }

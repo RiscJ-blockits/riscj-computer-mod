@@ -35,7 +35,7 @@ public class InsructionSetScreen extends Screen {
      * The tag that is used to store user input temporary data in the NBT.
      */
     private static final String TEMP_IST_NBT_TAG = "temp_IstString";
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/instructionset/instructionset_gui.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/instructionset/instructionset_gui.png");
 
     /**
      * The edit box widget that is used to enter the code.
@@ -48,13 +48,13 @@ public class InsructionSetScreen extends Screen {
      * The button that is used to write new code to the item.
      */
     private IconButtonWidget writeButton;
-    private static final Identifier WRITE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/instructionset/save_button.png");
+    private static final Identifier WRITE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/instructionset/save_button.png");
 
     /**
      * The button that is used to restore the code to the last known working version.
      */
     private IconButtonWidget restoreButton;
-    private static final Identifier RESTORE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/instructionset/reset_button.png");
+    private static final Identifier RESTORE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/instructionset/reset_button.png");
     private MultilineText errorText;
     private int tickCounter;
     private boolean edited = false;

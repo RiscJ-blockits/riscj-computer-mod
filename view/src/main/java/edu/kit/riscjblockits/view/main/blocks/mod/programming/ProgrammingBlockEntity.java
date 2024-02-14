@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
+import static edu.kit.riscjblockits.model.data.DataConstants.PROGRAMMING_BLOCK_CODE;
 
 /**
  * This class represents a programming block entity from our mod in the game.
@@ -49,18 +50,16 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
     public ProgrammingBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.PROGRAMMING_BLOCK_ENTITY, pos, state, 3);
         ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE, (server, player, handler, buf, responseSender) -> {
-
             server.execute(() -> {
                 NbtCompound nbt = buf.readNbt();
                 BlockPos blockPos = buf.readBlockPos();
-
-                String code = nbt.getString("code");
+                assert nbt != null;
+                String newCode = nbt.getString(PROGRAMMING_BLOCK_CODE);
                 if (player.getServerWorld().getBlockEntity(blockPos) instanceof ProgrammingBlockEntity blockEntity) {
-                    blockEntity.setCode(code);
+                    blockEntity.setCode(newCode);
                 }
             });
         });
-
     }
 
     /**
@@ -107,7 +106,6 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new ProgrammingScreenHandler(syncId, playerInventory, this,this);
     }
-
 
     /**
      * Will assemble the code in the programming block.

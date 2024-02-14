@@ -20,7 +20,7 @@ import net.minecraft.util.Identifier;
  * In it, you can see the value of the register and change the register type.
  */
 public class RegisterScreen extends HandledScreen<RegisterScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/register/register_block_gui.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/register/register_block_gui.png");
 
     /**
      * In this widget, you can change the register type. It displays all available register types.
