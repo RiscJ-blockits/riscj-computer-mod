@@ -330,7 +330,7 @@ public class RISCJ_blockits implements ModInitializer {
      * The item-group is used to group items and blocks in the creative inventory.
      */
     private static final ItemGroup ITEM_GROUP = FabricItemGroup.builder()
-        .icon(() -> new ItemStack(ALU_BLOCK_ITEM))
+        .icon(() -> new ItemStack(PROGRAM_ITEM))
         .displayName(Text.translatable("itemGroup.riscj_blockits.computer_components"))
         .entries((context, entries) -> {
             entries.add(ALU_BLOCK_ITEM);
