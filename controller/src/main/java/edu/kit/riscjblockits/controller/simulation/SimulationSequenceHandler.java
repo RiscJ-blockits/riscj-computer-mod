@@ -82,7 +82,8 @@ public class SimulationSequenceHandler implements Runnable {
      * @param callbackReceivable The callback receivable for the simulation sequence handler to notify after every real-time simulation tick.
      * @throws NullPointerException If no instruction set model is found.
      */
-    public SimulationSequenceHandler(List<IQueryableSimController> blockControllers, IBusSystem busSystem, IRealtimeSimulationCallbackReceivable callbackReceivable) {
+    public SimulationSequenceHandler(List<IQueryableSimController> blockControllers,
+                                     IBusSystem busSystem, IRealtimeSimulationCallbackReceivable callbackReceivable) {
         this.blockControllers = blockControllers;
         this.busSystem = busSystem;
         this.callbackReceivable = callbackReceivable;

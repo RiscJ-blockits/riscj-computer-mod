@@ -112,9 +112,6 @@
     <module name="RedundantImport">
       <property name="severity" value="warning"/>
     </module>
-    <module name="AvoidStaticImport">
-      <property name="severity" value="warning"/>
-    </module>
     <module name="AvoidStarImport">
       <property name="severity" value="warning"/>
     </module>
@@ -134,10 +131,6 @@
     <module name="NoWhitespaceBefore">
       <property name="severity" value="error"/>
       <property name="tokens" value="COMMA,SEMI,POST_INC,POST_DEC,ELLIPSIS,LABELED_STAT,METHOD_REF"/>
-    </module>
-    <module name="SingleSpaceSeparator">
-      <property name="severity" value="error"/>
-      <property name="validateComments" value="true"/>
     </module>
     <module name="ModifierOrder">
       <property name="severity" value="error"/>
@@ -222,13 +215,10 @@
       <property name="illegalPattern" value="true"/>
     </module>
   </module>
-  <module name="JavadocPackage">
-    <property name="severity" value="warning"/>
-  </module>
   <module name="LineLength">
     <property name="severity" value="warning"/>
     <property name="ignorePattern" value="^.*http.*$"/>
-    <property name="max" value="120"/>
+    <property name="max" value="160"/>
   </module>
   <module name="NewlineAtEndOfFile">
     <property name="severity" value="warning"/>

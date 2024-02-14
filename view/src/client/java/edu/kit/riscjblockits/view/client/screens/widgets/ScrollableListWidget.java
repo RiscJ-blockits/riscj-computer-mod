@@ -149,12 +149,10 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
         }
     }
 
-
     @Override
     public List<? extends Element> children() {
         return entries;
     }
-
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
@@ -174,7 +172,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
 
     @Override
     public void setDragging(boolean dragging) {
-
+        //do nothing
     }
 
     @Nullable
@@ -185,7 +183,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
 
     @Override
     public void setFocused(@Nullable Element focused) {
-
+        //do nothing
     }
 
     @Override
@@ -205,7 +203,7 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
 
     @Override
     public void appendNarrations(NarrationMessageBuilder builder) {
-
+        //do nothing
     }
 
     @Override

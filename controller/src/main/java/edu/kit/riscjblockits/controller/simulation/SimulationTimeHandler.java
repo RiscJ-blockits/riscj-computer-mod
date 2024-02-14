@@ -87,8 +87,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver, IRealti
         if (clockMode == ClockMode.STEP) {
             systemClockController.activateVisualisation();
             runTick();
-        }
-        else if(clockMode == ClockMode.REALTIME && !realtimeSimulationRunning) {
+        } else if(clockMode == ClockMode.REALTIME && !realtimeSimulationRunning) {
             realtimeSimulationRunning = true;
             runTick();
         }
