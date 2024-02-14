@@ -37,21 +37,21 @@ class InstructionTest {
 
     @Test
     void testDetectionOfBinaryBGE() {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = InstructionSetBuilderTest.buildInstructionSetModelRiscV();
         Instruction instruction = model.getInstruction("bge");
         assertTrue(instruction.matchesBinary("00000000010101000101000001100011"));
     }
 
     @Test
     void testDetectionOfBinaryJAL() {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = InstructionSetBuilderTest.buildInstructionSetModelRiscV();
         Instruction instruction = model.getInstruction("jal");
         assertTrue(instruction.matchesBinary("00100011010000000001001101101111"));
     }
 
     @Test
     void testFillingBGE() {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = InstructionSetBuilderTest.buildInstructionSetModelRiscV();
         Instruction instruction = model.getInstruction("bge");
         HashMap<Integer, String> intRegisters = new HashMap<>();
         intRegisters.put(8, "s0");

@@ -10,7 +10,7 @@ public class InstructionSetMimaTest {
     private final String[] commands = new String[] {"LDC", "ADD", "LDV", "STV", "AND", "OR", "XOR", "HALT", "NOT", "RAR", "EQL", "JMP", "JMN"};
     @Test
     void test() {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelMima();
+        InstructionSetModel model = InstructionSetBuilderTest.buildInstructionSetModelMima();
         assertEquals("MIMA", model.getName());
         assertEquals(1, model.getIntegerRegister("IR"));
         for (String command : commands) {

@@ -8,6 +8,10 @@ public class MemoryInstruction extends MicroInstruction {
 
     private final String flag;
 
+    /**
+     * A MemoryInstruction with the given registers and flag.
+     * It moves from a memory to a register or from a register to a memory.
+     */
     public MemoryInstruction(String[] from, String to, String flag) {
         super(from, to);
         this.flag = flag;
@@ -30,8 +34,6 @@ public class MemoryInstruction extends MicroInstruction {
     protected MemoryInstruction clone() {
         return new MemoryInstruction(getFrom(), getTo(), flag);
     }
-
-
 
     public String getFlag() {
         return flag;

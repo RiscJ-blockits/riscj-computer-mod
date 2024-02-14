@@ -120,6 +120,7 @@ public class MemoryScreenHandler extends ModScreenHandler {
     }
 
     /**
+     * Used to get a line of memory to display.
      * @param address the line of the memory to get
      * @return a string with the address and the value of the memory at the given line separated by a space
      */
@@ -148,6 +149,7 @@ public class MemoryScreenHandler extends ModScreenHandler {
 
 
     /**
+     * Getter for the memory size of the memory block entity.
      * @return the size of the memory in addressable units
      */
     public int getMemorySize() {

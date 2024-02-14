@@ -9,14 +9,17 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-/** ToDo javadoc
+/**
  * The MemoryListWidget class represents a widget that displays a list of memory entries.
  * It implements the Drawable interface for rendering purposes.
  */
 public class MemoryListWidget implements Drawable {
 
-    private static final Identifier SCROLLER_TEXTURE = new Identifier("container/creative_inventory/scroller");
+    /**
+     * The number of entries to display on the same page.
+     */
     public static final int ENTRY_AMOUNT = 9;
+    private static final Identifier SCROLLER_TEXTURE = new Identifier("container/creative_inventory/scroller");
     private static final int SCROLLBAR_WIDTH = 12;
     private static final int SCROLLBAR_HEIGHT = 15;
     private static final int ENTRY_HEIGHT = 11;
@@ -61,22 +64,20 @@ public class MemoryListWidget implements Drawable {
         TextRenderer textRenderer = client.textRenderer;
         context.enableScissor(this.x, this.y, this.x + this.width, this.y + this.height);
 
-        for (int i = 0 ; i <  ENTRY_AMOUNT; i++) {
+        for (int i = 0; i <  ENTRY_AMOUNT; i++) {
 
             int line = (scrollPosition / ENTRY_HEIGHT + i);
             // only draw an entry when it is between top and bottom of the scroll widget
             if ((line + 1) * ENTRY_HEIGHT >= scrollPosition && line * ENTRY_HEIGHT < scrollPosition + height) {
-
                 context.drawText(textRenderer, Text.literal(line + ""), this.x + 2, this.y + 2 + i * ENTRY_HEIGHT, 0xffffff, true);
                 String lineContent = handler.getMemoryLine(line).substring(Math.max(handler.getMemoryLine(line).length() - 8, 0));
-                context.drawText(textRenderer, Text.literal(lineContent), this.x + 2 + ENTRY_WIDTH + ENTRY_OFFSET, this.y + 2 + i * ENTRY_HEIGHT, 0xffffff, true);
+                context.drawText(textRenderer, Text.literal(lineContent),
+                    this.x + 2 + ENTRY_WIDTH + ENTRY_OFFSET, this.y + 2 + i * ENTRY_HEIGHT, 0xffffff, true);
             }
         }
-
         context.disableScissor();
-
-        context.drawGuiTexture(SCROLLER_TEXTURE, this.x + this.width + SCROLLBAR_OFFSET, this.y + getScrollbarPosition(), SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
-
+        context.drawGuiTexture(SCROLLER_TEXTURE, this.x + this.width + SCROLLBAR_OFFSET,
+            this.y + getScrollbarPosition(), SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
     }
 
     private int getScrollbarPosition() {
@@ -87,6 +88,14 @@ public class MemoryListWidget implements Drawable {
         return Math.max(this.handler.getMemorySize() * ENTRY_HEIGHT, ENTRY_HEIGHT * ENTRY_AMOUNT);
     }
 
+    /**
+     * Handles a mouse scroll event.
+     * Changes the memory lines displayed based on the scroll amount.
+     * @param mouseX The x position of the mouse.
+     * @param mouseY The y position of the mouse.
+     * @param horizontalAmount The horizontal scroll amount.
+     * @param verticalAmount The vertical scroll amount.
+     */
     public void mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         scrollPosition -= (int) (SCROLL_MULTIPLIER * verticalAmount);
         if (scrollPosition < 0) {

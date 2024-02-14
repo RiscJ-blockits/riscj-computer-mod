@@ -37,6 +37,11 @@ public class MemoryModel extends BlockModel {
         return new Data();
     }
 
+    /**
+     * Getter for one memory line in the memory block.
+     * @param address the address of the memory line
+     * @return the value of the memory line
+     */
     public Value getMemoryAt(Value address) {
         if (memory == null) {
             return new Value();
@@ -44,12 +49,23 @@ public class MemoryModel extends BlockModel {
         return memory.getValueAt(address);
     }
 
+    /**
+     * Setter for one memory line in the memory.
+     * Also sets the unqueried state change to true.
+     * @param address the address of the memory line
+     * @param value the value of the memory line
+     */
     public void setMemoryAt(Value address, Value value) {
         memory.setValue(address, value);
         setUnqueriedStateChange(true);
     }
 
-
+    /**
+     * Setter for the memory of the memory block.
+     * Also sets the unqueried state change to true.
+     * @param memory the new memory
+     * @return true if the memory was changed, false if it was not changed
+     */
     public boolean setMemory(Memory memory) {
         if (this.memory == null || !this.memory.equals(memory)) {
             this.memory = memory;
@@ -61,6 +77,11 @@ public class MemoryModel extends BlockModel {
         return false;
     }
 
+    /**
+     * Getter for the initial program counter of the memory.
+     * Returns null if the memory is not set.
+     * @return the initial program counter of the memory as a value
+     */
     public Value getInitialProgramCounter() {
         if (memory == null){
             return null;

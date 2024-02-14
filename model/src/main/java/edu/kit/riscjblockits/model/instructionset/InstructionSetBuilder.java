@@ -53,24 +53,4 @@ public final class InstructionSetBuilder {
         return buildInstructionSetModel(stream);
     }
 
-    //Todo Test method
-    public static InstructionSetModel buildInstructionSetModelMima() {
-        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
-        try {
-            return buildInstructionSetModel(is);
-        }  catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    //Todo Test method
-    public static InstructionSetModel buildInstructionSetModelRiscV() {
-        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetRiscV.jsonc");
-        try {
-            return buildInstructionSetModel(is);
-        }  catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }

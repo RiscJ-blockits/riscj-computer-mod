@@ -34,10 +34,14 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     /**
      * The background texture of the screen.
      */
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/programming_block_gui.png");
-    private static final Identifier ASSEMBLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_unpressed.png");
-    private static final Identifier ASSEMBLE_BUTTON_TEXTURE_FAILED = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_unpressed_failed.png");
-    private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/instructions_button.png");
+    private static final Identifier TEXTURE =
+        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/programming_block_gui.png");
+    private static final Identifier ASSEMBLE_BUTTON_TEXTURE =
+        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_unpressed.png");
+    private static final Identifier ASSEMBLE_BUTTON_TEXTURE_FAILED =
+        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_unpressed_failed.png");
+    private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE =
+        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/instructions_button.png");
 
     /**
      * Can display information about all available instructions.

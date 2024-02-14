@@ -10,7 +10,7 @@ public class InstructionSetRiscTest {
 
     @Test
     void test() {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = InstructionSetBuilderTest.buildInstructionSetModelRiscV();
         Instruction instruction = model.getInstruction("jal");
         assertNotNull(instruction.getOpcode());
     }

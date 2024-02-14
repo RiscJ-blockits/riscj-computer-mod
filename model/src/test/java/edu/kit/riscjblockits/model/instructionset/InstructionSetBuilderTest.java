@@ -45,4 +45,23 @@ class InstructionSetBuilderTest {
             throw new RuntimeException(e);
         }
     }
+
+    public static InstructionSetModel buildInstructionSetModelMima() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
+        try {
+            return InstructionSetBuilder.buildInstructionSetModel(is);
+        }  catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static InstructionSetModel buildInstructionSetModelRiscV() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetRiscV.jsonc");
+        try {
+            return InstructionSetBuilder.buildInstructionSetModel(is);
+        }  catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

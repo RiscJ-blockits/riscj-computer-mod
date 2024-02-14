@@ -5,7 +5,6 @@ import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import java.util.List;
 import java.util.Map;
 
-//TODO: refactor name, typo
 /**
  * This interface defines the methods that a BusSystemModel provides to the ClusterHandler.
  */
@@ -50,7 +49,6 @@ public interface IQueryableBusSystem {
      *                  There can be other connected nodes.
      * @param busSystemToCombine The Bussystem that is merged into the current Bussystem.
      */
-
     void combineGraph(BlockPosition ownNode, BlockPosition newNode, IQueryableBusSystem busSystemToCombine);
 
     /**
@@ -67,7 +65,6 @@ public interface IQueryableBusSystem {
      */
     boolean isNode(BlockPosition blockPosition);
 
-    //ToDo nicht im Entwurf
     /**
      * returns the neighbors of a node in the BusSystemModel.
      * @param blockPosition is the node.
@@ -75,10 +72,8 @@ public interface IQueryableBusSystem {
      */
     List<BlockPosition> getBusSystemNeighbors(BlockPosition blockPosition);
 
-    //ToDo nicht im Entwurf
-
     /**
-     * Resets the visualisation of the BusSystemModel.
+     * Resets the visualization of the BusSystemModel.
      */
     void resetVisualisation();
 }
