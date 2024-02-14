@@ -14,9 +14,24 @@ import java.util.HexFormat;
 public class Value {
 
     /**
-     * the value as byte array.
+     * the value as a byte array.
      */
     private final byte[] value;
+
+    /**
+     * Constructor for a value.
+     * @param initial the initial value as a byte array
+     */
+    public Value(byte[] initial) {
+        this.value = initial;
+    }
+
+    /**
+     * Null-Constructor for empty value which equals an empty byte array.
+     */
+    public Value() {
+        this.value = new byte[0];
+    }
 
     /**
      * Creates a value from a hexadecimal string.
@@ -39,8 +54,9 @@ public class Value {
 
     /**
      * Creates a value from a binary string.
-     * @param s the binary string
+     * @param s binary string
      * @param length the length of the value in bytes
+     * @param autoSignExtend ToDo
      * @return the value
      * @throws IllegalArgumentException if the string contains characters other than 1 and 0
      */
@@ -53,7 +69,7 @@ public class Value {
         boolean signExtend = autoSignExtend && s.charAt(0) == '1';
         for (int i = 0; i < length * 8; i++){
             char c;
-            // missing bits are filled with 0 (1 if sign extend is true)
+            // the missing bits are filled with 0 (1 if sign extend is true)
             if (i < missingBits) {
                 c = signExtend ? '1' : '0';
             } else {
@@ -79,6 +95,12 @@ public class Value {
         return new Value(bytes);
     }
 
+    /**
+     * Creates a value from a string containing a binary number.
+     * @param s the string.
+     * @param length the length of the value in bytes
+     * @return the new value
+     */
     public static Value fromBinary(String s, int length) {
         return fromBinary(s, length, false);
     }
@@ -98,20 +120,11 @@ public class Value {
     }
 
     /**
-     * Constructor for a value.
-     * @param initial the initial value as a byte array
+     * Creates a value from a string containing a decimal number.
+     * @param value the value as a string
+     * @param length the length of the value in bytes
+     * @return the new value
      */
-    public Value(byte[] initial) {
-        this.value = initial;
-    }
-
-    /**
-     * Null-Constructor for empty value which equals an empty byte array.
-     */
-    public Value() {
-        this.value = new byte[0];
-    }
-
     public static Value fromDecimal(String value, int length) {
         byte[] val = new BigInteger(value).toByteArray();
         byte[] bytes = new byte[length];
@@ -285,6 +298,10 @@ public class Value {
         return me > other;
     }
 
+    /**
+     * Converts the value to its negative.
+     * @return the negative value
+     */
     public Value negate() {
         // invert
         for (int i = 0; i < value.length; i++) {

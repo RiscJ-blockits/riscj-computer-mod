@@ -11,12 +11,6 @@ import java.util.regex.Pattern;
 public final class ValueExtractor {
 
     /**
-     * Utility class, no instances should be created.
-     */
-    private ValueExtractor() {
-        throw new IllegalStateException("Utility class");
-    }
-    /**
      * regex pattern to match hex values.
      */
     private static final Pattern HEX_VALUE_PATTERN = Pattern.compile("(?<negative>-)?0x(?<value>[0-9a-fA-F]+)");
@@ -29,11 +23,18 @@ public final class ValueExtractor {
      */
     private static final Pattern BIN_VALUE_PATTERN = Pattern.compile("(?<negative>-)?0b(?<value>[01]+)");
 
-    //TODO: add support for float values
-    /**
+    /** TODO: add support for float values
      * Regex pattern to match float values.
      */
     private static final Pattern FLOAT_VALUE_PATTERN = Pattern.compile("(?<negative>-)?(?<value>\\d+\\.\\d+)");
+
+    /**
+     * Utility class, no instances should be created.
+     * @throws IllegalStateException if an instance is created.
+     */
+    private ValueExtractor() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * Extracts a value from a string.
