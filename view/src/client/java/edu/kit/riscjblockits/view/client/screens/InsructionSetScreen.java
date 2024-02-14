@@ -35,7 +35,7 @@ public class InsructionSetScreen extends Screen {
      * The tag that is used to store user input temporary data in the NBT.
      */
     private static final String TEMP_IST_NBT_TAG = "temp_IstString";
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/programming_block_gui.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/instructionset/instructionset_gui.png");
 
     /**
      * The edit box widget that is used to enter the code.
@@ -48,16 +48,18 @@ public class InsructionSetScreen extends Screen {
      * The button that is used to write new code to the item.
      */
     private IconButtonWidget writeButton;
-    private static final Identifier WRITE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/write_button_unpressed.png");
+    private static final Identifier WRITE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/instructionset/save_button.png");
 
     /**
      * The button that is used to restore the code to the last known working version.
      */
     private IconButtonWidget restoreButton;
-    private static final Identifier RESTORE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/write_button_unpressed.png");
+    private static final Identifier RESTORE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/instructionset/reset_button.png");
     private MultilineText errorText;
     private int tickCounter;
     private boolean edited = false;
+    private int x;
+    private int y;
 
     /**
      * The hand that holds the item. Cane be the Main Hand or the Offhand.
@@ -71,7 +73,7 @@ public class InsructionSetScreen extends Screen {
     public InsructionSetScreen(Text title, String hand) {
         super(title);
         this.backgroundHeight = 180;
-        this.backgroundWidth = 277;
+        this.backgroundWidth = 269;
         if (hand.equals("OFF_HAND")) {
             currentHand = Hand.OFF_HAND;
         } else {
@@ -85,8 +87,8 @@ public class InsructionSetScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        int x = (width - backgroundWidth) / 2;
-        int y = (height - backgroundHeight) / 2;
+        this.x = (width - backgroundWidth) / 2;
+        this.y = (height - backgroundHeight) / 2;
         //get istString from NBT
         assert this.client != null;
         assert client.player != null;
@@ -102,23 +104,23 @@ public class InsructionSetScreen extends Screen {
             }
         }
         // add the edit box widget to the screen
-        inputBox = new EditBoxWidget(textRenderer, x, y,  250, 150,Text.literal(""), Text.of(""));
+        inputBox = new EditBoxWidget(textRenderer, x + 9, y +8,  229, 143,Text.literal(""), Text.of(""));
         addDrawableChild(inputBox);
         inputBox.setText(istString);
         //ToDo don't jump to the end of the input box
         inputBox.setFocused(false);
         // add the build button to the screen
         writeButton = new IconButtonWidget(
-            x + 250, y + 63,
-            15, 25,
+            x + 251, y + 76,
+            12, 12,
             button -> buildIst(inputBox.getText()),
             WRITE_BUTTON_TEXTURE
         );
         addDrawableChild(writeButton);
         // add the restore button to the screen
         restoreButton = new IconButtonWidget(
-            x + 280, y + 63,
-            15, 25,
+            x + 251, y + 92,
+            12, 12,
             button -> restore(),
             RESTORE_BUTTON_TEXTURE
         );
@@ -136,12 +138,16 @@ public class InsructionSetScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        if (tickCounter > 0) {
-            errorText.drawWithShadow(context, 10, height / 2, 16, 0xCC0000);
+        if (tickCounter > 0) {          //an error has happened
+            //context.getMatrices().push();
+            //context.getMatrices().scale(0.5f, 0.5f, 0.5f);
+            //errorText.draw(context, (this.x + 64) * 2 , (this.y + 152) * 2 , 40, 0xCC0000);
+            context.drawText(textRenderer, Text.translatable("ist_error"), this.x + 45, this.y + 157, 0xCC0000, false);
+            //context.getMatrices().pop();
             tickCounter--;
         }
-        if (edited) {           //ToDo display this?
-            context.drawCenteredTextWithShadow(textRenderer, Text.literal("edited"), width / 2 + 200, height / 2, 0xffffff);
+        if (edited) {
+            context.drawText(textRenderer, Text.literal("edited"), this.x + 10, this.y + 157, 0xffffff, false);
         }
     }
 
@@ -206,7 +212,8 @@ public class InsructionSetScreen extends Screen {
             instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(ist);
         }catch (UnsupportedEncodingException | InstructionBuildException e) {
             tickCounter = 100;
-            errorText = MultilineText.create(textRenderer,Text.of(e.getMessage()) , width - 20);
+            //errorText = MultilineText.create(textRenderer,Text.of(e.getMessage()) , 182 * 2);
+            errorText = MultilineText.create(textRenderer,Text.translatable("ist_error") , 200);
             return;
         }
         assert this.client != null;

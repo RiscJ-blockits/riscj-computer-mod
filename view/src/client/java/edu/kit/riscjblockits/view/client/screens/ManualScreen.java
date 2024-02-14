@@ -15,39 +15,56 @@ import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The manual screen.
+ * In it, you can see the manual for the mod.
+ * It contains a list with multiple entries, and a text widget which displays the text for the selected entry.
+ */
 public class ManualScreen extends Screen {
 
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/manual/manual_gui.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/manual/manual_gui.png");
     private final int backgroundHeight;
     private final int backgroundWidth;
 
-    ScrollableTextWidget textWidget;
-    ScrollableListWidget<CategoryEntry> categoryList;
+    /**
+     * The text widget which displays the text for the selected entry.
+     */
+    private ScrollableTextWidget textWidget;
 
+    /**
+     * The list with all the categories.
+     */
+    private ScrollableListWidget<CategoryEntry> categoryList;
+
+    /**
+     * Constructor for the manual screen.
+     * In it, you can see the manual for the mod.
+     * @param title the title of the screen
+     */
     public ManualScreen(Text title) {
         super(title);
         this.backgroundHeight = 180;
         this.backgroundWidth = 277;
-
     }
 
+    /**
+     * Initializes the manual screen.
+     * Adds the text widget and the category list.
+     */
     @Override
     protected void init() {
-
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
-
-
         textWidget = new ScrollableTextWidget(this.textRenderer, x + 150, y + 40, 100, 100);
         textWidget.setText(I18n.translate("manual.introduction"));
         addDrawableChild(textWidget);
-
-
         addCategories(x + 25, y + 40, 100, 120);
-
         super.init();
     }
 
+    /**
+     * Adds all categories to the manual screen.
+     */
     private void addCategories(int x, int y, int width, int height) {
         List<CategoryEntry> categories = new ArrayList<>();
         categories.add(new CategoryEntry(0, 0, "manual.introduction", "manual.introduction.text", textWidget, textRenderer));
@@ -91,15 +108,8 @@ public class ManualScreen extends Screen {
         addDrawableChild(categoryList);
     }
 
-
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-    }
-
-
     /**
-     * Renders the background of the screen.
+     * Renders in the background of the screen.
      * @param context the drawing context
      * @param mouseX the x position of the mouse
      * @param mouseY the y position of the mouse
@@ -112,11 +122,8 @@ public class ManualScreen extends Screen {
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
-
         // minecraft doing minecraft things
         context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight, backgroundWidth, backgroundHeight);
     }
-
-
 
 }

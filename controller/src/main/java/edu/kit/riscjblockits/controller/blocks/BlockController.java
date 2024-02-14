@@ -25,7 +25,7 @@ public abstract class BlockController implements IUserInputReceivableController 
     /**
      * Used from the view if it wants to update Data in the model.
      * Triggered by a reload of the minecraft block or a user input.
-     * @param data
+     * @param data The data to be set.
      */
     public void setData(IDataElement data) {
         //ToDo

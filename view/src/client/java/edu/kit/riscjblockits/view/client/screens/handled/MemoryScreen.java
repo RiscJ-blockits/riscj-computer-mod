@@ -17,7 +17,10 @@ import net.minecraft.util.Identifier;
  */
 public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/memory_block/memory_block_gui.png");
+    /**
+     * The background texture of the screen.
+     */
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/memory_block/memory_block_gui.png");
 
     /**
      * The list widget that displays the memory contents.
@@ -54,7 +57,7 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
     /**
      * Draws the background of the screen.
      * @param context The context to draw in.
-     * @param delta
+     * @param delta Not specified in the minecraft documentation.
      * @param mouseX The x position of the mouse.
      * @param mouseY The y position of the mouse.
      */
@@ -65,7 +68,6 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (this.width - this.backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
-
         context.drawTexture(TEXTURE, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
     }
 
@@ -83,6 +85,15 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
         memoryListWidget.render(context, mouseX, mouseY, delta);
     }
 
+    /**
+     * Handles a mouse scroll event.
+     * We use it to scroll the memory list widget.
+     * @param mouseX the X coordinate of the mouse
+     * @param mouseY the Y coordinate of the mouse
+     * @param horizontalAmount the horizontal scroll amount
+     * @param verticalAmount the vertical scroll amount
+     * @return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)
+     */
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         memoryListWidget.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);

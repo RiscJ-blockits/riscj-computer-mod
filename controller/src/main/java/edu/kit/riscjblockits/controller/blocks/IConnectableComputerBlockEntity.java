@@ -31,14 +31,6 @@ public interface IConnectableComputerBlockEntity {
     BlockPosition getBlockPosition();
 
     /**
-     * The Controllers can get initial Data from NBT.
-     * @return
-     */
-    IDataElement getBlockEntityData();
-
-    void neighborUpdate();
-
-    /**
      * Spawns an effect at the position of the block entity.
      * @param effect The effect that should be spawned.
      */
@@ -48,7 +40,6 @@ public interface IConnectableComputerBlockEntity {
      * Defines the possible effects that can be spawned in the minecraft world by a block controller.
      */
     enum ComputerEffect {
-
         EXPLODE,
         SMOKE,
     }

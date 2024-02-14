@@ -64,6 +64,7 @@ class ClusterArchitectureHandlerTest {
     static List<IQueryableClusterController> blockController;
     static IQueryableInstructionSetModel istModel;
 
+
     @BeforeAll
     static void setUp() {
         blockController = new ArrayList<>();
@@ -110,6 +111,7 @@ class ClusterArchitectureHandlerTest {
         blockController.add(getR("SDR"));
         blockController.add(getR("SAR"));
         blockController.add(getR("EINS"));
+        System.out.println(blockController.size());
         ArchiCheckStub_ClusterHandler clusterHandler = new ArchiCheckStub_ClusterHandler(blockController);
         assertTrue(ClusterArchitectureHandler.checkArchitecture(istModel, clusterHandler));
     }

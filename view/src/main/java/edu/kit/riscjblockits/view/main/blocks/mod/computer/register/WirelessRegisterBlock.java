@@ -24,6 +24,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * This class defines a register block that can change its value based on another register somewhere else in the world.
+ */
 public class WirelessRegisterBlock extends RegisterBlock {
 
     /**
@@ -55,17 +58,12 @@ public class WirelessRegisterBlock extends RegisterBlock {
         if (world.isClient) {
             return ActionResult.SUCCESS;
         }
-
         if (player.getStackInHand(hand).getItem() == RISCJ_blockits.WIRELESS_REGISTER_BLOCK_ITEM) {
-
             NbtCompound nbt = player.getStackInHand(hand).getNbt();
-
             if (nbt == null) {
                 nbt = new NbtCompound();
             }
-
             nbt.putIntArray("pos", new int[]{pos.getX(), pos.getY(), pos.getZ()});
-
             player.getStackInHand(hand).setNbt(nbt);
             return ActionResult.SUCCESS;
         }
@@ -77,7 +75,7 @@ public class WirelessRegisterBlock extends RegisterBlock {
      * This method is called when the block is placed in the world.
      * @param world The minecraft world the block is placed in.
      * @param pos The position the block is placed at.
-     * @param state ToDo ??
+     * @param state The state of the block.
      * @param placer The entity that placed the block.
      * @param itemStack The itemstack that was used to place the block.
      */
@@ -89,6 +87,7 @@ public class WirelessRegisterBlock extends RegisterBlock {
         }
         edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlockEntity blockEntity = (edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlockEntity) world.getBlockEntity(pos);
         int[] neighbourPos = itemStack.getNbt().getIntArray("pos");
+        assert blockEntity != null;
         ((WirelessRegisterController) blockEntity.getController())
                 .setWirelessNeighbourPosition(new BlockPosition(neighbourPos[0], neighbourPos[1], neighbourPos[2]));
     }
@@ -110,8 +109,18 @@ public class WirelessRegisterBlock extends RegisterBlock {
         super.appendTooltip(stack, world, tooltip, options);
     }
 
+    /**
+     * We need to register the tick method in the block entity.
+     * @param world the minecraft world the block is placed in.
+     * @param state the state of the block.
+     * @param type the type of the block entity.
+     * @return the block entity ticker for the block entity.
+     * @param <T> the type of the block entity.
+     */
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        //super.getTicker(world, state, type);          //FixMe ich glaub das sollte hier hin
         return (world1, pos, state1, be) -> WirelessRegisterBlockEntity.tick(world1, pos, state1, (ComputerBlockEntity) be);
     }
+
 }

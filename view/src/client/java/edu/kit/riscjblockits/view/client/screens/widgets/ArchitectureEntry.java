@@ -12,8 +12,8 @@ import net.minecraft.util.Identifier;
  */
 public class ArchitectureEntry extends ListEntry{
 
-    public static final Identifier COMPONENT_MISSING = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/controlunit_gui_entry_missing.png");
-    public static final Identifier COMPONENT_FOUND = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/controlunit_gui_entry_found.png");
+    public static final Identifier COMPONENT_MISSING = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/control_unit/controlunit_gui_entry_missing.png");
+    public static final Identifier COMPONENT_FOUND = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/control_unit/controlunit_gui_entry_found.png");
     private final String name;
     private final boolean missing;
     private static final int ENTRY_HEIGHT = 20;

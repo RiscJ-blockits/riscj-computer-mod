@@ -4,6 +4,9 @@ package edu.kit.riscjblockits.controller.blocks;
  * The type of block controller. It is used to differentiate between different types of block controllers.
  */
 public enum BlockControllerType {
+    /**
+     * The default controller type. It is used if the controller type is not defined.
+     */
     UNDEFINED,
     /**
      * The controller for a system clock.

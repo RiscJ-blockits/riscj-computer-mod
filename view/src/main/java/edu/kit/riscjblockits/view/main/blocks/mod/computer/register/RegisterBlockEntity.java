@@ -58,31 +58,42 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
     }
 
     /**
-     * ToDo
-     * @return
+     * Called when the screen is opened.
+     * We send the position to the screen.
+     * @param player the player that is opening the screen
+     * @param buf the packet buffer to write the data to
      */
-    @Override
-    public @Nullable Object getRenderData() {
-        return super.getRenderData();
-    }
-
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
         buf.writeBlockPos(this.pos);
     }
 
+    /**
+     * @return The display name of the register.
+     */
     @Override
     public Text getDisplayName() {
         String registerType = ((IDataStringEntry)((IDataContainer) getModel().getData()).get(REGISTER_TYPE)).getContent();
         return Text.literal("Register" + ": " + registerType);
     }
 
+    /**
+     * Creates a RegisterScreenHandler
+     * @param syncId the synchronization ID for the menu
+     * @param playerInventory the player's inventory
+     * @param player the player opening the menu
+     * @return the created ScreenHandler object, or null if the menu creation fails
+     */
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new RegisterScreenHandler(syncId, playerInventory, this);
     }
 
+    /**
+     * Is called by the goggle.
+     * @return the register type and teh value as a text.
+     */
     @Override
     public Text getGoggleText() {
         NbtCompound nbt = new NbtCompound();

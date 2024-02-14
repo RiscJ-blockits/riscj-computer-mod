@@ -28,7 +28,7 @@ public class RegisterBlock  extends ComputerBlock {
      * Creates a new RegisterBlock with the given settings.
      * @param settings The settings for the block as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
      */
-    private RegisterBlock(Settings settings) {
+    public RegisterBlock(Settings settings) {
         super(settings);
     }
 
@@ -69,14 +69,14 @@ public class RegisterBlock  extends ComputerBlock {
     }
 
     /**
-     * This method is called when the player right clicks on the block.
+     * This method is called when the player right-clicks on the block.
      * It will open the screen for the register block.
      * @param state The state of the minecraft block.
      * @param world The world in which the block is placed.
      * @param pos The position of the block in the minecraft world.
-     * @param player The player that right clicked on the block.
-     * @param hand The hand with which the player right clicked on the block.
-     * @param hit The hit result of the raycast that was used to determine the block that was right clicked on.
+     * @param player The player that right-clicked on the block.
+     * @param hand The hand with which the player right-clicked on the block.
+     * @param hit The hit result of the raycast that was used to determine the block that was right-clicked on.
      * @return Always returns {@link ActionResult#SUCCESS}.
      */
     @Override

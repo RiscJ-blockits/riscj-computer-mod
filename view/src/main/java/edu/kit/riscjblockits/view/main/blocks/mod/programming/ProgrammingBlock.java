@@ -47,15 +47,26 @@ public class ProgrammingBlock extends ModBlock {
         return new ProgrammingBlockEntity(pos, state);
     }
 
+    /**
+     * Adds custom block states to the block.
+     * The programming block has different textures on different sides.
+     * @param builder {@link net.minecraft.state.StateManager.Builder}
+     */
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
         builder.add(Properties.HORIZONTAL_FACING);
     }
 
+    /**
+     * ToDo ??
+     * @param ctx {@link  ItemPlacementContext}
+     * @return super.getPlacementState with an appended state for the diretional textures.
+     */
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         return super.getPlacementState(ctx).with(Properties.HORIZONTAL_FACING, ctx.getHorizontalPlayerFacing().getOpposite());
     }
+
 }

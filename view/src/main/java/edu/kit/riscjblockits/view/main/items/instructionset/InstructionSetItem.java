@@ -24,6 +24,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
 
 /**
  * This class defines the instruction set item in the game.
+ * In its nbt data is a json in which the instruction set is defined.
  */
 public class InstructionSetItem extends Item {
 
@@ -58,6 +59,14 @@ public class InstructionSetItem extends Item {
             });
     }
 
+    /**
+     * If for some reason the nbt data is not set, the default instruction set json is set.
+     * @param stack the item stack of this item.
+     * @param world the world the item is in.
+     * @param entity the entity the item is in.
+     * @param slot the slot the item is in.
+     * @param selected whether the item is selected.
+     */
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         NbtCompound nbt = stack.getOrCreateNbt();

@@ -18,8 +18,7 @@
     },
     {
       "when": {
-        "up": "true",
-        "active" : "false"
+        "up": "present"
       },
       "apply": {
         "model": "riscj_blockits:block/bus_block_side",
@@ -28,8 +27,7 @@
     },
     {
       "when": {
-        "up": "true",
-        "active" : "true"
+        "up": "active"
       },
       "apply": {
         "model": "riscj_blockits:block/bus_block_side_active",
@@ -38,8 +36,7 @@
     },
     {
       "when": {
-        "down": "true",
-        "active" : "false"
+        "down": "present"
       },
       "apply": {
         "model": "riscj_blockits:block/bus_block_side",
@@ -49,8 +46,7 @@
     },
     {
       "when": {
-        "down": "true",
-        "active" : "true"
+        "down": "active"
       },
       "apply": {
         "model": "riscj_blockits:block/bus_block_side_active",
@@ -60,8 +56,7 @@
     },
     {
       "when": {
-        "north": "true",
-        "active" : "false"
+        "north": "present"
       },
       "apply": {
         "model": "riscj_blockits:block/bus_block_side",
@@ -71,8 +66,7 @@
     },
     {
       "when": {
-        "north": "true",
-        "active" : "true"
+        "north": "active"
       },
       "apply": {
         "model": "riscj_blockits:block/bus_block_side_active",
@@ -82,8 +76,7 @@
     },
     {
       "when": {
-        "east": "true",
-        "active" : "false"
+        "east": "present"
       },
       "apply": {
         "model": "riscj_blockits:block/bus_block_side",
@@ -94,8 +87,7 @@
     },
     {
       "when": {
-        "east": "true",
-        "active" : "true"
+        "east": "active"
       },
       "apply": {
         "model": "riscj_blockits:block/bus_block_side_active",
@@ -106,8 +98,7 @@
     },
     {
       "when": {
-        "south": "true",
-        "active" : "false"
+        "south": "present"
       },
       "apply": {
         "model": "riscj_blockits:block/bus_block_side",
@@ -118,8 +109,7 @@
     },
     {
       "when": {
-        "south": "true",
-        "active" : "true"
+        "south": "active"
       },
       "apply": {
         "model": "riscj_blockits:block/bus_block_side_active",
@@ -130,8 +120,7 @@
     },
     {
       "when": {
-        "west": "true",
-        "active" : "false"
+        "west": "present"
       },
       "apply": {
         "model": "riscj_blockits:block/bus_block_side",
@@ -142,8 +131,7 @@
     },
     {
       "when": {
-        "west": "true",
-        "active" : "true"
+        "west": "active"
       },
       "apply": {
         "model": "riscj_blockits:block/bus_block_side_active",

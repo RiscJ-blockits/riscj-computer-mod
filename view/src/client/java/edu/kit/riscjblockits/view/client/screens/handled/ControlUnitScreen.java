@@ -31,13 +31,20 @@ import java.util.Map;
 public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
 
     private static final Identifier TEXTURE =
-        new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/control_unit_gui.png");
+        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/control_unit/control_unit_gui.png");
     private static final String MIMA = "MIMA";
     private static final String RISCV = "RiscV";
+
+    /**
+     * The architecture list widget displays which components are there and which are missing.
+     */
     private ArchitectureListWidget architectureList;
+
+    /**
+     * The Screen can display a diagramm of an MIMA Computer if the instruction set is MIMA.
+     */
     private final MIMAExWidget mimaExWidget = new MIMAExWidget();
     private TexturedButtonWidget expandButton;
-    private boolean narrow;
 
     /**
      * Represents a control unit screen for a game.
@@ -63,8 +70,8 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
     protected void init() {
         super.init();
         ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(handler.getBlockEntity().getPos()));
-        this.narrow = this.width < 379;
-        this.mimaExWidget.initialize(this.width, this.height - backgroundHeight, this.narrow);
+        boolean narrow = this.width < 379;
+        this.mimaExWidget.initialize(this.width, this.height - backgroundHeight, narrow);
         expandButton =
             new TexturedButtonWidget(this.x + 5, this.height / 2 - 49, 20, 18, MIMAExWidget.BUTTON_TEXTURES, button -> {
                 this.mimaExWidget.toggleOpen();
@@ -159,6 +166,7 @@ public class ControlUnitScreen extends HandledScreen<ControlUnitScreenHandler> {
         }
         for (String component : listFound) {
             if (component.equals(RegisterModel.UNASSIGNED_REGISTER)) {
+                continue;
             } else if (identicalEntries.contains(component)) {
                 entries.add(new ArchitectureEntry(component, true));
             } else {
