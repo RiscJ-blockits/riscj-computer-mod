@@ -277,19 +277,19 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
                     yield true;
                 }
                 case 262 -> {           // right arrow
-                    moveCursorX(1);
+                    moveCursorX(1, false);
                     yield true;
                 }
                 case 263 -> {           // left arrow
-                    moveCursorX(-1);
+                    moveCursorX(-1, false);
                     yield true;
                 }
                 case 264 -> {           // down arrow
-                    moveCursorY(1);
+                    moveCursorY(1, false);
                     yield true;
                 }
                 case 265 -> {           // up arrow
-                    moveCursorY(-1);
+                    moveCursorY(-1, false);
                     yield true;
                 }
                 case 258 -> {           // tab
@@ -312,9 +312,9 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         this.selectionEnd = i + length;
     }
 
-    private void moveCursorX(int i) {
+    private void moveCursorX(int i, boolean ignoreSelection) {
         // update selection if selecting
-        if (selecting) {
+        if (selecting && !ignoreSelection) {
 
             // init selection if there is none
             if (selectionStart == selectionEnd) {
@@ -359,9 +359,9 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         return textTillHere + cursorX;
     }
 
-    private void moveCursorY(int i) {
+    private void moveCursorY(int i, boolean ignoreSelection) {
         // update selection if selecting
-        if (selecting) {
+        if (selecting && !ignoreSelection) {
             if (i < 0) {
                 int lineLengthSum = 0;
                 for (int j = cursorY; j > cursorY + i; j--) {
@@ -408,11 +408,11 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             }
             Line line = lines.get(j);
             line.insert(splitString[i], cursorX);
-            moveCursorX(splitString[i].length());
+            moveCursorX(splitString[i].length(), true);
 
         }
         lines.get(cursorY + splitString.length - 1).insert(afterInsertContent, cursorX);
-        moveCursorY(splitString.length - 1);
+        moveCursorY(splitString.length - 1, true);
         updateWindow();
     }
 
@@ -495,7 +495,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         lines.remove(line);
         // only change cursorY when the current line was removed --> also set x to end of line
         if (line == cursorY) {
-            moveCursorY(-1);
+            moveCursorY(-1, false);
             cursorX = lines.get(cursorY).getContent().length();
         }
         else
@@ -541,6 +541,40 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         int shownCharacters = textRenderer.trimToWidth(lines.get(cursorY).getContent().substring(windowStartX), width).length();
         if (cursorX > windowStartX + shownCharacters)
             windowStartX = cursorX - shownCharacters;
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (mouseX < x || mouseX > x + width || mouseY < y || mouseY > y + height) {
+            return Element.super.mouseClicked(mouseX, mouseY, button);
+        }
+        // Calculate the line number based on the mouse's Y position
+        int line = (int) ((mouseY - this.y) / (LINE_HEIGHT * TEXT_SCALE))
+            + (scrollPosition == 0 ? 0 : scrollPosition - LINE_HEIGHT) / LINE_HEIGHT; // compensate for last line when scrollposition is more than 0
+
+        // Clamp the line number to the valid range
+        line = MathHelper.clamp(line, 0, lines.size() - 1);
+
+        // Get the content of the line
+        String content = lines.get(line).getContent();
+
+        // Calculate the column number based on the mouse's X position
+        int column = 0;
+        for (int i = 0; i < content.length(); i++) {
+            if (textRenderer.getWidth(content.substring(windowStartX, windowStartX + i)) > mouseX - this.x) {
+                break;
+            }
+            column = windowStartX + i + 1;
+        }
+
+        // Set the cursor's position
+        cursorX = column;
+        cursorY = line;
+
+        // Update the window to ensure the cursor is visible
+        updateWindow();
+
+        return Element.super.mouseClicked(mouseX, mouseY, button);
     }
 
 }
