@@ -4,6 +4,7 @@ import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.controller.blocks.io.TerminalInputController;
 import edu.kit.riscjblockits.controller.blocks.io.TerminalModeController;
+import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
@@ -28,12 +29,15 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_INPUT;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_IN_TYPE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_MODE_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_OUT_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMNAL_MODE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGTH;
 
 /**
  * This class represents a block entity for a terminal block in Minecraft.
@@ -163,14 +167,19 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
     }
 
     private IDataElement collectData() {
-        IDataContainer outData = (IDataContainer) getModel().getData();
+        IDataContainer collectData = new Data();
+        IDataContainer outData = (IDataContainer) outputController.getModel().getData();
         IDataContainer inData = (IDataContainer) inputController.getModel().getData();
         IDataContainer modeData = (IDataContainer) modeController.getModel().getData();
-        outData.set(REGISTER_TERMNAL_MODE, modeData.get(REGISTER_VALUE));
-        outData.set(REGISTER_TERMINAL_INPUT, inData.get(REGISTER_VALUE));
-        outData.set(REGISTER_TERMINAL_IN_TYPE, inData.get(REGISTER_TYPE));
-        outData.set(REGISTER_TERMINAL_OUT_TYPE, outData.get(REGISTER_TYPE));
-        return outData;
+        collectData.set(REGISTER_TERMNAL_MODE, modeData.get(REGISTER_VALUE));
+        collectData.set(REGISTER_TERMINAL_INPUT, inData.get(REGISTER_VALUE));
+        collectData.set(REGISTER_TERMINAL_IN_TYPE, inData.get(REGISTER_TYPE));
+        collectData.set(REGISTER_TERMINAL_OUT_TYPE, outData.get(REGISTER_TYPE));
+        collectData.set(REGISTER_TERMINAL_MODE_TYPE, modeData.get(REGISTER_TYPE));
+        collectData.set(REGISTER_VALUE, outData.get(REGISTER_VALUE));
+        collectData.set(REGISTER_WORD_LENGTH, outData.get(REGISTER_WORD_LENGTH));
+        collectData.set(REGISTER_REGISTERS, outData.get(REGISTER_REGISTERS));
+        return collectData;
     }
 
     @Override
@@ -190,6 +199,42 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
             inputController.onBroken();
             outputController.onBroken();
         }
+    }
+
+    @Override
+    public Text getGoggleText() {
+        NbtCompound nbt = new NbtCompound();
+        writeNbt(nbt);
+        String typeIn = "";
+        String typeOut = "";
+        String typeMode = "";
+        String value = "";
+        if (nbt.contains(MOD_DATA)) {
+            nbt = nbt.getCompound(MOD_DATA);
+        }
+        if (nbt.contains(REGISTER_VALUE)) {
+            value = nbt.getString(REGISTER_VALUE);
+        }
+        if (nbt.contains(REGISTER_TERMINAL_IN_TYPE)) {
+            typeIn = nbt.getString(REGISTER_TERMINAL_IN_TYPE);
+        }
+        if (nbt.contains(REGISTER_TERMINAL_OUT_TYPE)) {
+            typeOut = nbt.getString(REGISTER_TERMINAL_OUT_TYPE);
+        }
+        if (nbt.contains(REGISTER_TERMINAL_MODE_TYPE)) {
+            typeMode = nbt.getString(REGISTER_TERMINAL_MODE_TYPE);
+        }
+
+        return Text.translatable("block.riscj_blockits.register_block")
+            .append("\n")
+            .append(Text.translatable("riscj_blockits.register_type"))
+            .append(": " + typeIn + "\n")
+            .append(Text.translatable("riscj_blockits.register_type"))
+            .append(": " + typeOut + "\n")
+            .append(Text.translatable("riscj_blockits.register_type"))
+            .append(": " + typeMode + "\n")
+            .append(Text.translatable("riscj_blockits.register_value"))
+            .append(": " + value);
     }
 
 }

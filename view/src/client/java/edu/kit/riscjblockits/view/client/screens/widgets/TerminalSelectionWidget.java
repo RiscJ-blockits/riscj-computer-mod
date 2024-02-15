@@ -75,7 +75,6 @@ public class TerminalSelectionWidget extends RegSelectWidget{
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-
         int i = (this.parentWidth - 147) / 2 - this.leftOffset - (IOM_BUTTON_WIDTH - 2) + 1;
         int j = (this.parentHeight - 166) / 2 + 17;
 
@@ -97,10 +96,6 @@ public class TerminalSelectionWidget extends RegSelectWidget{
             default: break;
         }
 
-
-        //context.getMatrices().push();
-        //context.getMatrices().translate(0.0f, 0.0f, 100.0f);
-
         MinecraftClient client = MinecraftClient.getInstance();
         TextRenderer textRenderer = client.textRenderer;
         context.drawText(textRenderer, IN, i + 8, j + (IOM_BUTTON_HEIGHT - 6) / 2, 0xffffff, false);
@@ -108,9 +103,6 @@ public class TerminalSelectionWidget extends RegSelectWidget{
             OUT, i + 8, j + IOM_BUTTON_HEIGHT + (IOM_BUTTON_HEIGHT - 6) / 2, 0xffffff, false);
         context.drawText(textRenderer,
             Text.literal(MODE), i + 8, j + IOM_BUTTON_HEIGHT * 2 + (IOM_BUTTON_HEIGHT - 6) / 2, 0xffffff, false);
-
-        //context.getMatrices().pop();
-
     }
 
     @Override
