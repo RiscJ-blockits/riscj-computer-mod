@@ -18,12 +18,12 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     /**
      * Graph of all Blocks in the cluster and their connections.
      */
-    private Map<BlockPosition, List<BlockPosition>> adjPositions;
+    private final Map<BlockPosition, List<BlockPosition>> adjPositions;
 
     /**
      * Holds the active nodes in the visualization.
      */
-    private Map<BlockPosition, Boolean> activeVisualization;
+    private final Map<BlockPosition, Boolean> activeVisualization;
 
     /**
      * Holds the data that is present on the bus.
@@ -77,7 +77,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
                 }
             }
         }
-        //backtrack the BFS to find shortest path and set activeVisualization at nodes on the path
+        //backtrack the BFS to find the shortest path and set activeVisualization at nodes on the path
         BlockPosition current = endPos;
         while (!current.equals(startPos)) {
             activeVisualization.put(current, true);

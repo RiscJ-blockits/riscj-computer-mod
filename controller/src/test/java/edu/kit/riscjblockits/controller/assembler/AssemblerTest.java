@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.controller.assembler;
 
 import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
@@ -8,7 +9,6 @@ import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,7 +18,7 @@ class AssemblerTest {
         InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
         try {
             return InstructionSetBuilder.buildInstructionSetModel(is);
-        }  catch (UnsupportedEncodingException e) {
+        }  catch (InstructionBuildException e) {
             throw new RuntimeException(e);
         }
     }
@@ -27,7 +27,7 @@ class AssemblerTest {
         InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetRiscV.jsonc");
         try {
             return InstructionSetBuilder.buildInstructionSetModel(is);
-        }  catch (UnsupportedEncodingException e) {
+        }  catch (InstructionBuildException e) {
             throw new RuntimeException(e);
         }
     }

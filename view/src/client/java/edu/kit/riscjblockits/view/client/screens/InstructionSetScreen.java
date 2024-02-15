@@ -65,7 +65,7 @@ public class InstructionSetScreen extends Screen {
     /**
      * The hand that holds the item. Cane be the Main Hand or the Offhand.
      */
-    private Hand currentHand;
+    private final Hand currentHand;
 
     /**
      * Creates a new Instruction Set Item Screen. With it, the player can modify the Instruction Set on the Item.

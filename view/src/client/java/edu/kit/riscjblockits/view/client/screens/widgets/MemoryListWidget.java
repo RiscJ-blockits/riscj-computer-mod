@@ -105,6 +105,11 @@ public class MemoryListWidget implements Drawable {
         }
     }
 
+    /**
+     * Updates the position of the widget.
+     * @param x The x position of the widget.
+     * @param y The y position of the widget.
+     */
     public void updatePos(int x, int y) {
         this.x = x;
         this.y = y;

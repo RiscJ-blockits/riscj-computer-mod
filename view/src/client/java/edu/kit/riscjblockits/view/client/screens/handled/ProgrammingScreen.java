@@ -51,7 +51,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     /**
      * The button that is used to assemble the code.
      */
-    private DualTexturedIconButtonWidget assembleButton;
+    private final DualTexturedIconButtonWidget assembleButton;
 
     /**
      * The edit box widget that is used to enter the code.
@@ -140,9 +140,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
 
         ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION);
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION,
-            (client1, handler1, buf, responseSender) -> {
-                showError(buf.readString());
-            });
+            (client1, handler1, buf, responseSender) -> showError(buf.readString()));
     }
 
     /**

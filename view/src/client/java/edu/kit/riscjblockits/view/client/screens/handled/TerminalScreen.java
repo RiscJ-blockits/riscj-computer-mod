@@ -70,7 +70,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     @Override
     protected void init() {
         super.init();
-        if (handler.getBlockEntity().createNbt().getSize() == 0) {      //the data normally only gets send if something changed so we need to request it again
+        if (handler.getBlockEntity().createNbt().getSize() == 0) {      //the data normally only gets send if something changed, so we need to request it again
             ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(handler.getBlockEntity().getPos()));
         }
         // add the edit box widget to the screen

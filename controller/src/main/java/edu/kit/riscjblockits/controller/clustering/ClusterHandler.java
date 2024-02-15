@@ -23,16 +23,16 @@ public class ClusterHandler {
     /**
      * List of all blocks controllers in this cluster.
      */
-    private List<IQueryableClusterController> blocks;
+    private final List<IQueryableClusterController> blocks;
     /**
      * List of all bus blocks controllers in this cluster.
      */
-    private List<IQueryableClusterController> busBlocks;
+    private final List<IQueryableClusterController> busBlocks;
 
     /**
      * BusSystemModel of this cluster.
      */
-    private IQueryableBusSystem busSystemModel;
+    private final IQueryableBusSystem busSystemModel;
 
     /**
      * InstructionSetModel of this cluster.

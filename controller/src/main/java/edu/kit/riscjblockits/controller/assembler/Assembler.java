@@ -45,12 +45,12 @@ public class Assembler {
     /**
      * The size of the memory address in bytes.
      */
-    private int calculatedMemoryAddressSize;
+    private final int calculatedMemoryAddressSize;
 
     /**
      * The size of the memory word in bytes.
      */
-    private int calculatedMemoryWordSize;
+    private final int calculatedMemoryWordSize;
 
     /**
      * The Map of all labels and their addresses labeling to.

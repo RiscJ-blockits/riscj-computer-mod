@@ -6,6 +6,7 @@ import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.view.client.TestSetupClient;
@@ -27,7 +28,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -301,7 +301,7 @@ class ComputerBlockEntityTest {
         InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
         try {
             return InstructionSetBuilder.buildInstructionSetModel(is);
-        }  catch (UnsupportedEncodingException e) {
+        }  catch (InstructionBuildException e) {
             throw new RuntimeException(e);
         }
     }
@@ -310,7 +310,7 @@ class ComputerBlockEntityTest {
         InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetRiscV.jsonc");
         try {
             return InstructionSetBuilder.buildInstructionSetModel(is);
-        }  catch (UnsupportedEncodingException e) {
+        }  catch (InstructionBuildException e) {
             throw new RuntimeException(e);
         }
     }

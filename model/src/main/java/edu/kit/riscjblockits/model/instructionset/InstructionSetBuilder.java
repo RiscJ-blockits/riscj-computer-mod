@@ -25,11 +25,10 @@ public final class InstructionSetBuilder {
      * Builds an InstructionSetModel from a given InputStream.
      * @param is InputStream of the instruction set
      * @return InstructionSetModel
-     * @throws UnsupportedEncodingException if the character encoding is not supported
      * @throws InstructionBuildException if the instruction set cannot be built.
      */
-    public static InstructionSetModel buildInstructionSetModel (InputStream is) throws UnsupportedEncodingException, InstructionBuildException {
-        Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+    public static InstructionSetModel buildInstructionSetModel (InputStream is) throws InstructionBuildException {
+        Reader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
         Gson gson = new GsonBuilder().registerTypeAdapter(MicroInstruction.class, new MicroInstructionsDeserializer()).create();
         InstructionSetModel instructionSet;
         try {

@@ -11,6 +11,9 @@ public class MemoryInstruction extends MicroInstruction {
     /**
      * A MemoryInstruction with the given registers and flag.
      * It moves from a memory to a register or from a register to a memory.
+     * @param from The register or memory to move from.
+     * @param to The register or memory to move to.
+     * @param flag The flag to use for the memory action.
      */
     public MemoryInstruction(String[] from, String to, String flag) {
         super(from, to);
