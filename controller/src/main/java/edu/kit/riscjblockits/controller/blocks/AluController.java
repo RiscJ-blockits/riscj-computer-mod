@@ -118,7 +118,6 @@ public class AluController extends ComputerBlockController {
         "REM",
         "REMU"
 
-
         RISC-V FLOAT:
         FADD
         FSUB
@@ -139,7 +138,7 @@ public class AluController extends ComputerBlockController {
         FCVTSU
          */
 
-
+        ((AluModel) getModel()).setOperation(operation);
         Value operand1 = ((AluModel) getModel()).getOperand1();
         Value operand2 = ((AluModel) getModel()).getOperand2();
         Value result = null;
