@@ -38,10 +38,8 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
     private final int height;
 
     private final int scrollBarOffset;
-    private final int scrollTopY;
 
     private int scrollPosition;
-    private boolean scrolling;
     private boolean isFocused;
 
     /**
@@ -58,12 +56,10 @@ public class ScrollableListWidget<T extends ListEntry> implements Widget, Drawab
         this.width = width;
         this.height = height;
         this.scrollBarOffset = scrollBarOffset;
-        this.scrollTopY = y;
         this.x = x;
         this.y = y;
 
         this.scrollPosition = 0;
-        this.scrolling = false;
     }
 
     private boolean overflows() {

@@ -41,14 +41,12 @@ public class TerminalModeController extends RegisterController {
         } catch (NumberFormatException e) {
             return;
         }
-        System.out.println("input: " + input);
         if (input == 1) {
             inputController.setNextValue();
         }
         if (input == 2) {
             inputController.resetInput();
         }
-        //((RegisterModel) getModel()).setValue(value);
     }
 
     @Override

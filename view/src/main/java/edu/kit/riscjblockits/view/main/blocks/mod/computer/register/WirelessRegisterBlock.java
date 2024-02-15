@@ -85,7 +85,7 @@ public class WirelessRegisterBlock extends RegisterBlock {
         if (world.isClient || itemStack.getNbt() == null) {
             return;
         }
-        edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlockEntity blockEntity = (edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlockEntity) world.getBlockEntity(pos);
+        WirelessRegisterBlockEntity blockEntity = (WirelessRegisterBlockEntity) world.getBlockEntity(pos);
         int[] neighbourPos = itemStack.getNbt().getIntArray("pos");
         assert blockEntity != null;
         ((WirelessRegisterController) blockEntity.getController())

@@ -6,7 +6,6 @@ import edu.kit.riscjblockits.model.blocks.RegisterModel;
  * Defines constants used as keys in data and nbt elements.
  */
 public final class DataConstants {
-    //ToDo write Javadoc
 
     //General Constants
     /**
@@ -73,9 +72,21 @@ public final class DataConstants {
      */
     public static final String REGISTER_WIRELESS = "WirelessRegister";
 
+    /**
+     * Identifier for the Value of the mode-Register of the terminal.
+     */
     public static final String REGISTER_TERMNAL_MODE = "terminal_mode";
+    /**
+     * Identifier for the Value of the input-Register of the terminal.
+     */
     public static final String REGISTER_TERMINAL_INPUT = "terminal_input";
+    /**
+     * Identifier for the type of the input-Register of the terminal.
+     */
     public static final String REGISTER_TERMINAL_IN_TYPE = "terminal_in_type";
+    /**
+     * Identifier for the type of the output-Register of the terminal.
+     */
     public static final String REGISTER_TERMINAL_OUT_TYPE = "terminal_out_type";
 
     //SystemClock Constants

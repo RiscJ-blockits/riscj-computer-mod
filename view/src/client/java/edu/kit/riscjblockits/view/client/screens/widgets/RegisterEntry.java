@@ -19,7 +19,6 @@ public class RegisterEntry extends ListEntry {
     private final String name;
     private final RegSelectWidget parent;
 
-
     /**
      * Creates a new RegisterEntry.
      * @param name The name of the register.
@@ -36,13 +35,11 @@ public class RegisterEntry extends ListEntry {
             if(RegisterEntry.this.missing) {
                 RegisterEntry.this.assignRegister(RegisterEntry.this.name);
             } else if (!RegisterEntry.this.currentReg) {
-                RegisterEntry.this.overwriteRegister(RegisterEntry.this.name);
+                RegisterEntry.this.assignRegister(RegisterEntry.this.name);
             } else {
                 RegisterEntry.this.deselectRegister();
             }
-
         }, !missing, currentReg);
-
     }
 
     @Override
@@ -70,8 +67,6 @@ public class RegisterEntry extends ListEntry {
     public boolean isMouseOver(double mouseX, double mouseY) {
         return this.selectButton.isMouseOver(mouseX, mouseY);
     }
-
-
 
     public Object getName() {
         return this.name;
@@ -110,16 +105,6 @@ public class RegisterEntry extends ListEntry {
      */
     public void deselectRegister() {
         parent.deselectRegister();
-    }
-
-    /**
-     * Initial situation: The selected button represents a different configured register
-     * Result: The register is configured to be the selected register, this registers previous configuration is deselected.
-     * The diffrent already configured register is deselected and not configured anymore.
-     * @param name the name of the overwritten register
-     */
-    public void overwriteRegister(String name) {
-        parent.assignRegister(name);
     }
 
     /**

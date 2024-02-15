@@ -14,6 +14,7 @@ import edu.kit.riscjblockits.model.blocks.MemoryModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
@@ -25,7 +26,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +117,6 @@ class ClusterArchitectureHandlerTest {
         blockController.add(getR("SDR"));
         blockController.add(getR("SAR"));
         blockController.add(getR("EINS"));
-        System.out.println(blockController.size());
         ArchiCheckStub_ClusterHandler clusterHandler = new ArchiCheckStub_ClusterHandler(blockController);
         assertTrue(ClusterArchitectureHandler.checkArchitecture(istModel, clusterHandler));
     }
@@ -134,7 +133,7 @@ class ClusterArchitectureHandlerTest {
         InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
         try {
             return InstructionSetBuilder.buildInstructionSetModel(is);
-        }  catch (UnsupportedEncodingException e) {
+        }  catch (InstructionBuildException e) {
             throw new RuntimeException(e);
         }
     }
@@ -143,7 +142,7 @@ class ClusterArchitectureHandlerTest {
         InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetRiscV.jsonc");
         try {
             return InstructionSetBuilder.buildInstructionSetModel(is);
-        }  catch (UnsupportedEncodingException e) {
+        }  catch (InstructionBuildException e) {
             throw new RuntimeException(e);
         }
     }

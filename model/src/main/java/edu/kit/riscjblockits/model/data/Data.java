@@ -22,7 +22,7 @@ public class Data implements IDataContainer {
      * Creates a new empty Data container.
      */
     public Data () {
-
+        //create empty data
     }
 
     /**
@@ -67,6 +67,10 @@ public class Data implements IDataContainer {
         return contents.keySet();
     }
 
+    /**
+     * Removes the data element at the given key.
+     * @param key The key the data element is stored under.
+     */
     public void remove(String key) {
         contents.remove(key);
     }

@@ -20,14 +20,13 @@ public interface IQueryableClusterController extends IQueryableComputerControlle
      * Getter for the associated ClusterHandler.
      * @return The associated ClusterHandler.
      */
-
     ClusterHandler getClusterHandler();
 
     /**
      * Gather the neighbors of the block.
      * Only returns bus blocks if the block is a computer block.
      * Returns all computer blocks if the block is a bus block.
-     * Returns an empty list if the block is not a computer block. ToDo not implemented yet.
+     * Returns an empty list if the block is not a computer block.
      * @return List of neighbors.
      */
     List<IQueryableClusterController> getNeighbours();

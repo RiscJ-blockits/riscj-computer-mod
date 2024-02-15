@@ -55,7 +55,8 @@ public class InstructionSetMemory {
      * @param possibleOpcodeLengths The possible opcode lengths in bits.
      * @param opcodePosition The position of the opcode in the instruction.
      */
-    public InstructionSetMemory(int wordLength, int addressLenght, int accessDelay, String byteOrder, List<Integer> possibleOpcodeLengths, String opcodePosition) {
+    public InstructionSetMemory(int wordLength, int addressLenght, int accessDelay, String byteOrder,
+                                List<Integer> possibleOpcodeLengths, String opcodePosition) {
         this.wordLength = wordLength;
         this.addressLenght = addressLenght;
         this.accessDelay = accessDelay;

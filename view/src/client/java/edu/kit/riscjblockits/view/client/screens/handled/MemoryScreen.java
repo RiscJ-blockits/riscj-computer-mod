@@ -2,8 +2,11 @@ package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.view.client.screens.widgets.MemoryListWidget;
+import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHandler;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
@@ -51,6 +54,7 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
     @Override
     protected void init() {
         super.init();
+        ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(handler.getBlockEntity().getPos()));
         memoryListWidget.updatePos(this.x + 7, this.y + 26);
     }
 

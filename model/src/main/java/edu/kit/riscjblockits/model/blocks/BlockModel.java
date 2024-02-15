@@ -16,7 +16,7 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
     /**
      * States if the block is currently working and should be active in the view.
      */
-    private boolean visualisationState; //ToDo nicht im Entwurfs wiki
+    private boolean visualisationState;
 
     /**
      * Type of the block. Used to distinguish between different models.
@@ -84,16 +84,12 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
         this.hasUnqueriedStateChange = hasUnqueriedStateChange;
     }
 
-    //ToDo nicht im Entwurfs wiki
-
     /**
      * Notifies the model that the view has queried its state.
      */
     public void onStateQuery() {
         hasUnqueriedStateChange = false;
     }
-
-    //ToDo nicht im Entwurfs wiki
 
     /**
      * Notifies the model that its state has changed.
@@ -102,15 +98,12 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
         hasUnqueriedStateChange = true;
     }
 
-    //ToDo nicht im Entwurfs wiki
     public boolean getVisualisationState() {
         return visualisationState;
     }
 
-    //ToDo nicht im Entwurfs wiki
     public void setVisualisationState(boolean visualisationState) {
         this.visualisationState = visualisationState;
     }
-
 
 }

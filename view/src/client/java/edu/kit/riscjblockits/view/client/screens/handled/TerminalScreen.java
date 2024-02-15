@@ -70,7 +70,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     @Override
     protected void init() {
         super.init();
-        if (handler.getBlockEntity().createNbt().getSize() == 0) {      //the data normally only gets send if something changed so we need to request it again
+        if (handler.getBlockEntity().createNbt().getSize() == 0) {      //the data normally only gets send if something changed, so we need to request it again
             ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(handler.getBlockEntity().getPos()));
         }
         // add the edit box widget to the screen
@@ -125,11 +125,10 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         if(outputtedText != null){
             outputtedText.draw(context, this.x + 8, this.y + 18, 9, 0xffffff);
         }
-
     }
 
     /**
-     * Renders the background of the screen.
+     * Renders in the background of the screen.
      * @param context the drawing context
      * @param mouseX the x position of the mouse
      * @param mouseY the y position of the mouse
@@ -192,7 +191,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     public void handledScreenTick() {
         this.terminalSelectionWidget.update();
         output = ((TerminalBlockEntity) handler.getBlockEntity()).getDisplayedString();
-        outputtedText = MultilineText.create(textRenderer, Text.literal(output) , 160, 8);
+        outputtedText = MultilineText.create(textRenderer, Text.literal(output), 160, 8);
     }
 
     /**

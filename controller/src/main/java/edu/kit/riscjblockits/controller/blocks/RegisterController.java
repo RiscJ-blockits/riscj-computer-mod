@@ -109,6 +109,9 @@ public class RegisterController extends ComputerBlockController {
                     Value value = Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
                     ((RegisterModel) getModel()).setValue(value);
                 }
+                default -> {
+                    //do nothing
+                }
             }
         }
     }

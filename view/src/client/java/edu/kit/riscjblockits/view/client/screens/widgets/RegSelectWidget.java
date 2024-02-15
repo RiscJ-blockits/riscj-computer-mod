@@ -36,13 +36,22 @@ public class RegSelectWidget extends ExtendableWidget {
      */
     public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier("recipe_book/button"), new Identifier("recipe_book/button_highlighted"));
     private static final String TO_DO_TEXT = "Select Register";
+    /**
+     * The screen handler for the register screen.
+     */
     protected RegisterScreenHandler registerScreenHandler;
     private MinecraftClient client;
     private int cachedInvChangeCount;
+    /**
+     * The widget for the list of registers.
+     */
     protected RegisterListWidget registerList;
     private int width;
     private int height;
     private final List<Element> children = new ArrayList<>();
+    /**
+     * The position of the block entity.
+     */
     protected BlockPos pos;
 
     /**
@@ -107,8 +116,6 @@ public class RegSelectWidget extends ExtendableWidget {
         if (!this.isOpen()) {
             return;
         }
-        //context.getMatrices().push();
-        //context.getMatrices().translate(0.0f, 0.0f, 100.0f);
 
         int i = (this.parentWidth - 147) / 2 - this.leftOffset;
         int j = (this.parentHeight - 166) / 2;
@@ -121,8 +128,6 @@ public class RegSelectWidget extends ExtendableWidget {
         for (Element element : this.children) {
             ((Drawable) element).render(context, mouseX, mouseY, delta);
         }
-
-        //context.getMatrices().pop();
     }
 
     /**
@@ -149,21 +154,39 @@ public class RegSelectWidget extends ExtendableWidget {
         return registerList.mouseClicked(mouseX, mouseY, button);
     }
 
+    /**
+     * Handles the mouse scrolling.
+     * @param mouseX The x position of the mouse.
+     * @param mouseY The y position of the mouse.
+     * @param horizontalAmount The horizontal scroll amount.
+     * @param verticalAmount The vertical scroll amount.
+     * @return True if the scrolling was successful, false otherwise.
+     */
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         return registerList.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 
+    /**
+     * Handles the mouse dragging.
+     * @param mouseX The x position of the mouse.
+     * @param mouseY The y position of the mouse.
+     * @return True if the dragging was successful, false otherwise.
+     */
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
         return true;//mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 
+    /**
+     * Add a child widget.
+     * @param child The child widget.
+     */
     protected void addChild(Element child) {
         this.children.add(child);
     }
-
-    /** Initial situation: The selected button represents this registers selection
+    /**
+     * Initial situation: The selected button represents this registers selection.
      * Result: This register is [NOT_ASSIGNED]
      */
     public void deselectRegister() {
@@ -174,7 +197,7 @@ public class RegSelectWidget extends ExtendableWidget {
     }
 
     /**
-     * Initial situation: The selected button represents a missing register Type
+     * Initial situation: The selected button represents a missing register Type.
      * Result: Register is configured to be the selected register
      * @param name the name of the assigned register
      */

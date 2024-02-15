@@ -19,14 +19,26 @@ import java.util.List;
 
 import static edu.kit.riscjblockits.model.blocks.RegisterModel.UNASSIGNED_REGISTER;
 
+/**
+ * A widget that allows the user to select a terminal register.
+ */
 public class TerminalSelectionWidget extends RegSelectWidget{
 
     private static final Identifier IOM_BUTTON_TEXTURE = new Identifier("riscj_blockits", "textures/gui/register/io/tab_unselected.png");
     private static final Identifier IOM_BUTTON_HIGHLIGHTED_TEXTURE = new Identifier("riscj_blockits", "textures/gui/register/io/tab_selected.png");
     private static final int IOM_BUTTON_WIDTH = 35;
     private static final int IOM_BUTTON_HEIGHT = 26;
+    /**
+     * The identifier for the "mode" register.
+     */
     public static final String MODE = "Mode";   //TODO make it clenaer with translatable (?)
+    /**
+     * The identifier for the "Out" register.
+     */
     public static final String OUT = "Out";
+    /**
+     * The identifier for the "In" register.
+     */
     public static final String IN = "In";
     private IconButtonWidget inButton;
     private IconButtonWidget outButton;
@@ -34,7 +46,9 @@ public class TerminalSelectionWidget extends RegSelectWidget{
 
     private DisplayMode displayMode;
 
-
+    /**
+     * Creates a new TerminalSelectionWidget.
+     */
     public TerminalSelectionWidget(){
         super();
         displayMode = DisplayMode.IN;
@@ -48,17 +62,11 @@ public class TerminalSelectionWidget extends RegSelectWidget{
         int i = (this.parentWidth - 147) / 2 - this.leftOffset - (IOM_BUTTON_WIDTH - 2) + 1;
         int j = (this.parentHeight - 166) / 2 + 17;
 
-        inButton = new IconButtonWidget(i, j, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, (button) -> {
-            displayMode = DisplayMode.IN;
-        }, IOM_BUTTON_TEXTURE);
+        inButton = new IconButtonWidget(i, j, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, button -> displayMode = DisplayMode.IN, IOM_BUTTON_TEXTURE);
 
-        outButton = new IconButtonWidget(i, j + IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, (button) -> {
-            displayMode = DisplayMode.OUT;
-        }, IOM_BUTTON_TEXTURE);
+        outButton = new IconButtonWidget(i, j + IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, button -> displayMode = DisplayMode.OUT, IOM_BUTTON_TEXTURE);
 
-        modeButton = new IconButtonWidget(i, j + IOM_BUTTON_HEIGHT * 2, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, (button) -> {
-            displayMode = DisplayMode.MODE;
-        }, IOM_BUTTON_TEXTURE);
+        modeButton = new IconButtonWidget(i, j + IOM_BUTTON_HEIGHT * 2, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, button -> displayMode = DisplayMode.MODE, IOM_BUTTON_TEXTURE);
 
         addChild(inButton);
         addChild(outButton);

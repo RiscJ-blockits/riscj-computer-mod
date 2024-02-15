@@ -74,7 +74,7 @@ public class SystemClockController extends ComputerBlockController {
 
     /**
      * Called when the system clock is powered. (0 -> 1)
-     * Used to start the next simulation step. when in step mode
+     * Used to start the next simulation step. When in step mode
      */
     public void onUserTickTriggered() {
         if (simStarted) {
