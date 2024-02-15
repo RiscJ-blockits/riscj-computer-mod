@@ -82,6 +82,9 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     private HashMap<String, List<Instruction>> opcodeHashMap;
 
+    @SerializedName(value = "example_programm")
+    private String exampleProgram;
+
     public InstructionSetModel() {
         this.name = null;
         this.instructionLength = 0;
@@ -94,6 +97,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
         this.addressChangeHashMap = null;
         this.programStartLabel = null;
         this.dataStorageKeywords = null;
+        this.exampleProgram = "";
     }
 
     public InstructionSetModel(String name, int instructionLength, InstructionSetRegisters instructionSetRegisters,
@@ -101,7 +105,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
                                MicroInstruction[] fetchPhase, HashMap<String, String> addressChangeHashMap,
                                String programStartLabel, HashMap<String, String> dataStorageKeywords,
                                HashMap<String, Instruction> commandHashMap,
-                               HashMap<String, List<Instruction>> opcodeHashMap) {
+                               HashMap<String, List<Instruction>> opcodeHashMap, String exampleProgram) {
         this.name = name;
         this.instructionLength = instructionLength;
         this.instructionSetRegisters = instructionSetRegisters;
@@ -113,6 +117,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
         this.dataStorageKeywords = dataStorageKeywords;
         this.commandHashMap = commandHashMap;
         this.opcodeHashMap = opcodeHashMap;
+        this.exampleProgram = exampleProgram != null ? exampleProgram : "";
     }
 
     /**
@@ -390,8 +395,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
 
     @Override
     public String getExample() {
-        //TODO implement
-        return "";
+        return exampleProgram;
     }
 
     /**

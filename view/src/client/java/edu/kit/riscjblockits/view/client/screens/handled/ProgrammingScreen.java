@@ -193,11 +193,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         instructionsWidget.render(context, mouseX, mouseY, delta);
         // render the tooltip of the button if the mouse is over it
         drawMouseoverTooltip(context, mouseX, mouseY);
-        if (!this.handler.getExample().equals("")){
-            exampleButton.visible = false;
-        } else {
-            exampleButton.visible = true;
-        }
+        exampleButton.visible = !this.handler.getExample().isEmpty();
     }
 
     /**
