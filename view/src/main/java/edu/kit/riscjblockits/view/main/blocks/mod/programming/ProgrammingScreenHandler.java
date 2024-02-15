@@ -22,7 +22,6 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -219,11 +218,11 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
         if(inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
             return "";
         }
-        String ist = inventory.getStack(0).getOrCreateNbt().get("riscj_blockits.instructionSet").toString();
+        String ist = inventory.getStack(0).getOrCreateNbt().get("riscj_blockits.instructionSet").asString();
         InstructionSetModel instructionSetModel;
         try {
             instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(ist);
-            return instructionSetModel.getExample();
+             return instructionSetModel.getExample();
         }catch (UnsupportedEncodingException | InstructionBuildException e) {
             return "";
         }

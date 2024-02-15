@@ -143,7 +143,6 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         );
         addDrawableChild(instructionSetButton);
 
-
         exampleButton = new IconButtonWidget(this.x + 20, this.y + 111, 13, 13, button ->{
             editBox.setText(this.handler.getExample());
         }, EXAMPLE_BUTTON_TEXTURE);
@@ -194,8 +193,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         instructionsWidget.render(context, mouseX, mouseY, delta);
         // render the tooltip of the button if the mouse is over it
         drawMouseoverTooltip(context, mouseX, mouseY);
-        if(!this.handler.getExample().equals("")){
-            exampleButton.visible = true;
+        if (!this.handler.getExample().equals("")){
+            exampleButton.visible = false;
         } else {
             exampleButton.visible = true;
         }

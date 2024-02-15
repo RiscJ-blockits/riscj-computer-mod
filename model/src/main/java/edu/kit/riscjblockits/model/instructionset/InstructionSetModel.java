@@ -360,7 +360,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
             String opCode = binaryValue.substring(opCodeStart, opCodeStart + opCodeLength);
             // if no instruction is found, the next opcode length is tried
             if (!opcodeHashMap.containsKey(opCode)) continue;
-            // find instruction in list of instructions with the same opcode
+            // find instruction in a list of instructions with the same opcode
             List<Instruction> instructions = opcodeHashMap.get(opCode);
             Instruction instruction = null;
             for (Instruction possibleInstruction : instructions) {
