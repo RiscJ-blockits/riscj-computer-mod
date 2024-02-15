@@ -282,7 +282,8 @@ public class Value {
         return thisValue.compareTo(comparatorValue) > 0;
     }
 
-    /** TODO Noch nicht implementiert
+    /**
+     * TODO Noch nicht implementiert
      * Compares this value to a float value.
      * @param comparator the value to compare to
      * @return true if this value is greater than the comparator

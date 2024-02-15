@@ -13,8 +13,14 @@ import java.util.function.Consumer;
  */
 public abstract class ListEntry implements Widget, Drawable, Element {
 
+    /**
+     * The x position of the entry.
+     */
     protected int x;
 
+    /**
+     * The y position of the entry.
+     */
     protected int y;
 
     @Override
