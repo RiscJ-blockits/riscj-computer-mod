@@ -1,11 +1,11 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.view.client.screens.widgets.DualTexturedIconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.InstructionsWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.text.AssemblerSyntaxTextEditWidget;
-import edu.kit.riscjblockits.view.client.screens.widgets.text.TextEditWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
@@ -21,6 +21,9 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.HashMap;
+import java.util.List;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.PROGRAMMING_BLOCK_CODE;
 
@@ -59,7 +62,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     /**
      * The edit box widget that is used to enter the code.
      */
-    private TextEditWidget editBox;
+    private AssemblerSyntaxTextEditWidget editBox;
     private boolean codeHasChanged = false;
 
     /**
@@ -156,6 +159,24 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         setFocused(editBox);
     }
 
+    private HashMap<String, Integer> getArgumentCountMap() {
+        HashMap<String, Integer> argumentCountMap = new HashMap<>();
+        List<String[]> instructions;
+
+        // can only fill map if instructionSet is parsable
+        try {
+            instructions = (handler).getInstructions();
+        }catch (InstructionBuildException e) {
+            return argumentCountMap;
+        }
+
+        for (String[] instruction : instructions) {
+            argumentCountMap.put(instruction[0], instruction[1].split(", ?").length);
+        }
+
+        return argumentCountMap;
+    }
+
     /**
      * Renders the screen. Is called every frame.
      * @param context the drawing context
@@ -250,6 +271,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     protected void handledScreenTick() {
         super.handledScreenTick();
         this.instructionsWidget.update();
+        this.editBox.setInstructionArgumentCountMap(getArgumentCountMap());
+
     }
 
     @Override

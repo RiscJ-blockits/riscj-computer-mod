@@ -25,7 +25,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
     private static final float TEXT_SCALE = 1f;
 
     private static final float INVERSE_TEXT_SCALE = 1 / TEXT_SCALE;
-    private static final int LINE_HEIGHT = 9;
+    protected static final int LINE_HEIGHT = 9;
     private static final int TAB_SPACE_COUNT = 4;
     protected static final int SELECTION_COLOR = 0x99FF0000;
     protected static final int TEXT_COLOR = 0x000000;
