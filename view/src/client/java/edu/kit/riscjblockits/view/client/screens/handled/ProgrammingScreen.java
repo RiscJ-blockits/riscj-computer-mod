@@ -119,7 +119,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         super.init();
         this.narrow = this.width < 379;
         // add the edit box widget to the screen
-        editBox = new AssemblerSyntaxTextEditWidget(textRenderer, this.x + 8, this.y + 18, 129, 90);
+        editBox = new AssemblerSyntaxTextEditWidget(textRenderer, this.x + 32, this.y + 18, 129, 90);
         addDrawableChild(editBox);
         editBox.setFocused(false);
         editBox.setText(handler.getCode());

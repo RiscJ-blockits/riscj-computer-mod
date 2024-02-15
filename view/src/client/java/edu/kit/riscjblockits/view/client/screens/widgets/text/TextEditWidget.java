@@ -31,11 +31,11 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
     /**
      * The color of the text.
      */
-    protected static final int TEXT_COLOR = 0x000000;
+    protected static final int TEXT_COLOR = 0xa9b7c6;
     /**
      * The color of the selection.
      */
-    protected static final int SELECTION_COLOR = 0x99FF0000;
+    protected static final int SELECTION_COLOR = 0x99214283;
     /**
      * The multiplier for scrolling.
      */
@@ -262,7 +262,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
      */
     private void drawLineIndex(DrawContext context, int i, int y) {
         int width = textRenderer.getWidth(String.valueOf(i));
-        context.drawText(textRenderer, String.valueOf(i), (int) (x * INVERSE_TEXT_SCALE - width - 10), y, TEXT_COLOR, false);
+        context.drawText(textRenderer, String.valueOf(i), (int) (x * INVERSE_TEXT_SCALE - width - 6), y, TEXT_COLOR, false);
     }
 
     /**
@@ -388,7 +388,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
     private void drawCursor(DrawContext context, int x, int y, boolean endOfLine) {
         if (((int) this.tickCounter) / 6 % 2 == 0) {
-            context.drawText(this.textRenderer, endOfLine ? "_" : "|", x, y, endOfLine ? 0 : 0x999999, false);
+            context.drawText(this.textRenderer, endOfLine ? "_" : "|", x, y, endOfLine ? TEXT_COLOR : 0x999999, false);
         }
     }
 
