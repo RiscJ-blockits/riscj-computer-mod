@@ -10,9 +10,4 @@ public interface IQueryableSimController extends IQueryableComputerController {
      */
     void activateVisualisation();
 
-    /**
-     * Method to stop the visualization of the block of the controller.
-     */
-    void stopVisualisation();
-
 }
