@@ -240,7 +240,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     /**
      * Requests data for the block entity.
      * It sets a new {@link Data} object to the block entity's controller.
-     * When new data s revived,
+     * When new data is revived,
      * the controller will call the model's onStateChange method which will trigger a sync to the client.
      */
     public void requestData() {

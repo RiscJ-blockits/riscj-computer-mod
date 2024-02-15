@@ -54,6 +54,7 @@ public abstract class ComputerBlockController extends BlockController
         blockModel.setPosition(pos);
         //Create a new Cluster and check if it is complete. This check can trigger a simulation start.
         new ClusterHandler(this);
+        blockModel.onStateChange();
         clusterHandler.checkFinished();
     }
 
@@ -100,7 +101,7 @@ public abstract class ComputerBlockController extends BlockController
 
     /**
      * Gather the neighbors of the block.
-     * Only returns bus blocks if the block is a computer block.
+     * Only return bus blocks if the block is a computer block.
      * Returns all computer blocks if the block is a bus block.
      * Returns an empty list if the block is not a computer block.
      * @return List of neighbors.

@@ -92,7 +92,6 @@ public abstract class ConnectingComputerBlock extends ComputerBlock {
     }
 
     static {
-
         FACING_PROPERTIES = ImmutableMap.copyOf((Map) Util.make(Maps.newEnumMap(Direction.class), (directions) -> {
             directions.put(Direction.NORTH, NORTH);
             directions.put(Direction.EAST, EAST);
