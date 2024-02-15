@@ -340,7 +340,7 @@ The Quantum State Register: Harnessing Quantum Computing \
 Welcome to the quantum state register, an advanced component of your MIMA/RISCV computer simulation in Minecraft. The quantum state register block allows you to quantum entangle a computer register with the quantum state register over any distance when both blocks are loaded by Minecraft.
 
 Connecting the Quantum State Register \
-To connect a Quantum State Register to your computer, use a Quantum State Register Block for the register inside your computer which you want to entangle. Then while holding another Quantum Entanglement Block in your hand, right click on the Quantum Entanglement Register in your computer. The registers are now connected and you can place the register from your hand anywhere in the world. You can set the register types independently and you can include both registers in different computers to let them interact.
+To connect a Quantum State Register to your computer, use a Quantum State Register Block for the register inside your computer which you want to entangle. Then while holding another Quantum Entanglement Block in your hand, right-click on the Quantum Entanglement Register in your computer. The registers are now connected, and you can place the register from your hand anywhere in the world. You can set the register types independently, and you can include both registers in different computers to let them interact.
 
 ### Terminal
 The Terminal Block: Displaying Output from and Receiving Input To Your Virtual Computer \

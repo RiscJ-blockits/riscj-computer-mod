@@ -53,7 +53,7 @@ public abstract class ModBlockEntity extends BlockEntity {
 
     /**
      * this method is responsible for creating the controller and starting the clustering.
-     * It does this at different times depending if the world is loading or the block is placed at runtime.
+     * It does this at different times depending on if the world is loading or the block is placed at runtime.
      * is called at different events to cover all cases.
      * */
     public void setController() {

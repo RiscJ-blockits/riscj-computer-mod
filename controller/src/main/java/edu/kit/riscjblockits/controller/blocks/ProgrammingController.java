@@ -6,11 +6,11 @@ import edu.kit.riscjblockits.model.data.DataType;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataEntry;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
@@ -42,7 +42,7 @@ public class ProgrammingController extends BlockController implements IAssembler
         Assembler assembler;
         try {
             assembler = new Assembler(InstructionSetBuilder.buildInstructionSetModel(instructionSetStream));
-        } catch (UnsupportedEncodingException e) {
+        } catch (InstructionBuildException e) {
             throw new AssemblyException("Instruction set is not readable");
         }
         assembler.assemble(code);

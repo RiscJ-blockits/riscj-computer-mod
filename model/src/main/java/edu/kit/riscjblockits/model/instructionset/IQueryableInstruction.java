@@ -1,7 +1,7 @@
 package edu.kit.riscjblockits.model.instructionset;
 
 /**
- * This interface defines the methods that a Instruction provides to assemble some Code.
+ * This interface defines the methods that an Instruction provides to assemble some Code.
  */
 public interface IQueryableInstruction {
     /**

@@ -48,17 +48,11 @@ public class TerminalSelectionWidget extends RegSelectWidget{
         int i = (this.parentWidth - 147) / 2 - this.leftOffset - (IOM_BUTTON_WIDTH - 2) + 1;
         int j = (this.parentHeight - 166) / 2 + 17;
 
-        inButton = new IconButtonWidget(i, j, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, (button) -> {
-            displayMode = DisplayMode.IN;
-        }, IOM_BUTTON_TEXTURE);
+        inButton = new IconButtonWidget(i, j, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, button -> displayMode = DisplayMode.IN, IOM_BUTTON_TEXTURE);
 
-        outButton = new IconButtonWidget(i, j + IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, (button) -> {
-            displayMode = DisplayMode.OUT;
-        }, IOM_BUTTON_TEXTURE);
+        outButton = new IconButtonWidget(i, j + IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, button -> displayMode = DisplayMode.OUT, IOM_BUTTON_TEXTURE);
 
-        modeButton = new IconButtonWidget(i, j + IOM_BUTTON_HEIGHT * 2, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, (button) -> {
-            displayMode = DisplayMode.MODE;
-        }, IOM_BUTTON_TEXTURE);
+        modeButton = new IconButtonWidget(i, j + IOM_BUTTON_HEIGHT * 2, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, button -> displayMode = DisplayMode.MODE, IOM_BUTTON_TEXTURE);
 
         addChild(inButton);
         addChild(outButton);
