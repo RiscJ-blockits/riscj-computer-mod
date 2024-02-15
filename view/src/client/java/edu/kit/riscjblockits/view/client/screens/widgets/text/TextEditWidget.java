@@ -79,7 +79,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             // draw line index
             drawLineIndex(context, i, displayY);
             // draw line content
-            drawLine(context, lines.get(i).getContent(), windowStartX, i, displayY);
+            drawLine(context, lines.get(i).getContent(), windowStartX, i, (int) (x * INVERSE_TEXT_SCALE), displayY);
             // increment text index
             currentTextIndex += lines.get(i).getContent().length();
         }
@@ -98,8 +98,8 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
     }
 
-    protected void drawLine(DrawContext context, String line, int windowStartX, int i, int displayY) {
-        context.drawText(textRenderer, line.substring(windowStartX), (int) (x * INVERSE_TEXT_SCALE), displayY, TEXT_COLOR, false);
+    protected void drawLine(DrawContext context, String line, int windowStartX, int i, int displayX, int displayY) {
+        context.drawText(textRenderer, line.substring(windowStartX), displayX, displayY, TEXT_COLOR, false);
     }
 
     protected void drawSelectionForLine(DrawContext context, int i, int displayY) {
