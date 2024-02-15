@@ -119,7 +119,6 @@ public class WirelessRegisterBlock extends RegisterBlock {
      */
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        //super.getTicker(world, state, type);          //FixMe ich glaub das sollte hier hin
         return (world1, pos, state1, be) -> WirelessRegisterBlockEntity.tick(world1, pos, state1, (ComputerBlockEntity) be);
     }
 
