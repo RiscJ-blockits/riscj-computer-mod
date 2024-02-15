@@ -205,12 +205,9 @@ public class SimulationSequenceHandler implements Runnable {
      * @param mode The visualization mode to set.
      */
     public void setVisualizationMode(VisualisationMode mode) {
+        resetVisualisation();
         this.visualisationMode = mode;
-        if(visualisationMode == VisualisationMode.OFF || visualisationMode == VisualisationMode.NORMAL) {
-            resetVisualisation();
-        } else if(visualisationMode == VisualisationMode.FAST) {
-            fullVisualisation();
-        }
+        resetVisualisation();
     }
 
     /**
@@ -218,7 +215,6 @@ public class SimulationSequenceHandler implements Runnable {
      * @param instruction Microinstruction to execute.
      */
     private void executeMicroInstruction(IExecutableMicroInstruction instruction) {
-        //ToDo consider exception handling (stop execution or just keep running the next like it is done now)
         try {
             instruction.execute(executor);
         } catch (NonExecutableMicroInstructionException e) {
