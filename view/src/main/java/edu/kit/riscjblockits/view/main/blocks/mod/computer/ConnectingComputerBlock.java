@@ -17,19 +17,39 @@ import net.minecraft.world.BlockView;
 
 import java.util.Map;
 
-/** ToDo javadoc
+//ToDo javadoc
+/**
+ * Class to manage the BlockState of a BusBlock.
  * A {@link ComputerBlock} that can change its appearance depending on its neighbors.
  * Copied from {@link net.minecraft.block.ConnectingBlock}.
  */
 public abstract class ConnectingComputerBlock extends ComputerBlock {
-    private static final Direction[] FACINGS = Direction.values();
+    /**
+     * The property for the north side of the block.
+     */
     public static final EnumProperty<Side> NORTH = EnumProperty.of("north", Side.class);
+    /**
+     * The property for the east side of the block.
+     */
     public static final EnumProperty<Side> EAST = EnumProperty.of("east", Side.class);
+    /**
+     * The property for the south side of the block.
+     */
     public static final EnumProperty<Side> SOUTH = EnumProperty.of("south", Side.class);
+    /**
+     * The property for the west side of the block.
+     */
     public static final EnumProperty<Side> WEST = EnumProperty.of("west", Side.class);
+    /**
+     * The property for the upside of the block.
+     */
     public static final EnumProperty<Side> UP = EnumProperty.of("up", Side.class);
+    /**
+     * The property for the downside of the block.
+     */
     public static final EnumProperty<Side> DOWN = EnumProperty.of("down", Side.class);
     public static final Map<Direction, EnumProperty<Side>> FACING_PROPERTIES;
+    private static final Direction[] FACINGS = Direction.values();
     protected final VoxelShape[] facingsToShape;
 
     protected ConnectingComputerBlock(float radius) {

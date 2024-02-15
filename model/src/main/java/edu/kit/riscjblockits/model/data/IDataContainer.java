@@ -39,6 +39,10 @@ public interface IDataContainer extends IDataElement {
      */
     Set<String> getKeys();
 
+    /**
+     * Will remove the element stored under the given key.
+     * @param key the key of the element to be removed
+     */
     void remove(String key);
 
 }
