@@ -10,6 +10,9 @@ import java.util.regex.Pattern;
 
 import static edu.kit.riscjblockits.view.main.RISCJ_blockits.MOD_ID;
 
+/**
+ * A widget that displays a text edit with syntax highlighting for the assembler.
+ */
 public class AssemblerSyntaxTextEditWidget extends TextEditWidget {
     private static final Identifier UNDER_LINE_TEXTURE = new Identifier(MOD_ID, "textures/gui/general/syntax_error_underline.png");
     private static final int UNDER_LINE_HEIGHT = 1;
@@ -18,13 +21,20 @@ public class AssemblerSyntaxTextEditWidget extends TextEditWidget {
     private static final Pattern ARGUMENT_PATTERN_FIRST= Pattern.compile(" \\w+");
     private static final Pattern ARGUMENT_PATTERN_AFTER_COM = Pattern.compile(" *[, ] *\\w+");
     private static final Pattern COMMENT_PATTERN = Pattern.compile("[;#].*");
-    private static final int ERROR_COLOR = 0xFF0000;
     private static final int LABEL_COLOR = 0x0000FF;
     private static final int COMMAND_COLOR = 0xFF00FF;
     private static final int ARGUMENT_COLOR = 0xFFFF00;
     private static final int COMMENT_COLOR = 0x00FF00;
     private HashMap<String, Integer> instructionArgumentCountMap = new HashMap<>();
 
+    /**
+     * A widget that displays a text edit with syntax highlighting for the assembler.
+     * @param textRenderer The text renderer.
+     * @param x The x position.
+     * @param y The y position.
+     * @param width The width.
+     * @param height The height.
+     */
     public AssemblerSyntaxTextEditWidget(TextRenderer textRenderer, int x, int y, int width, int height) {
         super(textRenderer, x, y, width, height);
     }
@@ -133,7 +143,7 @@ public class AssemblerSyntaxTextEditWidget extends TextEditWidget {
     }
 
     private void markError(DrawContext context, int x, int displayY, int x2) {
-        context.drawTexture(UNDER_LINE_TEXTURE, x, displayY + LINE_HEIGHT - UNDER_LINE_HEIGHT - 1, 0,0 , 0, x2 - x, UNDER_LINE_HEIGHT, 276, 59);
+        context.drawTexture(UNDER_LINE_TEXTURE, x, displayY + LINE_HEIGHT - UNDER_LINE_HEIGHT - 1, 0,0, 0, x2 - x, UNDER_LINE_HEIGHT, 276, 59);
     }
 
     private int drawCommand(DrawContext context, String substring, int x, int displayY) {

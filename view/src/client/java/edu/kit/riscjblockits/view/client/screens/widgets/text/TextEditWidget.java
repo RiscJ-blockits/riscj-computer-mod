@@ -19,34 +19,108 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * A widget that allows the user to edit text.
+ * Allows for selecting, copying, cutting, and pasting text.
+ */
 public class TextEditWidget implements Widget, Drawable, Element, Selectable {
-    private static final int SCROLL_MULTIPLIER = 6;
-
-    private static final float TEXT_SCALE = 1f;
-
-    private static final float INVERSE_TEXT_SCALE = 1 / TEXT_SCALE;
+    /**
+     * The height of a line.
+     */
     protected static final int LINE_HEIGHT = 9;
-    private static final int TAB_SPACE_COUNT = 4;
-    protected static final int SELECTION_COLOR = 0x99FF0000;
+    /**
+     * The color of the text.
+     */
     protected static final int TEXT_COLOR = 0x000000;
-    private List<Line> lines;
-    private int scrollPosition = 0;
+    /**
+     * The color of the selection.
+     */
+    protected static final int SELECTION_COLOR = 0x99FF0000;
+    /**
+     * The multiplier for scrolling.
+     */
+    private static final int SCROLL_MULTIPLIER = 6;
+    /**
+     * The scale of the text.
+     */
+    private static final float TEXT_SCALE = 1f;
+    /**
+     * The inverse of the text scale.
+     */
+    private static final float INVERSE_TEXT_SCALE = 1 / TEXT_SCALE;
+    /**
+     * The number of spaces in a tab.
+     */
+    private static final int TAB_SPACE_COUNT = 4;
+    /**
+     * the textRenderer used to render the text.
+     */
     protected final TextRenderer textRenderer;
-
+    /**
+     * The lines of text.
+     */
+    private List<Line> lines;
+    /**
+     * The position of the user is scrolled to.
+     */
+    private int scrollPosition = 0;
+    /**
+     * The x position of the widget.
+     */
     private int x;
+    /**
+     * The y position of the widget.
+     */
     private int y;
-    private int width;
-    private int height;
+    /**
+     * The width of the widget.
+     */
+    private final int width;
+    /**
+     * The height of the widget.
+     */
+    private final int height;
+    /**
+     * the time of the widget (used for cursor blinking).
+     */
     private float tickCounter = 0;
+    /**
+     * The x position of the cursor.
+     */
     private int cursorX = 0;
+    /**
+     * The y position of the cursor.
+     */
     private int cursorY = 0;
+    /**
+     * The x position of the viewing window.
+     */
     private int windowStartX = 0;
+    /**
+     * Whether the user is currently selecting.
+     */
     private boolean selecting = false;
+    /**
+     * The x position of the selection end.
+     */
     private int selectionEndX = 0;
+    /**
+     * The y position of the selection end.
+     */
     private int selectionEndY = 0;
-    private int windowStartTextIndex = 0;
+    /**
+     * Whether something is selected.
+     */
     private boolean hasSelected = false;
 
+    /**
+     * Creates a new TextEditWidget.
+     * @param textRenderer the textRenderer used to render the text
+     * @param x the x position of the widget
+     * @param y the y position of the widget
+     * @param width the width of the widget
+     * @param height the height of the widget
+     */
     public TextEditWidget(TextRenderer textRenderer, int x, int y, int width, int height) {
         this.textRenderer = textRenderer;
         this.x = x;
@@ -61,7 +135,6 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         tickCounter += delta;
         // calculate start index of text
         int start = (int) Math.max(scrollPosition/(LINE_HEIGHT * TEXT_SCALE) - 1, 0);
-        int currentTextIndex = windowStartTextIndex;
         // prepare text scaling
         MatrixStack matrixStack = context.getMatrices();
         matrixStack.push();
@@ -81,15 +154,13 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             // draw line content
             drawLine(context, lines.get(i).getContent(), windowStartX, i, (int) (x * INVERSE_TEXT_SCALE), displayY);
             // increment text index
-            currentTextIndex += lines.get(i).getContent().length();
         }
         // draw cursor, different mode if cursor is at the end of the line
         if (lines.get(cursorY).getContent().length() <= cursorX){
             drawCursor(context,
                     (int) (x * INVERSE_TEXT_SCALE) + textRenderer.getWidth(lines.get(cursorY).getContentUntil(cursorX).substring(windowStartX)),
                     (int) (y * INVERSE_TEXT_SCALE + (cursorY - start) * LINE_HEIGHT), true);
-        }
-        else
+        } else
             drawCursor(context,
                     (int) (x * INVERSE_TEXT_SCALE) + textRenderer.getWidth(lines.get(cursorY).getContentUntil(cursorX).substring(windowStartX)),
                     (int) (y * INVERSE_TEXT_SCALE + (cursorY - start) * LINE_HEIGHT), false);
@@ -98,10 +169,25 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
     }
 
+    /**
+     * Draws the given line.
+     * @param context the context to draw in
+     * @param line the line to draw
+     * @param windowStartX the x position of the window
+     * @param i the index of the line
+     * @param displayX the x position to draw the line
+     * @param displayY the y position to draw the line
+     */
     protected void drawLine(DrawContext context, String line, int windowStartX, int i, int displayX, int displayY) {
         context.drawText(textRenderer, line.substring(windowStartX), displayX, displayY, TEXT_COLOR, false);
     }
 
+    /**
+     * Draws the selection for the given line.
+     * @param context the context to draw in
+     * @param i the index of the line
+     * @param displayY the y position to draw the selection
+     */
     protected void drawSelectionForLine(DrawContext context, int i, int displayY) {
         int startX;
         int startY;
@@ -112,8 +198,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             endY = cursorY;
             startX = Math.min(cursorX, selectionEndX);
             endX = Math.max(cursorX, selectionEndX);
-        }
-        else if (cursorY > selectionEndY) {
+        } else if (cursorY > selectionEndY) {
             startY = selectionEndY;
             endY = cursorY;
             startX = selectionEndX;
@@ -139,6 +224,15 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         drawSelection(context, (int) (x * INVERSE_TEXT_SCALE) + beforeWidth, displayY, textRenderer.getWidth(selectedText));
     }
 
+    /**
+     * Returns the selected text for the given line.
+      * @param i the index of the line
+     * @param startX the x position of the start of the selection
+     * @param startY the y position of the start of the selection
+     * @param endX the x position of the end of the selection
+     * @param endY the y position of the end of the selection
+     * @return the selected text for the given line
+     */
     private String getLineSelection(int i, int startX, int startY, int endX, int endY) {
         String selectedText = "";
         // single line selection
@@ -160,11 +254,24 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         return selectedText;
     }
 
+    /**
+     * Draws the line index for the given line.
+     * @param context the context to draw in
+     * @param i the index of the line
+     * @param y the y position to draw the line index
+     */
     private void drawLineIndex(DrawContext context, int i, int y) {
         int width = textRenderer.getWidth(String.valueOf(i));
         context.drawText(textRenderer, String.valueOf(i), (int) (x * INVERSE_TEXT_SCALE - width - 10), y, TEXT_COLOR, false);
     }
 
+    /**
+     * Draws the selection.
+     * @param context the context to draw in
+     * @param x the x position of the selection
+     * @param y the y position of the selection
+     * @param width the width of the selection
+     */
     private void drawSelection(DrawContext context, int x, int y, int width) {
         context.fill(x, y, x + width, y + LINE_HEIGHT, SELECTION_COLOR);
     }
@@ -230,10 +337,18 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
     }
 
+    /**
+     * Returns the height of the contents.
+     * @return the height of the contents
+     */
     private int getContentsHeight() {
         return (int) ((lines.size() + 5) * LINE_HEIGHT * TEXT_SCALE);
     }
 
+    /**
+     * Sets the text of the widget.
+     * @param text the text to set
+     */
     public void setText(String text) {
         this.lines = new ArrayList<>();
         for (String lineString : text.split("\n", -1)) {
@@ -257,6 +372,10 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
     }
 
+    /**
+     * Returns the text of the widget.
+     * @return the text of the widget
+     */
     public String getText() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < lines.size(); i++) {
@@ -269,10 +388,16 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
     private void drawCursor(DrawContext context, int x, int y, boolean endOfLine) {
         if (((int) this.tickCounter) / 6 % 2 == 0) {
-            context.drawText(this.textRenderer, endOfLine ? "_" : "|", x , y, endOfLine ? 0 : 0x999999, false);
+            context.drawText(this.textRenderer, endOfLine ? "_" : "|", x, y, endOfLine ? 0 : 0x999999, false);
         }
     }
 
+    /**
+     * Updates the window.
+     * @param chr the character that was typed
+     * @param modifiers the modifiers that were pressed
+     * @return whether the character was typed
+     */
     public boolean charTyped(char chr, int modifiers) {
         if (Element.super.charTyped(chr, modifiers)) {
             return true;
@@ -284,6 +409,13 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         }
     }
 
+    /**
+     * Handles a key press.
+     * @param keyCode the key code of the key that was pressed
+     * @param scanCode the scan code of the key that was pressed
+     * @param modifiers the modifiers that were pressed
+     * @return whether the key was pressed
+     */
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         this.selecting = Screen.hasShiftDown();
         if (Screen.isSelectAll(keyCode)) {
@@ -361,8 +493,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             endY = cursorY;
             startX = Math.min(cursorX, selectionEndX);
             endX = Math.max(cursorX, selectionEndX);
-        }
-        else if (cursorY > selectionEndY) {
+        } else if (cursorY > selectionEndY) {
             startY = selectionEndY;
             endY = cursorY;
             startX = selectionEndX;
@@ -477,7 +608,8 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             // create new line if necessary
             if ( i >= 1) {
                 if (j >= lines.size())
-                    lines.add(new Line());
+                    for (int k = 0; k <= j - lines.size() + 1; k++)
+                        lines.add(new Line());
                 else
                     lines.add(j, new Line());
                 cursorX = 0;
@@ -554,6 +686,10 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         hasSelected = false;
     }
 
+    /**
+     * Deletes the given amount of characters.
+     * @param i the amount of characters to delete
+     */
     public void delete(int i) {
 
 
@@ -566,7 +702,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
                 unhookLine(cursorY);
                 return;
             }
-            from = cursorX + i ;
+            from = cursorX + i;
             to = cursorX;
             columnDelta = i;
         }
@@ -576,8 +712,8 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
                 unhookLine(cursorY + 1);
                 return;
             }
-            to = cursorX + i ;
-            from = cursorX ;
+            to = cursorX + i;
+            from = cursorX;
         }
         if (from < 0 || to > lines.get(cursorY).getContent().length())
             return;
@@ -614,24 +750,11 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
     private void updateWindow() {
         // cursor going out the top
         if ((cursorY + 1) * LINE_HEIGHT < scrollPosition) {
-            // calculate the length of the lines that are not displayed
-            int lineLengthSum = 0;
-            for (int j = cursorY; j > (scrollPosition / LINE_HEIGHT -cursorY); j--) {
-                lineLengthSum += lines.get(j).getContent().length();
-            }
-            windowStartTextIndex -= lineLengthSum;
             scrollPosition = (cursorY + 1) * LINE_HEIGHT;
         }
 
         // cursor going out the bottom
         if (cursorY + 1 > (scrollPosition + height) / LINE_HEIGHT) {
-            // calculate the length of the lines that are not displayed
-            int lineLengthSum = 0;
-            for (int j = cursorY; j < ((scrollPosition + height) / LINE_HEIGHT - cursorY); j++) {
-                lineLengthSum += lines.get(j).getContent().length();
-            }
-            windowStartTextIndex += lineLengthSum;
-
             scrollPosition = ((cursorY + 1) * LINE_HEIGHT) - height;
         }
 
