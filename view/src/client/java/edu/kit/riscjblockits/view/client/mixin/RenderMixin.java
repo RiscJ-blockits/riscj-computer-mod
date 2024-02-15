@@ -37,8 +37,8 @@ public abstract class RenderMixin {
         opcode = Opcodes.GETFIELD, args = {"log=false"}))
 
     private void beforeRenderDebugScreen(DrawContext context, float f, CallbackInfo ci) {
-        if (gui==null)
-            gui=new GoggleUI();
+        if (gui == null)
+            gui = new GoggleUI();
         gui.onRenderGameOverlay(context);
     }
 }

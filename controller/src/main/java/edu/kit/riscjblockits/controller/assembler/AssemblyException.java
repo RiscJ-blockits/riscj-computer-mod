@@ -6,8 +6,8 @@ package edu.kit.riscjblockits.controller.assembler;
 public class AssemblyException extends Exception{
 
     /**
-     * Constructor for an assembly exception
-     * @param errorMessage the error message
+     * Constructor for an assembly exception.
+     * @param errorMessage the error message.
      */
     public AssemblyException(String errorMessage) {
         super(errorMessage);

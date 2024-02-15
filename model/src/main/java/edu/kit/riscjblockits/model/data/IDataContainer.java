@@ -2,6 +2,9 @@ package edu.kit.riscjblockits.model.data;
 
 import java.util.Set;
 
+/**
+ * This interface defines the methods that a data container provides.
+ */
 public interface IDataContainer extends IDataElement {
     @Override
     default boolean isContainer(){

@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.view.client;
 
-import edu.kit.riscjblockits.view.client.screens.InsructionSetScreen;
+import edu.kit.riscjblockits.view.client.screens.InstructionSetScreen;
 import edu.kit.riscjblockits.view.client.screens.ManualScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.ControlUnitScreen;
 import edu.kit.riscjblockits.view.client.screens.handled.MemoryScreen;
@@ -72,7 +72,7 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 	 */
 	private void registerManualScreenReceiver() {
 		ClientPlayNetworking.registerGlobalReceiver(
-				NetworkingConstants.OPEN_MANUAL_SCREEN, (client, handler, buf, responseSender) -> client.execute(() -> client.setScreen(new ManualScreen(Text.translatable("manual.title")))
+			NetworkingConstants.OPEN_MANUAL_SCREEN, (client, handler, buf, responseSender) -> client.execute(() -> client.setScreen(new ManualScreen(Text.translatable("manual.title")))
                 ));
 	}
 
@@ -82,7 +82,7 @@ public class RISCJ_blockitsClient implements ClientModInitializer {
 	 */
 	private void registerIstItemScreenReceiver() {
 		ClientPlayNetworking.registerGlobalReceiver(
-			NetworkingConstants.OPEN_IST_SCREEN, (client, handler, buf, responseSender) -> client.execute(() -> client.setScreen(new InsructionSetScreen(Text.translatable("istItem.title"), buf.readString()))
+			NetworkingConstants.OPEN_IST_SCREEN, (client, handler, buf, responseSender) -> client.execute(() -> client.setScreen(new InstructionSetScreen(Text.translatable("istItem.title"), buf.readString()))
             ));
 	}
 

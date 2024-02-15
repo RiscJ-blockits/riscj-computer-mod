@@ -35,11 +35,11 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     /**
      * The background texture of the screen.
      */
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/programming_block_gui.png");
-    private static final Identifier ASSEMBLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/write_button_unpressed.png");
-    private static final Identifier ASSEMBLE_BUTTON_TEXTURE_FAILED = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/write_button_unpressed_failed.png");
-    private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/instructions_button.png");
-    private static final Identifier EXAMPLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/programming/example_button.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/programming_block_gui.png");
+    private static final Identifier ASSEMBLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_unpressed.png");
+    private static final Identifier ASSEMBLE_BUTTON_TEXTURE_FAILED = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_unpressed_failed.png");
+    private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/instructions_button.png");
+    private static final Identifier EXAMPLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/example_button.png");
 
     /**
      * Can display information about all available instructions.
@@ -121,6 +121,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
         instructionsWidget.initialize(this.width, this.height - backgroundHeight, this.client, this.narrow, this.handler);
+        addDrawableChild(instructionsWidget);
         // add the assembly button to the screen
         assembleButton.setX(this.x + 151);
         assembleButton.setY(this.y + 63);
@@ -251,4 +252,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         this.instructionsWidget.update();
     }
 
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
 }

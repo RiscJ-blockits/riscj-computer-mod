@@ -108,13 +108,17 @@ public class SystemClockController extends ComputerBlockController {
     }
 
     /**
-     * Setter for the simulation mode in the model, can be used if the simulation mode got changed during the simulation
+     * Setter for the simulation mode in the model can be used if the simulation mode got changed during the simulation.
      * @param mode The new simulation mode.
      */
     public void setSimulationMode(ClockMode mode) {
         ((SystemClockModel) getModel()).setClockMode(mode);
     }
 
+    /**
+     * Registers an observer for the simulation timing.
+     * @param simulationTimingObserver The observer to register.
+     */
     public void registerModelObserver(ISimulationTimingObserver simulationTimingObserver) {
         ((SystemClockModel) getModel()).registerObserver(simulationTimingObserver);
     }

@@ -6,10 +6,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
@@ -20,12 +17,11 @@ import net.minecraft.world.BlockView;
 
 import java.util.Map;
 
-/**
- * A computer block that can change its appearance depending on its neighbors.
- *
+/** ToDo javadoc
+ * A {@link ComputerBlock} that can change its appearance depending on its neighbors.
  * Copied from {@link net.minecraft.block.ConnectingBlock}.
  */
-public abstract class ConnectingComputerBlock extends ComputerBlock{
+public abstract class ConnectingComputerBlock extends ComputerBlock {
     private static final Direction[] FACINGS = Direction.values();
     public static final EnumProperty<Side> NORTH = EnumProperty.of("north", Side.class);
     public static final EnumProperty<Side> EAST = EnumProperty.of("east", Side.class);
@@ -52,7 +48,7 @@ public abstract class ConnectingComputerBlock extends ComputerBlock{
         VoxelShape voxelShape = Block.createCuboidShape((double)(f * 16.0F), (double)(f * 16.0F), (double)(f * 16.0F), (double)(g * 16.0F), (double)(g * 16.0F), (double)(g * 16.0F));
         VoxelShape[] voxelShapes = new VoxelShape[FACINGS.length];
 
-        for(int i = 0; i < FACINGS.length; ++i) {
+        for (int i = 0; i < FACINGS.length; ++i) {
             Direction direction = FACINGS[i];
             voxelShapes[i] = VoxelShapes.cuboid(0.5 + Math.min((double)(-radius), (double)direction.getOffsetX() * 0.5), 0.5 + Math.min((double)(-radius), (double)direction.getOffsetY() * 0.5), 0.5 + Math.min((double)(-radius), (double)direction.getOffsetZ() * 0.5), 0.5 + Math.max((double)radius, (double)direction.getOffsetX() * 0.5), 0.5 + Math.max((double)radius, (double)direction.getOffsetY() * 0.5), 0.5 + Math.max((double)radius, (double)direction.getOffsetZ() * 0.5));
         }
@@ -85,9 +81,9 @@ public abstract class ConnectingComputerBlock extends ComputerBlock{
     protected int getConnectionMask(BlockState state) {
         int i = 0;
 
-        for(int j = 0; j < FACINGS.length; ++j) {
+        for (int j = 0; j < FACINGS.length; ++j) {
             if ((state.get((EnumProperty<Side>)FACING_PROPERTIES.get(FACINGS[j])) == Side.PRESENT
-            || state.get((EnumProperty<Side>)FACING_PROPERTIES.get(FACINGS[j])) == Side.ACTIVE)) {
+                || state.get((EnumProperty<Side>)FACING_PROPERTIES.get(FACINGS[j])) == Side.ACTIVE)) {
                 i |= 1 << j;
             }
         }

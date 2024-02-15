@@ -4,6 +4,7 @@ import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntityWithInventory;
@@ -12,6 +13,7 @@ import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
@@ -21,8 +23,19 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_ALU;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_CLOCK;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_CONTROL_UNIT;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_MEMORY;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_REGISTERS;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_MISSING_REGISTERS;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_MODEL;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_ITEM_PRESENT;
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
 /**
  * This class represents a control unit entity from our mod in the game.
@@ -31,6 +44,9 @@ import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_ITEM_PRESEN
 public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory implements
     ExtendedScreenHandlerFactory {
 
+    /**
+     * The slot for the instruction set.
+     */
     private static final int INSTRUCTION_SET_SLOT = 1;
 
     /**
@@ -52,9 +68,10 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     }
 
     /**
-     * ToDo
-     * @param player
-     * @return
+     * Called when the screen is opened.
+     * We send the position to the screen.
+     * @param player the player that is opening the screen
+     * @param buf the packet buffer to write the data to
      */
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
@@ -62,11 +79,12 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     }
 
     /**
+     * Getter for the name of the ControlUnit Screen.
      * @return The name on the ControlUnit Screen.
      */
     @Override
     public Text getDisplayName() {
-        return Text.literal("Control Unit");
+        return Text.translatable("block.riscj_blockits.control_unit_block");
     }
 
     /**
@@ -88,7 +106,6 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
     @Override
     public void inventoryChanged() {
         if (getController() != null) {             //only on the server
-            System.out.println("IST Item changed");
             if (getItems().get(0).getCount() == 0) {        //Item is removed when there are zero 'air' items
                 Data cuData = new Data();
                 cuData.set(CONTROL_IST_MODEL, null);
@@ -117,4 +134,114 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
         super.updateUI();
     }
 
+
+    @Override
+    public Text getGoggleText() {
+
+        NbtCompound nbt = new NbtCompound();
+        writeNbt(nbt);
+        Text completion;
+
+        ItemStack item = getItems().get(0);
+        Text istName;
+
+
+        if (!item.isEmpty()) { //if an instructionset is present check completion
+            istName = item.getName();
+
+            List missing = getStructure()[0];
+
+            if(missing.isEmpty()){
+                completion = Text.translatable("riscj_blockits.computer_complete");
+            } else if (missing.size() == 1) {
+                completion = Text.of("Missing: " + missing.get(0)); //TODO make completion
+            } else {
+                completion = Text.translatable("riscj_blockits.computer_incomplete");
+            }
+        } else { //otherwise set to Empty and incomplete
+            istName = Text.translatable("riscj_blockits.ist_none");
+            completion = Text.translatable("riscj_blockits.computer_incomplete");
+        }
+
+        return Text.translatable("block.riscj_blockits.control_unit_block")
+                .append("\n")
+                .append(Text.translatable("riscj_blockits.ist"))
+                .append(": ")
+                .append(istName)
+                .append("\n")
+                .append(Text.translatable("riscj_blockits.completion"))
+                .append(": ")
+                .append(completion);
+
+    }
+
+    /**
+     * Getter for a List of missing Blocks and a List of found Blocks.
+     * @return A List[] with the first entry being the missing Blocks and the second entry being the found Blocks.
+     */
+    public List[] getStructure(){
+        List<String> listFound = new ArrayList<>();
+        List<String> listMissing = new ArrayList<>();
+        NbtCompound nbt = this.createNbt();
+        if (!nbt.contains(MOD_DATA)) {
+            return new List[]{listMissing, listFound};
+        }
+        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
+        if (!data.isContainer()) {
+            return new List[]{listMissing, listFound};
+        }
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals(CONTROL_CLUSTERING)) {
+                IDataContainer clusteringData = (IDataContainer) ((IDataContainer) data).get(CONTROL_CLUSTERING);
+                for (String s2 : clusteringData.getKeys()) {
+                    switch (s2) {
+                        //ToDo reformat ugly code
+                        case CLUSTERING_MISSING_REGISTERS:
+                            listMissing.addAll(List.of(((IDataStringEntry) clusteringData.get(s2)).getContent().split(" ")));
+                            listMissing.remove("");
+                            break;
+                        case CLUSTERING_FOUND_REGISTERS:
+                            listFound.addAll(List.of(((IDataStringEntry) clusteringData.get(s2)).getContent().split(" ")));
+                            listFound.remove("");
+                            break;
+                        case CLUSTERING_FOUND_CONTROL_UNIT:
+                            String found = ((IDataStringEntry) clusteringData.get(s2)).getContent();
+                            if (found.equals("1")) {
+                                listFound.add("ControlUnit");
+                            } else {
+                                listMissing.add("ControlUnit");
+                            }
+                            break;
+                        case CLUSTERING_FOUND_ALU:
+                            String foundALU = ((IDataStringEntry) clusteringData.get(s2)).getContent();
+                            if (foundALU.equals("1")) {
+                                listFound.add("ALU");
+                            } else {
+                                listMissing.add("ALU");
+                            }
+                            break;
+                        case CLUSTERING_FOUND_MEMORY:
+                            String foundMemory = ((IDataStringEntry) clusteringData.get(s2)).getContent();
+                            if (foundMemory.equals("1")) {
+                                listFound.add("Memory");
+                            } else {
+                                listMissing.add("Memory");
+                            }
+                            break;
+                        case CLUSTERING_FOUND_CLOCK:
+                            String foundClock = ((IDataStringEntry) clusteringData.get(s2)).getContent();
+                            if (foundClock.equals("1")) {
+                                listFound.add("Clock");
+                            } else {
+                                listMissing.add("Clock");
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        return new List[]{listMissing, listFound};
+    }
 }

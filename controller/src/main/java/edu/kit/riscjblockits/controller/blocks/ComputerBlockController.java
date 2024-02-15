@@ -13,7 +13,8 @@ import java.util.List;
  * Every Computer block Entity has a ComputerBlockController.
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
-public abstract class ComputerBlockController extends BlockController implements IUserInputReceivableComputerController, IQueryableClusterController, IQueryableSimController {
+public abstract class ComputerBlockController extends BlockController
+        implements IUserInputReceivableComputerController, IQueryableClusterController, IQueryableSimController {
 
     /**
      * The model of the block. Every computer controller stores a model to keep the data of the block.
@@ -36,6 +37,7 @@ public abstract class ComputerBlockController extends BlockController implements
      * Creates a new BlockController.
      * Also begins the simulation if the computer is completely built.
      * @param blockEntity The block entity that the controller is responsible for.
+     * @param controllerType The type of the controller.
      */
     protected ComputerBlockController(IConnectableComputerBlockEntity blockEntity, BlockControllerType controllerType) {
         super(controllerType);
@@ -44,7 +46,8 @@ public abstract class ComputerBlockController extends BlockController implements
         blockEntity.setBlockModel((IViewQueryableBlockModel) this.blockModel);      //FixMe cast sehr unschön
     }
 
-    /** //ToDo nicht im entwurf
+    //ToDo nicht im entwurf
+    /**
      * Starts the clustering process.
      * @param pos The position of the block in the minecraft world.
      */
@@ -108,6 +111,7 @@ public abstract class ComputerBlockController extends BlockController implements
     }
 
     /**
+     * Getter for the associated ClusterHandler.
      * @return The associated ClusterHandler.
      */
     public ClusterHandler getClusterHandler() {
@@ -137,8 +141,8 @@ public abstract class ComputerBlockController extends BlockController implements
      */
     public void tick() {}
 
-
-    /** //ToDo nicht im Entwurfs wiki
+    //ToDo nicht im Entwurfs wiki
+    /**
      * Activates the visualisation of the block.
      */
     public void activateVisualisation() {
@@ -153,14 +157,8 @@ public abstract class ComputerBlockController extends BlockController implements
         blockModel.setVisualisationState(false);
     }
 
+    //ToDo nicht im Entwurfs wiki
     /**
-     * Update the block state of neighbourBusses.
-     */
-    public void neighborUpdate() {
-        blockEntity.neighborUpdate();
-    }
-
-    /** ToDo nicht im Entwurfs wiki
      * Creates a new effect at position of the block entity.
      * @param effect The effect that should be spawned.
      */

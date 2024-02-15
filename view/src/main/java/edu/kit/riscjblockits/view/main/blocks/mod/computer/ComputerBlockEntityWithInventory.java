@@ -23,10 +23,10 @@ public abstract class ComputerBlockEntityWithInventory extends ComputerBlockEnti
      * Creates a new ComputerBlockEntityWithInventory with the given settings.
      * @param type The type of the block entity.
      * @param pos The position of the block in the minecraft world.
-     * @param state The state of the  ComputerBlock.
+     * @param state The state of the ComputerBlock.
      * @param inventorySize The size of the inventory.
      */
-    public ComputerBlockEntityWithInventory(BlockEntityType<?> type, BlockPos pos, BlockState state, int inventorySize) {
+    protected ComputerBlockEntityWithInventory(BlockEntityType<?> type, BlockPos pos, BlockState state, int inventorySize) {
         super(type, pos, state);
         items = DefaultedList.ofSize(inventorySize, ItemStack.EMPTY);
     }
@@ -43,7 +43,7 @@ public abstract class ComputerBlockEntityWithInventory extends ComputerBlockEnti
     /**
      * Reads the items from the given {@link NbtCompound}.
      * Reads block information from the given {@link NbtCompound}.
-     * @param nbt
+     * @param nbt The nbt to read from.
      */
     @Override
     public void readNbt(NbtCompound nbt) {
@@ -54,7 +54,7 @@ public abstract class ComputerBlockEntityWithInventory extends ComputerBlockEnti
 
     /**
      * Writes inventory and block information to the given {@link NbtCompound}.
-     * @param nbt
+     * @param nbt the nbt to write to.
      */
     @Override
     public void writeNbt(NbtCompound nbt) {
@@ -65,6 +65,7 @@ public abstract class ComputerBlockEntityWithInventory extends ComputerBlockEnti
     /**
      * Must be called by the block-specific screen handler if the inventory has changed.
      * Is called when the block is loaded.
+     * It can be overridden by the block-specific entity for special behavior.
      */
     public void inventoryChanged() {
         //do nothing

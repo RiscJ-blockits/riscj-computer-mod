@@ -49,18 +49,16 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
         int size = jsonArray.size();
         if(size == 5){
             return parseDataMovementInstruction(jsonArray);
-        }
-        else if(size == 9) {
+        } else if(size == 9) {
             return parseConditionedInstruction(jsonArray);
-        }
-        else if(size == 7) {
+        } else if(size == 7) {
             return parseAluInstruction(jsonArray);
         }
         return null;
     }
 
     /**
-     * Generate DataMovementInstruction from json of form ["[destination]", "[origin]", "[memory_flag]", "[storage operation]"]
+     * Generate DataMovementInstruction from json of form ["[destination]", "[origin]", "[memory_flag]", "[storage operation]"].
      * @param jsonArray ["[destination]", "[origin]", "[memory_flag]", "[storage operation]"]
      * @return DataMovementInstruction
      */
@@ -73,33 +71,30 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
         MemoryInstruction memoryInstruction = parseMemoryInstruction(
                 elementList.get(3).toString().replace("\"", ""),
                 elementList.get(4).toString().replace("\"", ""), memoryFlag);
-
-
         return new DataMovementInstruction(from, to, memoryFlag, memoryInstruction);
     }
 
     /**
-     * Generate MemoryInstruction from json of form [destination, origin]
+     * Generate MemoryInstruction from json of form [destination, origin].
      * @param to destination
      * @param from origin
      * @param flag flag
+     * @throws JsonParseException if only one argument is set
      * @return MemoryInstruction
      */
     private MemoryInstruction parseMemoryInstruction(String to, String from, String flag) {
-        
         // check if all arguments (except flag) are empty --> no memory instruction
         if (to.isEmpty() && from.isEmpty()) {
             return null;
         } else if (to.isEmpty() || from.isEmpty()) {
             throw new JsonParseException("Invalid Memory Instruction, only one argument is set");
         }
-
         return new MemoryInstruction(new String[]{from}, to, flag);
     }
 
     /**
-     * Generate AluInstruction from json of form
-     * ["operation", "[alu-dest]", "[alu-origin 1]", "[alu-origin 2]", "[memory flag]", "[storage operation]"]
+     * Generate AluInstruction from json of form.
+     * ["Operation", "[alu-dest]", "[alu-origin 1]", "[alu-origin 2]", "[memory flag]", "[storage operation]"]
      *
      * @param jsonArray ["operation", "[alu-dest]", "[alu-origin 1]", "[alu-origin 2]", "[memory flag]", "[storage operation]"]
      * @return AluInstruction aus dem Array
@@ -120,7 +115,7 @@ public class MicroInstructionsDeserializer implements JsonDeserializer<MicroInst
     }
 
     /**
-     * Generate ConditionedInstruction from json of form
+     * Generate ConditionedInstruction from json of form.
      * ["IF", "[comparator1]", "[comparator2]", "comparing_operation", then_to, then_from, "memory_flag", "storage_operation"]
      * @param jsonArray ["IF", "[comparator1]", "[comparator2]", "comparing_operation", then_to, then_from, "memory_flag", "storage_operation"]
      * @return ConditionedInstruction

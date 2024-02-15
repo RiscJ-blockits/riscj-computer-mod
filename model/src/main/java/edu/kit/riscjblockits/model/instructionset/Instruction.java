@@ -11,8 +11,20 @@ import java.util.regex.Pattern;
  */
 public class Instruction implements IQueryableInstruction {
 
+    /**
+     * The pattern to match a binary string.
+     */
+    private static final Pattern BINARY_PATTERN = Pattern.compile("[01]+");
+
+    /**
+     * The pattern to match an argument-translation pair.
+     */
     private static final Pattern ARGUMENT_TRANSLATION_PATTERN =
         Pattern.compile("(?<argument>\\[\\w+\\])<(?<length>\\d+(:?\\d+)?)>");
+
+    /**
+     * The pattern to match an argument-translation pair with a range.
+     */
     private static final Pattern ARGUMENT_TRANSLATION_PATTERN_RANGE =
         Pattern.compile("(?<argument>\\[\\w+\\])<(?<from>\\d+):(?<to>\\d+)>");
 
@@ -36,6 +48,13 @@ public class Instruction implements IQueryableInstruction {
      */
     private final String[] translation;
 
+    /**
+     * Constructor for the instruction.
+     * @param arguments The arguments of the instruction.
+     * @param opcode The opcode of the instruction.
+     * @param execution The execution of the instruction as a sequence of micro instructions.
+     * @param translation The translation of the instruction to binary.
+     */
     public Instruction(String[] arguments, String opcode, MicroInstruction[] execution, String[] translation) {
         this.arguments = arguments;
         this.opcode = opcode;
@@ -43,7 +62,14 @@ public class Instruction implements IQueryableInstruction {
         this.translation = translation;
     }
 
-    public Instruction(Instruction instruction, String binary) {
+    /**
+     * Constructor to create a copy of an instruction.
+     * @param instruction The instruction to copy.
+     * @param binary The binary value of the instruction.
+     * @param intRegisters The integer registers of the instruction.
+     * @param floatRegisters The float registers of the instruction.
+     */
+    public Instruction(Instruction instruction, String binary, HashMap<Integer, String> intRegisters, HashMap<Integer, String> floatRegisters) {
         this.arguments = instruction.arguments.clone();
         this.opcode = instruction.opcode;
         this.translation = instruction.translation.clone();
@@ -55,20 +81,7 @@ public class Instruction implements IQueryableInstruction {
 
         // generate filled micro instructions
         for (int i = 0; i < instruction.execution.length; i++) {
-            MicroInstruction microInstruction = instruction.execution[i];
-            String[] from = microInstruction.getFrom().clone();
-            String to = microInstruction.getTo();
-            for (int j = 0; j < from.length; j++) {
-                if (argumentsInstructionMap.containsKey(from[j])) {
-                    from[j] = argumentsInstructionMap.get(from[j]);
-                }
-            }
-
-            if (argumentsInstructionMap.containsKey(to)) {
-                to = argumentsInstructionMap.get(to);
-            }
-
-            this.execution[i] = instruction.execution[i].clone(from, to);
+            this.execution[i] = instruction.execution[i].getFilled(argumentsInstructionMap, intRegisters, floatRegisters);
         }
     }
 
@@ -114,8 +127,7 @@ public class Instruction implements IQueryableInstruction {
                 argumentsInstructionMap.put(argument, sb.toString());
                 binaryPosition += to - from + 1;
                 continue;
-            }
-            else if (matcher.matches()) {
+            } else if (matcher.matches()) {
                 String argument = matcher.group("argument");
                 int length = Integer.parseInt(matcher.group("length"));
                 argumentsInstructionMap.put(argument, binary.substring(binaryPosition, binaryPosition + length));
@@ -166,4 +178,40 @@ public class Instruction implements IQueryableInstruction {
     }
 
 
+    /**
+     * Checks if the given binary value matches the (constant) translation of the instruction.
+     *
+     * @param binaryValue The binary value to check.
+     * @return True if the binary value matches the translation, false otherwise.
+     */
+    public boolean matchesBinary(String binaryValue) {
+        int offset = 0;
+        for (String arg : translation) {
+            // increment offset based on translation
+            if (!BINARY_PATTERN.matcher(arg).matches()) {
+                Matcher matcherRange = ARGUMENT_TRANSLATION_PATTERN_RANGE.matcher(arg);
+                if (matcherRange.matches()) {
+                    int from = Integer.parseInt(matcherRange.group("from"));
+                    int to = Integer.parseInt(matcherRange.group("to"));
+                    if (from > to) {
+                        to += from;
+                        from = to - from;
+                        to -= from;
+                    }
+                    offset += to - from + 1;
+                } else {
+                    Matcher matcher = ARGUMENT_TRANSLATION_PATTERN.matcher(arg);
+                    if (matcher.matches()) {
+                        offset += Integer.parseInt(matcher.group("length"));
+                    }
+                }
+            } else { // check if binaryValue matches translation, increment offset
+                if (!arg.equals(binaryValue.substring(offset, offset + arg.length()))) {
+                    return false;
+                }
+                offset += arg.length();
+            }
+        }
+        return true;
+    }
 }

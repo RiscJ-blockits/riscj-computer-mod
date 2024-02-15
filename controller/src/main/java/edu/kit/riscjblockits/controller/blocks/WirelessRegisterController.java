@@ -2,14 +2,18 @@ package edu.kit.riscjblockits.controller.blocks;
 
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
-import edu.kit.riscjblockits.model.blocks.RegisterModel;
 import edu.kit.riscjblockits.model.blocks.WirelessRegisterModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
-import static edu.kit.riscjblockits.model.data.DataConstants.*;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WIRELESS;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WIRELESS_XPOS;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WIRELESS_YPOS;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WIRELESS_ZPOS;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGTH;
 
 /**
  * The controller for a WirelessRegisterBlock.

@@ -43,8 +43,7 @@ public class RegisterModel extends BlockModel {
         value = new Value();
         setType(ModelType.REGISTER);
         registerType = UNASSIGNED_REGISTER;
-        //ToDo remove Test code
-        wordLength = 10;
+        wordLength = 3;
     }
 
     /**
@@ -72,6 +71,11 @@ public class RegisterModel extends BlockModel {
         return regData;
     }
 
+    /**
+     * Setter for the register size.
+     * Also starts an update of the view.
+     * @param wordLength The word length to set.
+     */
     public void setWordLength(int wordLength){
         this.wordLength = wordLength;
         setUnqueriedStateChange(true);
@@ -81,6 +85,11 @@ public class RegisterModel extends BlockModel {
         return registerType;
     }
 
+    /**
+     * Setter for the register type.
+     * Also starts an update of the view.
+     * @param registerType The register type to set.
+     */
     public void setRegisterType(String registerType) {
         this.registerType = registerType;
         setUnqueriedStateChange(true);
@@ -90,10 +99,14 @@ public class RegisterModel extends BlockModel {
         return value;
     }
 
+    /**
+     * Setter for the value of the register.
+     * Also starts an update of the view.
+     * @param value The value to set the register to.
+     */
     public void setValue(Value value) {
         this.value = value;
         setUnqueriedStateChange(true);
-        System.out.println("Value set to: " + value.getHexadecimalValue());
     }
 
     /**

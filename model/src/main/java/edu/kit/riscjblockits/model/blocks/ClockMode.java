@@ -17,5 +17,5 @@ public enum ClockMode {
     /**
      * The computer executes instructions based on user input.
      */
-    STEP,
+    STEP
 }

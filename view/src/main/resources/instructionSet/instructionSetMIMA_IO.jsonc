@@ -1,6 +1,6 @@
 {
   "name": "MIMA",             // declare name
-  "instruction_length": 24,   // declade instruction length
+  "instruction_length": 24,   // declare instruction length
 
   "registers": {                  // define existing (required) registers
     "program_counter": "IAR",   // register containing the current program address

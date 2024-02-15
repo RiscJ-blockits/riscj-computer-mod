@@ -50,7 +50,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver, IRealti
     /**
      * Constructor. Creates a new {@link SimulationSequenceHandler} and registers itself as an observer
      * of the {@link SystemClockModel}.
-     *
+     * @param busSystem The bus system that is used for the simulation.
      * @param blockControllers List of all {@link BlockController}s of the associated computer blocks.
      */
     public SimulationTimeHandler(List<IQueryableSimController> blockControllers, IBusSystem busSystem) {
@@ -87,8 +87,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver, IRealti
         if (clockMode == ClockMode.STEP) {
             systemClockController.activateVisualisation();
             runTick();
-        }
-        else if(clockMode == ClockMode.REALTIME && !realtimeSimulationRunning) {
+        } else if(clockMode == ClockMode.REALTIME && !realtimeSimulationRunning) {
             realtimeSimulationRunning = true;
             runTick();
         }
@@ -120,20 +119,15 @@ public class SimulationTimeHandler implements ISimulationTimingObserver, IRealti
         if(clockMode != ClockMode.REALTIME) {
             realtimeSimulationRunning = false;
         }
-
         clockSpeed = systemClockController.getClockSpeed();
         clockMode = systemClockController.getClockMode();
-
         if(clockMode == ClockMode.REALTIME) {
             simulationSequenceHandler.setVisualizationMode(SimulationSequenceHandler.VisualisationMode.FAST);
-        }
-        else if (clockMode == ClockMode.MC_TICK) {
+        } else if (clockMode == ClockMode.MC_TICK) {
+            simulationSequenceHandler.setVisualizationMode(SimulationSequenceHandler.VisualisationMode.NORMAL);
+        } else if (clockMode == ClockMode.STEP) {
             simulationSequenceHandler.setVisualizationMode(SimulationSequenceHandler.VisualisationMode.NORMAL);
         }
-        else if (clockMode == ClockMode.STEP) {
-            simulationSequenceHandler.setVisualizationMode(SimulationSequenceHandler.VisualisationMode.NORMAL);
-        }
-
     }
 
 }

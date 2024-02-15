@@ -1,5 +1,7 @@
 package edu.kit.riscjblockits.view.client.screens.widgets;
 
+import net.minecraft.client.gui.DrawContext;
+
 import java.util.List;
 
 /**
@@ -27,7 +29,15 @@ public class InstructionListWidget extends ScrollableListWidget<InstructionEntry
      * @param updatedEntries The entries to replace the old ones with.
      */
     public void updateEntries(List<InstructionEntry> updatedEntries) {
-            this.entries = updatedEntries;
+        this.entries = updatedEntries;
     }
 
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
+
+        for (InstructionEntry entry : entries) {
+            entry.drawTooltip(context, mouseX, mouseY, delta);
+        }
+    }
 }

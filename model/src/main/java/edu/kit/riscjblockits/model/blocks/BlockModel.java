@@ -13,11 +13,10 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
      * (every sent change is a network packet)
      */
     private boolean hasUnqueriedStateChange;
-
-    /** ToDo nicht im Entwurfs wiki
+    /**
      * States if the block is currently working and should be active in the view.
      */
-    private boolean visualisationState;
+    private boolean visualisationState; //ToDo nicht im Entwurfs wiki
 
     /**
      * Type of the block. Used to distinguish between different models.
@@ -38,6 +37,7 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
     }
 
     /**
+     * Sets the position of the associated block in the minecraft world.
      * @param position The position of the associated block in the minecraft world.
      */
     public void setPosition(BlockPosition position) {
@@ -45,20 +45,23 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
     }
 
     /**
-     * @return The type of the block. Used to distinguish between different model types.
+     * Returns the type of the block. Used to distinguish between different model types.
+     * @return The type of the block
      */
     public ModelType getType() {
         return type;
     }
 
     /**
-     * @param type The type of the block. Used to distinguish between different model types.
+     * Sets the type of the block. Used to distinguish between different model types.
+     * @param type The type of the block
      */
     protected void setType(ModelType type) {
         this.type = type;
     }
 
     /**
+     * Returns the position of the associated block in the minecraft world.
      * @return The position of the associated block in the minecraft world.
      */
     public BlockPosition getPosition() {
@@ -66,6 +69,7 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
     }
 
     /**
+     * Checker for the state of the data whether it has changed and has not been queried by the view yet.
      * @return whether this block has a state change that has not been queried by the view yet.
      */
     public boolean hasUnqueriedStateChange() {
@@ -73,18 +77,27 @@ public abstract class BlockModel implements IControllerQueryableBlockModel, IVie
     }
 
     /**
-     * @param hasUnqueriedStateChange Sets whether this block has a state change that has not been queried by the view yet.
+     * Sets whether this block has a state change that has not been queried by the view yet.
+     * @param hasUnqueriedStateChange true if this block has a state change that has not been queried by the view yet.
      */
     protected void setUnqueriedStateChange(boolean hasUnqueriedStateChange) {
-       this.hasUnqueriedStateChange = hasUnqueriedStateChange;
+        this.hasUnqueriedStateChange = hasUnqueriedStateChange;
     }
 
     //ToDo nicht im Entwurfs wiki
+
+    /**
+     * Notifies the model that the view has queried its state.
+     */
     public void onStateQuery() {
         hasUnqueriedStateChange = false;
     }
 
     //ToDo nicht im Entwurfs wiki
+
+    /**
+     * Notifies the model that its state has changed.
+     */
     public void onStateChange() {
         hasUnqueriedStateChange = true;
     }

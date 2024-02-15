@@ -30,10 +30,11 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGT
 /**
  * Checks clusters for valid architectures.
  */
-public class ClusterArchitectureHandler {
+public final class ClusterArchitectureHandler {
 
     /**
      * Private constructor to prevent instantiation.
+     * @throws IllegalStateException thrown if a constructor is called.
      */
     private ClusterArchitectureHandler() {
         throw new IllegalStateException("Utility class");
@@ -41,8 +42,12 @@ public class ClusterArchitectureHandler {
 
     /**
      * Checks a given cluster if it is a specific valid architecture.
+     * @param istModel The instruction set model to check the cluster against.
+     * @param clusterHandler The cluster to check.
+     * @return true if the cluster is a valid architecture, false otherwise
+     * @throws IllegalStateException thrown if an unknown Controller is found in the cluster.
      */
-    public static boolean checkArchitecture(IQueryableInstructionSetModel istModel, ClusterHandler clusterHandler) {         //ToDo im ugly code please reformat me
+    public static boolean checkArchitecture(IQueryableInstructionSetModel istModel, ClusterHandler clusterHandler) { //ToDo im ugly code please reformat me
         //is called after every block modification
         //should not eat too much performance because even RiscV is not that big
         List<IQueryableClusterController> blocks = clusterHandler.getBlocks();
@@ -106,7 +111,7 @@ public class ClusterArchitectureHandler {
         }
 
         //check Registers
-        boolean rightAmountOfRegisters = (availableRegisters.size() == istModel.getRegisterNames().size());       //we could have more registers if we connect IO registers
+        boolean rightAmountOfRegisters = (availableRegisters.size() == istModel.getRegisterNames().size());
         Collections.sort(availableRegisters);
         List<String> requiredRegisters = istModel.getRegisterNames();
         Collections.sort(requiredRegisters);
@@ -117,7 +122,7 @@ public class ClusterArchitectureHandler {
         choseData.set(REGISTER_FOUND, new DataStringEntry(listToString(availableRegisters)));
         Data rData = new Data();
         rData.set(REGISTER_REGISTERS, choseData);
-        rData.set(REGISTER_WORD_LENGTH, new DataStringEntry(String.valueOf(istModel.getMemoryWordSize())));       //ToDo vielleicht wäre hier ein Int Data Element besser
+        rData.set(REGISTER_WORD_LENGTH, new DataStringEntry(String.valueOf(istModel.getMemoryWordSize()))); //ToDo vielleicht wäre hier ein Int Data Element besser
         for (IQueryableClusterController block : blocks) {
             if (block.getControllerType() == BlockControllerType.REGISTER) {
                 ((RegisterController) block).setData(rData);

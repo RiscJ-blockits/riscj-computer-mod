@@ -6,11 +6,15 @@ import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.EntityType;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.ConnectingComputerBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.BUS_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
 /**
  * This class represents a bus entity from our mod in the game.
@@ -41,6 +45,7 @@ public class BusBlockEntity extends ComputerBlockEntity {
      * This method updates the block state of the bus.
      */
     public void updateBlockState() {
+        assert world != null;   //when states are updated, the world is already loaded
         if (world.isClient || getController() == null || world.getBlockState(pos) == null) {
             return;
         }
@@ -59,7 +64,7 @@ public class BusBlockEntity extends ComputerBlockEntity {
 
     /**
      * Method to get the state of a side of the bus.
-     * @param neighbours The list of neighbours of the bus.
+     * @param neighbours The list of neighbors of the bus.
      * @param pos The position of the NeighbourBlock at the side of the bus.
      * @return The state of the side.
      */
@@ -90,6 +95,25 @@ public class BusBlockEntity extends ComputerBlockEntity {
         return false;
     }
 
+    @Override
+    public Text getGoggleText() {
+        NbtCompound nbt = new NbtCompound();
+        writeNbt(nbt);
+        Text busData = Text.translatable("riscj_blockits.no_bus_data");
+
+        if (nbt.contains(MOD_DATA)) {
+            if (nbt.getCompound(MOD_DATA).contains(BUS_DATA)) {
+                busData = Text.of(nbt.getCompound(MOD_DATA).getString(BUS_DATA));
+            }
+        }
+
+        return Text.translatable("block.riscj_blockits.bus_block")
+                .append("\n")
+                .append(Text.translatable("block.riscj_blockits.bus_data"))
+                .append(": ")
+                .append(busData);
+    }
+
     /**
      * Gets called every tick.
      * Used to update ui elements.
@@ -99,4 +123,5 @@ public class BusBlockEntity extends ComputerBlockEntity {
         super.updateUI();
         updateBlockState();
     }
+
 }

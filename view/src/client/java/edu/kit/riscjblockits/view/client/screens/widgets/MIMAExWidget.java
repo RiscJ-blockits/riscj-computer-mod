@@ -9,7 +9,7 @@ public class MIMAExWidget extends ExtendableWidget {
 
     public static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(new Identifier("recipe_book/button"), new Identifier("recipe_book/button_highlighted"));
     public static final Identifier
-        TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/control_unit/control_mima_ex.png");
+        TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/control_unit/control_mima_ex.png");
 
     public MIMAExWidget() {
     }

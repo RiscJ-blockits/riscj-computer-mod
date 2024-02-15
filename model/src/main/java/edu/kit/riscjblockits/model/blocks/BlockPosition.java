@@ -7,20 +7,20 @@ package edu.kit.riscjblockits.model.blocks;
 public class BlockPosition {
 
     /**
-     * x coordinate of the position
+     * X coordinate of the position.
      */
     private double x;
     /**
-     * y coordinate of the position
+     * Y coordinate of the position.
      */
     private double y;
     /**
-     * z coordinate of the position
+     * Z coordinate of the position.
      */
     private double z;
 
     /**
-     * true if the block on the position is a bus
+     * True if the block on the position is a bus.
      */
     private boolean isBus;
 
@@ -48,7 +48,7 @@ public class BlockPosition {
     }
 
     /**
-     * Getter for the x coordinate
+     * Getter for the x coordinate.
      * @return x coordinate of the position
      */
     public double getX() {
@@ -56,7 +56,7 @@ public class BlockPosition {
     }
 
     /**
-     * Getter for the y coordinate
+     * Getter for the y coordinate.
      * @return y coordinate of the position
      */
     public double getY() {
@@ -64,7 +64,7 @@ public class BlockPosition {
     }
 
     /**
-     * Getter for the z coordinate
+     * Getter for the z coordinate.
      * @return z coordinate of the position
      */
     public double getZ() {
@@ -72,7 +72,7 @@ public class BlockPosition {
     }
 
     /**
-     * Setter for the x coordinate
+     * Setter for the x coordinate.
      * @param x x coordinate of the position
      */
     public void setX(double x) {
@@ -80,7 +80,7 @@ public class BlockPosition {
     }
 
     /**
-     * Setter for the y coordinate
+     * Setter for the y coordinate.
      * @param y y coordinate of the position
      */
     public void setY(double y) {
@@ -88,7 +88,7 @@ public class BlockPosition {
     }
 
     /**
-     * Setter for the z coordinate
+     * Setter for the z coordinate.
      * @param z z coordinate of the position
      */
     public void setZ(double z) {
@@ -96,7 +96,7 @@ public class BlockPosition {
     }
 
     /**
-     * Getter for the isBus attribute
+     * Getter for the isBus attribute.
      * @return true if the block on the position is a bus
      */
     public boolean isBus() {
@@ -104,7 +104,7 @@ public class BlockPosition {
     }
 
     /**
-     * Setter for the isBus attribute
+     * Setter for the isBus attribute.
      * @param bus true if the block on the position is a bus
      */
     public void setBus(boolean bus) {
@@ -112,7 +112,7 @@ public class BlockPosition {
     }
 
     /**
-     * compares two BlockPositions if they are equal
+     * Compares two BlockPositions if they are equal.
      * @param o is the BlockPosition to compare
      * @return true if the BlockPositions are equal
      */
@@ -130,7 +130,7 @@ public class BlockPosition {
     }
 
     /**
-     * calculates the hashcode of the BlockPosition
+     * Calculates the hashcode of the BlockPosition.
      * @return the hashcode of the BlockPosition
      */
     @Override

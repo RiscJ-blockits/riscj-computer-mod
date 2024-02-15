@@ -29,13 +29,16 @@ import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
 /**
  * This class represents the Instruction Set Item Screen. With it, the player can modify the Instruction Set on the Item.
  */
-public class InsructionSetScreen extends Screen {
+public class InstructionSetScreen extends Screen {
 
+    private static final Identifier WRITE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/instructionset/save_button.png");
+
+    private static final Identifier RESTORE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/instructionset/reset_button.png");
     /**
      * The tag that is used to store user input temporary data in the NBT.
      */
     private static final String TEMP_IST_NBT_TAG = "temp_IstString";
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/instructionset/instructionset_gui.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/instructionset/instructionset_gui.png");
 
     /**
      * The edit box widget that is used to enter the code.
@@ -48,13 +51,11 @@ public class InsructionSetScreen extends Screen {
      * The button that is used to write new code to the item.
      */
     private IconButtonWidget writeButton;
-    private static final Identifier WRITE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/instructionset/save_button.png");
 
     /**
      * The button that is used to restore the code to the last known working version.
      */
     private IconButtonWidget restoreButton;
-    private static final Identifier RESTORE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/instructionset/reset_button.png");
     private MultilineText errorText;
     private int tickCounter;
     private boolean edited = false;
@@ -68,9 +69,10 @@ public class InsructionSetScreen extends Screen {
 
     /**
      * Creates a new Instruction Set Item Screen. With it, the player can modify the Instruction Set on the Item.
-     * @param title
+     * @param title the title of the screen
+     * @param hand the hand that holds the item
      */
-    public InsructionSetScreen(Text title, String hand) {
+    public InstructionSetScreen(Text title, String hand) {
         super(title);
         this.backgroundHeight = 180;
         this.backgroundWidth = 269;
@@ -213,7 +215,7 @@ public class InsructionSetScreen extends Screen {
         }catch (UnsupportedEncodingException | InstructionBuildException e) {
             tickCounter = 100;
             //errorText = MultilineText.create(textRenderer,Text.of(e.getMessage()) , 182 * 2);
-            errorText = MultilineText.create(textRenderer,Text.translatable("ist_error") , 200);
+            errorText = MultilineText.create(textRenderer,Text.translatable("ist_error"), 200);
             return;
         }
         assert this.client != null;

@@ -8,7 +8,6 @@ import net.minecraft.util.collection.DefaultedList;
 
 /**
  * A simple {@code Inventory} implementation with only default methods + an item list getter.
- *
  * Originally by Juuz from <a href="https://fabricmc.net/wiki/tutorial:inventory">...</a>
  */
 public interface ImplementedInventory extends Inventory {
@@ -16,6 +15,7 @@ public interface ImplementedInventory extends Inventory {
     /**
      * Retrieves the item list of this inventory.
      * Must return the same instance every time it's called.
+     * @return a list of all items in this inventory.
      */
     DefaultedList<ItemStack> getItems();
 
@@ -69,8 +69,8 @@ public interface ImplementedInventory extends Inventory {
     /**
      * Removes items from an inventory slot.
      * @param slot  The slot to remove from.
-     * @param count How many items to remove. If there are less items in the slot than what are requested,
-     *               take all items in that slot.
+     * @param count How many items to remove.
+     *              If there are fewer items in the slot than what is requested, take all items in that slot.
      */
     @Override
     default ItemStack removeStack(int slot, int count) {
@@ -126,10 +126,12 @@ public interface ImplementedInventory extends Inventory {
     }
 
     /**
+     * Determines whether the player can use the inventory.
      * @return true if the player can use the inventory, false otherwise.
      */
     @Override
     default boolean canPlayerUse(PlayerEntity player) {
         return true;
     }
+
 }

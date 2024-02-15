@@ -11,5 +11,5 @@ public enum EntityType {
     /**
      * This type is used for blocks that are not part of the computer.
      */
-    UNCONNECTABLE,
+    UNCONNECTABLE
 }

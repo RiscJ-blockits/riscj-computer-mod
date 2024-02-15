@@ -46,7 +46,7 @@ public class RedstoneOutputBlockEntity extends RegisterBlockEntity {
         super.updateUI();
         if (getModel() == null || world == null || !getModel().hasUnqueriedStateChange()) return;
         String powerString = ((IDataStringEntry)((IDataContainer) getModel().getData()).get(DataConstants.REGISTER_VALUE)).getContent();
-        int newPower = 0;
+        int newPower;
         try {
             newPower = Integer.parseInt(powerString);
             newPower = Math.max(Math.min(newPower, 15), 0);

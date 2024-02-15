@@ -20,7 +20,7 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
     /**
      * The background texture of the screen.
      */
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/memory_block/memory_block_gui.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/memory_block/memory_block_gui.png");
 
     /**
      * The list widget that displays the memory contents.

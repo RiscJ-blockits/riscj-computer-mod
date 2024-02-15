@@ -34,7 +34,8 @@ import java.util.List;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
-/** BlockEntity for all @link ComputerBlocks.
+/**
+ * BlockEntity for all @link ComputerBlocks.
  * Every {@link ComputerBlock} has its own unique ComputerBlockEntity during runtime.
  */
 public abstract class ComputerBlockEntity extends ModBlockEntity implements IConnectableComputerBlockEntity,
@@ -46,32 +47,14 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     private IViewQueryableBlockModel model;
 
     /**
-     * Will create a new {@link ComputerBlockController} for this block.
-     */
-    protected abstract IUserInputReceivableComputerController createController();
-
-    /**
      * Only exists on the client side. Holds the data displayed on the client.
      */
     private IDataElement data;
 
-    private boolean active;
-
     /**
-     * Method that Minecraft calls every tick.
-     * Will call the {@link ComputerBlockController#tick()} method.
+     * Determines if the block has an active visualization.
      */
-    public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
-        if(!world.isClient) {               //used to make sure we always have a controller
-            entity.setController();         //this could eat a lot of performance
-        }
-        if (!world.isClient && entity.getController() != null) {
-            ((IUserInputReceivableComputerController)entity.getController()).tick();
-        }
-        entity.updateUI();
-        entity.syncToClient();
-    }
-
+    private boolean active;
 
     /**
      * Creates a new ComputerBlockEntity with the given settings.
@@ -79,19 +62,44 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * @param pos The position of the block in the minecraft world.
      * @param state The state of the minecraft block.
      */
-    public ComputerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    protected ComputerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         setType(EntityType.CONNECTABLE);
         active = false;
     }
 
     /**
+     * Will create a new {@link ComputerBlockController} for this block.
+     * Is called by {@link ModBlockEntity#setController()}.
+     * @return The new {@link ComputerBlockController} for this block.
+     */
+    protected abstract IUserInputReceivableComputerController createController();
+
+    /**
+     * Method that Minecraft calls every tick.
+     * Will call the {@link ComputerBlockController#tick()} method.
+     * @param world the world in which the block is located.
+     * @param pos the position of the block in the world.
+     * @param state the state of the block.
+     * @param entity the block entity.
+     */
+    public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
+        if (!world.isClient) {               //used to make sure we always have a controller
+            entity.setController();         //this could eat a lot of performances, but should be ok
+        }
+        if (!world.isClient && entity.getController() != null) {
+            ((IUserInputReceivableComputerController) entity.getController()).tick();
+        }
+        entity.updateUI();
+        entity.syncToClient();
+    }
+
+    /**
      * Get the {@link BlockController} of this block's neighbors, which are {@link BusBlock}.
-     * Method is only overwritten in the BusEntity.
      * @return all BlockControllers of this block's neighbors, which are BusBlocks.
      */
     public List<ComputerBlockController> getComputerNeighbours() {
-        List<ComputerBlockController> neigbhours = new ArrayList<>();
+        List<ComputerBlockController> neighbours = new ArrayList<>();
         List<BlockEntity> blockEntities = new ArrayList<>();
         World world = getWorld();
         assert world != null;       //because controllers only exist in the server, this is always true.
@@ -103,22 +111,22 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         blockEntities.add(world.getBlockEntity(getPos().west()));
         //
         for (BlockEntity entity:blockEntities) {
-            if (entity instanceof ComputerBlockEntity) {               //FixMe instanceof schöner machen (geht das)
-                if (((ComputerBlockEntity) entity).getModblockType() == EntityType.CONNECTABLE) {
-                    if (((ComputerBlockEntity) entity).getController() == null                //don't start clustering too early when chunk is still loading
-                        ||((ComputerBlockController) ((ComputerBlockEntity) entity).getController()).getClusterHandler() == null) {
+            if (entity instanceof ComputerBlockEntity && (((ComputerBlockEntity) entity).getModblockType() == EntityType.CONNECTABLE)) {
+                if (((ComputerBlockEntity) entity).getController() == null                //don't start clustering too early when chunk is still loading
+                        || ((ComputerBlockController) ((ComputerBlockEntity) entity).getController()).getClusterHandler() == null) {
                         //do nothing
-                    } else {
-                        neigbhours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
-                    }
+                } else {
+                    neighbours.add((ComputerBlockController) ((ComputerBlockEntity) entity).getController());
                 }
+
             }
         }
-        return neigbhours;
+        return neighbours;
     }
 
     /**
      * Sets the model for this block.
+     * Is called from the controller on controller creation.
      * @param model The model for this block.
      */
     public void setBlockModel(IViewQueryableBlockModel model) {
@@ -131,15 +139,8 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     public void onBroken() {
         assert world != null;
         if (!world.isClient && getController() != null) {
-            ((IUserInputReceivableComputerController)getController()).onBroken();
+            ((IUserInputReceivableComputerController) getController()).onBroken();
         }
-    }
-
-    /**
-     * Update the block state of neighbourBusses.
-     */
-    public void neighborUpdate() {
-        world.getBlockState(pos).updateNeighbors(world, pos, 1);
     }
 
     /**
@@ -151,20 +152,16 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         return Text.of("Goggle Text " + getPos().toString());
     }
 
-    @Override
-    public IDataElement getBlockEntityData() {
-        return null;
-    }
-
     /**
      * Getter for the model of this block.
-     * @return
+     * @return the model of this block.
      */
     protected IQueryableBlockModel getModel() {
         return model;
     }
 
-    /** Nicht im Entwurf
+    //ToDo Nicht im Entwurf
+    /**
      * Gets called every tick.
      * Used to update ui elements.
      */
@@ -180,6 +177,10 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         }
     }
 
+    /**
+     * Getter for Attribute active.
+     * @return Returns if the block is active or not.
+     */
     public boolean isActive() {
         return active;
     }
@@ -192,7 +193,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         if (world == null || world.isClient || model == null) return;
         if (model.hasUnqueriedStateChange()) {
             if (world.getPlayers().isEmpty()) {
-               return;       //we are too early in the loading process
+                return;       //we are too early in the loading process
             }
             NbtCompound nbt = new NbtCompound();
             writeNbt(nbt);
@@ -239,6 +240,12 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
     }
 
     //todo nicht im Entwurfs wiki
+    /**
+     * Requests data for the block entity.
+     * It sets a new {@link Data} object to the block entity's controller.
+     * When new data s revived,
+     * the controller will call the model's onStateChange method which will trigger a sync to the client.
+     */
     public void requestData() {
         getController().setData(new Data());
     }
@@ -249,16 +256,16 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * @param effect The effect that should be spawned.
      */
     @Override
-    public void spawnEffect(ComputerEffect effect){
+    public void spawnEffect(ComputerEffect effect) {
         if (world == null) return;
         switch (effect) {
             case EXPLODE:
                 world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 10.0f, World.ExplosionSourceType.BLOCK);
                 break;
-            case SMOKE: //17 6
+            case SMOKE:
                 if (!world.isClient) {
                     ((ServerWorld) world).spawnParticles(
-                        ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,5, 0.0D, 0.0D, 0.0D,0);
+                        ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 5, 0.0D, 0.0D, 0.0D, 0);
                 }
                 break;
             default:

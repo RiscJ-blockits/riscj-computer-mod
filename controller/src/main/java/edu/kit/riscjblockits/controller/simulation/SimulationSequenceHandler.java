@@ -8,6 +8,7 @@ import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.controller.exceptions.NonExecutableMicroInstructionException;
 import edu.kit.riscjblockits.model.busgraph.IBusSystem;
+import edu.kit.riscjblockits.model.instructionset.DataMovementInstruction;
 import edu.kit.riscjblockits.model.instructionset.IExecutableMicroInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstruction;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
@@ -77,12 +78,15 @@ public class SimulationSequenceHandler implements Runnable {
      * Constructor. Initializes the {@link BlockController}s list, hands it over to the executor, sets the first
      * run phase to FETCH and the counter to zero and initializes the instruction set model and the memory controller.
      * @param blockControllers Controllers of the associated computer blocks.
+     * @param busSystem The bus system of the computer.
+     * @param callbackReceivable The callback receivable for the simulation sequence handler to notify after every real-time simulation tick.
+     * @throws NullPointerException If no instruction set model is found.
      */
-    public SimulationSequenceHandler(List<IQueryableSimController> blockControllers, IBusSystem busSystem, IRealtimeSimulationCallbackReceivable callbackReceivable) {
+    public SimulationSequenceHandler(List<IQueryableSimController> blockControllers,
+                                     IBusSystem busSystem, IRealtimeSimulationCallbackReceivable callbackReceivable) {
         this.blockControllers = blockControllers;
         this.busSystem = busSystem;
         this.callbackReceivable = callbackReceivable;
-
         phaseCounter = 0;
         runPhase = RunPhase.FETCH;
         for(IQueryableSimController blockController: blockControllers) {
@@ -93,12 +97,9 @@ public class SimulationSequenceHandler implements Runnable {
                 memoryController = ((MemoryController)blockController);
             }
         }
-
-        //ToDo: Catch exception somewhere
         if (instructionSetModel == null) {
-            throw new NullPointerException("No instruction set model found");
+            throw new NullPointerException("No instruction set model found"); //this never happens.
         }
-
         String programCounterTag = instructionSetModel.getProgramCounter();
         for(IQueryableSimController blockController: blockControllers) {
             if (Objects.requireNonNull(blockController.getControllerType()) == BlockControllerType.REGISTER) {
@@ -149,19 +150,22 @@ public class SimulationSequenceHandler implements Runnable {
     private void fetch(){
         // load the execution's microinstructions internally before fetch, so the memory address is still the same
         if (phaseCounter == 0) {
-            IQueryableInstruction instruction = instructionSetModel.getInstructionFromBinary(memoryController.getValue(programCounterController.getValue()).getBinaryValue());
-            microInstructions = instruction.getExecution();
-            System.out.println("loading from: " + programCounterController.getValue().getHexadecimalValue());
+            IQueryableInstruction instruction = instructionSetModel.
+                getInstructionFromBinary(memoryController.getValue(programCounterController.getValue()).getBinaryValue());
+            if (instruction == null) {
+                microInstructions = new IExecutableMicroInstruction[] {new DataMovementInstruction(new String[1], "", "", null)};
+            } else {
+                microInstructions = instruction.getExecution();
+                System.out.println("loading from: " + programCounterController.getValue().getHexadecimalValue());
+            }
         }
 
-        System.out.println("fetch: " + phaseCounter);
         // execute the current fetch phase step
         executeMicroInstruction(instructionSetModel.getFetchPhaseStep(phaseCounter));
 
         phaseCounter++;
         // if no more fetch phase steps are defined, the execution phase is entered
         if (phaseCounter >= instructionSetModel.getFetchPhaseLength()) {
-            System.out.println("fetch phase finished");
             phaseCounter = 0;
             runPhase = RunPhase.EXECUTE;
         }
@@ -175,7 +179,6 @@ public class SimulationSequenceHandler implements Runnable {
      */
     private void execute(){
         //One full instruction consists of multiple microinstructions
-        System.out.println("execution: " + phaseCounter);
         executeMicroInstruction(microInstructions[phaseCounter]);
         phaseCounter++;
         if (phaseCounter >= microInstructions.length) {
@@ -218,8 +221,7 @@ public class SimulationSequenceHandler implements Runnable {
         this.visualisationMode = mode;
         if(visualisationMode == VisualisationMode.OFF || visualisationMode == VisualisationMode.NORMAL) {
             resetVisualisation();
-        }
-        else if(visualisationMode == VisualisationMode.FAST) {
+        } else if(visualisationMode == VisualisationMode.FAST) {
             fullVisualisation();
         }
     }
@@ -249,8 +251,17 @@ public class SimulationSequenceHandler implements Runnable {
      * Defines the visualisation modes.
      */
     public enum VisualisationMode {
+        /**
+         * In the Realtime mode, the computer just glows all the time.
+         */
         FAST,
+        /**
+         * In the Normal mode, the computer components glow only when they are active.
+         */
         NORMAL,
+        /**
+         * In the Off mode, the computer components do not glow at all.
+         */
         OFF
     }
 

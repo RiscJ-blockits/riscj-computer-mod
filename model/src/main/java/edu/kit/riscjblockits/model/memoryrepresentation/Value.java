@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.model.memoryrepresentation;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.HexFormat;
 
@@ -13,12 +14,27 @@ import java.util.HexFormat;
 public class Value {
 
     /**
-     * the value as byte array
+     * the value as a byte array.
      */
     private final byte[] value;
 
     /**
-     * Creates a value from a hexadecimal string
+     * Constructor for a value.
+     * @param initial the initial value as a byte array
+     */
+    public Value(byte[] initial) {
+        this.value = initial;
+    }
+
+    /**
+     * Null-Constructor for empty value which equals an empty byte array.
+     */
+    public Value() {
+        this.value = new byte[0];
+    }
+
+    /**
+     * Creates a value from a hexadecimal string.
      * @param s the hexadecimal string
      * @param length the length of the value in bytes
      * @return the value
@@ -27,30 +43,35 @@ public class Value {
         byte[] bytes = new byte[length];
         byte[] hexBytes = HexFormat.of().parseHex(s); //Todo fill with zeros if length is not a multiple of 2
         int offset = length - hexBytes.length;
-        for (int i = 0; i < hexBytes.length; i++) {
-            bytes[i + offset] = hexBytes[i];
+        offset = Math.max(offset, 0);
+        int endOffset = Math.max(hexBytes.length - length, 0);
+        for (int i = 0; i < hexBytes.length - endOffset; i++) {
+            bytes[i + offset] = hexBytes[i + endOffset];
         }
 
         return new Value(bytes);
     }
 
     /**
-     * Creates a value from a binary string
-     * @param s the binary string
+     * Creates a value from a binary string.
+     * @param s binary string
      * @param length the length of the value in bytes
+     * @param autoSignExtend ToDo
      * @return the value
+     * @throws IllegalArgumentException if the string contains characters other than 1 and 0
      */
-    public static Value fromBinary(String s, int length) {
+    public static Value fromBinary(String s, int length, boolean autoSignExtend) {
         byte[] bytes = new byte[length];
         int currentByte = 0;
         int currentBit = 0;
 
         int missingBits = length * 8 - s.length();
+        boolean signExtend = autoSignExtend && s.charAt(0) == '1';
         for (int i = 0; i < length * 8; i++){
             char c;
-            // missing bits are filled with 0
+            // the missing bits are filled with 0 (1 if sign extend is true)
             if (i < missingBits) {
-                c = '0';
+                c = signExtend ? '1' : '0';
             } else {
                 c = s.charAt(i - missingBits);
             }
@@ -75,30 +96,35 @@ public class Value {
     }
 
     /**
-     * Creates a value from a floating point decimal string
+     * Creates a value from a string containing a binary number.
+     * @param s the string.
+     * @param length the length of the value in bytes
+     * @return the new value
+     */
+    public static Value fromBinary(String s, int length) {
+        return fromBinary(s, length, false);
+    }
+
+    /**
+     * Creates a value from a floating point decimal string.
      * @param s the float string
      * @param length the length of the value in bytes
      * @return the value
      */
     public static Value fromFloat(String s, int length) {
-        return null;
+        byte[] bytes = new byte[length];
+        ByteBuffer buffer = ByteBuffer.allocate(4);
+        buffer.putFloat(Float.parseFloat(s));
+        System.arraycopy(buffer.array(), 0, bytes, 0, length);
+        return new Value(bytes);
     }
 
     /**
-     * Constructor for a value
-     * @param initial the initial value as byte array
+     * Creates a value from a string containing a decimal number.
+     * @param value the value as a string
+     * @param length the length of the value in bytes
+     * @return the new value
      */
-    public Value(byte[] initial) {
-        this.value = initial;
-    }
-
-    /**
-     * Null-Constructor for empty value which equals empty byte array.
-     */
-    public Value() {
-        this.value = new byte[0];
-    }
-
     public static Value fromDecimal(String value, int length) {
         byte[] val = new BigInteger(value).toByteArray();
         byte[] bytes = new byte[length];
@@ -111,33 +137,37 @@ public class Value {
     }
 
     /**
-     * @return the value as byte array
+     * Return the value as a byte array.
+     * @return value as a byte array
      */
     public byte[] getByteValue() {
         return value;
     }
 
     /**
-     * @return the value as binary string
+     * Converts the value to a binary string.
+     * @return value as binary string
      */
     public String getBinaryValue() {
         StringBuilder stringBuilder = new StringBuilder();
         for (byte val: value) {
             stringBuilder.append(String.format("%8s", Integer.toBinaryString(val & 0xFF)).replace(' ', '0'));
         }
-
         return stringBuilder.toString();
     }
 
     /**
+     * Converts the value to a float string.
      * @return the value as floating point decimal string
      */
     public String getFloatValue() {
-        //ToDo
-        return null;
+        ByteBuffer wrapped = ByteBuffer.wrap(value);
+        int num = wrapped.getInt();
+        return Float.toString((float) num);
     }
 
     /**
+     * Converts the value to a hexadecimal string.
      * @return the value as hexadecimal string
      */
     public String getHexadecimalValue() {
@@ -145,12 +175,11 @@ public class Value {
         for (byte val: value) {
             stringBuilder.append(String.format("%02X", val));
         }
-
         return stringBuilder.toString();
     }
 
     /**
-     * return the value incremented by 1
+     * Return the value incremented by 1.
      * @return the incremented value
      */
     public Value getIncrementedValue() {
@@ -177,18 +206,32 @@ public class Value {
         return Arrays.equals(value, value1.value);
     }
 
+    /**
+     * Hashes the value.
+     * @return the hash as an int
+     */
     @Override
     public int hashCode() {
         return Arrays.hashCode(value);
     }
 
+    /**
+     * Compares this value to another value. Signed version.
+     * @param comparator the value to compare to
+     * @return true if this value is lower than the comparator
+     */
     public boolean lowerThan(Value comparator) {
         BigInteger thisValue = new BigInteger(this.getByteValue());
         BigInteger comparatorValue = new BigInteger(comparator.getByteValue());
         return thisValue.compareTo(comparatorValue) < 0;
     }
 
-    public boolean lowerThanUnsigned(Value comparator) {;
+    /**
+     * Compares this value to another value. Unsigned version.
+     * @param comparator the value to compare to
+     * @return true if this value is lower than the comparator
+     */
+    public boolean lowerThanUnsigned(Value comparator) {
         byte[] valueUnsigned = new byte[value.length + 1];
         System.arraycopy(value, 0, valueUnsigned, 1, value.length);
         byte[] compUnsigned = new byte[value.length + 1];
@@ -198,17 +241,37 @@ public class Value {
         return thisValue.compareTo(comparatorValue) < 0;
     }
 
+    /**
+     * Compares this value to a float value.
+     * @param comparator the value to compare to
+     * @return true if this value is lower than the comparator
+     */
     public boolean lowerThanFloat(Value comparator) {
-        //TODO implement
-        return false;
+        ByteBuffer wrapped = ByteBuffer.wrap(comparator.getByteValue());
+        int num = wrapped.getInt();
+        float other = (float) num;
+        wrapped = ByteBuffer.wrap(comparator.getByteValue());
+        num = wrapped.getInt();
+        float me = (float) num;
+        return me < other;
     }
 
+    /**
+     * Compares this value to another value. Signed version.
+     * @param comparator the value to compare to
+     * @return true if this value is greater than the comparator
+     */
     public boolean greaterThan(Value comparator) {
         BigInteger thisValue = new BigInteger(this.getByteValue());
         BigInteger comparatorValue = new BigInteger(comparator.getByteValue());
         return thisValue.compareTo(comparatorValue) > 0;
     }
 
+    /**
+     * Compares this value to another value. Unsigned version.
+     * @param comparator the value to compare to
+     * @return true if this value is greater than the comparator
+     */
     public boolean greaterThanUnsigned(Value comparator) {
         byte[] valueUnsigned = new byte[value.length + 1];
         System.arraycopy(value, 0, valueUnsigned, 1, value.length);
@@ -219,8 +282,34 @@ public class Value {
         return thisValue.compareTo(comparatorValue) > 0;
     }
 
+    /** TODO Noch nicht implementiert
+     * Compares this value to a float value.
+     * @param comparator the value to compare to
+     * @return true if this value is greater than the comparator
+     */
     public boolean greaterThanFloat(Value comparator) {
-        //TODO implement
-        return false;
+        ByteBuffer wrapped = ByteBuffer.wrap(comparator.getByteValue());
+        int num = wrapped.getInt();
+        float other = (float) num;
+        wrapped = ByteBuffer.wrap(comparator.getByteValue());
+        num = wrapped.getInt();
+        float me = (float) num;
+
+        return me > other;
     }
+
+    /**
+     * Converts the value to its negative.
+     * @return the negative value
+     */
+    public Value negate() {
+        // invert
+        for (int i = 0; i < value.length; i++) {
+            value[i] = (byte) ~value[i];
+        }
+        // increment to get two's complement
+        value[value.length - 1]++;
+        return this;
+    }
+
 }

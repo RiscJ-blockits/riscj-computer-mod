@@ -5,6 +5,9 @@ import edu.kit.riscjblockits.model.blocks.BlockPosition;
 
 import java.util.List;
 
+/**
+ * This interface defines the methods that a BlockController provides to the ClusterHandler/ClusterArchitectureHandler.
+ */
 public interface IQueryableClusterController extends IQueryableComputerController {
 
     /**
@@ -33,15 +36,5 @@ public interface IQueryableClusterController extends IQueryableComputerControlle
      * Getter for the position of the block in the minecraft world.
      * @return An {@link BlockPosition} with the position of the block.
      */
-
-    /**
-     * Getter for the position of the block in the minecraft world.
-     * @return An {@link BlockPosition} with the position of the block.
-     */
     BlockPosition getBlockPosition();
-
-    /**
-     * Method to update the neighbors of the block entity.
-     */
-    void neighborUpdate();
 }

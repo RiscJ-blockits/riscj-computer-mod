@@ -1,7 +1,16 @@
 package edu.kit.riscjblockits.controller.clustering;
 
 
-import edu.kit.riscjblockits.controller.blocks.*;
+
+import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
+import edu.kit.riscjblockits.controller.blocks.BusController;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
+import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
+import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
+import edu.kit.riscjblockits.controller.blocks.IQueryableComputerController;
+import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
+import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import edu.kit.riscjblockits.model.busgraph.IBusSystem;
@@ -12,26 +21,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Holds one computer cluster maximum (might be incomplete)
+ * Holds one computer cluster.
  */
-public class ClusterHandler implements IArchitectureCheckable {
+public class ClusterHandler {
 
     /**
-     * List of all blocks controllers in this cluster
+     * List of all blocks controllers in this cluster.
      */
     private List<IQueryableClusterController> blocks;
     /**
-     * List of all bus blocks controllers in this cluster
+     * List of all bus blocks controllers in this cluster.
      */
     private List<IQueryableClusterController> busBlocks;
 
     /**
-     * BusSystemModel of this cluster
+     * BusSystemModel of this cluster.
      */
     private IQueryableBusSystem busSystemModel;
 
     /**
-     * InstructionSetModel of this cluster
+     * InstructionSetModel of this cluster.
      */
     private IQueryableInstructionSetModel istModel;
 
@@ -40,12 +49,15 @@ public class ClusterHandler implements IArchitectureCheckable {
      */
     private boolean buildingFinished;
 
+    /**
+     * List of marked Blocks to reCluster them later if they get a new Neighbour.
+     */
     private List<IQueryableClusterController> markedBlocks;
 
 
     /**
-     * Creates a new ClusterHandler and combines it with all neighbours
-     * @param blockController BlockController to start the cluster with
+     * Creates a new ClusterHandler with one Block and combines it with all neighbours.
+     * @param blockController BlockController of the first block in the cluster.
      */
     public ClusterHandler(IQueryableClusterController blockController) {
         markedBlocks = new ArrayList<>();
@@ -64,8 +76,8 @@ public class ClusterHandler implements IArchitectureCheckable {
     }
 
     /**
-     * Creates a new ClusterHandler and combines it with all neighbours
-     * @param busSystemModel BusSystemModel to start the cluster with
+     * Creates a new ClusterHandler and with the given BusSystemModel.
+     * @param busSystemModel BusSystemModel build the cluster.
      */
     public ClusterHandler(IQueryableBusSystem busSystemModel) {
         markedBlocks = new ArrayList<>();
@@ -75,8 +87,8 @@ public class ClusterHandler implements IArchitectureCheckable {
     }
 
     /**
-     * Combines the given block with the cluster
-     * @param blockController BlockController to combine
+     * Combines the cluster with all neighbour-clusters of the given BlockController.
+     * @param blockController BlockController to combine.
      */
     private void combineToNeighbours(IQueryableClusterController blockController) {
         List<IQueryableClusterController> neighbourBlockControllers = new ArrayList<>();
@@ -121,7 +133,7 @@ public class ClusterHandler implements IArchitectureCheckable {
     }
 
     /**
-     * checks if markedBlocks-neighbours are now in the same cluster and add Edges to the busSystemModel
+     * checks if markedBlocks-neighbours are now in the same cluster and add Edges to the busSystemModel.
      */
     private void reClusterMarkedBlocks() {
         List<IQueryableClusterController> newMarkedBlocks = new ArrayList<>();
@@ -129,7 +141,6 @@ public class ClusterHandler implements IArchitectureCheckable {
             for (IQueryableClusterController neighbour: block.getNeighbours()) {
                 if (neighbour.getClusterHandler().equals(this)) {
                     busSystemModel.addEdge(block.getBlockPosition(), neighbour.getBlockPosition());
-                    block.neighborUpdate();
                 } else {
                     if (!newMarkedBlocks.contains(block)) {
                         newMarkedBlocks.add(block);
@@ -141,10 +152,10 @@ public class ClusterHandler implements IArchitectureCheckable {
     }
 
     /**
-     * Combines this cluster with another cluster
-     * @param ownBlock BlockController of this cluster
-     * @param neighbourBlock BlockController of the other cluster
-     * @param oldCluster ClusterHandler of the other cluster
+     * Combines this cluster with another cluster.
+     * @param ownBlock BlockController of this cluster.
+     * @param neighbourBlock BlockController of the other cluster.
+     * @param oldCluster ClusterHandler of the other cluster.
      */
     public void combine(IQueryableClusterController ownBlock,IQueryableClusterController neighbourBlock, ClusterHandler oldCluster) {
         busSystemModel.combineGraph(ownBlock.getBlockPosition(), neighbourBlock.getBlockPosition(), oldCluster.getBusSystemModel());
@@ -162,8 +173,8 @@ public class ClusterHandler implements IArchitectureCheckable {
     }
 
     /**
-     * manages the destruction of a block and the corresponding change in the cluster
-     * @param destroyedBlockController BlockController of the destroyed block
+     * manages the destruction of a block and the corresponding change in the cluster.
+     * @param destroyedBlockController BlockController of the destroyed block.
      */
     public void blockDestroyed(IQueryableClusterController destroyedBlockController) {
         //Remove Block from ClusterHandler Lists
@@ -207,40 +218,40 @@ public class ClusterHandler implements IArchitectureCheckable {
 
 
     /**
-     * method to add a block to the cluster
-     * @param blockController BlockController to add
+     * method to add a block to the cluster.
+     * @param blockController BlockController to add.
      */
     private void addBlocks(IQueryableClusterController blockController) {
         blocks.add(blockController);
     }
 
     /**
-     * method to add a bus block to the cluster
-     * @param blockController BlockController to add
+     * method to add a bus block to the cluster.
+     * @param blockController BlockController to add.
      */
     private void addBusBlocks(IQueryableClusterController blockController) {
         busBlocks.add(blockController);
     }
 
     /**
-     * method to get the busSystemModel of the cluster
-     * @return busSystemModel of the cluster
+     * method to get the busSystemModel of the cluster.
+     * @return busSystemModel of the cluster.
      */
     public IQueryableBusSystem getBusSystemModel() {
         return busSystemModel;
     }
 
     /**
-     * method to get all Blocks of the cluster
-     * @return List of all Blocks of the cluster
+     * method to get all Blocks of the cluster.
+     * @return List of all Blocks of the cluster.
      */
     public List<IQueryableClusterController> getBlocks() {
         return blocks;
     }
 
     /**
-     * method to get all Bus Blocks of the cluster
-     * @return List of all Bus Blocks of the cluster
+     * method to get all Bus Blocks of the cluster.
+     * @return List of all Bus Blocks of the cluster.
      */
     public List<IQueryableClusterController> getBusBlocks() {
         return busBlocks;
@@ -305,18 +316,16 @@ public class ClusterHandler implements IArchitectureCheckable {
                 ((BusController) busBlock).setBusSystemModel((BusSystemModel) busSystemModel);
             }
             startSimulation();
-        }
-        // stop simulation if it was running and the cluster is not finished anymore
-        else if (oldBuildingFinished){
+        } else if (oldBuildingFinished) {
+            // stop simulation if it was running and the cluster is not finished anymore
             stopSimulation();
         }
     }
 
     /**
-     * start the simulation using the current cluster
+     * start the simulation using the current cluster.
      */
     private void startSimulation() {
-        // TODO check cast
         List<IQueryableSimController> simControllers = blocks.stream().map(IQueryableSimController.class::cast).toList();
         SimulationTimeHandler sim = new SimulationTimeHandler(simControllers, (IBusSystem) busSystemModel);
         for (IQueryableComputerController c : blocks) {
@@ -337,12 +346,13 @@ public class ClusterHandler implements IArchitectureCheckable {
     }
 
     /**
-     * checks if a given block is a neighbour of another given block
-     * @param block1 BlockController to check
-     * @param block2 BlockController to check
-     * @return true if the blocks are neighbours
+     * checks if a given block is a neighbour of another given block.
+     * @param block1 BlockController to check.
+     * @param block2 BlockController to check.
+     * @return true if the blocks are neighbours.
      */
     public boolean isNeighbourPosition(BlockController block1, BlockController block2) {
-        return busSystemModel.isNeighbourPosition(((ComputerBlockController)block2).getBlockPosition(), ((ComputerBlockController)block1).getBlockPosition());
+        return BusSystemModel.isNeighbourPosition(
+                ((ComputerBlockController)block2).getBlockPosition(), ((ComputerBlockController)block1).getBlockPosition());
     }
 }

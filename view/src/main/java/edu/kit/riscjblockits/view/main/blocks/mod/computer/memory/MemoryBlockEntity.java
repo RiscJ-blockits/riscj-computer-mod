@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
@@ -24,8 +25,11 @@ import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
  * This class represents a memory entity from our mod in the game.
  * Every memory block has its own unique MemoryBlockEntity while it is loaded.
  */
-public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implements ExtendedScreenHandlerFactory{
+public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implements ExtendedScreenHandlerFactory {
 
+    /**
+     * The slot in the inventory where the program is stored.
+     */
     private static final int PROGRAM_SLOT = 1;
 
     /**
@@ -46,7 +50,12 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
         return new MemoryController(this);
     }
 
-
+    /**
+     * Called when the screen is opened.
+     * We send the position to the screen.
+     * @param player the player that is opening the screen
+     * @param buf    the packet buffer to write the data to
+     */
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
         buf.writeBlockPos(pos);
@@ -88,7 +97,7 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
                 NbtCompound programmNbt = getItems().get(0).getNbt();
                 Data memData = new Data();
                 if (programmNbt == null) {
-                    return;         //if the programm item has no data on it, we don't need to do anything
+                    return;         //if the program item has no data on it, we don't need to do anything
                 }
                 NbtDataConverter converter = new NbtDataConverter(programmNbt);
                 memData.set(MEMORY_MEMORY, converter.getData());
@@ -97,4 +106,22 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
         }
     }
 
+    @Override
+    public Text getGoggleText() {
+
+        ItemStack program = getItems().get(0);
+        Text programText;
+        if (program.isEmpty()) {
+            programText = Text.translatable("riscj_blockits.program_none");
+        }
+        else {
+            programText = program.getName();
+        }
+
+        return Text.translatable("block.riscj_blockits.memory_block")
+                .append("\n")
+                .append(Text.translatable("riscj_blockits.program"))
+                .append(": ")
+                .append(programText);
+    }
 }

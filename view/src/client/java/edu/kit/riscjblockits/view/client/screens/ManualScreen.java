@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class ManualScreen extends Screen {
 
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/manual/manual_gui.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/manual/manual_gui.png");
     private final int backgroundHeight;
     private final int backgroundWidth;
 

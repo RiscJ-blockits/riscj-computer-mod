@@ -55,14 +55,6 @@ class AluControllerTest {
             }
 
             @Override
-            public IDataElement getBlockEntityData() {
-                return null;
-            }
-
-            @Override
-            public void neighborUpdate() {}
-
-            @Override
             public void spawnEffect(ComputerEffect effect) {
                 //
             }

@@ -19,7 +19,6 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
     private List<ISimulationTimingObserver> modeObservers;
     private int clockSpeed;
     private ClockMode mode;
-
     private boolean activeTick;
 
     /**
@@ -48,7 +47,7 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
         if (activeTick) {
             clockData.set(CLOCK_ACTIVE, new DataStringEntry("true"));         //ToDo hier wäre ein boolean data entry schlau, wollen wir glaub eh nicht speichern
         } else {
-            clockData.set(CLOCK_ACTIVE , new DataStringEntry("false"));
+            clockData.set(CLOCK_ACTIVE, new DataStringEntry("false"));
         }
         return clockData;
     }
@@ -63,6 +62,9 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
         modeObservers.remove(observer);
     }
 
+    /**
+     * Notifies all observers about a state change.
+     */
     @Override
     public void notifyObservers() {
         for (ISimulationTimingObserver observer: modeObservers) {
@@ -74,6 +76,10 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
         return clockSpeed;
     }
 
+    /**
+     * Setter for the clock speed. Notifies the observers about the state change.
+     * @param clockSpeed the new clock speed.
+     */
     public void setClockSpeed(int clockSpeed) {
         this.clockSpeed = clockSpeed;
         notifyObservers();
@@ -84,11 +90,19 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
         return mode;
     }
 
+    /**
+     * Setter for the active tick attribute.
+     * @param activeTick the new active tick attribute.
+     */
     public void setActiveTick(boolean activeTick) {
         this.activeTick = activeTick;
         setUnqueriedStateChange(true);
     }
 
+    /**
+     * Setter for the clock mode. Notifies the observers about the state change.
+     * @param mode the new clock mode.
+     */
     public void setClockMode(ClockMode mode) {
         this.mode = mode;
         notifyObservers();

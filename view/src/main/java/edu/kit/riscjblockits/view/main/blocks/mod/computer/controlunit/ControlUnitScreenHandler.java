@@ -53,6 +53,12 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
      */
     private boolean opened = false;
 
+    /**
+     * Constructor for the control unit screen handler.
+     * @param syncId The sync id.
+     * @param playerInventory The inventory of the player that opens the screen.
+     * @param blockEntity The block entity of the control unit.
+     */
     public ControlUnitScreenHandler(int syncId, PlayerInventory playerInventory, ModBlockEntity blockEntity) {
         super(RISCJ_blockits.CONTROL_UNIT_SCREEN_HANDLER, syncId, blockEntity);
         checkSize(((Inventory) blockEntity), 1);
@@ -88,13 +94,25 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
         });
     }
 
+    /**
+     * Constructor for the control unit screen handler.
+     * @param syncId The sync id.
+     * @param playerInventory The inventory of the player that opens the screen.
+     * @param buf The packet byte buffer. Must have a block position inside.
+     */
     public ControlUnitScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this(syncId,playerInventory, (ModBlockEntity) playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
+        this(syncId, playerInventory, (ModBlockEntity) playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
     }
 
+    /**
+     * Called when a player attempts to quickly move an item.
+     * @param player The player that wants to quickly move an item.
+     * @param invSlot The slot that the player wants to quickly move to.
+     * @return the item stack of the item that was moved
+     */
     @Override
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
-        ItemStack newStack = ItemStack.EMPTY;
+        ItemStack newStack = ItemStack.EMPTY;       //ToDo duplicated code
         Slot slot = this.slots.get(invSlot);
         if (slot != null && slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
@@ -119,7 +137,7 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
      * Creates a List that contains all components of the cluster and all missing components specified in the instruction set.
      * @return The entries of the architecture list. List[0] contains all missing components, List[1] contains all found components.
      */
-    public List<String>[] getStructure(){
+    public List<String>[] getStructure() {
         List<String> listFound = new ArrayList<>();
         List<String> listMissing = new ArrayList<>();
         NbtCompound nbt = getBlockEntity().createNbt();
@@ -180,24 +198,25 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
                             break;
                     }
                 }
-            } else if (s.equals(CONTROL_ITEM_PRESENT)) {
-                if ( ((IDataStringEntry) ((IDataContainer) data).get(CONTROL_ITEM_PRESENT)).getContent().equals("false") ) {
-                    return new List[]{new ArrayList<>(), new ArrayList<>()};
-                }
+            } else if (s.equals(CONTROL_ITEM_PRESENT) &&
+                    (((IDataStringEntry) ((IDataContainer) data).get(CONTROL_ITEM_PRESENT)).getContent().equals("false") )) {
+                return new List[]{new ArrayList<>(), new ArrayList<>()};
+
             }
         }
         return new List[]{listMissing, listFound};
     }
 
     /**
+     * Getter for the instruction set type.
      * @return The name of the InstructionSet or "" if the fetch fails.
      */
-    public String getInstructionSetType(){
-        if(inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
+    public String getInstructionSetType() {
+        if (inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
             return "";
         }
         NbtElement nbt = inventory.getStack(0).getOrCreateNbt().get(CONTROL_IST_ITEM);
-        if(nbt == null) {
+        if (nbt == null) {
             return "";
         }
         IDataElement instructionSetData = new NbtDataConverter(nbt).getData();

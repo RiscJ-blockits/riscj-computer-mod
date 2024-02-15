@@ -5,19 +5,26 @@ import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
-import static edu.kit.riscjblockits.model.data.DataConstants.*;
-import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WIRELESS;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WIRELESS_XPOS;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WIRELESS_YPOS;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WIRELESS_ZPOS;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGTH;
 
-
+/**
+ * This class represents the model for a wireless register.
+ * It is a normalregister that can sync its data with another wireless neighbor.
+ */
 public class WirelessRegisterModel extends RegisterModel {
 
     /**
-     * The register model that is shared with the wireless neighbour and holds the data of both registers.
+     * The register model that is shared with the wireless neighbor and holds the data of both registers.
      */
     private RegisterModel registerModel;
 
     /**
-     * The position of the wireless neighbour.
+     * The position of the wireless neighbor.
      */
     private BlockPosition wirelessNeighbourPosition;
 
@@ -118,10 +125,11 @@ public class WirelessRegisterModel extends RegisterModel {
     }
 
     /**
-     * Getter for the BlockPosition of the wireless neighbour.
-     * @return The BlockPosition of the wireless neighbour.
+     * Getter for the BlockPosition of the wireless neighbor.
+     * @return The BlockPosition of the wireless neighbor.
      */
     public BlockPosition getWirelessNeighbourPosition() {
         return wirelessNeighbourPosition;
     }
+
 }

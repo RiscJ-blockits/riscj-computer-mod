@@ -46,7 +46,7 @@ public abstract class ModBlockEntityWithInventory extends ModBlockEntity impleme
     /**
      * Reads the items from the given {@link NbtCompound}.
      * Reads block information from the given {@link NbtCompound}.
-     * @param nbt
+     * @param nbt The nbt compound to read from.
      */
     @Override
     public void readNbt(NbtCompound nbt) {
@@ -56,7 +56,7 @@ public abstract class ModBlockEntityWithInventory extends ModBlockEntity impleme
 
     /**
      * Writes inventory and block information to the given {@link NbtCompound}.
-     * @param nbt
+     * @param nbt the nbt compound to write to.
      */
     @Override
     public void writeNbt(NbtCompound nbt) {

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -38,9 +39,9 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     /**
      * This translates the different speeds into ticks per second.
      */
-    private static final double[][] SECONDS_TRANSLATIONS = {{0,0}, {80,0.25}, {40,0.5}, {20,1}, {15,1.5}, {10,2}, {5,4}, {2,10}, {1,20}, {9,NaN}};        //assuming 20 ticks per second
-    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_gui.png");
-    private static final Identifier MODE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_button.png");
+    private static final double[][] SECONDS_TRANSLATIONS = {{0,0}, {80,0.25}, {40,0.5}, {20,1}, {15,1.5}, {10,2}, {5,4}, {2,10}, {1,20}, {9,NaN}}; //assuming 20 ticks per second
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/system_clock/system_clock_gui.png");
+    private static final Identifier MODE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/system_clock/system_clock_button.png");
     private static final String MODE_TEXTURE = "textures/gui/system_clock/system_clock_lever_%d.png";
     private static final int MODE_BUTTON_SIZE = 6;
     private static final int[] MODE_BUTTON_X_OFFSETS = {86, 84, 90, 98, 109, 122, 135, 146, 154, 160};
@@ -49,10 +50,11 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     private static final int LEVER_Y_OFFSET = 23;
     private static final int LEVER_WIDTH = 58;
     private static final int LEVER_HEIGHT = 39;
-    private final ArrayList<IconButtonWidget> modeButtons = new ArrayList<>(10);
     private static final int SPEED_TEXT_FIELD_OFFSET_X = 9;
     private static final int SPEED_TEXT_FIELD_OFFSET_Y = 18;
-    private Identifier leverTexture = new Identifier(RISCJ_blockits.MODID, "textures/gui/system_clock/system_clock_lever_0.png");
+    private final ArrayList<IconButtonWidget> modeButtons = new ArrayList<>(10);
+
+    private Identifier leverTexture = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/system_clock/system_clock_lever_0.png");
     private Text clockSpeed = Text.literal("0");
 
     /**
@@ -76,14 +78,14 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         super.init();
         ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(handler.getBlockEntity().getPos()));
         int mode = getButtonStep();
-        leverTexture = new Identifier(RISCJ_blockits.MODID, String.format(MODE_TEXTURE, mode));
+        leverTexture = new Identifier(RISCJ_blockits.MOD_ID, String.format(MODE_TEXTURE, mode));
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         for(int i = 0; i < 10; i++) {
             int setMode = i;
             modeButtons.add(new IconButtonWidget(x + MODE_BUTTON_X_OFFSETS[setMode], y + MODE_BUTTON_Y_OFFSETS[setMode], MODE_BUTTON_SIZE, MODE_BUTTON_SIZE, button -> {
                 updateModel(setMode);
-                leverTexture = new Identifier(RISCJ_blockits.MODID, String.format(MODE_TEXTURE, setMode));
+                leverTexture = new Identifier(RISCJ_blockits.MOD_ID, String.format(MODE_TEXTURE, setMode));
             }, MODE_BUTTON_TEXTURE));
             addDrawableChild(modeButtons.get(i));
         }
@@ -136,7 +138,7 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     @Override
     public void handledScreenTick() {
         super.handledScreenTick();
-        clockSpeed = Text.literal(String.valueOf(handler.getSystemClockSpeed()));       //FixMe: why two times?
+        clockSpeed = Text.literal(String.valueOf(((SystemClockBlockEntity)handler.getBlockEntity()).getSystemClockSpeed())); //FixMe: why two times?
         clockSpeed = Text.literal(String.valueOf(SECONDS_TRANSLATIONS[getButtonStep()][1]));
     }
 
@@ -151,10 +153,10 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
         String clockMode = String.valueOf(MC_TICK);
         int speed = 0;
         switch (step) {
-            case 0:          //Step mode
+            case 0:         //Step mode
                 clockMode = String.valueOf(STEP);
                 break;
-            case 9:     //Real time mode//Real time mode
+            case 9:         //Real time mode//Real time mode
                 clockMode = String.valueOf(REALTIME);
                 break;
             default:
@@ -169,12 +171,13 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     }
 
     /**
-     * @return the step of the button that is currently selected.
+     * Gets the step of the button that is currently selected.
      * The Information is taken from the handler.
+     * @return the step of the button that is currently selected.
      */
     private int getButtonStep() {
-        String mode = handler.getSystemClockMode();
-        int speed = handler.getSystemClockSpeed();
+        String mode = ((SystemClockBlockEntity) handler.getBlockEntity()).getSystemClockMode();
+        int speed = ((SystemClockBlockEntity) handler.getBlockEntity()).getSystemClockSpeed();
         if (mode.equals(String.valueOf(STEP))) {
             return 0;
         } else if (mode.equals(String.valueOf(REALTIME))) {

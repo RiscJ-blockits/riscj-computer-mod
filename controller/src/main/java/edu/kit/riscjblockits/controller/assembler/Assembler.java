@@ -6,6 +6,7 @@ import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,50 +14,51 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * this class represents an assembler that translates assembly code into machine code
- * it will write the machine code to a memory
+ * This class represents an assembler that translates assembly code into machine code.
+ * It will write the machine code to a memory.
  */
 public class Assembler {
 
     /**
-     * regex pattern to separate a lines label and command
+     * Regex pattern to separate a lines label and command.
      */
-    private static final Pattern LABEL_COMMAND_PATTERN = Pattern.compile(" *(?:(?<label>\\w+):)? *(?<command>\\w[^;#]*)? *(?:[;#].*)?");
+    private static final Pattern LABEL_COMMAND_PATTERN = Pattern.compile(" *(?:(?<label>\\w+):)? *(?<command>[^;# ][^;#]*)? *(?:[;#].*)?");
     private static final Pattern ARGUMENT_REGISTER_PATTERN = Pattern.compile("-?\\d*\\((?<register>\\w+)\\)");
+    private static final Pattern RELATIVE_LABEL_PATTERN = Pattern.compile("~\\[\\w+]");
 
     /**
-     * the {@link IQueryableInstructionSetModel} that is used for the assembly
+     * The {@link IQueryableInstructionSetModel} that is used for the assembly.
      */
     private final IQueryableInstructionSetModel instructionSetModel;
 
 
     /**
-     * the {@link Memory} to write the assembled code to
+     * The {@link Memory} to write the assembled code to.
      */
     private final Memory memory;
 
     /**
-     * the current address to write to
+     * The current address to write to.
      */
     private Value currentAddress;
 
     /**
-     * the size of the memory address in bytes
+     * The size of the memory address in bytes.
      */
     private int calculatedMemoryAddressSize;
 
     /**
-     * the size of the memory word in bytes
+     * The size of the memory word in bytes.
      */
     private int calculatedMemoryWordSize;
 
     /**
-     * the Map of all labels and their addresses labeling to
+     * The Map of all labels and their addresses labeling to.
      */
     private final Map<String, Value> labels;
 
     /**
-     * Constructor for an {@link Assembler}
+     * Constructor for an {@link Assembler}.
      * will create a new {@link Memory} with the address and word size of the {@link IQueryableInstructionSetModel}
      * @param instructionSetModel the instruction set model to use for the assembly
      */
@@ -75,7 +77,7 @@ public class Assembler {
     }
 
     /**
-     * Assembles the given assembly code and writes it to the {@link Memory}
+     * Assembles the given assembly code and writes it to the {@link Memory}.
      * @param assemblyCode the assembly code to assemble
      * @throws AssemblyException if the assembly code cant be assembled
      */
@@ -113,8 +115,14 @@ public class Assembler {
 
             // check if line is data
             if (instructionSetModel.isDataStorageCommand(cmd)) {
-                String unsplitDirtyData = instructionSetModel.getStorageCommandData(cmd);
-                for (String dirtyData : unsplitDirtyData.split(",")) {
+                String unsplitDirtyData;
+                try {
+                    unsplitDirtyData = instructionSetModel.getStorageCommandData(cmd);
+                } catch (IllegalArgumentException e) {
+                    throw new AssemblyException("Invalid data: "+e.getMessage());
+                }
+
+                for (String dirtyData : unsplitDirtyData.split(";")) {
                     // split data into value and length
                     String[] data = dirtyData.split("~");
                     if (data.length != 2) {
@@ -147,7 +155,7 @@ public class Assembler {
 
 
     /**
-     * Gets the {@link Command} for a given line
+     * Gets the {@link Command} for a given line.
      * will also detect and save labels
      * @param command the line to get the command for
      * @return the command for the given line
@@ -158,12 +166,37 @@ public class Assembler {
         String[] cmd = command.split(" *,? +");
         IQueryableInstruction instruction = instructionSetModel.getInstruction(cmd[0]);
         if (instruction == null) {
-            throw new AssemblyException("Unknown instruction");
+            throw new AssemblyException("Unknown instruction " + cmd[0]);
         }
         String[] arguments = Arrays.copyOfRange(cmd, 1, cmd.length);
         writeLabelsToArguments(arguments);
+        makeLabelsRelative(arguments, instruction.getArguments());
         writeRegistersToArguments(arguments);
         return new Command(instruction, arguments);
+    }
+
+    private void makeLabelsRelative(String[] arguments, String[] arguments1) throws AssemblyException {
+        for (int i = 0; i < arguments.length; i++) {
+            String argument = arguments[i];
+            // check if argument is a label --> replace with address
+            if (RELATIVE_LABEL_PATTERN.matcher(arguments1[i]).matches()) {
+
+                Value value = ValueExtractor.extractValue(argument, calculatedMemoryAddressSize);
+
+                if (value == null) {
+                    throw new AssemblyException("Invalid label " + argument);
+                }
+
+                BigInteger targetInt = new BigInteger(value.getByteValue());
+                BigInteger currentInt = new BigInteger(currentAddress.getByteValue());
+
+                BigInteger offset = targetInt
+                        .subtract(currentInt)       // subtract current position to get difference
+                        .subtract(BigInteger.ONE);  // subtract one to get the correct offset
+                arguments[i] = "0x" + ValueExtractor.extractValue(offset.toString(), calculatedMemoryAddressSize).getHexadecimalValue();
+            }
+        }
+
     }
 
     /**
@@ -206,13 +239,22 @@ public class Assembler {
                     memory.setInitialProgramCounter(localCurrentAddress);
                 }
             }
+
+            // check if there is a command in the line or just a label
+            String cmd = labelMatcher.group("command");
+
+            // line only contains a label --> next line
+            if (cmd == null) {
+                continue;
+            }
+
             // increment memory address
             localCurrentAddress = localCurrentAddress.getIncrementedValue();
         }
     }
 
     /**
-     * uses the detected Labels to fill those, when given as an argument
+     * Uses the detected Labels to fill those, when given as an argument.
      *
      * @param arguments array of arguments that may have labels, in need to be replaced
      */
@@ -227,23 +269,30 @@ public class Assembler {
     }
 
     /**
-     * writes the instruction-set's register addresses to the arguments
+     * Writes the instruction-set's register addresses to the arguments.
      *
      * @param arguments array of arguments that may have registers, in need to be replaced
+     * @throws AssemblyException thrown if the Code can not be assembled.
      */
-    private void writeRegistersToArguments(String[] arguments) {
+    private void writeRegistersToArguments(String[] arguments) throws AssemblyException {
         // for each argument:
         for (int i = 0; i < arguments.length; i++) {
             String argument = arguments[i];
             // check if argument is a register with offset --> replace register with address, fill with leading zeros to match even hex length
+            // only for int registers, as float registers are not used in addressing
             Matcher matcher = ARGUMENT_REGISTER_PATTERN.matcher(argument);
             if (matcher.matches()) {
                 String register = matcher.group("register");
                 Integer registerInt = instructionSetModel.getIntegerRegister(register);
+                if (registerInt == null) {
+                    throw new AssemblyException("Unknown register " + argument);
+                }
                 String hex = Integer.toHexString(registerInt);
                 arguments[i] = argument.replaceFirst("\\(\\w+\\)", "(0x" + "0".repeat(hex.length()%2) + hex + ")");
                 continue;
             }
+
+
             // check if argument is an Integer register --> replace with address, fill with leading zeros to match even hex length
             Integer register = instructionSetModel.getIntegerRegister(argument);
             if (register != null) {
@@ -262,7 +311,7 @@ public class Assembler {
     }
 
     /**
-     * Gets Data of the {@link Memory} that was written to if code was assembled
+     * Gets Data of the {@link Memory} that was written to if code was assembled.
      * @return the memory that was written to
      */
     public IDataElement getMemoryData() {

@@ -10,8 +10,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+/**
+ * This class defines a register entity that can change its value based on another register somewhere else in the world.
+ */
 public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
-
 
     /**
      * Creates a new WirelessRegisterBlockEntity.
@@ -23,7 +25,7 @@ public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
     }
 
     /**
-     * Creates a new WirelessRegisterController.
+     * Creates a specific Controller.
      * @return A new WirelessRegisterController.
      */
     @Override
@@ -46,7 +48,6 @@ public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
             }
             BlockPosition connectedBlockPos = ((WirelessRegisterController)this.getController()).getConnectedPos();
             BlockPos conPos = new BlockPos((int)connectedBlockPos.getX(), (int)connectedBlockPos.getY(), (int)connectedBlockPos.getZ());
-            //Todo instanceof entfernen
             if (!(world.getBlockEntity(conPos) instanceof WirelessRegisterBlockEntity)) {
                 ((WirelessRegisterController) this.getController())
                         .setWirelessNeighbourPosition(new BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
@@ -59,6 +60,14 @@ public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
         }
     }
 
+    /**
+     * Is called every tick.
+     * Syncs the register with the connected registers.
+     * @param world the world in which the block is placed
+     * @param pos the position of the block in the minecraft world
+     * @param state the state of the minecraft block
+     * @param entity the block entity
+     */
     public static void tick(World world, BlockPos pos, BlockState state, ComputerBlockEntity entity) {
         ComputerBlockEntity.tick(world, pos, state, entity);
         if (world.isClient) {
