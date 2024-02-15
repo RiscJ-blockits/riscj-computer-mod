@@ -11,10 +11,11 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUn
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.*;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneInputBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneInputBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneOutputBlock;
