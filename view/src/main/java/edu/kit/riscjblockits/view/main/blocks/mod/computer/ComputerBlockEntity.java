@@ -4,7 +4,6 @@ import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
-import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataElement;
@@ -156,7 +155,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Getter for the model of this block.
      * @return the model of this block.
      */
-    protected IQueryableBlockModel getModel() {
+    protected IViewQueryableBlockModel getModel() {
         return model;
     }
 
@@ -269,14 +268,6 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
             default:
                 break;
         }
-    }
-
-    protected IDataElement getClientData() {
-        return data;
-    }
-
-    protected void setClientData(IDataElement data) {
-        this.data = data;
     }
 
 }

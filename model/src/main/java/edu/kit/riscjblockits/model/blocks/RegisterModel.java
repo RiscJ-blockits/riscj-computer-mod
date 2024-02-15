@@ -79,7 +79,6 @@ public class RegisterModel extends BlockModel {
     public void setWordLength(int wordLength){
         this.wordLength = wordLength;
         setUnqueriedStateChange(true);
-        System.out.println("Word length set to: " + wordLength);
     }
 
     public String getRegisterType() {
@@ -94,7 +93,6 @@ public class RegisterModel extends BlockModel {
     public void setRegisterType(String registerType) {
         this.registerType = registerType;
         setUnqueriedStateChange(true);
-        System.out.println("Register type set to: " + registerType);
     }
 
     public Value getValue() {
@@ -118,7 +116,6 @@ public class RegisterModel extends BlockModel {
     public void setMissingAvailableRegisters(String[] missingAvailableRegisters) {
         this.missingAvailableRegisters = missingAvailableRegisters;
         setUnqueriedStateChange(true);
-        System.out.println("Missing and available registers set to: " + missingAvailableRegisters[0] + " " + missingAvailableRegisters[1]);
     }
 
     /**
@@ -127,14 +124,6 @@ public class RegisterModel extends BlockModel {
      */
     protected int getWordLength() {
         return wordLength;
-    }
-
-    /**
-     * Getter for the missing and available registers.
-     * @return [0] missing for a valid architecture. [1] already present in the cluster.
-     */
-    protected String[] getMissingAvailableRegisters() {
-        return missingAvailableRegisters;
     }
 
 }
