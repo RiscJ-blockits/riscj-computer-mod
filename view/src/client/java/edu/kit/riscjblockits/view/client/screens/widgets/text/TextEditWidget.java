@@ -27,11 +27,11 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
     private static final float INVERSE_TEXT_SCALE = 1 / TEXT_SCALE;
     private static final int LINE_HEIGHT = 9;
     private static final int TAB_SPACE_COUNT = 4;
-    private static final int SELECTION_COLOR = 0x99FF0000;
-    private static final int TEXT_COLOR = 0x000000;
+    protected static final int SELECTION_COLOR = 0x99FF0000;
+    protected static final int TEXT_COLOR = 0x000000;
     private List<Line> lines;
     private int scrollPosition = 0;
-    private final TextRenderer textRenderer;
+    protected final TextRenderer textRenderer;
 
     private int x;
     private int y;
@@ -79,7 +79,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             // draw line index
             drawLineIndex(context, i, displayY);
             // draw line content
-            drawLine(context, lines.get(i).getContent(windowStartX), i, displayY);
+            drawLine(context, lines.get(i).getContent(), windowStartX, i, displayY);
             // increment text index
             currentTextIndex += lines.get(i).getContent().length();
         }
@@ -98,8 +98,8 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
     }
 
-    protected void drawLine(DrawContext context, String text, int i, int displayY) {
-        context.drawText(textRenderer, text, (int) (x * INVERSE_TEXT_SCALE), displayY, TEXT_COLOR, false);
+    protected void drawLine(DrawContext context, String line, int windowStartX, int i, int displayY) {
+        context.drawText(textRenderer, line.substring(windowStartX), (int) (x * INVERSE_TEXT_SCALE), displayY, TEXT_COLOR, false);
     }
 
     protected void drawSelectionForLine(DrawContext context, int i, int displayY) {
