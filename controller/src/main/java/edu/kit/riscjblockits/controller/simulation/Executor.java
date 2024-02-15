@@ -123,7 +123,6 @@ public class Executor implements IExecutor {
                 if (!to.equals(MEM_VISUALISATION)) {
 
                     if(flag.equals("r")) {
-                        //ToDo: check if from is a valid address
 
                         Matcher matcher = MEMORY_ACCES_PATTERN.matcher(from);
                         if (!matcher.matches()) {
