@@ -74,22 +74,12 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             int displayY = (int) (y * INVERSE_TEXT_SCALE + (i - start) * LINE_HEIGHT);
             // draw selection if current line is in selection
             if (hasSelected) {
-
-                int startX = Math.min(cursorX, selectionEndX);
-                int startY = Math.min(cursorY, selectionEndY);
-                int endX = Math.max(cursorX, selectionEndX);
-                int endY = Math.max(cursorY, selectionEndY);
-
-                String selectedText = getLineSelection(i, startX, startY, endX, endY);
-                int selectionStartInLine = startX == i ? startX : 0;
-
-                drawSelection(context, (int) (x * INVERSE_TEXT_SCALE) + selectionStartInLine, displayY, textRenderer.getWidth(selectedText));
+                drawSelectionForLine(context, i, displayY);
             }
             // draw line index
             drawLineIndex(context, i, displayY);
             // draw line content
-            context.drawText(textRenderer, lines.get(i).getContent(windowStartX), (int) (x * INVERSE_TEXT_SCALE), displayY, TEXT_COLOR, false);
-
+            drawLine(context, lines.get(i).getContent(windowStartX), i, displayY);
             // increment text index
             currentTextIndex += lines.get(i).getContent().length();
         }
@@ -106,6 +96,47 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
         matrixStack.pop();
 
+    }
+
+    protected void drawLine(DrawContext context, String text, int i, int displayY) {
+        context.drawText(textRenderer, text, (int) (x * INVERSE_TEXT_SCALE), displayY, TEXT_COLOR, false);
+    }
+
+    protected void drawSelectionForLine(DrawContext context, int i, int displayY) {
+        int startX;
+        int startY;
+        int endX;
+        int endY;
+        if (cursorY == selectionEndY) {
+            startY = cursorY;
+            endY = cursorY;
+            startX = Math.min(cursorX, selectionEndX);
+            endX = Math.max(cursorX, selectionEndX);
+        }
+        else if (cursorY > selectionEndY) {
+            startY = selectionEndY;
+            endY = cursorY;
+            startX = selectionEndX;
+            endX = cursorX;
+        } else {
+            startY = cursorY;
+            endY = selectionEndY;
+            startX = cursorX;
+            endX = selectionEndX;
+        }
+
+
+        String selectedText = getLineSelection(i, startX, startY, endX, endY);
+        int charsBefore = startY == i ? startX : 0;                                    // start of selection in line
+        charsBefore = endY == i ? endX - selectedText.length() : charsBefore; // end of selection in line
+        // calculate width of text before selection --> draw selection offset by that width
+        String wholeLine = lines.get(i).getContent();
+        int beforeWidth;
+        if (wholeLine.length() >= windowStartX && charsBefore >= windowStartX)
+            beforeWidth = textRenderer.getWidth(wholeLine.substring(windowStartX, charsBefore));
+        else
+            beforeWidth = textRenderer.getWidth(wholeLine.substring(0, charsBefore));
+        drawSelection(context, (int) (x * INVERSE_TEXT_SCALE) + beforeWidth, displayY, textRenderer.getWidth(selectedText));
     }
 
     private String getLineSelection(int i, int startX, int startY, int endX, int endY) {
@@ -321,11 +352,27 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
     private String getSelectedText() {
         StringBuilder result = new StringBuilder();
 
-        int startX = Math.min(cursorX, selectionEndX);
-        int startY = Math.min(cursorY, selectionEndY);
-        int endX = Math.max(cursorX, selectionEndX);
-        int endY = Math.max(cursorY, selectionEndY);
-
+        int startX;
+        int startY;
+        int endX;
+        int endY;
+        if (cursorY == selectionEndY) {
+            startY = cursorY;
+            endY = cursorY;
+            startX = Math.min(cursorX, selectionEndX);
+            endX = Math.max(cursorX, selectionEndX);
+        }
+        else if (cursorY > selectionEndY) {
+            startY = selectionEndY;
+            endY = cursorY;
+            startX = selectionEndX;
+            endX = cursorX;
+        } else {
+            startY = cursorY;
+            endY = selectionEndY;
+            startX = cursorX;
+            endX = selectionEndX;
+        }
 
         for (int i = startY; i <= endY; i++) {
             String line = lines.get(i).getContent();
@@ -381,10 +428,6 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         if (cursorX + i > lines.get(cursorY).getContent().length() && cursorY < lines.size() - 1) {
             cursorY++;
             cursorX = 0;
-            if (selecting && !ignoreSelection) {
-                selectionEndX = cursorX;
-                selectionEndY = cursorY;
-            }
             updateWindow();
             return;
         }
@@ -425,7 +468,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         String[] splitString = text.split("\n", -1);
 
         String afterInsertContent = "";
-        if (cursorX < lines.get(cursorY).getContent().length() - 1) {
+        if (cursorX < lines.get(cursorY).getContent().length()) {
             afterInsertContent = lines.get(cursorY).cut(cursorX, lines.get(cursorY).getContent().length());
         }
         for (int i = 0; i < splitString.length; i++) {
@@ -450,24 +493,54 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
     }
 
     private void deleteSelection() {
-        int startX = Math.min(cursorX, selectionEndX);
-        int startY = Math.min(cursorY, selectionEndY);
-        int endX = Math.max(cursorX, selectionEndX);
-        int endY = Math.max(cursorY, selectionEndY);
+        int startX;
+        int startY;
+        int endX;
+        int endY;
+        if (cursorY == selectionEndY) {
+            startY = cursorY;
+            endY = cursorY;
+            startX = Math.min(cursorX, selectionEndX);
+            endX = Math.max(cursorX, selectionEndX);
+        }
+        else if (cursorY > selectionEndY) {
+            startY = selectionEndY;
+            endY = cursorY;
+            startX = selectionEndX;
+            endX = cursorX;
+        } else {
+            startY = cursorY;
+            endY = selectionEndY;
+            startX = cursorX;
+            endX = selectionEndX;
+        }
 
         List<Integer> linesToDelete = new ArrayList<>();
+        int firstLineIndex = -1;
         for (int i = 0; i < lines.size(); i++) {
             // single line selection
             if (i == startY && i == endY) {
+                // set cursor so  that the first (only) line is the current line
+                cursorX = startX;
+                cursorY = startY;
                 lines.get(i).cut(startX, endX);
             }
             // start of selection --> cut off text before start
             else if (i == startY) {
                 lines.get(i).cut(startX, lines.get(i).getContent().length());
+                firstLineIndex = i;
+                // set cursor so  that the first line is the current line
+                cursorX = lines.get(i).getContent().length();
+                cursorY = startY;
+
             }
             // end of selection --> cut off text after end
             else if (i == endY) {
                 lines.get(i).cut(0, endX);
+                if (firstLineIndex != -1) {
+                    lines.get(firstLineIndex).setContent(lines.get(firstLineIndex).getContent() + lines.get(i).getContent());
+                    linesToDelete.add(i);
+                }
             }
             // middle of selection --> select whole line
             else if (i > startY && i < endY) {
@@ -579,6 +652,10 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         if (mouseX < x || mouseX > x + width || mouseY < y || mouseY > y + height) {
             return Element.super.mouseClicked(mouseX, mouseY, button);
         }
+        if (hasSelected) {
+            hasSelected = false;
+        }
+
         // Calculate the line number based on the mouse's Y position
         int line = (int) ((mouseY - this.y) / (LINE_HEIGHT * TEXT_SCALE))
             + (scrollPosition == 0 ? 0 : scrollPosition - LINE_HEIGHT) / LINE_HEIGHT; // compensate for last line when scrollposition is more than 0
