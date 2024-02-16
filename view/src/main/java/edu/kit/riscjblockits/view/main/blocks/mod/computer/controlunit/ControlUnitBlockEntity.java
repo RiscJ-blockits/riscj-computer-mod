@@ -134,7 +134,6 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
         super.updateUI();
     }
 
-
     @Override
     public Text getGoggleText() {
         NbtCompound nbt = new NbtCompound();

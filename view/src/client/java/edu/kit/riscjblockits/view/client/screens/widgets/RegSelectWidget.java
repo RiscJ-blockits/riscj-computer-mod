@@ -87,7 +87,6 @@ public class RegSelectWidget extends ExtendableWidget {
     }
 
     private List<RegisterEntry> getEntries() {
-        BlockPos pos = registerScreenHandler.getBlockEntity().getPos();
         List<RegisterEntry> entries = new ArrayList<>();
         for (String register: registerScreenHandler.getRegisters(DataConstants.REGISTER_MISSING)) {
             RegisterEntry entry = new RegisterEntry(register, true, false, this);

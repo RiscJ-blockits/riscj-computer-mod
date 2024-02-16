@@ -24,10 +24,6 @@ import static edu.kit.riscjblockits.model.blocks.RegisterModel.UNASSIGNED_REGIST
  */
 public class TerminalSelectionWidget extends RegSelectWidget{
 
-    private static final Identifier IOM_BUTTON_TEXTURE = new Identifier("riscj_blockits", "textures/gui/register/io/tab_unselected.png");
-    private static final Identifier IOM_BUTTON_HIGHLIGHTED_TEXTURE = new Identifier("riscj_blockits", "textures/gui/register/io/tab_selected.png");
-    private static final int IOM_BUTTON_WIDTH = 35;
-    private static final int IOM_BUTTON_HEIGHT = 26;
     /**
      * The identifier for the "mode" register.
      */
@@ -40,10 +36,13 @@ public class TerminalSelectionWidget extends RegSelectWidget{
      * The identifier for the "In" register.
      */
     public static final String IN = "In";
+    private static final Identifier IOM_BUTTON_TEXTURE = new Identifier("riscj_blockits", "textures/gui/register/io/tab_unselected.png");
+    private static final Identifier IOM_BUTTON_HIGHLIGHTED_TEXTURE = new Identifier("riscj_blockits", "textures/gui/register/io/tab_selected.png");
+    private static final int IOM_BUTTON_WIDTH = 35;
+    private static final int IOM_BUTTON_HEIGHT = 26;
     private IconButtonWidget inButton;
     private IconButtonWidget outButton;
     private IconButtonWidget modeButton;
-
     private DisplayMode displayMode;
 
     /**
@@ -75,7 +74,6 @@ public class TerminalSelectionWidget extends RegSelectWidget{
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-
         int i = (this.parentWidth - 147) / 2 - this.leftOffset - (IOM_BUTTON_WIDTH - 2) + 1;
         int j = (this.parentHeight - 166) / 2 + 17;
 
@@ -97,10 +95,6 @@ public class TerminalSelectionWidget extends RegSelectWidget{
             default: break;
         }
 
-
-        //context.getMatrices().push();
-        //context.getMatrices().translate(0.0f, 0.0f, 100.0f);
-
         MinecraftClient client = MinecraftClient.getInstance();
         TextRenderer textRenderer = client.textRenderer;
         context.drawText(textRenderer, IN, i + 8, j + (IOM_BUTTON_HEIGHT - 6) / 2, 0xffffff, false);
@@ -108,9 +102,6 @@ public class TerminalSelectionWidget extends RegSelectWidget{
             OUT, i + 8, j + IOM_BUTTON_HEIGHT + (IOM_BUTTON_HEIGHT - 6) / 2, 0xffffff, false);
         context.drawText(textRenderer,
             Text.literal(MODE), i + 8, j + IOM_BUTTON_HEIGHT * 2 + (IOM_BUTTON_HEIGHT - 6) / 2, 0xffffff, false);
-
-        //context.getMatrices().pop();
-
     }
 
     @Override

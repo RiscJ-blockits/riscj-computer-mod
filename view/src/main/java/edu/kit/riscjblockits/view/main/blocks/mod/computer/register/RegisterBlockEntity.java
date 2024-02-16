@@ -69,7 +69,7 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
     }
 
     /**
-     * Getter for the headline that is displayed ion the screen.
+     * Getter for the headline that is displayed in the screen.
      * @return The display name of the register.
      */
     @Override
@@ -93,7 +93,7 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
 
     /**
      * Is called by the goggle.
-     * @return the register type and teh value as a text.
+     * @return the register type and the value as a text.
      */
     @Override
     public Text getGoggleText() {

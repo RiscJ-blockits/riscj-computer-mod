@@ -16,17 +16,30 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_FOUND;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_MISSING;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_INPUT;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_IN_TYPE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_MODE_TYPE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_OUT_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMNAL_MODE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGTH;
 
-//main terminal controller
+/**
+ * This is the main controller for the terminal block.
+ * It coordinates between the three controllers.
+ * It also manages the mode register part of the terminal block.
+ */
 public class TerminalModeController extends RegisterController {
 
     private final TerminalInputController inputController;
     private final RegisterController outputController;
 
+    /**
+     * Constructor for the TerminalModeController.
+     * @param blockEntity The block entity that is connected to this controller.
+     * @param inputController The controller for the input register.
+     * @param outputController The controller for the output register.
+     */
     public TerminalModeController(IConnectableComputerBlockEntity blockEntity, TerminalInputController inputController, RegisterController outputController) {
         super(blockEntity);
         this.inputController = inputController;
@@ -63,8 +76,6 @@ public class TerminalModeController extends RegisterController {
     @Override
     public void setData(IDataElement data) {
         getModel().onStateChange();
-        //
-        //
         if (!data.isContainer()) {
             return;
         }
@@ -72,7 +83,6 @@ public class TerminalModeController extends RegisterController {
             switch (s) {
                 case REGISTER_TYPE -> {
                     String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
-                    //((RegisterModel) getModel()).setRegisterType(type);     //when we reload the world, we need to set the register type for the mode register
                     String first;
                     String second;
                     try {
@@ -90,13 +100,12 @@ public class TerminalModeController extends RegisterController {
                         input.set(REGISTER_TYPE, new DataStringEntry(second));
                         outputController.setData(input);
                     } else if (first.equals("Mode")) {
-                        IDataContainer input = new Data();
-                        input.set(REGISTER_TYPE, new DataStringEntry(second));
                         ((RegisterModel) getModel()).setRegisterType(second);
                     }
                     if (getClusterHandler() != null) {
                         this.getClusterHandler().checkFinished();
                     }
+                    return;
                 }
                 case REGISTER_REGISTERS -> {
                     IDataContainer registers = (IDataContainer) ((IDataContainer) data).get(s);
@@ -139,18 +148,25 @@ public class TerminalModeController extends RegisterController {
                         Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
                     inputController.setNewValue(value);
                 }
-//                case REGISTER_TERMINAL_IN_TYPE -> {
-//                    String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
-//                    IDataContainer input = new Data();
-//                    input.set(REGISTER_TYPE, new DataStringEntry(type));
-//                    inputController.setData(input);
-//                }
-//                case REGISTER_TERMINAL_OUT_TYPE -> {
-//                    String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
-//                    IDataContainer input = new Data();
-//                    input.set(REGISTER_TYPE, new DataStringEntry(type));
-//                    outputController.setData(input);
-//                }
+                case REGISTER_TERMINAL_IN_TYPE -> {
+                    String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+                    IDataContainer input = new Data();
+                    input.set(REGISTER_TYPE, new DataStringEntry(type));
+                    inputController.setData(input);
+                }
+                case REGISTER_TERMINAL_OUT_TYPE -> {
+                    String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+                    IDataContainer input = new Data();
+                    input.set(REGISTER_TYPE, new DataStringEntry(type));
+                    outputController.setData(input);
+                }
+                case REGISTER_TERMINAL_MODE_TYPE -> {
+                    String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
+                    ((RegisterModel) getModel()).setRegisterType(type);
+                }
+                default -> {
+                    //do nothing
+                }
             }
         }
     }
