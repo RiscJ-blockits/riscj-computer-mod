@@ -43,7 +43,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
     /**
      * The scale of the text.
      */
-    private static final float TEXT_SCALE = 1f;
+    private static final float TEXT_SCALE = 0.66f;
     /**
      * The inverse of the text scale.
      */
@@ -52,6 +52,14 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
      * The number of spaces in a tab.
      */
     private static final int TAB_SPACE_COUNT = 4;
+    /**
+     * The offset between editor and line index.
+     */
+    private static final int LINE_INDEX_OFFSET = 6;
+    /**
+     * The expected width of the line index.
+     */
+    private static final int LINE_INDEX_EXPECTED_WIDTH = 18;
     /**
      * the textRenderer used to render the text.
      */
@@ -135,13 +143,14 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         tickCounter += delta;
         // calculate start index of text
         int start = (int) Math.max(scrollPosition/(LINE_HEIGHT * TEXT_SCALE) - 1, 0);
+        context.enableScissor(x - LINE_INDEX_OFFSET - LINE_INDEX_EXPECTED_WIDTH, y, x + width, x + height);
         // prepare text scaling
         MatrixStack matrixStack = context.getMatrices();
         matrixStack.push();
         matrixStack.scale(TEXT_SCALE, TEXT_SCALE, TEXT_SCALE);
         // draw lines with their index
         for (int i = start; i < lines.size(); i++) {
-            if ((i - start) * LINE_HEIGHT >= height) {
+            if ((i - start) * LINE_HEIGHT >= height * INVERSE_TEXT_SCALE) {
                 break;
             }
             int displayY = (int) (y * INVERSE_TEXT_SCALE + (i - start) * LINE_HEIGHT);
@@ -166,6 +175,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
                     (int) (y * INVERSE_TEXT_SCALE + (cursorY - start) * LINE_HEIGHT), false);
 
         matrixStack.pop();
+        context.disableScissor();
 
     }
 
@@ -179,6 +189,9 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
      * @param displayY the y position to draw the line
      */
     protected void drawLine(DrawContext context, String line, int windowStartX, int i, int displayX, int displayY) {
+        if (line.length() < windowStartX) {
+            return;
+        }
         context.drawText(textRenderer, line.substring(windowStartX), displayX, displayY, TEXT_COLOR, false);
     }
 
@@ -262,7 +275,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
      */
     private void drawLineIndex(DrawContext context, int i, int y) {
         int width = textRenderer.getWidth(String.valueOf(i));
-        context.drawText(textRenderer, String.valueOf(i), (int) (x * INVERSE_TEXT_SCALE - width - 6), y, TEXT_COLOR, false);
+        context.drawText(textRenderer, String.valueOf(i), (int) (x * INVERSE_TEXT_SCALE - width - LINE_INDEX_OFFSET * INVERSE_TEXT_SCALE), y, TEXT_COLOR, false);
     }
 
     /**
@@ -342,7 +355,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
      * @return the height of the contents
      */
     private int getContentsHeight() {
-        return (int) ((lines.size() + 5) * LINE_HEIGHT * TEXT_SCALE);
+        return (int) ((lines.size() + 3) * LINE_HEIGHT * TEXT_SCALE);
     }
 
     /**
@@ -423,6 +436,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             this.selectionEndY = 0;
             this.cursorY = lines.size() - 1;
             this.cursorX = lines.get(cursorY).getContent().length();
+            hasSelected = true;
             return true;
         } else if (Screen.isCopy(keyCode)) {
             MinecraftClient.getInstance().keyboard.setClipboard(this.getSelectedText());
@@ -443,17 +457,25 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
                 case 259 -> {           // backspace
                     if (hasSelected) {
                         insert("");
-                    } else {
-                        delete(-1);
+                        yield true;
                     }
+                    if (Screen.hasControlDown()) {
+                        delete(-lines.get(cursorY).getPreviousWordLength(cursorX));
+                        yield true;
+                    }
+                    delete(-1);
                     yield true;
                 }
                 case 261 -> {           // delete
                     if (hasSelected) {
                         insert("");
-                    } else {
-                        delete(1);
+                        yield true;
                     }
+                    if (Screen.hasControlDown()) {
+                        delete(lines.get(cursorY).getNextWordLength(cursorX));
+                        yield true;
+                    }
+                    delete(1);
                     yield true;
                 }
                 case 262 -> {           // right arrow
@@ -692,6 +714,8 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
      */
     public void delete(int i) {
 
+        if (i == 0)
+            return;
 
         int columnDelta = 0;
         int from;
@@ -749,13 +773,13 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
     private void updateWindow() {
         // cursor going out the top
-        if ((cursorY + 1) * LINE_HEIGHT < scrollPosition) {
-            scrollPosition = (cursorY + 1) * LINE_HEIGHT;
+        if ((cursorY + 1) * LINE_HEIGHT * TEXT_SCALE < scrollPosition) {
+            scrollPosition = Math.round((cursorY + 1) * LINE_HEIGHT * TEXT_SCALE);
         }
 
         // cursor going out the bottom
-        if (cursorY + 1 > (scrollPosition + height) / LINE_HEIGHT) {
-            scrollPosition = ((cursorY + 1) * LINE_HEIGHT) - height;
+        if ((cursorY + 2) * LINE_HEIGHT * TEXT_SCALE > scrollPosition + height) {
+            scrollPosition = (Math.round((cursorY + 2) * LINE_HEIGHT * TEXT_SCALE) - height);
         }
 
         // cursor going out of left side
@@ -765,9 +789,9 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         }
 
         // cursor going out of right side
-        int shownCharacters = textRenderer.trimToWidth(lines.get(cursorY).getContent().substring(windowStartX), width).length();
-        if (cursorX > windowStartX + shownCharacters)
-            windowStartX = cursorX - shownCharacters;
+        int shownCharacters = textRenderer.trimToWidth(lines.get(cursorY).getContent().substring(windowStartX), (int) (width * INVERSE_TEXT_SCALE)).length();
+        if (cursorX > (windowStartX + shownCharacters))
+            windowStartX = (cursorX - shownCharacters);
     }
 
     @Override
@@ -780,8 +804,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         }
 
         // Calculate the line number based on the mouse's Y position
-        int line = (int) ((mouseY - this.y) / (LINE_HEIGHT * TEXT_SCALE))
-            + (scrollPosition == 0 ? 0 : scrollPosition - LINE_HEIGHT) / LINE_HEIGHT; // compensate for last line when scrollposition is more than 0
+        int line = (int) Math.round((mouseY - this.y + scrollPosition) / (LINE_HEIGHT * TEXT_SCALE)) - (scrollPosition > 0 ? 2 : 0);
 
         // Clamp the line number to the valid range
         line = MathHelper.clamp(line, 0, lines.size() - 1);
@@ -791,8 +814,8 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
         // Calculate the column number based on the mouse's X position
         int column = 0;
-        for (int i = 0; i < content.length(); i++) {
-            if (textRenderer.getWidth(content.substring(windowStartX, windowStartX + i)) > mouseX - this.x) {
+        for (int i = 0; i < content.length() - windowStartX; i++) {
+            if (textRenderer.getWidth(content.substring(windowStartX, windowStartX + i)) > (mouseX - this.x) * INVERSE_TEXT_SCALE) {
                 break;
             }
             column = windowStartX + i + 1;

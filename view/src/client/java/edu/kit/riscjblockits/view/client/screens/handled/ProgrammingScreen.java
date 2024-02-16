@@ -119,7 +119,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         super.init();
         this.narrow = this.width < 379;
         // add the edit box widget to the screen
-        editBox = new AssemblerSyntaxTextEditWidget(textRenderer, this.x + 32, this.y + 18, 129, 90);
+        editBox = new AssemblerSyntaxTextEditWidget(textRenderer, this.x + 32, this.y + 19, 112, 87);
         addDrawableChild(editBox);
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
@@ -229,6 +229,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         // set the edit box to focus if the mouse is over it while clicking
         editBox.setFocused(editBox.isMouseOver(mouseX, mouseY));
+        setFocused(editBox.isMouseOver(mouseX, mouseY)? editBox : null);
+
         // sync the code when the edit box is unfocused
         if (!editBox.isFocused() && codeHasChanged) {
             syncCode(editBox.getText());
