@@ -16,9 +16,7 @@
       "AKKU": 3,
       "SAR": 4,
       "SDR": 5,
-      "RedstoneOut": 6,
-      "RedstoneIn": 7,
-      "TEXT": 8
+      "test": 6
     }
   },
   "memory": {
@@ -40,11 +38,11 @@
     "JMN"
   ],
   "fetch": [
-    ["SAR", "IAR", "r", "<mem_addr>", "SAR"],
+    ["SAR", "IAR", "r", "<mem_vis>", "SAR"],
     ["X", "IAR", "r" ,"" ,""],
     ["Y", "EINS", "r", "", ""],
     ["ADD", "Z", "X", "Y" ,"", "", ""],
-    ["IAR", "Z", "r", "SDR", "<mem_data>"],
+    ["IAR", "Z", "r", "SDR", "Mem[SAR]"],
     ["IR", "SDR", "", "", ""]
   ],
   "address_change": {

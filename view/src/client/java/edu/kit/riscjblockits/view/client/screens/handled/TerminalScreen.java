@@ -65,7 +65,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     /**
      * Initializes the screen.
      * Adds the edit box widget to the screen.
-     * Adds the Text to the screen.
+     * Add the Text to the screen.
      */
     @Override
     protected void init() {
@@ -75,7 +75,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         }
         // add the edit box widget to the screen
         inputBox = new TextFieldWidget(textRenderer, this.x + 108, this.y + 99, 61, 11, Text.literal(""));
-        inputBox.setMaxLength(1);
+        inputBox.setMaxLength(15);
         addDrawableChild(inputBox);
         inputBox.setFocused(false);
         //add text to the screen
@@ -175,6 +175,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
             this.client.player.closeHandledScreen();
         } else if (keyCode == GLFW.GLFW_KEY_ENTER) { //Send Data on Enter
             sendData(inputBox.getText());
+            inputBox.setText("");
             //ToDo reset Text inside the box
         }
         // return true if the edit box is focused or the edit box is focused --> suppress all other key presses (e.g. "e")
