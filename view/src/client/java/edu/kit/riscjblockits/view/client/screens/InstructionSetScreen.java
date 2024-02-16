@@ -5,6 +5,7 @@ import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
+import edu.kit.riscjblockits.view.client.screens.widgets.text.TextEditWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -12,7 +13,6 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.EditBoxWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.nbt.NbtCompound;
@@ -43,7 +43,7 @@ public class InstructionSetScreen extends Screen {
     /**
      * The edit box widget that is used to enter the code.
      */
-    private EditBoxWidget inputBox;
+    private TextEditWidget inputBox;
     private final int backgroundHeight;
     private final int backgroundWidth;
 
@@ -106,11 +106,9 @@ public class InstructionSetScreen extends Screen {
             }
         }
         // add the edit box widget to the screen
-        inputBox = new EditBoxWidget(textRenderer, x + 9, y +8,  229, 143,Text.literal(""), Text.of(""));
+        inputBox = new TextEditWidget(textRenderer, x + 33, y + 9,  212, 143);
         addDrawableChild(inputBox);
         inputBox.setText(istString);
-        //ToDo don't jump to the end of the input box
-        inputBox.setFocused(false);
         // add the build button to the screen
         writeButton = new IconButtonWidget(
             x + 251, y + 76,
@@ -162,6 +160,8 @@ public class InstructionSetScreen extends Screen {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         // set the edit box to focus if the mouse is over it while clicking
         inputBox.setFocused(inputBox.isMouseOver(mouseX, mouseY));
+        setFocused(inputBox.isMouseOver(mouseX, mouseY)? inputBox : null);
+
         // return the default handling of mouse clicks
         return super.mouseClicked(mouseX, mouseY, button);
     }

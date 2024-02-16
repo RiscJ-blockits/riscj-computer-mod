@@ -1,9 +1,11 @@
 package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.view.client.screens.widgets.DualTexturedIconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.InstructionsWidget;
+import edu.kit.riscjblockits.view.client.screens.widgets.text.AssemblerSyntaxTextEditWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
@@ -11,7 +13,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.EditBoxWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtCompound;
@@ -20,6 +21,9 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.HashMap;
+import java.util.List;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.PROGRAMMING_BLOCK_CODE;
 
@@ -34,14 +38,11 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     /**
      * The background texture of the screen.
      */
-    private static final Identifier TEXTURE =
-        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/programming_block_gui.png");
-    private static final Identifier ASSEMBLE_BUTTON_TEXTURE =
-        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_unpressed.png");
-    private static final Identifier ASSEMBLE_BUTTON_TEXTURE_FAILED =
-        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_failed.png");
-    private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE =
-        new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/instructions_button.png");
+    private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/programming_block_gui.png");
+    private static final Identifier ASSEMBLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_unpressed.png");
+    private static final Identifier ASSEMBLE_BUTTON_TEXTURE_FAILED = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_unpressed_failed.png");
+    private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/instructions_button.png");
+    private static final Identifier EXAMPLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/example_button.png");
 
     /**
      * Can display information about all available instructions.
@@ -54,9 +55,14 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     private final DualTexturedIconButtonWidget assembleButton;
 
     /**
+     * The button that is used to load example code.
+     */
+    private IconButtonWidget exampleButton;
+
+    /**
      * The edit box widget that is used to enter the code.
      */
-    private EditBoxWidget editBox;
+    private AssemblerSyntaxTextEditWidget editBox;
     private boolean codeHasChanged = false;
 
     /**
@@ -113,7 +119,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         super.init();
         this.narrow = this.width < 379;
         // add the edit box widget to the screen
-        editBox = new EditBoxWidget(textRenderer, this.x + 8, this.y + 18, 129, 91, Text.translatable("programming_pretext"), Text.of("Code"));
+        editBox = new AssemblerSyntaxTextEditWidget(textRenderer, this.x + 32, this.y + 19, 112, 87);
         addDrawableChild(editBox);
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
@@ -136,11 +142,38 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
             INSTRUCTIONS_BUTTON_TEXTURE
         );
         addDrawableChild(instructionSetButton);
+
+        exampleButton = new IconButtonWidget(this.x + 25, this.y + 111, 13, 13, button ->{
+            editBox.setText(this.handler.getExample());
+        }, EXAMPLE_BUTTON_TEXTURE);
+        addDrawableChild(exampleButton);
+
         handler.enableSyncing();
 
         ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION);
-        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION,
-            (client1, handler1, buf, responseSender) -> showError(buf.readString()));
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION, (client1, handler1, buf, responseSender) -> {
+            showError(buf.readString());
+        });
+        // set selection focus to edit box
+        setFocused(editBox);
+    }
+
+    private HashMap<String, Integer> getArgumentCountMap() {
+        HashMap<String, Integer> argumentCountMap = new HashMap<>();
+        List<String[]> instructions;
+
+        // can only fill map if instructionSet is parsable
+        try {
+            instructions = (handler).getInstructions();
+        }catch (InstructionBuildException e) {
+            return argumentCountMap;
+        }
+
+        for (String[] instruction : instructions) {
+            argumentCountMap.put(instruction[0], instruction[1].split(", ?").length);
+        }
+
+        return argumentCountMap;
     }
 
     /**
@@ -160,6 +193,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         instructionsWidget.render(context, mouseX, mouseY, delta);
         // render the tooltip of the button if the mouse is over it
         drawMouseoverTooltip(context, mouseX, mouseY);
+        exampleButton.visible = !this.handler.getExample().isEmpty();
     }
 
     /**
@@ -190,6 +224,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         // set the edit box to focus if the mouse is over it while clicking
         editBox.setFocused(editBox.isMouseOver(mouseX, mouseY));
+        setFocused(editBox.isMouseOver(mouseX, mouseY)? editBox : null);
+
         // sync the code when the edit box is unfocused
         if (!editBox.isFocused() && codeHasChanged) {
             syncCode(editBox.getText());
@@ -232,6 +268,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     protected void handledScreenTick() {
         super.handledScreenTick();
         this.instructionsWidget.update();
+        this.editBox.setInstructionArgumentCountMap(getArgumentCountMap());
+
     }
 
 }
