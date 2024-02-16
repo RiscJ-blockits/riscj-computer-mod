@@ -217,7 +217,7 @@ public class SimulationSequenceHandler implements Runnable {
         try {
             instruction.execute(executor);
         } catch (NonExecutableMicroInstructionException e) {
-            System.out.println("Non-executable micro instruction: " + e.getMessage());
+            //do nothing
         }
     }
 
