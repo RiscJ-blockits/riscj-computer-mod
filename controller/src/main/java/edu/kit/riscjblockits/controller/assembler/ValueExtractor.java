@@ -24,12 +24,6 @@ public final class ValueExtractor {
     private static final Pattern BIN_VALUE_PATTERN = Pattern.compile("(?<negative>-)?0b(?<value>[01]+)");
 
     /**
-     * TODO: add support for float values
-     * Regex pattern to match float values.
-     */
-    private static final Pattern FLOAT_VALUE_PATTERN = Pattern.compile("(?<negative>-)?(?<value>\\d+\\.\\d+)");
-
-    /**
      * Utility class, no instances should be created.
      * @throws IllegalStateException if an instance is created.
      */

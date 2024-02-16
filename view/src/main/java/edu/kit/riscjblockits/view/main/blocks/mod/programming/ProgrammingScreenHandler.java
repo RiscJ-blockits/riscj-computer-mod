@@ -213,6 +213,7 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
 
     /**
      * Get the example code of the instruction set, from the InstructionSet-Item in the inventory.
+     * @return The example code of the instruction set.
      */
     public String getExample() {
         if(inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
@@ -222,7 +223,7 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
         InstructionSetModel instructionSetModel;
         try {
             instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(ist);
-             return instructionSetModel.getExample();
+            return instructionSetModel.getExample();
         }catch (UnsupportedEncodingException | InstructionBuildException e) {
             return "";
         }

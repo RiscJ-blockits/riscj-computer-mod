@@ -30,9 +30,9 @@ import java.util.Map;
 public class RISCJ_blockitsClient implements ClientModInitializer {
 
 	/**
-	 * The Server world exists bevor the client world, so we need to store synced data until the client world is created.
-	 */
-	 private static final Map<BlockPos, NbtCompound> syncQueue = new HashMap<>();
+	* The Server world exists bevor the client world, so we need to store synced data until the client world is created.
+	*/
+	private static final Map<BlockPos, NbtCompound> syncQueue = new HashMap<>();
 
 	/**
 	 * This method is called on the client when the game is starting up.
