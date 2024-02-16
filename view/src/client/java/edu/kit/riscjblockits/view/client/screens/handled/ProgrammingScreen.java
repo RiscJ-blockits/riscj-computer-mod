@@ -129,6 +129,12 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         assembleButton.setX(this.x + 151);
         assembleButton.setY(this.y + 63);
         addDrawableChild(assembleButton);
+
+        exampleButton = new IconButtonWidget(this.x + 25, this.y + 111, 13, 13, button ->{
+            editBox.setText(this.handler.getExample());
+        }, EXAMPLE_BUTTON_TEXTURE);
+        addDrawableChild(exampleButton);
+
         IconButtonWidget instructionSetButton = new IconButtonWidget(
             this.x + 8, this.y + 111,
             13, 13,
@@ -138,15 +144,12 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
                 button.setPosition(this.x + 8, this.y + 111);
                 this.editBox.setPosition(this.x + 8, this.y + 18);
                 this.assembleButton.setPosition(this.x + 151, this.y + 63);
+                this.editBox.setPosition(this.x + 32, this.y + 19);
+                this.exampleButton.setPosition(this.x + 25, this.y + 111);
             },
             INSTRUCTIONS_BUTTON_TEXTURE
         );
         addDrawableChild(instructionSetButton);
-
-        exampleButton = new IconButtonWidget(this.x + 25, this.y + 111, 13, 13, button ->{
-            editBox.setText(this.handler.getExample());
-        }, EXAMPLE_BUTTON_TEXTURE);
-        addDrawableChild(exampleButton);
 
         handler.enableSyncing();
 
