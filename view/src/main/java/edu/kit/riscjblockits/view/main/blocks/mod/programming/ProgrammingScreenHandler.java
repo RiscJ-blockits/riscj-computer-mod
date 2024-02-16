@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.view.main.blocks.mod.programming;
 import edu.kit.riscjblockits.controller.assembler.AssemblyException;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
@@ -46,7 +47,7 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
     private final ProgrammingBlockEntity blockEntity;
 
     /**
-     * The inventory of the programming block.
+     * The inventory of the programming block. Slot 0 holds the InstructionSet, Slot 1 the program and Slot 2 the result.
      */
     private final Inventory inventory;
 
@@ -208,6 +209,24 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
             }
         }
         return newStack;
+    }
+
+    /**
+     * Get the example code of the instruction set, from the InstructionSet-Item in the inventory.
+     * @return The example code of the instruction set.
+     */
+    public String getExample() {
+        if(inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt() || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
+            return "";
+        }
+        String ist = inventory.getStack(0).getOrCreateNbt().get("riscj_blockits.instructionSet").asString();
+        InstructionSetModel instructionSetModel;
+        try {
+            instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(ist);
+            return instructionSetModel.getExample();
+        }catch (UnsupportedEncodingException | InstructionBuildException e) {
+            return "";
+        }
     }
 
 }

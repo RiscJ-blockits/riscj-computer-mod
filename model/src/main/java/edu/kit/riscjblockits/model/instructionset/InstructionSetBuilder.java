@@ -25,11 +25,10 @@ public final class InstructionSetBuilder {
      * Builds an InstructionSetModel from a given InputStream.
      * @param is InputStream of the instruction set
      * @return InstructionSetModel
-     * @throws UnsupportedEncodingException if the character encoding is not supported
      * @throws InstructionBuildException if the instruction set cannot be built.
      */
-    public static InstructionSetModel buildInstructionSetModel (InputStream is) throws UnsupportedEncodingException, InstructionBuildException {
-        Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+    public static InstructionSetModel buildInstructionSetModel (InputStream is) throws InstructionBuildException {
+        Reader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
         Gson gson = new GsonBuilder().registerTypeAdapter(MicroInstruction.class, new MicroInstructionsDeserializer()).create();
         InstructionSetModel instructionSet;
         try {
@@ -51,26 +50,6 @@ public final class InstructionSetBuilder {
     public static InstructionSetModel buildInstructionSetModel (String s) throws UnsupportedEncodingException, InstructionBuildException {
         InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
         return buildInstructionSetModel(stream);
-    }
-
-    //Todo Test method
-    public static InstructionSetModel buildInstructionSetModelMima() {
-        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
-        try {
-            return buildInstructionSetModel(is);
-        }  catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    //Todo Test method
-    public static InstructionSetModel buildInstructionSetModelRiscV() {
-        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetRiscV.jsonc");
-        try {
-            return buildInstructionSetModel(is);
-        }  catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }

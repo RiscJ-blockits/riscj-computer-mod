@@ -35,7 +35,7 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
      * @param pos The position of the block in the minecraft world.
      * @param state The state of the minecraft block.
      */
-    public RegisterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    protected RegisterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
@@ -69,7 +69,7 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
     }
 
     /**
-     * Getter for the headline that is displayed ion the screen.
+     * Getter for the headline that is displayed in the screen.
      * @return The display name of the register.
      */
     @Override
@@ -93,7 +93,7 @@ public class RegisterBlockEntity extends ComputerBlockEntity implements Extended
 
     /**
      * Is called by the goggle.
-     * @return the register type and teh value as a text.
+     * @return the register type and the value as a text.
      */
     @Override
     public Text getGoggleText() {

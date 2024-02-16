@@ -79,6 +79,7 @@ public class WirelessRegisterModel extends RegisterModel {
      */
     @Override
     public void setValue(Value value) {
+        setUnqueriedStateChange(true);
         registerModel.setValue(value);
     }
 
@@ -99,6 +100,7 @@ public class WirelessRegisterModel extends RegisterModel {
     @Override
     public void setWordLength(int wordLength) {
         registerModel.setWordLength(wordLength);
+        setUnqueriedStateChange(true);
     }
 
     /**

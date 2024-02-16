@@ -45,12 +45,12 @@ public class Assembler {
     /**
      * The size of the memory address in bytes.
      */
-    private int calculatedMemoryAddressSize;
+    private final int calculatedMemoryAddressSize;
 
     /**
      * The size of the memory word in bytes.
      */
-    private int calculatedMemoryWordSize;
+    private final int calculatedMemoryWordSize;
 
     /**
      * The Map of all labels and their addresses labeling to.
@@ -104,14 +104,13 @@ public class Assembler {
                 throw new AssemblyException("Invalid line");
             }
 
-            String label = matcher.group("label");
+            String label = matcher.group("label");  //ToDo remove? is never used
             String cmd = matcher.group("command");
 
             // line only contains a label --> next line
             if (cmd == null) {
                 continue;
             }
-
 
             // check if line is data
             if (instructionSetModel.isDataStorageCommand(cmd)) {
@@ -132,6 +131,7 @@ public class Assembler {
                     int cleanLength = Integer.parseInt(data[1]);
                     // extract value and trim to length
                     Value value = ValueExtractor.extractValue(cleanData, calculatedMemoryWordSize);
+                    assert value != null;
                     String valueBinary = value.getBinaryValue();
                     Value trimmedValue = Value.fromBinary(valueBinary.substring(valueBinary.length() - cleanLength), calculatedMemoryWordSize);
                     // write trimmed value to memory
@@ -156,13 +156,12 @@ public class Assembler {
 
     /**
      * Gets the {@link Command} for a given line.
-     * will also detect and save labels
+     * Will also detect and save labels
      * @param command the line to get the command for
      * @return the command for the given line
-     * @throws AssemblyException if the command cant be assembled
+     * @throws AssemblyException if the command can't be assembled
      */
     private Command getCommandForLine(String command) throws AssemblyException {
-
         String[] cmd = command.split(" *,? +");
         IQueryableInstruction instruction = instructionSetModel.getInstruction(cmd[0]);
         if (instruction == null) {
@@ -223,6 +222,7 @@ public class Assembler {
             if (instructionSetModel.isDataStorageCommand(line)) {
                 String unsplitDirtyData = instructionSetModel.getStorageCommandData(line);
                 for (String dirtyData : unsplitDirtyData.split(",")) {
+                    assert localCurrentAddress != null;
                     localCurrentAddress = localCurrentAddress.getIncrementedValue();
                 }
                 continue;
@@ -249,6 +249,7 @@ public class Assembler {
             }
 
             // increment memory address
+            assert localCurrentAddress != null;
             localCurrentAddress = localCurrentAddress.getIncrementedValue();
         }
     }

@@ -4,7 +4,6 @@ import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
-import edu.kit.riscjblockits.model.blocks.IQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataElement;
@@ -156,11 +155,10 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Getter for the model of this block.
      * @return the model of this block.
      */
-    protected IQueryableBlockModel getModel() {
+    protected IViewQueryableBlockModel getModel() {
         return model;
     }
 
-    //ToDo Nicht im Entwurf
     /**
      * Gets called every tick.
      * Used to update ui elements.
@@ -189,7 +187,7 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
      * Gets called every tick.
      * Syncs the block entity nbt data to the client.
      */
-    public void syncToClient() {
+    private void syncToClient() {
         if (world == null || world.isClient || model == null) return;
         if (model.hasUnqueriedStateChange()) {
             if (world.getPlayers().isEmpty()) {
@@ -239,11 +237,10 @@ public abstract class ComputerBlockEntity extends ModBlockEntity implements ICon
         }
     }
 
-    //todo nicht im Entwurfs wiki
     /**
      * Requests data for the block entity.
      * It sets a new {@link Data} object to the block entity's controller.
-     * When new data s revived,
+     * When new data is revived,
      * the controller will call the model's onStateChange method which will trigger a sync to the client.
      */
     public void requestData() {

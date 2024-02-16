@@ -11,17 +11,18 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUn
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.*;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneInputBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneInputBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneOutputBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneOutputBlockEntity;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock.SystemClockScreenHandler;
@@ -330,7 +331,7 @@ public class RISCJ_blockits implements ModInitializer {
      * The item-group is used to group items and blocks in the creative inventory.
      */
     private static final ItemGroup ITEM_GROUP = FabricItemGroup.builder()
-        .icon(() -> new ItemStack(ALU_BLOCK_ITEM))
+        .icon(() -> new ItemStack(PROGRAM_ITEM))
         .displayName(Text.translatable("itemGroup.riscj_blockits.computer_components"))
         .entries((context, entries) -> {
             entries.add(ALU_BLOCK_ITEM);

@@ -106,7 +106,7 @@ public class ControlUnitController extends ComputerBlockController{
         //To Do update if cluster handler is added later (should already work)
         boolean success = getClusterHandler().setIstModel(((ControlUnitModel) getModel()).getIstModel());
         if (!success) {
-            ((ControlUnitModel) getModel()).setIstModel(null);      //ToDo schöner machen?
+            ((ControlUnitModel) getModel()).setIstModel(null);
         }
     }
 

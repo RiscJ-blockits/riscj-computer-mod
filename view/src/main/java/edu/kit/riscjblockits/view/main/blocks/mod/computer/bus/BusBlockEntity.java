@@ -101,10 +101,8 @@ public class BusBlockEntity extends ComputerBlockEntity {
         writeNbt(nbt);
         Text busData = Text.translatable("riscj_blockits.no_bus_data");
 
-        if (nbt.contains(MOD_DATA)) {
-            if (nbt.getCompound(MOD_DATA).contains(BUS_DATA)) {
-                busData = Text.of(nbt.getCompound(MOD_DATA).getString(BUS_DATA));
-            }
+        if (nbt.contains(MOD_DATA) && (nbt.getCompound(MOD_DATA).contains(BUS_DATA))) {
+            busData = Text.of(nbt.getCompound(MOD_DATA).getString(BUS_DATA));
         }
 
         return Text.translatable("block.riscj_blockits.bus_block")

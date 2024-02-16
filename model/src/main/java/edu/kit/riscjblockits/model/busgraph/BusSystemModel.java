@@ -18,12 +18,12 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     /**
      * Graph of all Blocks in the cluster and their connections.
      */
-    private Map<BlockPosition, List<BlockPosition>> adjPositions;
+    private final Map<BlockPosition, List<BlockPosition>> adjPositions;
 
     /**
      * Holds the active nodes in the visualization.
      */
-    private Map<BlockPosition, Boolean> activeVisualization;
+    private final Map<BlockPosition, Boolean> activeVisualization;
 
     /**
      * Holds the data that is present on the bus.
@@ -77,7 +77,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
                 }
             }
         }
-        //backtrack the BFS to find shortest path and set activeVisualization at nodes on the path
+        //backtrack the BFS to find the shortest path and set activeVisualization at nodes on the path
         BlockPosition current = endPos;
         while (!current.equals(startPos)) {
             activeVisualization.put(current, true);
@@ -209,6 +209,7 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
         removeNode(deletedNode);
         //find new connected graphs
         List<Map<BlockPosition, List<BlockPosition>>> newGraphs = new ArrayList<>();
+        if(neighbors == null) return newGraphs;
         outer: for(BlockPosition neighbor: neighbors){
             for(Map<BlockPosition, List<BlockPosition>> newGraph: newGraphs){
                 if(newGraph.containsKey(neighbor))
@@ -270,7 +271,6 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
     /**
      * Resets the list of bus nodes that transport data.
      */
-    //ToDo nicht im Entwurf Wiki
     public void resetVisualisation() {
         activeVisualization.clear();
     }
@@ -281,22 +281,4 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
             activeVisualization.put(blockPosition, true);
         }
     }
-
-    /**
-     * Checks if two nodes are connected by coordinates.
-     * @param blockPosition is the first node
-     * @param blockPosition1 is the second node
-     * @return true if the nodes are connected with an edge
-     */
-    public static boolean isNeighbourPosition(BlockPosition blockPosition, BlockPosition blockPosition1) {
-        if (blockPosition.getX() - blockPosition1.getX() == 1 || blockPosition.getX() - blockPosition1.getX() == -1) {
-            return blockPosition.getY() == blockPosition1.getY() && blockPosition.getZ() == blockPosition1.getZ();
-        }
-        if (blockPosition.getY() - blockPosition1.getY() == 1 || blockPosition.getY() - blockPosition1.getY() == -1) {
-            return blockPosition.getX() == blockPosition1.getX() && blockPosition.getZ() == blockPosition1.getZ();
-        }
-        return (blockPosition.getZ() - blockPosition1.getZ() == 1 || blockPosition.getZ() - blockPosition1.getZ() == -1)
-            && blockPosition.getX() == blockPosition1.getX() && blockPosition.getY() == blockPosition1.getY();
-    }
-
 }

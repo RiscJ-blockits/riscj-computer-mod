@@ -1,5 +1,7 @@
-package edu.kit.riscjblockits.controller.blocks;
+package edu.kit.riscjblockits.controller.blocks.io;
 
+import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
+import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.WirelessRegisterModel;
@@ -88,6 +90,9 @@ public class WirelessRegisterController extends RegisterController {
                     BlockPosition blockPosition = new BlockPosition(x, y, z);
                     ((WirelessRegisterModel) getModel()).setWirelessNeighbourPosition(blockPosition);
                 }
+                default -> {
+                    //do nothing
+                }
             }
         }
     }
@@ -123,7 +128,7 @@ public class WirelessRegisterController extends RegisterController {
      * Getter for the current value inside the register.
      * @return The Value stored in the register.
      */
-    //@Override
+    @Override
     public Value getValue() {
         return ((WirelessRegisterModel)getModel()).getValue();
     }

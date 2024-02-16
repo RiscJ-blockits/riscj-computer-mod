@@ -242,23 +242,24 @@
       "arguments": ["[addr]"],
       "opcode": "1100",
       "execution": [
-        ["AKKU", "[addr]", "", "", ""]
+        ["AKKU", "&[addr]", "", "", ""]
       ],
       "translation": [
-        "0000",
-        "[const]<20>"
+        "1100",
+        "[addr]<20>"
       ]
     },
     "MVAR": {                    //move from Akku to register
       "arguments": ["[addr]"],
       "opcode": "1010",
       "execution": [
-        [["addr"], "AKKU", "", "", ""]
+        ["&[addr]", "AKKU", "", "", ""]
       ],
       "translation": [
-        "0000",
-        "[const]<20>"
+        "1010",
+        "[addr]<20>"
       ]
     }
-  }
+  },
+  "example_programm": "* = 0x10\nX: DS 4\nY: DS 3\nZ: DS 0\n\nONE: DS 1\n\n* = 0x20\nSTART: LDV Y\nNOT\nADD ONE\nSTV Y\n\nLOOP: LDV X\nADD Y\nJMN END\nSTV X\n\nLDV Z\nADD ONE\nSTV Z\n\nJMP LOOP\n\nEND: LDV Z\nHALT"
 }

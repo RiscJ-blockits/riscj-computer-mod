@@ -62,6 +62,7 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
     }
 
     /**
+     * Gets the headline of the memory screen.
      * @return The name on the memory screen.
      */
     @Override
@@ -108,16 +109,13 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
 
     @Override
     public Text getGoggleText() {
-
         ItemStack program = getItems().get(0);
         Text programText;
         if (program.isEmpty()) {
             programText = Text.translatable("riscj_blockits.program_none");
-        }
-        else {
+        } else {
             programText = program.getName();
         }
-
         return Text.translatable("block.riscj_blockits.memory_block")
                 .append("\n")
                 .append(Text.translatable("riscj_blockits.program"))

@@ -26,7 +26,7 @@ public class IconButtonWidget extends ButtonWidget {
     /**
      * The text renderer to use for tooltips.
      */
-    private TextRenderer textRenderer;
+    private final TextRenderer textRenderer;
 
     /**
      * The tooltip to display when the button is hovered.

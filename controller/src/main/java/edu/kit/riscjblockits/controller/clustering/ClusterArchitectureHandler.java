@@ -1,11 +1,12 @@
 package edu.kit.riscjblockits.controller.clustering;
 
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
+import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
-import edu.kit.riscjblockits.controller.blocks.BlockController;
+import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
@@ -62,7 +63,7 @@ public final class ClusterArchitectureHandler {
 
         String[] aluRegisterNames = istModel.getAluRegisters();
         List<RegisterController> aluRegister = new ArrayList<>();
-        BlockController alu = null;
+        ComputerBlockController alu = null;
 
         List<String> availableRegisters = new ArrayList<>();
         for (IQueryableClusterController block : blocks) {
@@ -83,7 +84,7 @@ public final class ClusterArchitectureHandler {
                     break;
                 case ALU:
                     foundALU++;
-                    alu = (BlockController) block;
+                    alu = (ComputerBlockController) block;
                     break;
                 case CONTROL_UNIT:
                     foundControlUnit++;
@@ -100,8 +101,7 @@ public final class ClusterArchitectureHandler {
         //check if the ALU registers are connected to the ALU
         if (alu != null) {
             for (RegisterController register : aluRegister) {
-                if (!clusterHandler.isNeighbourPosition(alu, register)) {
-                    System.out.println("ALU Register not connected to ALU");
+                if (!BlockPosition.isNeighbourPosition(alu.getBlockPosition(), register.getBlockPosition())) {
                     correctArchitecture = false;
                     availableRegisters.remove(register.getRegisterType());
                 }
@@ -111,7 +111,7 @@ public final class ClusterArchitectureHandler {
         }
 
         //check Registers
-        boolean rightAmountOfRegisters = (availableRegisters.size() == istModel.getRegisterNames().size());
+        boolean rightAmountOfRegisters = (availableRegisters.size() >= istModel.getRegisterNames().size()); //more registers are ok
         Collections.sort(availableRegisters);
         List<String> requiredRegisters = istModel.getRegisterNames();
         Collections.sort(requiredRegisters);

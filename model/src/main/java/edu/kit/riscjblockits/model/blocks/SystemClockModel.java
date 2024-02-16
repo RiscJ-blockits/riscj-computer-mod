@@ -16,7 +16,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_SPEED;
  */
 public class SystemClockModel extends BlockModel implements ISimulationTimingObserveable {
 
-    private List<ISimulationTimingObserver> modeObservers;
+    private final List<ISimulationTimingObserver> modeObservers;
     private int clockSpeed;
     private ClockMode mode;
     private boolean activeTick;

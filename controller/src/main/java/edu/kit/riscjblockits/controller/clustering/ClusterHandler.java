@@ -1,14 +1,9 @@
 package edu.kit.riscjblockits.controller.clustering;
 
-
-
-import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.controller.blocks.BusController;
-import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
-import edu.kit.riscjblockits.controller.blocks.IQueryableComputerController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
 import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
@@ -28,16 +23,16 @@ public class ClusterHandler {
     /**
      * List of all blocks controllers in this cluster.
      */
-    private List<IQueryableClusterController> blocks;
+    private final List<IQueryableClusterController> blocks;
     /**
      * List of all bus blocks controllers in this cluster.
      */
-    private List<IQueryableClusterController> busBlocks;
+    private final List<IQueryableClusterController> busBlocks;
 
     /**
      * BusSystemModel of this cluster.
      */
-    private IQueryableBusSystem busSystemModel;
+    private final IQueryableBusSystem busSystemModel;
 
     /**
      * InstructionSetModel of this cluster.
@@ -50,13 +45,13 @@ public class ClusterHandler {
     private boolean buildingFinished;
 
     /**
-     * List of marked Blocks to reCluster them later if they get a new Neighbour.
+     * List of marked Blocks to reCluster them later if they get a new Neighbor.
      */
     private List<IQueryableClusterController> markedBlocks;
 
 
     /**
-     * Creates a new ClusterHandler with one Block and combines it with all neighbours.
+     * Creates a new ClusterHandler with one Block and combines it with all neighbors.
      * @param blockController BlockController of the first block in the cluster.
      */
     public ClusterHandler(IQueryableClusterController blockController) {
@@ -87,19 +82,19 @@ public class ClusterHandler {
     }
 
     /**
-     * Combines the cluster with all neighbour-clusters of the given BlockController.
+     * Combines the cluster with all neighbor-clusters of the given BlockController.
      * @param blockController BlockController to combine.
      */
     private void combineToNeighbours(IQueryableClusterController blockController) {
         List<IQueryableClusterController> neighbourBlockControllers = new ArrayList<>();
         List<IQueryableClusterController> neighboursToCombine = new ArrayList<>();
-        //fill neighbourBlockControllers with all neighbours, which exists in a neighbourCluster
+        //fill neighbourBlockControllers with all neighbors, which exists in a neighbourCluster
         for (IQueryableClusterController neighbourBlock: blockController.getNeighbours()) {
             if (neighbourBlock.getClusterHandler().busSystemModel.isNode(neighbourBlock.getBlockPosition())) {
                 neighbourBlockControllers.add(neighbourBlock);
             }
         }
-        //fill neighboursToCombine with all neighbours, which should be combined
+        //fill neighboursToCombine with all neighbors, which should be combined
         if (blockController.getControllerType() == BlockControllerType.BUS) {
             for (IQueryableClusterController neighbourBlock: neighbourBlockControllers) {
                 if (neighbourBlock.getControllerType() == BlockControllerType.BUS) {
@@ -123,7 +118,7 @@ public class ClusterHandler {
                 }
             }
         }
-        //combine all neighbours in neighboursToCombine
+        //combine all neighbors in neighboursToCombine
         ClusterHandler actualCluster = this;
         for (IQueryableClusterController neighbourBlock: neighboursToCombine) {
             neighbourBlock.getClusterHandler().combine(neighbourBlock, blockController, actualCluster);
@@ -215,13 +210,13 @@ public class ClusterHandler {
         }
     }
 
-
-
     /**
-     * method to add a block to the cluster.
-     * @param blockController BlockController to add.
+     * Method to add a block to the cluster.
+     * Only add it to the blocklist.
+     * Should only be used for blocks with multiple registers
+     * @param blockController BlockController to add
      */
-    private void addBlocks(IQueryableClusterController blockController) {
+    public void addBlocks(IQueryableClusterController blockController) {
         blocks.add(blockController);
     }
 
@@ -260,7 +255,7 @@ public class ClusterHandler {
 
     /**
      * Sets the given IQueryableInstructionSetModel as the instruction set model for this object.
-     * @param istModel The IQueryableInstructionSetModel to set.
+     * @param istModel The IQueryableInstructionSetModel to set. Is null if the model should be removed.
      * @return true if the set operation was successful, false if there is already an instruction set model set.
      */
     public boolean setIstModel(IQueryableInstructionSetModel istModel) {
@@ -301,17 +296,13 @@ public class ClusterHandler {
      * method to check whether the cluster is finished building.
      */
     public void checkFinished() {
-        System.out.println("Blocks: " + blocks.size() + " | BusBlocks: " + busBlocks.size());
         boolean oldBuildingFinished = buildingFinished;
         if (istModel != null) {
             buildingFinished = ClusterArchitectureHandler.checkArchitecture(istModel, this);
         } else {
             buildingFinished = false;
         }
-
-
         if (buildingFinished) {
-            System.out.println("Simulation Start [Cluster Handler]");
             for (IQueryableClusterController busBlock: busBlocks) {
                 ((BusController) busBlock).setBusSystemModel((BusSystemModel) busSystemModel);
             }
@@ -328,7 +319,7 @@ public class ClusterHandler {
     private void startSimulation() {
         List<IQueryableSimController> simControllers = blocks.stream().map(IQueryableSimController.class::cast).toList();
         SimulationTimeHandler sim = new SimulationTimeHandler(simControllers, (IBusSystem) busSystemModel);
-        for (IQueryableComputerController c : blocks) {
+        for (IQueryableClusterController c : blocks) {
             if (c.getControllerType() == BlockControllerType.CLOCK) {
                 ((SystemClockController) c).setSimulationTimeHandler(sim);
             }
@@ -336,23 +327,12 @@ public class ClusterHandler {
     }
 
     private void stopSimulation() {
-        for (IQueryableComputerController c : blocks) {
+        for (IQueryableClusterController c : blocks) {
             if (c.getControllerType() == BlockControllerType.CLOCK) {
                 ((SystemClockController) c).setSimulationTimeHandler(null);
             }
             c.stopVisualisation();
         }
         busSystemModel.resetVisualisation();
-    }
-
-    /**
-     * checks if a given block is a neighbour of another given block.
-     * @param block1 BlockController to check.
-     * @param block2 BlockController to check.
-     * @return true if the blocks are neighbours.
-     */
-    public boolean isNeighbourPosition(BlockController block1, BlockController block2) {
-        return BusSystemModel.isNeighbourPosition(
-                ((ComputerBlockController)block2).getBlockPosition(), ((ComputerBlockController)block1).getBlockPosition());
     }
 }

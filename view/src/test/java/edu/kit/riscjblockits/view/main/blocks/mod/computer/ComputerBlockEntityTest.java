@@ -6,7 +6,9 @@ import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.view.client.TestSetupClient;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.TestSetupMain;
@@ -25,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -141,7 +144,7 @@ class ComputerBlockEntityTest {
         ControlUnitBlockEntity cuEntity = (ControlUnitBlockEntity) blocks.get("CONTROL_UNIT");
         cuEntity.items.set(0, istItem.getDefaultStack());
         ClusterHandler clusterHandler = ((ComputerBlockController) (blocks.get("REGISTER").getController())).getClusterHandler();
-        clusterHandler.setIstModel(InstructionSetBuilder.buildInstructionSetModelMima());           //cant really change the inventory
+        clusterHandler.setIstModel(buildInstructionSetModelMima());           //cant really change the inventory
         ControlUnitModel cuModel = (ControlUnitModel) ((ComputerBlockController) cuEntity.getController()).getModel();
         Data cuData = (Data) cuModel.getData();
         assertEquals("1", ((IDataStringEntry) ((IDataContainer) cuData.get(CONTROL_CLUSTERING)).get("foundALU")).getContent());
@@ -281,7 +284,7 @@ class ComputerBlockEntityTest {
         blocks.put("REGISTER9", registerEntity9);
     }
 
-    @Disabled
+    @Disabled("Because of refactored funktionality")
     @Test
     @Order(5)
     void startSimualtion() {
@@ -292,6 +295,24 @@ class ComputerBlockEntityTest {
         subNbt.putString(REGISTER_TYPE, "Z");
         registerEntity9.readNbt(nbt);
         //only when memory is set
+    }
+
+    private static InstructionSetModel buildInstructionSetModelMima() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
+        try {
+            return InstructionSetBuilder.buildInstructionSetModel(is);
+        }  catch (InstructionBuildException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static InstructionSetModel buildInstructionSetModelRiscV() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetRiscV.jsonc");
+        try {
+            return InstructionSetBuilder.buildInstructionSetModel(is);
+        }  catch (InstructionBuildException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

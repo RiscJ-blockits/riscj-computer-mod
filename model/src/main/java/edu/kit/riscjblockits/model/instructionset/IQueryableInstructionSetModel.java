@@ -112,7 +112,6 @@ public interface IQueryableInstructionSetModel {
      */
     IQueryableInstruction getInstructionFromBinary(String binaryValue);
 
-    //ToDo nicht im Entwurf
     /**
      * Getter for the names of all needed registers.
      * @return Returns the names of all registers.
@@ -126,4 +125,9 @@ public interface IQueryableInstructionSetModel {
      */
     String getRegisterInitialValue(String key);
 
+    /**
+     * Gets the example code for the instruction set.
+     * @return the example code for the instruction set as a string.
+     */
+    String getExample();
 }

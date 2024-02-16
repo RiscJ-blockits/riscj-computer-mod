@@ -21,18 +21,12 @@ public interface ImplementedInventory extends Inventory {
 
     /**
      * Creates an inventory from the item list.
+     * @param items the item list to use.
+     * @return a new inventory of the same type as the default.
      */
     static ImplementedInventory of(DefaultedList<ItemStack> items) {
         return () -> items;
     }
-
-    /**
-     * Creates a new inventory with the specified size.
-     */
-    static ImplementedInventory ofSize(int size) {
-        return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
-    }
-
     /**
      * Returns the inventory size.
      */

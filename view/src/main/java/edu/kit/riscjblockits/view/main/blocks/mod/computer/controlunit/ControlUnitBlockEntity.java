@@ -134,10 +134,8 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
         super.updateUI();
     }
 
-
     @Override
     public Text getGoggleText() {
-
         NbtCompound nbt = new NbtCompound();
         writeNbt(nbt);
         Text completion;
@@ -145,16 +143,15 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
         ItemStack item = getItems().get(0);
         Text istName;
 
-
-        if (!item.isEmpty()) { //if an instructionset is present check completion
+        if (!item.isEmpty()) { //if an instruction set is present, check completion
             istName = item.getName();
 
-            List missing = getStructure()[0];
+            List<String> missing = getStructure()[0];
 
             if(missing.isEmpty()){
                 completion = Text.translatable("riscj_blockits.computer_complete");
             } else if (missing.size() == 1) {
-                completion = Text.of("Missing: " + missing.get(0)); //TODO make completion
+                completion = Text.of("Missing: " + missing.get(0));
             } else {
                 completion = Text.translatable("riscj_blockits.computer_incomplete");
             }

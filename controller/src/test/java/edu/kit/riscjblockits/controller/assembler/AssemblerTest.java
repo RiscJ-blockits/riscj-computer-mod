@@ -1,15 +1,37 @@
 package edu.kit.riscjblockits.controller.assembler;
 
 import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStream;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AssemblerTest {
+
+    private static InstructionSetModel buildInstructionSetModelMima() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
+        try {
+            return InstructionSetBuilder.buildInstructionSetModel(is);
+        }  catch (InstructionBuildException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static InstructionSetModel buildInstructionSetModelRiscV() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetRiscV.jsonc");
+        try {
+            return InstructionSetBuilder.buildInstructionSetModel(is);
+        }  catch (InstructionBuildException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     /**
      * tests the assembler, expected results are from MIMA flux
@@ -18,7 +40,7 @@ class AssemblerTest {
     */
     @Test
     void assemble() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelMima();
+        InstructionSetModel model = buildInstructionSetModelMima();
         Assembler assembler = new Assembler(model);
         assembler.assemble("\n\nADD 0x16");
         Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
@@ -66,7 +88,7 @@ class AssemblerTest {
 
     @Test
     void assembleMIMADataChange() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelMima();
+        InstructionSetModel model = buildInstructionSetModelMima();
         Assembler assembler = new Assembler(model);
 
         assembler.assemble("DS 0x1234");
@@ -78,7 +100,7 @@ class AssemblerTest {
 
     @Test
     void testEmptyLabel() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelMima();
+        InstructionSetModel model = buildInstructionSetModelMima();
         Assembler assembler = new Assembler(model);
         assembler.assemble("*=16\ntest: \n ADD 0x16\n * = 0\n JMP test");
         Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
@@ -89,7 +111,7 @@ class AssemblerTest {
 
     @Test
     void testComment() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelMima();
+        InstructionSetModel model = buildInstructionSetModelMima();
         Assembler assembler = new Assembler(model);
         assembler.assemble("ADD 0x16 #comment\n ADD 0x17 ;comment");
         Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
@@ -107,7 +129,7 @@ class AssemblerTest {
      */
     @Test
     void assembleRisc() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = buildInstructionSetModelRiscV();
         Assembler assembler = new Assembler(model);
 
         assembler.assemble("addi t1, t2, 0xFF");
@@ -118,7 +140,7 @@ class AssemblerTest {
 
     @Test
     void assembleRiscSW() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = buildInstructionSetModelRiscV();
         Assembler assembler = new Assembler(model);
 
         assembler.assemble("sw t1, 16(t2)");
@@ -129,7 +151,7 @@ class AssemblerTest {
 
     @Test
     void assembleRiscSLLI() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = buildInstructionSetModelRiscV();
         Assembler assembler = new Assembler(model);
 
         assembler.assemble("slli t1, t2, 0x12");
@@ -140,7 +162,7 @@ class AssemblerTest {
 
     @Test
     void assembleRiscSLL() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = buildInstructionSetModelRiscV();
         Assembler assembler = new Assembler(model);
 
         assembler.assemble("sll t1, t2, t3");
@@ -151,7 +173,7 @@ class AssemblerTest {
 
     @Test
     void assembleRiscLUI() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = buildInstructionSetModelRiscV();
         Assembler assembler = new Assembler(model);
 
         assembler.assemble("lui t1, 0x021234");
@@ -162,7 +184,7 @@ class AssemblerTest {
 
     @Test
     void assembleRiscJAL() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = buildInstructionSetModelRiscV();
         Assembler assembler = new Assembler(model);
 
         assembler.assemble("jal t1, 0x1234");
@@ -172,7 +194,7 @@ class AssemblerTest {
     }
     @Test
     void assembleRiscBGE() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = buildInstructionSetModelRiscV();
         Assembler assembler = new Assembler(model);
 
         assembler.assemble("bge, s0, t0, 0x04");
@@ -183,7 +205,7 @@ class AssemblerTest {
 
     @Test
     void assembleRiscADDINegValue() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = buildInstructionSetModelRiscV();
         Assembler assembler = new Assembler(model);
 
         assembler.assemble("addi, t0, t0, -4");
@@ -194,7 +216,7 @@ class AssemblerTest {
 
     @Test
     void assembleRiscDataWord() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = buildInstructionSetModelRiscV();
         Assembler assembler = new Assembler(model);
 
         assembler.assemble(".word 0x12345678");
@@ -205,7 +227,7 @@ class AssemblerTest {
 
     @Test
     void assembleRiscDataStringSingleChar() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = buildInstructionSetModelRiscV();
         Assembler assembler = new Assembler(model);
 
         assembler.assemble(".ascii \"a\"");
@@ -216,7 +238,7 @@ class AssemblerTest {
 
     @Test
     void assembleRiscDataStringMultiChar() throws AssemblyException {
-        InstructionSetModel model = InstructionSetBuilder.buildInstructionSetModelRiscV();
+        InstructionSetModel model = buildInstructionSetModelRiscV();
         Assembler assembler = new Assembler(model);
 
         assembler.assemble(".ascii \"hello\"");

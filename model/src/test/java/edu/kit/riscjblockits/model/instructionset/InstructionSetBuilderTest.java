@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -41,8 +40,27 @@ class InstructionSetBuilderTest {
         InputStream is = getClass().getClassLoader().getResourceAsStream("instructionSetTEST.jsonc");
         try {
             model = InstructionSetBuilder.buildInstructionSetModel(is);
-        }  catch (UnsupportedEncodingException e) {
+        }  catch (InstructionBuildException e) {
             throw new RuntimeException(e);
         }
     }
+
+    public static InstructionSetModel buildInstructionSetModelMima() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
+        try {
+            return InstructionSetBuilder.buildInstructionSetModel(is);
+        }  catch (InstructionBuildException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static InstructionSetModel buildInstructionSetModelRiscV() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetRiscV.jsonc");
+        try {
+            return InstructionSetBuilder.buildInstructionSetModel(is);
+        }  catch (InstructionBuildException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
