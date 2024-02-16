@@ -69,7 +69,9 @@ public class MemoryListWidget implements Drawable {
             int line = (scrollPosition / ENTRY_HEIGHT + i);
             // only draw an entry when it is between top and bottom of the scroll widget
             if ((line + 1) * ENTRY_HEIGHT >= scrollPosition && line * ENTRY_HEIGHT < scrollPosition + height) {
-                context.drawText(textRenderer, Text.literal(line + ""), this.x + 2, this.y + 2 + i * ENTRY_HEIGHT, 0xffffff, true);
+                String addresHexString = Integer.toHexString(line).toUpperCase();
+                context.drawText(textRenderer, Text.literal("0".repeat(addresHexString.length() % 2) + addresHexString),
+                        this.x + 2, this.y + 2 + i * ENTRY_HEIGHT, 0xffffff, true);
                 String lineContent = handler.getMemoryLine(line).substring(Math.max(handler.getMemoryLine(line).length() - 8, 0));
                 context.drawText(textRenderer, Text.literal(lineContent),
                     this.x + 2 + ENTRY_WIDTH + ENTRY_OFFSET, this.y + 2 + i * ENTRY_HEIGHT, 0xffffff, true);
