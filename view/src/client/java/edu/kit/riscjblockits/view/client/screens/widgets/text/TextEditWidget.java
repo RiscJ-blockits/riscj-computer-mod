@@ -393,7 +393,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < lines.size(); i++) {
             result.append(lines.get(i).getContent());
-            if (i < lines.size() + 1)
+            if (i < lines.size() - 1)
                 result.append("\n");
         }
         return result.toString();
