@@ -82,6 +82,9 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     private HashMap<String, List<Instruction>> opcodeHashMap;
 
+    @SerializedName(value = "example_programm")
+    private String exampleProgram;
+
     /**
      * Constructor for the instruction set model.
      * Creates an empty model.
@@ -98,6 +101,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
         this.addressChangeHashMap = null;
         this.programStartLabel = null;
         this.dataStorageKeywords = null;
+        this.exampleProgram = "";
     }
 
     /**
@@ -119,7 +123,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
                                MicroInstruction[] fetchPhase, HashMap<String, String> addressChangeHashMap,
                                String programStartLabel, HashMap<String, String> dataStorageKeywords,
                                HashMap<String, Instruction> commandHashMap,
-                               HashMap<String, List<Instruction>> opcodeHashMap) {
+                               HashMap<String, List<Instruction>> opcodeHashMap, String exampleProgram) {
         this.name = name;
         this.instructionLength = instructionLength;
         this.instructionSetRegisters = instructionSetRegisters;
@@ -131,6 +135,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
         this.dataStorageKeywords = dataStorageKeywords;
         this.commandHashMap = commandHashMap;
         this.opcodeHashMap = opcodeHashMap;
+        this.exampleProgram = exampleProgram != null ? exampleProgram : "";
     }
 
     /**
@@ -378,7 +383,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
             String opCode = binaryValue.substring(opCodeStart, opCodeStart + opCodeLength);
             // if no instruction is found, the next opcode length is tried
             if (!opcodeHashMap.containsKey(opCode)) continue;
-            // find instruction in list of instructions with the same opcode
+            // find instruction in a list of instructions with the same opcode
             List<Instruction> instructions = opcodeHashMap.get(opCode);
             Instruction instruction = null;
             for (Instruction possibleInstruction : instructions) {
@@ -415,8 +420,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
 
     @Override
     public String getExample() {
-        //TODO implement
-        return "";
+        return exampleProgram;
     }
 
     /**
