@@ -144,7 +144,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         addDrawableChild(instructionSetButton);
 
 
-        exampleButton = new IconButtonWidget(this.x + 20, this.y + 111, 13, 13, button ->{
+        exampleButton = new IconButtonWidget(this.x + 25, this.y + 111, 13, 13, button ->{
             editBox.setText(this.handler.getExample());
         }, EXAMPLE_BUTTON_TEXTURE);
         addDrawableChild(exampleButton);
