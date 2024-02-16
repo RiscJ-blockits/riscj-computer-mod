@@ -183,7 +183,6 @@ public class SimulationSequenceHandler implements Runnable {
         if(visualisationMode == VisualisationMode.FAST) {
             return;
         }
-
         for (IQueryableSimController blockController : blockControllers) {
             blockController.stopVisualisation();
         }
@@ -218,7 +217,7 @@ public class SimulationSequenceHandler implements Runnable {
         try {
             instruction.execute(executor);
         } catch (NonExecutableMicroInstructionException e) {
-            //do nothing
+            System.out.println("Non-executable micro instruction: " + e.getMessage());
         }
     }
 

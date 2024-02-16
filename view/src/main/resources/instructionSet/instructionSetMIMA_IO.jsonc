@@ -245,7 +245,7 @@
         ["AKKU", "&[addr]", "", "", ""]
       ],
       "translation": [
-        "0000",
+        "1100",
         "[addr]<20>"
       ]
     },
@@ -253,10 +253,10 @@
       "arguments": ["[addr]"],
       "opcode": "1010",
       "execution": [
-        ["&[addr]", ",AKKU", "", "", ""]
+        ["&[addr]", "AKKU", "", "", ""]
       ],
       "translation": [
-        "0000",
+        "1010",
         "[addr]<20>"
       ]
     }

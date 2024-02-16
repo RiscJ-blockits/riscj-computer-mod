@@ -42,6 +42,11 @@ public class TerminalScreenHandler extends RegisterScreenHandler {
         this(syncId, inventory, (ModBlockEntity) inventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
     }
 
+    /**
+     * Returns the current register of the terminal depending on which of the three registers is selected.
+     * @param mode The mode of the terminal screen.
+     * @return The current register type.
+     */
     public String getCurrentRegister(DisplayMode mode) {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
@@ -63,8 +68,23 @@ public class TerminalScreenHandler extends RegisterScreenHandler {
         return "";
     }
 
+    /**
+     * The display mode of the terminal screen.
+     * It decides which of the three registers should be changed
+     */
     public enum DisplayMode {
-        IN, OUT, MODE
+        /**
+         * The input register. Used for the input of the player.
+         */
+        IN,
+        /**
+         * The output register. Used for the output to the terminal screen.
+         */
+        OUT,
+        /**
+         * The mode register. Used to put the next input into the input register or to reset the input register.
+         */
+        MODE
     }
 
 }

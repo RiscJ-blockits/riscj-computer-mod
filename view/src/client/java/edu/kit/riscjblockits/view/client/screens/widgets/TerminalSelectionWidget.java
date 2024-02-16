@@ -24,10 +24,6 @@ import static edu.kit.riscjblockits.model.blocks.RegisterModel.UNASSIGNED_REGIST
  */
 public class TerminalSelectionWidget extends RegSelectWidget{
 
-    private static final Identifier IOM_BUTTON_TEXTURE = new Identifier("riscj_blockits", "textures/gui/register/io/tab_unselected.png");
-    private static final Identifier IOM_BUTTON_HIGHLIGHTED_TEXTURE = new Identifier("riscj_blockits", "textures/gui/register/io/tab_selected.png");
-    private static final int IOM_BUTTON_WIDTH = 35;
-    private static final int IOM_BUTTON_HEIGHT = 26;
     /**
      * The identifier for the "mode" register.
      */
@@ -40,10 +36,13 @@ public class TerminalSelectionWidget extends RegSelectWidget{
      * The identifier for the "In" register.
      */
     public static final String IN = "In";
+    private static final Identifier IOM_BUTTON_TEXTURE = new Identifier("riscj_blockits", "textures/gui/register/io/tab_unselected.png");
+    private static final Identifier IOM_BUTTON_HIGHLIGHTED_TEXTURE = new Identifier("riscj_blockits", "textures/gui/register/io/tab_selected.png");
+    private static final int IOM_BUTTON_WIDTH = 35;
+    private static final int IOM_BUTTON_HEIGHT = 26;
     private IconButtonWidget inButton;
     private IconButtonWidget outButton;
     private IconButtonWidget modeButton;
-
     private DisplayMode displayMode;
 
     /**

@@ -24,12 +24,22 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGTH;
 
-//main terminal controller
+/**
+ * This is the main controller for the terminal block.
+ * It coordinates between the three controllers.
+ * It also manages the mode register part of the terminal block.
+ */
 public class TerminalModeController extends RegisterController {
 
     private final TerminalInputController inputController;
     private final RegisterController outputController;
 
+    /**
+     * Constructor for the TerminalModeController.
+     * @param blockEntity The block entity that is connected to this controller.
+     * @param inputController The controller for the input register.
+     * @param outputController The controller for the output register.
+     */
     public TerminalModeController(IConnectableComputerBlockEntity blockEntity, TerminalInputController inputController, RegisterController outputController) {
         super(blockEntity);
         this.inputController = inputController;
@@ -153,6 +163,9 @@ public class TerminalModeController extends RegisterController {
                 case REGISTER_TERMINAL_MODE_TYPE -> {
                     String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
                     ((RegisterModel) getModel()).setRegisterType(type);
+                }
+                default -> {
+                    //do nothing
                 }
             }
         }

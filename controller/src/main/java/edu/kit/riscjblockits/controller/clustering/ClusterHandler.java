@@ -255,7 +255,7 @@ public class ClusterHandler {
 
     /**
      * Sets the given IQueryableInstructionSetModel as the instruction set model for this object.
-     * @param istModel The IQueryableInstructionSetModel to set.
+     * @param istModel The IQueryableInstructionSetModel to set. Is null if the model should be removed.
      * @return true if the set operation was successful, false if there is already an instruction set model set.
      */
     public boolean setIstModel(IQueryableInstructionSetModel istModel) {
@@ -302,8 +302,6 @@ public class ClusterHandler {
         } else {
             buildingFinished = false;
         }
-
-
         if (buildingFinished) {
             for (IQueryableClusterController busBlock: busBlocks) {
                 ((BusController) busBlock).setBusSystemModel((BusSystemModel) busSystemModel);
