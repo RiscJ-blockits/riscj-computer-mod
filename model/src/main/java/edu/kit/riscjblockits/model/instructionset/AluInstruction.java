@@ -1,7 +1,7 @@
 package edu.kit.riscjblockits.model.instructionset;
 
 /**
- * Holds an alu instruction like an arithmetics operation.
+ * Holds an alu instruction like an arithmetic operation.
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
 public class AluInstruction extends ComplexMicroInstruction {

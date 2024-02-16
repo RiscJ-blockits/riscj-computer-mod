@@ -54,10 +54,10 @@ public abstract class MicroInstruction implements IExecutableMicroInstruction {
 
     /**
      * Clones the MicroInstruction and replaces replaceable fields with the given values.
-     * @param argumentsInstructionMap
-     * @param intRegisters
-     * @param floatRegisters
-     * @return
+     * @param argumentsInstructionMap The map of arguments to instruction names.
+     * @param intRegisters The map of integer registers.
+     * @param floatRegisters The map of float registers.
+     * @return The cloned MicroInstruction with the replaceable fields replaced.
      */
     public MicroInstruction getFilled(Map<String, String> argumentsInstructionMap,
                                       HashMap<Integer, String> intRegisters, HashMap<Integer, String> floatRegisters) {
@@ -69,6 +69,14 @@ public abstract class MicroInstruction implements IExecutableMicroInstruction {
         return clone(filledFrom, filledTo);
     }
 
+    /**
+     * Fills parametrized entries of the execution.
+     * @param part The part of the instruction to fill.
+     * @param argumentsInstructionMap The map of arguments to instruction names.
+     * @param intRegisters The map of integer registers.
+     * @param floatRegisters The map of float registers.
+     * @return The filled part of the execution.
+     */
     protected String getFilledExecutionPart(String part, Map<String, String> argumentsInstructionMap,
                                             HashMap<Integer, String> intRegisters, HashMap<Integer, String> floatRegisters) {
         Matcher matcher = REGISTER_PATTERN.matcher(part);

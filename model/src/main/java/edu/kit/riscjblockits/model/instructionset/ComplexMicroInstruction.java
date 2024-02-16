@@ -9,8 +9,6 @@ import java.util.Map;
  * [JavaDoc in this class with minor support by GitHub Copilot]
  */
 public abstract class ComplexMicroInstruction extends MicroInstruction{
-
-
     /**
      * Memory flag for type of memory access.
      */
@@ -28,7 +26,7 @@ public abstract class ComplexMicroInstruction extends MicroInstruction{
      * @param memoryFlag flag for memory access
      * @param memoryInstruction instruction for memory access
      */
-    public ComplexMicroInstruction(String[] from, String to, String memoryFlag, MemoryInstruction memoryInstruction) {
+    protected ComplexMicroInstruction(String[] from, String to, String memoryFlag, MemoryInstruction memoryInstruction) {
         super(from, to);
         this.memoryFlag = memoryFlag;
         this.memoryInstruction = memoryInstruction;
@@ -49,10 +47,9 @@ public abstract class ComplexMicroInstruction extends MicroInstruction{
     public MemoryInstruction getMemoryInstruction() {
         return memoryInstruction;
     }
-
-
     @Override
-    public MicroInstruction getFilled(Map<String, String> argumentsInstructionMap, HashMap<Integer, String> intRegisters, HashMap<Integer, String> floatRegisters) {
+    public MicroInstruction getFilled(Map<String, String> argumentsInstructionMap, HashMap<Integer, String> intRegisters,
+                                      HashMap<Integer, String> floatRegisters) {
         ComplexMicroInstruction filled = (ComplexMicroInstruction) super.getFilled(argumentsInstructionMap, intRegisters, floatRegisters);
 
         if (memoryInstruction != null)

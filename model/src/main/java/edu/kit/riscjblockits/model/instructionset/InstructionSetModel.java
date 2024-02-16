@@ -82,6 +82,10 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     private HashMap<String, List<Instruction>> opcodeHashMap;
 
+    /**
+     * Constructor for the instruction set model.
+     * Creates an empty model.
+     */
     public InstructionSetModel() {
         this.name = null;
         this.instructionLength = 0;
@@ -96,6 +100,20 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
         this.dataStorageKeywords = null;
     }
 
+    /**
+     * Constructor for the instruction set model.
+     * @param name Name of the instruction set.
+     * @param instructionLength Length of the instructions in bits.
+     * @param instructionSetRegisters Registers of the instruction set.
+     * @param instructionSetMemory Memory of the instruction set.
+     * @param aluActions ALU operations of the instruction set.
+     * @param fetchPhase Fetch phase of the instruction set.
+     * @param addressChangeHashMap Address change options of the instruction set.
+     * @param programStartLabel Label where the program should be started by default.
+     * @param dataStorageKeywords Keywords to specify data storage.
+     * @param commandHashMap Instructions of the instruction set, mapped by command keyword.
+     * @param opcodeHashMap Instructions of the instruction set, mapped by opcode.
+     */
     public InstructionSetModel(String name, int instructionLength, InstructionSetRegisters instructionSetRegisters,
                                InstructionSetMemory instructionSetMemory, String[] aluActions,
                                MicroInstruction[] fetchPhase, HashMap<String, String> addressChangeHashMap,
@@ -370,20 +388,27 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
                 }
             }
             if (instruction != null) {
-                return new Instruction(instruction, binaryValue, instructionSetRegisters.getIntRegisterAddressMap(), instructionSetRegisters.getFloatRegisterAddressMap());
+                assert instructionSetRegisters != null;
+                return new Instruction(instruction, binaryValue, instructionSetRegisters.getIntRegisterAddressMap(),
+                    instructionSetRegisters.getFloatRegisterAddressMap());
             }
         }
         return null;
     }
 
     /**
-     * ToDo nicht im Entwurf
+     * Getter for the names of all registers.
      * @return Returns the names of all registers.
      */
     public List<String> getRegisterNames() {
         return instructionSetRegisters.getRegisterNames();
     }
 
+    /**
+     * Some registers have initial values. This method returns the initial value of a register.
+     * @param key The name of the register.
+     * @return The initial value of the register.
+     */
     public String getRegisterInitialValue(String key) {
         return instructionSetRegisters.getInitialValue(key);
     }
@@ -422,6 +447,12 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
         if (!programStartLabel.equals(that.programStartLabel)) return false;
         //ToDo finish
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        //ToDo implement
+        return super.hashCode();
     }
 
 }

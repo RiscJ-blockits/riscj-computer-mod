@@ -8,6 +8,8 @@ import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MemoryTest {
 
@@ -43,7 +45,7 @@ class MemoryTest {
 
         Memory loadedMemory = Memory.fromData(data);
 
-        assert memory.equals(loadedMemory);
+        assertEquals(memory, loadedMemory);
     }
 
     @Test
@@ -62,7 +64,7 @@ class MemoryTest {
 
         Memory loadedMemory = Memory.fromData(data);
 
-        assert memory.equals(loadedMemory);
+        assertEquals(memory, loadedMemory);
     }
 
 }

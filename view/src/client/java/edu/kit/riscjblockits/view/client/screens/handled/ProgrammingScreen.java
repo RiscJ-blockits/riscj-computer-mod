@@ -52,7 +52,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     /**
      * The button that is used to assemble the code.
      */
-    private DualTexturedIconButtonWidget assembleButton;
+    private final DualTexturedIconButtonWidget assembleButton;
 
     /**
      * The button that is used to load example code.
@@ -277,8 +277,4 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
 
     }
 
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
-    }
 }

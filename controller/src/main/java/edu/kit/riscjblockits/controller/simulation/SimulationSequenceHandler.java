@@ -31,11 +31,11 @@ public class SimulationSequenceHandler implements Runnable {
 
     /**
      * Defines the current phase of the instruction execution, including fetching the instruction and
-     * executing its microinstructions.
+     * executing its micro instructions.
      */
     private RunPhase runPhase;
     /**
-     * Contains the microinstructions of the current instruction.
+     * Contains the micro instructions of the current instruction.
      */
     private IExecutableMicroInstruction[] microInstructions;
     /**
@@ -55,7 +55,7 @@ public class SimulationSequenceHandler implements Runnable {
      */
     private MemoryController memoryController;
     /**
-     * Executor for the microinstructions.
+     * Executor for the micro instructions.
      */
     private final Executor executor;
 
@@ -102,16 +102,15 @@ public class SimulationSequenceHandler implements Runnable {
         }
         String programCounterTag = instructionSetModel.getProgramCounter();
         for(IQueryableSimController blockController: blockControllers) {
-            if (Objects.requireNonNull(blockController.getControllerType()) == BlockControllerType.REGISTER) {
-                if (((RegisterController) blockController).getRegisterType().equals(programCounterTag)) {
-                    programCounterController = (RegisterController) blockController;
-                    // set the initial program counter value --> if not set, set to zero
-                    Value pcValue = memoryController.getInitialProgramCounter();
-                    if (pcValue == null) {
-                        pcValue = new Value(new byte[instructionSetModel.getMemoryAddressSize()]);
-                    }
-                    programCounterController.setNewValue(pcValue);
+            if (Objects.requireNonNull(blockController.getControllerType()) == BlockControllerType.REGISTER
+                    && (((RegisterController) blockController).getRegisterType().equals(programCounterTag))) {
+                programCounterController = (RegisterController) blockController;
+                // set the initial program counter value --> if not set, set to zero
+                Value pcValue = memoryController.getInitialProgramCounter();
+                if (pcValue == null) {
+                    pcValue = new Value(new byte[instructionSetModel.getMemoryAddressSize()]);
                 }
+                programCounterController.setNewValue(pcValue);
             }
         }
         this.executor = new Executor(blockControllers, instructionSetModel.getMemoryWordSize(), busSystem);
@@ -120,35 +119,27 @@ public class SimulationSequenceHandler implements Runnable {
 
     /**
      * Runs the execution of the current instruction. Gets called by the {@link SimulationTimeHandler} whenever the next
-     * simulation tick is executed. During the first call of execution of a new instruction fills the MicroInstructions
-     * array with the necessary microinstructions.
+     * simulation tick is executed. During the first call in the execution of a new instruction fills the MicroInstructions
+     * array with the necessary micro instructions.
      * Then runs the next microinstruction of the current instruction.
      */
     @Override
     public void run() {
-        //get memory address from IAR
-        //Value pcValue = programCounterController.getValue();
-        //get content from memory at address
-
-        //get MicroInstructions
-
-        //------------
         resetVisualisation();
         switch (runPhase) {
             case FETCH -> fetch();
             case EXECUTE -> execute();
         }
-
         callbackReceivable.onSimulationTickComplete();
     }
 
     /**
      * Executes one step of the fetch phase of the instruction execution. The fetch phase needs multiple steps
-     * represented as microinstructions which are defined in the instruction set.
+     * represented as micro instructions which are defined in the instruction set.
      * If the last step of the fetch phase is executed, the execution phase is entered.
      */
     private void fetch(){
-        // load the execution's microinstructions internally before fetch, so the memory address is still the same
+        // load the execution's micro instructions internally before fetch, so the memory address is still the same
         if (phaseCounter == 0) {
             IQueryableInstruction instruction = instructionSetModel.
                 getInstructionFromBinary(memoryController.getValue(programCounterController.getValue()).getBinaryValue());
@@ -156,10 +147,8 @@ public class SimulationSequenceHandler implements Runnable {
                 microInstructions = new IExecutableMicroInstruction[] {new DataMovementInstruction(new String[1], "", "", null)};
             } else {
                 microInstructions = instruction.getExecution();
-                System.out.println("loading from: " + programCounterController.getValue().getHexadecimalValue());
             }
         }
-
         // execute the current fetch phase step
         executeMicroInstruction(instructionSetModel.getFetchPhaseStep(phaseCounter));
 
@@ -178,11 +167,10 @@ public class SimulationSequenceHandler implements Runnable {
      * therefore is executed individually.
      */
     private void execute(){
-        //One full instruction consists of multiple microinstructions
+        //One full instruction consists of multiple micro instructions
         executeMicroInstruction(microInstructions[phaseCounter]);
         phaseCounter++;
         if (phaseCounter >= microInstructions.length) {
-            System.out.println("execution phase finished");
             phaseCounter = 0;
             runPhase = RunPhase.FETCH;
         }
@@ -192,7 +180,6 @@ public class SimulationSequenceHandler implements Runnable {
      * Resets the visualization of the computer blocks and the bus system.
      */
     public void resetVisualisation() {
-
         if(visualisationMode == VisualisationMode.FAST) {
             return;
         }
@@ -214,16 +201,13 @@ public class SimulationSequenceHandler implements Runnable {
     }
 
     /**
-     * Sets the visualisation mode.
-     * @param mode The visualisation mode to set.
+     * Sets the visualization mode.
+     * @param mode The visualization mode to set.
      */
     public void setVisualizationMode(VisualisationMode mode) {
+        resetVisualisation();
         this.visualisationMode = mode;
-        if(visualisationMode == VisualisationMode.OFF || visualisationMode == VisualisationMode.NORMAL) {
-            resetVisualisation();
-        } else if(visualisationMode == VisualisationMode.FAST) {
-            fullVisualisation();
-        }
+        resetVisualisation();
     }
 
     /**
@@ -231,11 +215,10 @@ public class SimulationSequenceHandler implements Runnable {
      * @param instruction Microinstruction to execute.
      */
     private void executeMicroInstruction(IExecutableMicroInstruction instruction) {
-        //ToDo consider exception handling (stop execution or just keep running the next like it is done now)
         try {
             instruction.execute(executor);
         } catch (NonExecutableMicroInstructionException e) {
-            //e.printStackTrace();
+            //do nothing
         }
     }
 
@@ -248,7 +231,7 @@ public class SimulationSequenceHandler implements Runnable {
     }
 
     /**
-     * Defines the visualisation modes.
+     * Defines the visualization modes.
      */
     public enum VisualisationMode {
         /**

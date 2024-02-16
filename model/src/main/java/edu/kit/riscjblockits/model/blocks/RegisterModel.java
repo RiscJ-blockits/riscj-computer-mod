@@ -26,7 +26,7 @@ public class RegisterModel extends BlockModel {
     private String registerType;
     private Value value;
 
-    /** ToDo nicht im Entwurf           ToDo Strings hier schlau?
+    /**
      * Holds the names of the registers that are:
      *                              [0] missing for a valid architecture.
      *                              [1] already present in the cluster.
@@ -124,14 +124,6 @@ public class RegisterModel extends BlockModel {
      */
     protected int getWordLength() {
         return wordLength;
-    }
-
-    /**
-     * Getter for the missing and available registers.
-     * @return [0] missing for a valid architecture. [1] already present in the cluster.
-     */
-    protected String[] getMissingAvailableRegisters() {
-        return missingAvailableRegisters;
     }
 
 }
