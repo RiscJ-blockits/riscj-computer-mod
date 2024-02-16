@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
+import edu.kit.riscjblockits.view.main.ai.AiProgrammer;
 import edu.kit.riscjblockits.view.client.screens.widgets.DualTexturedIconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.InstructionsWidget;
@@ -58,6 +59,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
      * The button that is used to load example code.
      */
     private IconButtonWidget exampleButton;
+    private IconButtonWidget aiButton;
 
     /**
      * The edit box widget that is used to enter the code.
@@ -70,6 +72,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
      */
     private boolean narrow;
 
+    private AiProgrammer aiProgrammer;
+
     /**
      * Creates a new ProgrammingScreen.
      * @param handler the handler of the screen
@@ -81,9 +85,6 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         this.backgroundHeight = 222;
         this.backgroundWidth = 176;
         this.playerInventoryTitleY = this.backgroundHeight - 94;
-
-
-
         assembleButton = new DualTexturedIconButtonWidget(
                 0, 0,
                 15, 25,
@@ -112,7 +113,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     /**
      * Initializes the screen.
      * Adds the edit box widget to the screen.
-     * Adds the button to the screen.
+     * Add the button to the screen.
      */
     @Override
     protected void init() {
@@ -147,6 +148,12 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
             editBox.setText(this.handler.getExample());
         }, EXAMPLE_BUTTON_TEXTURE);
         addDrawableChild(exampleButton);
+        aiButton = new IconButtonWidget(this.x + 50, this.y + 111, 13, 13, button ->{
+            String text = editBox.getText();
+            String aiText = aiProgrammer.queryAi(text);
+            editBox.setText(text + aiText);
+        }, EXAMPLE_BUTTON_TEXTURE);
+        addDrawableChild(aiButton);
 
         handler.enableSyncing();
 
@@ -194,6 +201,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         // render the tooltip of the button if the mouse is over it
         drawMouseoverTooltip(context, mouseX, mouseY);
         exampleButton.visible = !this.handler.getExample().isEmpty();
+        aiButton.visible = aiProgrammer != null;
     }
 
     /**
@@ -269,7 +277,12 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         super.handledScreenTick();
         this.instructionsWidget.update();
         this.editBox.setInstructionArgumentCountMap(getArgumentCountMap());
-
+        if (aiProgrammer == null) {
+            String key = handler.getOpenAiKey();
+            if (key != null && !key.isEmpty()) {
+                aiProgrammer = new AiProgrammer(key);
+            }
+        }
     }
 
 }
