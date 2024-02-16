@@ -87,7 +87,6 @@ public class AluController extends ComputerBlockController {
      * @return The result of the operation
      */
     public Value executeAluOperation(String operation) {
-        //ToDo
         /*
         MIMA:
         "None",
@@ -119,7 +118,6 @@ public class AluController extends ComputerBlockController {
         "REM",
         "REMU"
 
-
         RISC-V FLOAT:
         FADD
         FSUB
@@ -140,7 +138,7 @@ public class AluController extends ComputerBlockController {
         FCVTSU
          */
 
-
+        ((AluModel) getModel()).setOperation(operation);
         Value operand1 = ((AluModel) getModel()).getOperand1();
         Value operand2 = ((AluModel) getModel()).getOperand2();
         Value result = null;
@@ -269,14 +267,12 @@ public class AluController extends ComputerBlockController {
      * @return float value
      */
     private Value fcvtsu(Value operand1) {
-
         //TODO check if this is correct
         ByteBuffer wrapped = ByteBuffer.wrap(operand1.getByteValue());
         long num = wrapped.getLong();
         num = Math.abs(num);
         float float1 = (float) num;
         return getFloatAsValue(float1);
-
     }
 
     /**
@@ -285,13 +281,11 @@ public class AluController extends ComputerBlockController {
      * @return float value
      */
     private Value fcvts(Value operand1) {
-
         ByteBuffer wrapped = ByteBuffer.wrap(operand1.getByteValue());
         int num = wrapped.getInt();
         float float1 = (float) num;
 
         return getFloatAsValue(float1);
-
     }
 
     /**
@@ -301,7 +295,6 @@ public class AluController extends ComputerBlockController {
      * @return 1 if operand1 is less than operand2, 0 otherwise
      */
     private Value fle(Value operand1, Value operand2) {
-
         float float1 = getValueAsFloat(operand1);
         float float2 = getValueAsFloat(operand2);
 
@@ -310,17 +303,15 @@ public class AluController extends ComputerBlockController {
         }
 
         return new Value(new byte[]{0});
-
     }
 
     /**
      * Compares two values and returns 1 if operand1 is less than or equal to operand2, 0 otherwise.
      * @param operand1 first value
      * @param operand2 second value
-     * @return 1 if operand1 is less than or equal to operand2, 0 otherwise
+     * @return One if operand1 is less than or equal to operand2, 0 otherwise
      */
     private Value flt(Value operand1, Value operand2) {
-
         float float1 = getValueAsFloat(operand1);
         float float2 = getValueAsFloat(operand2);
 
@@ -329,24 +320,21 @@ public class AluController extends ComputerBlockController {
         }
 
         return new Value(new byte[]{0});
-
     }
 
     /**
      * Compares two values and returns 1 if operand1 is equal to operand2, 0 otherwise.
      * @param operand1 first value
      * @param operand2 second value
-     * @return 1 if operand1 is equal to operand2, 0 otherwise
+     * @return One if operand1 is equal to operand2, 0 otherwise
      */
     private Value feq(Value operand1, Value operand2) {
-
         float float1 = getValueAsFloat(operand1);
         float float2 = getValueAsFloat(operand2);
 
         if(float1 == float2) {
             return new Value(new byte[]{1});
         }
-
         return new Value(new byte[]{0});
     }
 
@@ -394,7 +382,6 @@ public class AluController extends ComputerBlockController {
         }
 
         return operand2;
-
     }
 
     /**
@@ -413,7 +400,6 @@ public class AluController extends ComputerBlockController {
         }
 
         return operand2;
-
     }
 
     /**

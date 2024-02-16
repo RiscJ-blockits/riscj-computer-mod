@@ -20,18 +20,15 @@ public class InstructionEntry extends ListEntry {
      * The identifier of the instruction.
      */
     private final String identifier;
-    private final InstructionListWidget parent;
 
     /**
      * Constructor for the instruction entry.
      * @param identifier The identifier of the instruction.
      * @param arguments The argument of the instruction.
-     * @param parent The parent InstructionListWidget.
      */
-    public InstructionEntry(String identifier, String arguments, InstructionListWidget parent) {
+    public InstructionEntry(String identifier, String arguments) {
         this.arguments = arguments;
         this.identifier = identifier;
-        this.parent = parent;
     }
 
     /**
@@ -58,21 +55,6 @@ public class InstructionEntry extends ListEntry {
         } else {
             context.drawText(client.textRenderer, this.arguments, this.x + OFFSET, this.y + 1, 0xffffff, false);
         }
-
-        /*
-        if(this.isMouseOver(mouseX, mouseY)) {
-            //context.disableScissor();
-
-            context.getMatrices().push();
-            context.getMatrices().translate(0.0f, 0.0f, 100.0f);
-
-            context.drawTooltip(client.textRenderer, Text.literal(this.identifier + ": " + this.arguments), mouseX, mouseY);
-
-            context.getMatrices().pop();
-
-            //context.enableScissor(parent.getX(), parent.getY(), parent.getX() + parent.getWidth(), parent.getY() + parent.getHeight());
-        }*/
-
     }
 
     @Override
@@ -100,16 +82,12 @@ public class InstructionEntry extends ListEntry {
         MinecraftClient client = MinecraftClient.getInstance();
 
         if(this.isMouseOver(mouseX, mouseY)) {
-            //context.disableScissor();
-
             context.getMatrices().push();
             context.getMatrices().translate(0.0f, 0.0f, 100.0f);
 
             context.drawTooltip(client.textRenderer, Text.literal(this.identifier + ": " + this.arguments), mouseX, mouseY);
 
             context.getMatrices().pop();
-
-            //context.enableScissor(parent.getX(), parent.getY(), parent.getX() + parent.getWidth(), parent.getY() + parent.getHeight());
         }
     }
 

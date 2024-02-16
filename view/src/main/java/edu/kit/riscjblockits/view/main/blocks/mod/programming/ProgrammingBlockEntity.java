@@ -48,8 +48,8 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
      */
     public ProgrammingBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.PROGRAMMING_BLOCK_ENTITY, pos, state, 3);
-        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE, (server, player, handler, buf, responseSender) -> {
-            server.execute(() -> {
+        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE,
+            (server, player, handler, buf, responseSender) -> server.execute(() -> {
                 NbtCompound nbt = buf.readNbt();
                 BlockPos blockPos = buf.readBlockPos();
                 assert nbt != null;
@@ -57,8 +57,7 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
                 if (player.getServerWorld().getBlockEntity(blockPos) instanceof ProgrammingBlockEntity blockEntity) {
                     blockEntity.setCode(newCode);
                 }
-            });
-        });
+            }));
     }
 
     /**

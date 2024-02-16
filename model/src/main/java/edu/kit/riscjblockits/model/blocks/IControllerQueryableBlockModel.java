@@ -17,17 +17,13 @@ public interface IControllerQueryableBlockModel extends IQueryableBlockModel {
      */
     BlockPosition getPosition();
 
-    //ToDo nicht im Entwurfs wiki
-
     /**
      * Trigger a new synchronization to the client.
      */
     void onStateChange();
 
-    //ToDo nicht im Entwurfs wiki
-
     /**
-     * Sets the visualisation state of the block.
+     * Sets the visualization state of the block.
      * @param visualisationState the state to set.
      */
     void setVisualisationState(boolean visualisationState);

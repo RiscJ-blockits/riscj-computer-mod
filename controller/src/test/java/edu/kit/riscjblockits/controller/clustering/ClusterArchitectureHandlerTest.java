@@ -14,7 +14,9 @@ import edu.kit.riscjblockits.model.blocks.MemoryModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -23,6 +25,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +52,7 @@ class ClusterArchitectureHandlerTest {
         block1.startClustering(new BlockPosition(0,0,0));
         ClusterHandler ch = block1.getClusterHandler();
         //ch.checkFinished();
-        assertFalse(ClusterArchitectureHandler.checkArchitecture(InstructionSetBuilder.buildInstructionSetModelMima(), ch));
+        assertFalse(ClusterArchitectureHandler.checkArchitecture(buildInstructionSetModelMima(), ch));
     }
 
     @Test
@@ -58,7 +61,7 @@ class ClusterArchitectureHandlerTest {
         block2.startClustering(new BlockPosition(0,0,0));
         ClusterHandler ch = block2.getClusterHandler();
         //ch.checkFinished();
-        assertFalse(ClusterArchitectureHandler.checkArchitecture(InstructionSetBuilder.buildInstructionSetModelMima(), ch));
+        assertFalse(ClusterArchitectureHandler.checkArchitecture(buildInstructionSetModelMima(), ch));
     }
 
     static List<IQueryableClusterController> blockController;
@@ -68,11 +71,12 @@ class ClusterArchitectureHandlerTest {
     @BeforeAll
     static void setUp() {
         blockController = new ArrayList<>();
-        istModel = InstructionSetBuilder.buildInstructionSetModelMima();
+        istModel = buildInstructionSetModelMima();
     }
 
     public RegisterController getR(String type) {
         RegisterController registerController = new RegisterController(new ArchiCheckStub_Entity());
+        registerController.getModel().setPosition(new BlockPosition(0,0,0));
         Data rData = new Data();
         rData.set("type", new DataStringEntry(type));
         registerController.setData(rData);
@@ -103,7 +107,9 @@ class ClusterArchitectureHandlerTest {
     @Test
     void checkArchitectureMIMA3_4() {
         blockController.add(new SystemClockController(new ArchiCheckStub_Entity()));
-        blockController.add(new AluController(new ArchiCheckStub_Entity()));
+        AluController aluController = new AluController(new ArchiCheckStub_Entity());
+        aluController.getModel().setPosition(new BlockPosition(1,0,0));
+        blockController.add(aluController);
         blockController.add(getR("AKKU"));
         blockController.add(getR("X"));
         blockController.add(getR("Y"));
@@ -111,7 +117,6 @@ class ClusterArchitectureHandlerTest {
         blockController.add(getR("SDR"));
         blockController.add(getR("SAR"));
         blockController.add(getR("EINS"));
-        System.out.println(blockController.size());
         ArchiCheckStub_ClusterHandler clusterHandler = new ArchiCheckStub_ClusterHandler(blockController);
         assertTrue(ClusterArchitectureHandler.checkArchitecture(istModel, clusterHandler));
     }
@@ -122,6 +127,24 @@ class ClusterArchitectureHandlerTest {
         blockController.add(new MemoryController(new ArchiCheckStub_Entity()));
         ArchiCheckStub_ClusterHandler clusterHandler = new ArchiCheckStub_ClusterHandler(blockController);
         assertFalse(ClusterArchitectureHandler.checkArchitecture(istModel, clusterHandler));
+    }
+
+    private static InstructionSetModel buildInstructionSetModelMima() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
+        try {
+            return InstructionSetBuilder.buildInstructionSetModel(is);
+        }  catch (InstructionBuildException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static InstructionSetModel buildInstructionSetModelRiscV() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetRiscV.jsonc");
+        try {
+            return InstructionSetBuilder.buildInstructionSetModel(is);
+        }  catch (InstructionBuildException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

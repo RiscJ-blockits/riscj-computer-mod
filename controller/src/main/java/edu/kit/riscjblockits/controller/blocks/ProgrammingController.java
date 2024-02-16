@@ -6,11 +6,11 @@ import edu.kit.riscjblockits.model.data.DataType;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataEntry;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
@@ -32,18 +32,17 @@ public class ProgrammingController extends BlockController implements IAssembler
      * Assembles the given code and stores the result in the given data container.
      * @param code The code that should be assembled.
      * @param instructionSetData  The data container with the instruction set that should be used to assemble the code.
-     * @throws AssemblyException
+     * @throws AssemblyException If the code could not be assembled.
      * @return The assembled code.
      */
     public IDataElement assemble(String code, IDataElement instructionSetData)
         throws AssemblyException {
 
-
         InputStream instructionSetStream = getInputStream(instructionSetData);
         Assembler assembler;
         try {
             assembler = new Assembler(InstructionSetBuilder.buildInstructionSetModel(instructionSetStream));
-        } catch (UnsupportedEncodingException e) {
+        } catch (InstructionBuildException e) {
             throw new AssemblyException("Instruction set is not readable");
         }
         assembler.assemble(code);
@@ -51,7 +50,6 @@ public class ProgrammingController extends BlockController implements IAssembler
     }
 
     private InputStream getInputStream(IDataElement instructionSetElement) throws AssemblyException {
-
         if (!instructionSetElement.isEntry()) {
             throw new AssemblyException("Instruction set data does not contain " + CONTROL_IST_ITEM);
         }
@@ -62,8 +60,7 @@ public class ProgrammingController extends BlockController implements IAssembler
 
         String instructionSetJSON = ((IDataStringEntry) instructionSetEntry).getContent();
 
-        InputStream instructionSetStream = new ByteArrayInputStream(instructionSetJSON.getBytes(StandardCharsets.UTF_8));
-        return instructionSetStream;
+        return new ByteArrayInputStream(instructionSetJSON.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -72,7 +69,7 @@ public class ProgrammingController extends BlockController implements IAssembler
      */
     @Override
     public void setData(IDataElement data) {
-        //ToDo
+        //data is not used in this controller
     }
 
 }

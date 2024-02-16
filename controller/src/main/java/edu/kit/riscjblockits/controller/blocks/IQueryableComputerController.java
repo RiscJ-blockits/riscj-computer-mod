@@ -11,9 +11,8 @@ public interface IQueryableComputerController {
      */
     BlockControllerType getControllerType();
 
-    //ToDo nicht im Entwurf
     /**
-     * Method to stop the visualisation of the block of the controller.
+     * Method to stop the visualization of the block of the controller.
      */
     void stopVisualisation();
 

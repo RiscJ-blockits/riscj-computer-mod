@@ -1,6 +1,6 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
-import edu.kit.riscjblockits.controller.blocks.WirelessRegisterController;
+import edu.kit.riscjblockits.controller.blocks.io.WirelessRegisterController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
@@ -85,7 +85,7 @@ public class WirelessRegisterBlock extends RegisterBlock {
         if (world.isClient || itemStack.getNbt() == null) {
             return;
         }
-        edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlockEntity blockEntity = (edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlockEntity) world.getBlockEntity(pos);
+        WirelessRegisterBlockEntity blockEntity = (WirelessRegisterBlockEntity) world.getBlockEntity(pos);
         int[] neighbourPos = itemStack.getNbt().getIntArray("pos");
         assert blockEntity != null;
         ((WirelessRegisterController) blockEntity.getController())
@@ -119,7 +119,6 @@ public class WirelessRegisterBlock extends RegisterBlock {
      */
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        //super.getTicker(world, state, type);          //FixMe ich glaub das sollte hier hin
         return (world1, pos, state1, be) -> WirelessRegisterBlockEntity.tick(world1, pos, state1, (ComputerBlockEntity) be);
     }
 

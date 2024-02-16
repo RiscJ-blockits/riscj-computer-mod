@@ -37,8 +37,6 @@ public class ArchiCheckStub_Entity implements IConnectableComputerBlockEntity {
         return pos;
     }
 
-    public void neighborUpdate() {}
-
     @Override
     public void spawnEffect(ComputerEffect effect) {
         //

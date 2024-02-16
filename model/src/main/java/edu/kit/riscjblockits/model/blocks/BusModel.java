@@ -31,6 +31,12 @@ public class BusModel extends BlockModel{
         super.setPosition(position);
     }
 
+    @Override
+    public boolean hasUnqueriedStateChange() {
+        //is her always true, because bus data changes almost every tick anyway
+        return true;
+    }
+
     /**
      * Getter for the data the view needs for ui.
      * @return Data Format: key: "active", value: "true" or "false"
@@ -62,6 +68,7 @@ public class BusModel extends BlockModel{
 
     /**
      * Asks the Bus system if the bus is transporting data.
+     * Gets called every tick and it used here to also
      * @return true if the bus is transporting data
      */
     @Override

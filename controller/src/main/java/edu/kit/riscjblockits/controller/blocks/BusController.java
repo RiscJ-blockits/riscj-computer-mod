@@ -32,6 +32,7 @@ public class BusController extends ComputerBlockController{
 
     /**
      * Returns the neighbors of the bus in the BusSystemModel.
+     * Returns null if the bus does not belong to a Cluster.
      * @return The neighbors of the bus in the BusSystemModel.
      */
     public List<BlockPosition> getBusSystemNeighbors() {

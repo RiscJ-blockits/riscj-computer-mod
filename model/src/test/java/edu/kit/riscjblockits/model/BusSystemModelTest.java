@@ -20,9 +20,9 @@ class BusSystemModelTest {
     @Test
     void BusSystemModel() {
         Map<BlockPosition, List<BlockPosition>> adjPositions = system1.getBusGraph();
-        assertEquals(adjPositions.size(), 1);
-        assertEquals(adjPositions.containsKey(new BlockPosition(0,0,0)), true);
-        assertEquals(adjPositions.get(new BlockPosition(0,0,0)).isEmpty(), true);
+        assertEquals(1, adjPositions.size());
+        assertEquals(true, adjPositions.containsKey(new BlockPosition(0, 0, 0)));
+        assertEquals(true, adjPositions.get(new BlockPosition(0, 0, 0)).isEmpty());
     }
 
     @Test
@@ -85,16 +85,16 @@ class BusSystemModelTest {
 
         system1.setBusDataPath(graph.get(0), graph.get(5), new Value());
 
-        assertEquals(system1.getActiveVisualization(graph.get(1)), true);
-        assertEquals(system1.getActiveVisualization(graph.get(2)), true);
-        assertEquals(system1.getActiveVisualization(graph.get(3)), false);
-        assertEquals(system1.getActiveVisualization(graph.get(4)), true);
-        assertEquals(system1.getActiveVisualization(graph.get(6)), true);
-        assertEquals(system1.getActiveVisualization(graph.get(7)), true);
-        assertEquals(system1.getActiveVisualization(graph.get(8)), true);
-        assertEquals(system1.getActiveVisualization(graph.get(9)), false);
-        assertEquals(system1.getActiveVisualization(graph.get(10)), false);
-        assertEquals(system1.getActiveVisualization(graph.get(11)), false);
+        assertEquals(true, system1.getActiveVisualization(graph.get(1)));
+        assertEquals(true, system1.getActiveVisualization(graph.get(2)));
+        assertEquals(false, system1.getActiveVisualization(graph.get(3)));
+        assertEquals(true, system1.getActiveVisualization(graph.get(4)));
+        assertEquals(true, system1.getActiveVisualization(graph.get(6)));
+        assertEquals(true, system1.getActiveVisualization(graph.get(7)));
+        assertEquals(true, system1.getActiveVisualization(graph.get(8)));
+        assertEquals(false, system1.getActiveVisualization(graph.get(9)));
+        assertEquals(false, system1.getActiveVisualization(graph.get(10)));
+        assertEquals(false, system1.getActiveVisualization(graph.get(11)));
     }
     @Test
     void combineGraph() {

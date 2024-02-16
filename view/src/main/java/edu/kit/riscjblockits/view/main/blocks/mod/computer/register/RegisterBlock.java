@@ -2,7 +2,6 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
 
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -10,7 +9,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,10 +17,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public class RegisterBlock  extends ComputerBlock {
 
-    /**
-     * The shape of the RegisterBlock model. Model as in textured cube, not as in MVC.
-     */
-    private static final VoxelShape SHAPE = createCuboidShape(0, 0, 0, 16, 16, 16);
 
     /**
      * Creates a new RegisterBlock with the given settings.
@@ -55,18 +49,6 @@ public class RegisterBlock  extends ComputerBlock {
         return new RegisterBlockEntity(pos, state);
     }
 
-    /**
-     * Returns the shape of the RegisterBlock model.
-     * @param state The state of the minecraft block.
-     * @param world The world in which the block is placed.
-     * @param pos The position of the block in the minecraft world.
-     * @param context The context in which the shape is requested.
-     * @return The shape of the RegisterBlock model.
-     */
-    @Override
-    public VoxelShape getOutlineShape(BlockState state, net.minecraft.world.BlockView world, BlockPos pos, ShapeContext context) {
-        return SHAPE;
-    }
 
     /**
      * This method is called when the player right-clicks on the block.

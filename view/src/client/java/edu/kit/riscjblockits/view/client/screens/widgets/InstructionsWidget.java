@@ -54,6 +54,7 @@ public class InstructionsWidget extends ExtendableWidget {
     }
 
     /**
+     * Getter for the entries.
      * @return Gets the entries from the {@link ProgrammingScreenHandler}.
      */
     private List<InstructionEntry> getEntries() {
@@ -63,7 +64,7 @@ public class InstructionsWidget extends ExtendableWidget {
         for(String[] instruction : instructions) {
             String id = instruction[0];
             String arguments = instruction[1];
-            InstructionEntry entry = new InstructionEntry(id, arguments, this.instructionList);
+            InstructionEntry entry = new InstructionEntry(id, arguments);
             entries.add(entry);
         }
         return entries;

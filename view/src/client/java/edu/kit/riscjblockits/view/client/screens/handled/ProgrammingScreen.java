@@ -52,7 +52,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     /**
      * The button that is used to assemble the code.
      */
-    private DualTexturedIconButtonWidget assembleButton;
+    private final DualTexturedIconButtonWidget assembleButton;
 
     /**
      * The button that is used to load example code.
@@ -119,7 +119,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         super.init();
         this.narrow = this.width < 379;
         // add the edit box widget to the screen
-        editBox = new AssemblerSyntaxTextEditWidget(textRenderer, this.x + 8, this.y + 18, 129, 90);
+        editBox = new AssemblerSyntaxTextEditWidget(textRenderer, this.x + 32, this.y + 19, 112, 87);
         addDrawableChild(editBox);
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
@@ -143,7 +143,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         );
         addDrawableChild(instructionSetButton);
 
-        exampleButton = new IconButtonWidget(this.x + 20, this.y + 111, 13, 13, button ->{
+        exampleButton = new IconButtonWidget(this.x + 25, this.y + 111, 13, 13, button ->{
             editBox.setText(this.handler.getExample());
         }, EXAMPLE_BUTTON_TEXTURE);
         addDrawableChild(exampleButton);
@@ -224,6 +224,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         // set the edit box to focus if the mouse is over it while clicking
         editBox.setFocused(editBox.isMouseOver(mouseX, mouseY));
+        setFocused(editBox.isMouseOver(mouseX, mouseY)? editBox : null);
+
         // sync the code when the edit box is unfocused
         if (!editBox.isFocused() && codeHasChanged) {
             syncCode(editBox.getText());
@@ -270,8 +272,4 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
 
     }
 
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
-    }
 }

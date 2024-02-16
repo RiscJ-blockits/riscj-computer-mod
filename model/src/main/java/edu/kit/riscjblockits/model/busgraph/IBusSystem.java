@@ -16,17 +16,13 @@ public interface IBusSystem {
      */
     void setBusDataPath(BlockPosition startPos, BlockPosition endPos, Value presentData);
 
-    //ToDo nicht im Entwurfs Wiki
-
     /**
-     * resets the visualisation of the bus system.
+     * resets the visualization of the bus system.
      */
     void resetVisualisation();
 
-    //ToDo nicht im Entwurfs Wiki
-
     /**
-     * activates the visualisation of the bus system.
+     * activates the visualization of the bus system.
      */
     void activateVisualisation();
 

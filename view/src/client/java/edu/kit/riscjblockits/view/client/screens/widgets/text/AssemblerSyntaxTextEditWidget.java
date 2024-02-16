@@ -18,13 +18,13 @@ public class AssemblerSyntaxTextEditWidget extends TextEditWidget {
     private static final int UNDER_LINE_HEIGHT = 1;
     private static final Pattern LABEL_PATTERN = Pattern.compile("\\w+:");
     private static final Pattern COMMAND_PATTERN = Pattern.compile("(\\w+)");
-    private static final Pattern ARGUMENT_PATTERN_FIRST= Pattern.compile(" \\w+");
-    private static final Pattern ARGUMENT_PATTERN_AFTER_COM = Pattern.compile(" *[, ] *\\w+");
+    private static final Pattern ARGUMENT_PATTERN_FIRST= Pattern.compile(" +\\w+");
+    private static final Pattern ARGUMENT_PATTERN_AFTER_COM = Pattern.compile(" *[, ] *(-?\\w+(\\(?\\w+\\))?)");
     private static final Pattern COMMENT_PATTERN = Pattern.compile("[;#].*");
-    private static final int LABEL_COLOR = 0x0000FF;
-    private static final int COMMAND_COLOR = 0xFF00FF;
-    private static final int ARGUMENT_COLOR = 0xFFFF00;
-    private static final int COMMENT_COLOR = 0x00FF00;
+    private static final int LABEL_COLOR = 0xf5bf69;
+    private static final int COMMAND_COLOR = 0xcb6d2f;
+    private static final int ARGUMENT_COLOR = 0x9876aa;
+    private static final int COMMENT_COLOR = 0x52954e;
     private HashMap<String, Integer> instructionArgumentCountMap = new HashMap<>();
 
     /**
@@ -95,15 +95,15 @@ public class AssemblerSyntaxTextEditWidget extends TextEditWidget {
             if (closestType == TokenType.COMMENT) {
                 int start = commentMatcher.start() - renderedInfront;
                 int end = commentMatcher.end() - renderedInfront;
-                if (windowStartX < pos + end - start)
-                    x += drawComment(context, line.substring(Math.max(windowStartX - pos, 0), end - start), x, displayY);
+                if (windowStartX < pos + end - start + renderedInfront)
+                    x += drawComment(context, line.substring(Math.max(windowStartX - pos - renderedInfront, 0), end - start), x, displayY);
                 pos += end;
             }
             if (closestType == TokenType.LABEL) {
                 int start = labelMatcher.start() - renderedInfront;
                 int end = labelMatcher.end() - renderedInfront;
-                if (windowStartX < pos + end - start)
-                    x += drawLabel(context, line.substring(Math.max(windowStartX - pos, 0), end - start), x, displayY);
+                if (windowStartX < pos + end - start + renderedInfront)
+                    x += drawLabel(context, line.substring(Math.max(windowStartX - pos - renderedInfront, 0), end - start), x, displayY);
                 pos += end;
             }
             if (closestType == TokenType.COMMAND) {
@@ -111,17 +111,18 @@ public class AssemblerSyntaxTextEditWidget extends TextEditWidget {
                 int end = commandMatcher.end() - renderedInfront;
                 int nX = x;
                 String command = line.substring(start, end);
-                if (windowStartX < pos + end - start)
-                    nX += drawCommand(context, line.substring(Math.max(windowStartX - pos, 0), end - start), nX, displayY);
+                if (windowStartX < pos + end - start + renderedInfront)
+                    nX += drawCommand(context, line.substring(Math.max(windowStartX - pos - renderedInfront, 0), end - start), nX, displayY);
                 pos += end;
-                String rest = line.substring(commandMatcher.end());
+                String rest = line.substring(end);
+
                 // match, count and draw arguments
                 int argumentCount = 0;
                 Matcher argumentMatcher = ARGUMENT_PATTERN_FIRST.matcher(rest);
                 while (argumentMatcher.find() && argumentMatcher.start() == 0) {
                     end = argumentMatcher.end();
-                    if (windowStartX < pos + end)
-                        nX += drawArgument(context, rest.substring(Math.max(windowStartX - pos, 0), end), nX, displayY);
+                    if (windowStartX < pos + end + renderedInfront)
+                        nX += drawArgument(context, rest.substring(Math.max(windowStartX - pos - renderedInfront, 0), end), nX, displayY);
                     pos += end;
                     rest = rest.substring(end);
                     argumentMatcher = ARGUMENT_PATTERN_AFTER_COM.matcher(rest);
