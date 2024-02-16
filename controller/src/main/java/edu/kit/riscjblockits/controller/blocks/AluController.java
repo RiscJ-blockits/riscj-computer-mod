@@ -606,7 +606,8 @@ public class AluController extends ComputerBlockController {
         BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
         if (bigInt2.equals(BigInteger.ZERO)) {
-            spawnEffect(IConnectableComputerBlockEntity.ComputerEffect.EXPLODE);
+            //spawnEffect(IConnectableComputerBlockEntity.ComputerEffect.EXPLODE);
+            ((AluModel) this.getModel()).setExplosion();
             return Value.fromHex("FF".repeat(array1.length), array1.length);
         }
 
@@ -629,7 +630,8 @@ public class AluController extends ComputerBlockController {
         BigInteger bigInt2 = new BigInteger(array2);
 
         if (bigInt2.equals(BigInteger.ZERO)) {
-            spawnEffect(IConnectableComputerBlockEntity.ComputerEffect.EXPLODE);
+            //spawnEffect(IConnectableComputerBlockEntity.ComputerEffect.EXPLODE);
+            ((AluModel) this.getModel()).setExplosion();
             return Value.fromHex("FF".repeat(array1.length), array1.length);
         }
 

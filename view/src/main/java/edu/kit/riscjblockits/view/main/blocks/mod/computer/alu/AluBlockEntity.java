@@ -2,6 +2,8 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.alu;
 
 import edu.kit.riscjblockits.controller.blocks.AluController;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
+import edu.kit.riscjblockits.model.data.IDataContainer;
+import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import net.minecraft.block.BlockState;
@@ -53,5 +55,22 @@ public class AluBlockEntity extends ComputerBlockEntity {
                 .append(Text.translatable("riscj_blockits.alu_operation"))
                 .append(": " + operation);
 
+    }
+    @Override
+    public void updateUI() {
+        super.updateUI();
+
+        if(getModel() == null) {
+            return;
+        }
+        IDataElement data = getModel().getData();
+        if(data == null || !data.isContainer()) {
+            return;
+        }
+        for(String key : ((IDataContainer) data).getKeys()) {
+            if (key.equals("explosion")) {
+                spawnEffect(ComputerEffect.EXPLODE);
+            }
+        }
     }
 }
