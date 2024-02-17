@@ -44,6 +44,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     private static final Identifier ASSEMBLE_BUTTON_TEXTURE_FAILED = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_unpressed_failed.png");
     private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/instructions_button.png");
     private static final Identifier EXAMPLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/example_button.png");
+    private static final Identifier AI_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/ai_button.png");
 
     /**
      * Can display information about all available instructions.
@@ -143,20 +144,20 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
             INSTRUCTIONS_BUTTON_TEXTURE
         );
         addDrawableChild(instructionSetButton);
-
+        //ad Example Button
         exampleButton = new IconButtonWidget(this.x + 25, this.y + 111, 13, 13, button ->{
             editBox.setText(this.handler.getExample());
         }, EXAMPLE_BUTTON_TEXTURE);
         addDrawableChild(exampleButton);
+        //add Ai Button
         aiButton = new IconButtonWidget(this.x + 50, this.y + 111, 13, 13, button ->{
             String text = editBox.getText();
             String aiText = aiProgrammer.queryAi(text);
             editBox.setText(text + aiText);
-        }, EXAMPLE_BUTTON_TEXTURE);
+        }, AI_BUTTON_TEXTURE);
         addDrawableChild(aiButton);
 
         handler.enableSyncing();
-
         ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION);
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION, (client1, handler1, buf, responseSender) -> {
             showError(buf.readString());

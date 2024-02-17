@@ -17,7 +17,8 @@ public class AiProgrammer {
     private static final String ERROR_KEY_NOT_FOUND = "No API key found. Please add your OpenAI API key to the Instruction Set.";
     private static final String ERROR_MESSAGE = "An error occurred while trying to access the OpenAI API. \n Is your key correct?";
     private static final String OPEN_AI_API_URL = "https://api.openai.com/v1/chat/completions";
-    private String openAiApiKey;
+    private static final String PROMPT = "You are an github copilot style ai that only outputs Risc-V assembler code based on the users wishes and the already available code. You can only write valid code with comments. Don't explain the code. The code should not include syscalls.";
+    private final String openAiApiKey;
     private  boolean keyFound = true;
 
     /**
@@ -49,7 +50,7 @@ public class AiProgrammer {
                 "    \"messages\": [\n" +
                 "      {\n" +
                 "        \"role\": \"system\",\n" +
-                "        \"content\": \"You are an ai that only outputs Risc-V assembler code based on the users wishes and the already available code. You can only write valid code with comments. Don't explain the code. The code should not include syscalls.\"\n" +
+                "        \"content\": \"" + PROMPT + "\"\n" +
                 "      },\n" +
                 "      {\n" +
                 "        \"role\": \"user\",\n" +
