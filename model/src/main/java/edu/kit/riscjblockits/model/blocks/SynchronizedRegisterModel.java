@@ -30,9 +30,6 @@ public class SynchronizedRegisterModel extends RegisterModel {
             return;
         }
         wirelessRegisterModels.add(wirelessRegisterModel);
-        for (WirelessRegisterModel model : wirelessRegisterModels) {
-            model.getWirelessNeighbourPosition();
-        }
     }
 
     /**
