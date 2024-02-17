@@ -117,4 +117,11 @@ public class MemoryListWidget implements Drawable {
         this.y = y;
     }
 
+    public void jumpToLine(int line) {
+        if (line < 0 || line >= handler.getMemorySize()) {
+            return;
+        }
+        scrollPosition = line * ENTRY_HEIGHT;
+    }
+
 }
