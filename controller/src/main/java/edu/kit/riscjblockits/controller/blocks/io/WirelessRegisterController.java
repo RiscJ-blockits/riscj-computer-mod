@@ -132,4 +132,13 @@ public class WirelessRegisterController extends RegisterController {
     public Value getValue() {
         return ((WirelessRegisterModel)getModel()).getValue();
     }
+
+    /**
+     * Method to be called when the WirelessRegister is broken.
+     */
+    @Override
+    public void onBroken() {
+        super.onBroken();
+        ((WirelessRegisterModel)getModel()).onBroken();
+    }
 }
