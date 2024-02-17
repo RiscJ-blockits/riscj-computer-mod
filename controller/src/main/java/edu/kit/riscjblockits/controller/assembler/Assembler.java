@@ -94,6 +94,8 @@ public class Assembler {
 
             if (instructionSetModel.isAddressChange(line)) {
                 String address = instructionSetModel.getChangedAddress(line);
+                if (address.isBlank())
+                    continue;
                 currentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
                 continue;
             }
@@ -216,6 +218,8 @@ public class Assembler {
             // check if line is address change
             if (instructionSetModel.isAddressChange(line)) {
                 String address = instructionSetModel.getChangedAddress(line);
+                if (address.isBlank())
+                    continue;
                 localCurrentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
                 continue;
             }
