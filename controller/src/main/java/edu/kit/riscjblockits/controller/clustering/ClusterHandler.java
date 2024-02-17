@@ -303,7 +303,6 @@ public class ClusterHandler {
      * method to check whether the cluster is finished building.
      */
     public void checkFinished() {
-        boolean oldBuildingFinished = buildingFinished;
         if (istModel != null) {
             buildingFinished = ClusterArchitectureHandler.checkArchitecture(istModel, this);
         } else {
@@ -325,7 +324,7 @@ public class ClusterHandler {
                 ((BusController) busBlock).setBusSystemModel((BusSystemModel) busSystemModel);
             }
             startSimulation();
-        } else if (oldBuildingFinished) {
+        } else {
             // stop simulation if it was running and the cluster is not finished anymore
             stopSimulation();
         }
@@ -351,6 +350,8 @@ public class ClusterHandler {
             }
             c.stopVisualisation();
         }
-        busSystemModel.resetVisualisation();
+        if (busSystemModel != null) {
+            busSystemModel.resetVisualisation();
+        }
     }
 }
