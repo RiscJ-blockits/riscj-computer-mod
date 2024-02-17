@@ -5,15 +5,22 @@ import edu.kit.riscjblockits.controller.blocks.BusController;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableSimController;
+import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.controller.blocks.SystemClockController;
 import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
 import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import edu.kit.riscjblockits.model.busgraph.IBusSystem;
 import edu.kit.riscjblockits.model.busgraph.IQueryableBusSystem;
+import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.IQueryableInstructionSetModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_FOUND;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_MISSING;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 
 /**
  * Holds one computer cluster.
@@ -300,6 +307,17 @@ public class ClusterHandler {
         if (istModel != null) {
             buildingFinished = ClusterArchitectureHandler.checkArchitecture(istModel, this);
         } else {
+            //remove data from registers
+            Data choseData = new Data();
+            choseData.set(REGISTER_MISSING, new DataStringEntry(""));
+            choseData.set(REGISTER_FOUND, new DataStringEntry(""));
+            Data rData = new Data();
+            rData.set(REGISTER_REGISTERS, choseData);
+            for (IQueryableClusterController block : blocks) {
+                if (block.getControllerType() == BlockControllerType.REGISTER) {
+                    ((RegisterController) block).setData(rData);
+                }
+            }
             buildingFinished = false;
         }
         if (buildingFinished) {

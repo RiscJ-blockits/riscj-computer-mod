@@ -237,6 +237,11 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
                             break;
                     }
                 }
+            } else if (s.equals(CONTROL_ITEM_PRESENT)) {
+                if (((IDataStringEntry) ((IDataContainer) data).get(CONTROL_ITEM_PRESENT)).getContent()
+                    .equals("false")) {
+                    return new List[] {new ArrayList<>(), new ArrayList<>()};
+                }
             }
         }
         return new List[]{listMissing, listFound};
