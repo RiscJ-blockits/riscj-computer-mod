@@ -53,6 +53,16 @@ class ValueTest {
     }
 
     @Test
+    void fromHexUnevenLength() {
+        Value val = Value.fromHex("1", 1);
+        assertEquals("01", val.getHexadecimalValue());
+
+        val = Value.fromHex("FFF", 2);
+        assertEquals("0FFF", val.getHexadecimalValue());
+
+    }
+
+    @Test
     void fromBinary() {
         Value val = Value.fromBinary("00000011", 1);
         assertEquals("00000011", val.getBinaryValue());
@@ -68,6 +78,18 @@ class ValueTest {
 
         val = Value.fromBinary("011", 2);
         assertEquals("0000000000000011", val.getBinaryValue());
+    }
+
+    @Test
+    void fromFloat() {
+        Value val = Value.fromFloat("0.0", 4);
+        assertEquals("00000000", val.getHexadecimalValue());
+
+        val = Value.fromFloat("2.5", 4);
+        assertEquals("40200000", val.getHexadecimalValue());
+
+        val = Value.fromFloat("-1.69", 4);
+        assertEquals("BFD851EC", val.getHexadecimalValue());
     }
 
     @Test
@@ -113,4 +135,27 @@ class ValueTest {
         assertTrue(val1.greaterThanUnsigned(val2));
         assertFalse(val2.greaterThanUnsigned(val1));
     }
+
+    @Test
+    void fromDecimalLonger() {
+        Value val = Value.fromDecimal("348", 1);
+        assertEquals("5C", val.getHexadecimalValue());
+    }
+
+    @Test
+    void greaterThanFloat() {
+        Value val1 = Value.fromFloat("1.0", 4);
+        Value val2 = Value.fromFloat("0.0", 4);
+        assertTrue(val1.greaterThanFloat(val2));
+        assertFalse(val2.greaterThanFloat(val1));
+    }
+
+    @Test
+    void lowerThanFloat() {
+        Value val1 = Value.fromFloat("0.0", 4);
+        Value val2 = Value.fromFloat("1.0", 4);
+        assertTrue(val1.lowerThanFloat(val2));
+        assertFalse(val2.lowerThanFloat(val1));
+    }
+
 }
