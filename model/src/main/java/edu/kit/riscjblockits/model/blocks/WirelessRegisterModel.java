@@ -107,8 +107,6 @@ public class WirelessRegisterModel extends RegisterModel {
      */
     @Override
     public IDataElement getData() {
-        super.setValue(getValue());
-        super.setWordLength(getWordLength());
         Data regData = (Data) super.getData();
         Data connectedPos = new Data();
         if (wirelessNeighbourPosition == null) {

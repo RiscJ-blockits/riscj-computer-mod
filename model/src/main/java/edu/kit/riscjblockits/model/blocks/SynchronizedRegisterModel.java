@@ -30,6 +30,7 @@ public class SynchronizedRegisterModel extends RegisterModel {
             return;
         }
         wirelessRegisterModels.add(wirelessRegisterModel);
+        wirelessRegisterModel.update();
     }
 
     /**
@@ -39,7 +40,7 @@ public class SynchronizedRegisterModel extends RegisterModel {
     public void removeObserver(WirelessRegisterModel wirelessRegisterModel) {
         wirelessRegisterModels.remove(wirelessRegisterModel);
         for (WirelessRegisterModel model : wirelessRegisterModels) {
-            model.setWirelessNeighbourPosition(getWirelessNeighbourPosition(model));
+            model.setWirelessNeighbourPosition(wirelessRegisterModels.get(0).getPosition());
         }
     }
 
@@ -50,21 +51,5 @@ public class SynchronizedRegisterModel extends RegisterModel {
         for (WirelessRegisterModel wirelessRegisterModel : wirelessRegisterModels) {
             wirelessRegisterModel.update();
         }
-    }
-
-    /**
-     * Returns a new position of the wireless neighbor.
-     * @param wirelessRegisterModel The wireless register model to get the wireless neighbor position for.
-     * @return The new position of the wireless neighbor.
-     */
-    public BlockPosition getWirelessNeighbourPosition(WirelessRegisterModel wirelessRegisterModel) {
-        if (wirelessRegisterModels.size() <= 1) {
-            return null;
-        }
-        int index = wirelessRegisterModels.indexOf(wirelessRegisterModel) - 1;
-        if (index < 0) {
-            index = wirelessRegisterModels.size() - 1;
-        }
-        return wirelessRegisterModels.get(index).getPosition();
     }
 }
