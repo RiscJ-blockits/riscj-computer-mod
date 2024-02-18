@@ -145,9 +145,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                add t0 t0 t1
+                addi t2, zero, 0
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -165,9 +165,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                add t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -185,9 +185,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                add t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -205,9 +205,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                add t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -225,9 +225,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                add t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -245,9 +245,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                add t0 t0 t1
+                addi t2, zero, 1
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -265,9 +265,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                add t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -285,9 +285,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                add t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -305,9 +305,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                add t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -325,9 +325,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                add t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -345,9 +345,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                add t0 t0 t1
+                addi t2, zero, -1
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -365,9 +365,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                add t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -385,9 +385,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                add t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -405,9 +405,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                add t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -425,9 +425,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                add t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -445,9 +445,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                add t0 t0 t1
+                addi t2, zero, 2047
+                add t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -466,7 +466,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                addi t0 t0 0
+                addi t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -485,14 +485,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                addi t0 t0 0
+                addi t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("00000001", val.getHexadecimalValue());
     }
 
 
@@ -504,14 +504,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                addi t0 t0 0
+                addi t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("FFFFFFFF", val.getHexadecimalValue());
     }
 
 
@@ -523,14 +523,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                addi t0 t0 0
+                addi t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("000007FF", val.getHexadecimalValue());
     }
 
 
@@ -542,7 +542,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                addi t0 t0 1
+                addi t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -561,14 +561,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                addi t0 t0 1
+                addi t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000002", val.getHexadecimalValue());
     }
 
 
@@ -580,14 +580,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                addi t0 t0 1
+                addi t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -599,14 +599,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                addi t0 t0 1
+                addi t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000800", val.getHexadecimalValue());
     }
 
 
@@ -618,7 +618,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                addi t0 t0 -1
+                addi t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -637,14 +637,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                addi t0 t0 -1
+                addi t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("FFFFFFFF", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -656,14 +656,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                addi t0 t0 -1
+                addi t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("FFFFFFFF", val.getHexadecimalValue());
+        assertEquals("FFFFFFFE", val.getHexadecimalValue());
     }
 
 
@@ -675,14 +675,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                addi t0 t0 -1
+                addi t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("FFFFFFFF", val.getHexadecimalValue());
+        assertEquals("000007FE", val.getHexadecimalValue());
     }
 
 
@@ -694,7 +694,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                addi t0 t0 2047
+                addi t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -713,14 +713,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                addi t0 t0 2047
+                addi t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("000007FF", val.getHexadecimalValue());
+        assertEquals("00000800", val.getHexadecimalValue());
     }
 
 
@@ -732,14 +732,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                addi t0 t0 2047
+                addi t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("000007FF", val.getHexadecimalValue());
+        assertEquals("000007FE", val.getHexadecimalValue());
     }
 
 
@@ -751,14 +751,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                addi t0 t0 2047
+                addi t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("000007FF", val.getHexadecimalValue());
+        assertEquals("00000FFE", val.getHexadecimalValue());
     }
 
 
@@ -769,9 +769,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                and t0 t0 t1
+                addi t2, zero, 0
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -789,9 +789,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                and t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -809,9 +809,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                and t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -829,9 +829,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                and t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -849,9 +849,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                and t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -869,9 +869,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                and t0 t0 t1
+                addi t2, zero, 1
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -889,9 +889,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                and t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -909,9 +909,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                and t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -929,9 +929,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                and t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -949,9 +949,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                and t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -969,9 +969,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                and t0 t0 t1
+                addi t2, zero, -1
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -989,9 +989,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                and t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1009,9 +1009,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                and t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1029,9 +1029,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                and t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1049,9 +1049,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                and t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1069,9 +1069,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                and t0 t0 t1
+                addi t2, zero, 2047
+                and t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1089,9 +1089,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                sll t0 t0 t1
+                addi t2, zero, 0
+                sll t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1109,9 +1109,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                sll t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                sll t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1129,9 +1129,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                sll t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                sll t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1149,9 +1149,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                sll t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                sll t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1169,9 +1169,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                sll t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                sll t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1189,9 +1189,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                sll t0 t0 t1
+                addi t2, zero, 1
+                sll t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1209,9 +1209,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                sll t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                sll t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1229,9 +1229,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                sll t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                sll t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1240,6 +1240,159 @@ public class RiscInstructionTest {
         Value val = memoryController.getValue(Value.fromHex("00", 4));
         assertEquals("80000000", val.getHexadecimalValue());
     }
+
+
+    @Test
+    public void test_slli_i0_0() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 0
+                slli t0 t1 0
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_slli_i1_0() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 1
+                slli t0 t1 0
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_slli_ineg1_0() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, -1
+                slli t0 t1 0
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FFFFFFFF", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_slli_i2047_0() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 2047
+                slli t0 t1 0
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("000007FF", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_slli_i0_1() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 0
+                slli t0 t1 1
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_slli_i1_1() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 1
+                slli t0 t1 1
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000002", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_slli_ineg1_1() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, -1
+                slli t0 t1 1
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FFFFFFFE", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_slli_i2047_1() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 2047
+                slli t0 t1 1
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000FFE", val.getHexadecimalValue());
+    }
+
 
     @Test
     public void test_lui_0() throws AssemblyException {
@@ -1321,7 +1474,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                slti t0 t0 0
+                slti t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1340,7 +1493,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                slti t0 t0 0
+                slti t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1359,14 +1512,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                slti t0 t0 0
+                slti t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("00000001", val.getHexadecimalValue());
     }
 
 
@@ -1378,7 +1531,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                slti t0 t0 0
+                slti t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1397,7 +1550,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                slti t0 t0 1
+                slti t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1416,14 +1569,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                slti t0 t0 1
+                slti t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -1435,7 +1588,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                slti t0 t0 1
+                slti t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1454,14 +1607,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                slti t0 t0 1
+                slti t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -1473,7 +1626,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                slti t0 t0 -1
+                slti t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1492,7 +1645,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                slti t0 t0 -1
+                slti t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1511,7 +1664,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                slti t0 t0 -1
+                slti t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1530,7 +1683,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                slti t0 t0 -1
+                slti t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1549,7 +1702,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                slti t0 t0 2047
+                slti t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1568,7 +1721,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                slti t0 t0 2047
+                slti t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1587,7 +1740,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                slti t0 t0 2047
+                slti t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1606,14 +1759,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                slti t0 t0 2047
+                slti t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -1625,7 +1778,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                sltiu t0 t0 0
+                sltiu t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1644,7 +1797,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                sltiu t0 t0 0
+                sltiu t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1663,7 +1816,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                sltiu t0 t0 0
+                sltiu t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1682,7 +1835,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                sltiu t0 t0 0
+                sltiu t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1701,7 +1854,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                sltiu t0 t0 1
+                sltiu t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1720,14 +1873,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                sltiu t0 t0 1
+                sltiu t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -1739,14 +1892,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                sltiu t0 t0 1
+                sltiu t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -1758,14 +1911,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                sltiu t0 t0 1
+                sltiu t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -1777,7 +1930,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                sltiu t0 t0 -1
+                sltiu t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1796,7 +1949,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                sltiu t0 t0 -1
+                sltiu t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1815,14 +1968,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                sltiu t0 t0 -1
+                sltiu t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -1834,7 +1987,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                sltiu t0 t0 -1
+                sltiu t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1853,7 +2006,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                sltiu t0 t0 2047
+                sltiu t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1872,7 +2025,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                sltiu t0 t0 2047
+                sltiu t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1891,14 +2044,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                sltiu t0 t0 2047
+                sltiu t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -1910,14 +2063,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                sltiu t0 t0 2047
+                sltiu t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -1929,7 +2082,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                xori t0 t0 0
+                xori t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -1948,14 +2101,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                xori t0 t0 0
+                xori t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("00000001", val.getHexadecimalValue());
     }
 
 
@@ -1967,14 +2120,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                xori t0 t0 0
+                xori t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("FFFFFFFF", val.getHexadecimalValue());
     }
 
 
@@ -1986,14 +2139,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                xori t0 t0 0
+                xori t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("000007FF", val.getHexadecimalValue());
     }
 
 
@@ -2005,7 +2158,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                xori t0 t0 1
+                xori t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2024,14 +2177,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                xori t0 t0 1
+                xori t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -2043,14 +2196,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                xori t0 t0 1
+                xori t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("FFFFFFFE", val.getHexadecimalValue());
     }
 
 
@@ -2062,14 +2215,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                xori t0 t0 1
+                xori t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("000007FE", val.getHexadecimalValue());
     }
 
 
@@ -2081,7 +2234,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                xori t0 t0 -1
+                xori t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2100,14 +2253,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                xori t0 t0 -1
+                xori t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("FFFFFFFF", val.getHexadecimalValue());
+        assertEquals("FFFFFFFE", val.getHexadecimalValue());
     }
 
 
@@ -2119,14 +2272,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                xori t0 t0 -1
+                xori t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("FFFFFFFF", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -2138,14 +2291,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                xori t0 t0 -1
+                xori t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("FFFFFFFF", val.getHexadecimalValue());
+        assertEquals("FFFFF800", val.getHexadecimalValue());
     }
 
 
@@ -2157,7 +2310,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                xori t0 t0 2047
+                xori t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2176,14 +2329,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                xori t0 t0 2047
+                xori t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("000007FF", val.getHexadecimalValue());
+        assertEquals("000007FE", val.getHexadecimalValue());
     }
 
 
@@ -2195,14 +2348,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                xori t0 t0 2047
+                xori t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("000007FF", val.getHexadecimalValue());
+        assertEquals("FFFFF800", val.getHexadecimalValue());
     }
 
 
@@ -2214,14 +2367,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                xori t0 t0 2047
+                xori t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("000007FF", val.getHexadecimalValue());
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
@@ -2233,7 +2386,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                ori t0 t0 0
+                ori t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2252,14 +2405,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                ori t0 t0 0
+                ori t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("00000001", val.getHexadecimalValue());
     }
 
 
@@ -2271,14 +2424,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                ori t0 t0 0
+                ori t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("FFFFFFFF", val.getHexadecimalValue());
     }
 
 
@@ -2290,14 +2443,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                ori t0 t0 0
+                ori t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("000007FF", val.getHexadecimalValue());
     }
 
 
@@ -2309,7 +2462,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                ori t0 t0 1
+                ori t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2328,7 +2481,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                ori t0 t0 1
+                ori t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2347,14 +2500,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                ori t0 t0 1
+                ori t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("FFFFFFFF", val.getHexadecimalValue());
     }
 
 
@@ -2366,14 +2519,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                ori t0 t0 1
+                ori t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000001", val.getHexadecimalValue());
+        assertEquals("000007FF", val.getHexadecimalValue());
     }
 
 
@@ -2385,7 +2538,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                ori t0 t0 -1
+                ori t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2404,7 +2557,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                ori t0 t0 -1
+                ori t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2423,7 +2576,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                ori t0 t0 -1
+                ori t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2442,7 +2595,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                ori t0 t0 -1
+                ori t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2461,7 +2614,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                ori t0 t0 2047
+                ori t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2480,7 +2633,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                ori t0 t0 2047
+                ori t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2499,14 +2652,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                ori t0 t0 2047
+                ori t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("000007FF", val.getHexadecimalValue());
+        assertEquals("FFFFFFFF", val.getHexadecimalValue());
     }
 
 
@@ -2518,7 +2671,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                ori t0 t0 2047
+                ori t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2537,7 +2690,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                andi t0 t0 0
+                andi t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2556,7 +2709,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                andi t0 t0 0
+                andi t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2575,7 +2728,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                andi t0 t0 0
+                andi t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2594,7 +2747,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                andi t0 t0 0
+                andi t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2613,7 +2766,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                andi t0 t0 1
+                andi t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2632,14 +2785,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                andi t0 t0 1
+                andi t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("00000001", val.getHexadecimalValue());
     }
 
 
@@ -2651,14 +2804,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                andi t0 t0 1
+                andi t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("00000001", val.getHexadecimalValue());
     }
 
 
@@ -2670,14 +2823,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                andi t0 t0 1
+                andi t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("00000001", val.getHexadecimalValue());
     }
 
 
@@ -2689,7 +2842,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                andi t0 t0 -1
+                andi t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2708,14 +2861,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                andi t0 t0 -1
+                andi t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("00000001", val.getHexadecimalValue());
     }
 
 
@@ -2727,14 +2880,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                andi t0 t0 -1
+                andi t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("FFFFFFFF", val.getHexadecimalValue());
     }
 
 
@@ -2746,14 +2899,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                andi t0 t0 -1
+                andi t0 t1 -1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("000007FF", val.getHexadecimalValue());
     }
 
 
@@ -2765,7 +2918,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                andi t0 t0 2047
+                andi t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2784,14 +2937,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                andi t0 t0 2047
+                andi t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("00000001", val.getHexadecimalValue());
     }
 
 
@@ -2803,14 +2956,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                andi t0 t0 2047
+                andi t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("000007FF", val.getHexadecimalValue());
     }
 
 
@@ -2822,14 +2975,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                andi t0 t0 2047
+                andi t0 t1 2047
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("000007FF", val.getHexadecimalValue());
     }
 
 
@@ -2841,7 +2994,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                srli t0 t0 0
+                srli t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2860,14 +3013,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                srli t0 t0 0
+                srli t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("00000001", val.getHexadecimalValue());
     }
 
 
@@ -2879,14 +3032,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                srli t0 t0 0
+                srli t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("FFFFFFFF", val.getHexadecimalValue());
     }
 
 
@@ -2898,14 +3051,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                srli t0 t0 0
+                srli t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("000007FF", val.getHexadecimalValue());
     }
 
 
@@ -2917,7 +3070,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 0
-                srli t0 t0 1
+                srli t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2936,7 +3089,7 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 1
-                srli t0 t0 1
+                srli t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2955,14 +3108,14 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, -1
-                srli t0 t0 1
+                srli t0 t1 1
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("00000000", val.getHexadecimalValue());
+        assertEquals("7FFFFFFF", val.getHexadecimalValue());
     }
 
 
@@ -2974,7 +3127,26 @@ public class RiscInstructionTest {
             .text
             main:
                 addi t1, zero, 2047
-                srli t0 t0 1
+                srli t0 t1 1
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("000003FF", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_srai_i0_0() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 0
+                srai t0 t1 0
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -2986,15 +3158,148 @@ public class RiscInstructionTest {
 
 
     @Test
+    public void test_srai_i1_0() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 1
+                srai t0 t1 0
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_srai_ineg1_0() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, -1
+                srai t0 t1 0
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FFFFFFFF", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_srai_i2047_0() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 2047
+                srai t0 t1 0
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("000007FF", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_srai_i0_1() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 0
+                srai t0 t1 1
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_srai_i1_1() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 1
+                srai t0 t1 1
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_srai_ineg1_1() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, -1
+                srai t0 t1 1
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FFFFFFFF", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_srai_i2047_1() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 2047
+                srai t0 t1 1
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("000003FF", val.getHexadecimalValue());
+    }
+
+
+    @Test
     public void test_sub_i0_i0() throws AssemblyException {
         setCode("""
             .data
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                sub t0 t0 t1
+                addi t2, zero, 0
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3012,9 +3317,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                sub t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3032,9 +3337,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                sub t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3052,9 +3357,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                sub t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3072,9 +3377,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                sub t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3092,9 +3397,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                sub t0 t0 t1
+                addi t2, zero, 1
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3112,9 +3417,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                sub t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3132,9 +3437,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                sub t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3152,9 +3457,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                sub t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3172,9 +3477,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                sub t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3192,9 +3497,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                sub t0 t0 t1
+                addi t2, zero, -1
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3212,9 +3517,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                sub t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3232,9 +3537,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                sub t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3252,9 +3557,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                sub t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3272,9 +3577,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                sub t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3292,9 +3597,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                sub t0 t0 t1
+                addi t2, zero, 2047
+                sub t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3312,9 +3617,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                slt t0 t0 t1
+                addi t2, zero, 0
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3332,9 +3637,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                slt t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3352,9 +3657,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                slt t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3372,9 +3677,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                slt t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3392,9 +3697,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                slt t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3412,9 +3717,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                slt t0 t0 t1
+                addi t2, zero, 1
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3432,9 +3737,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                slt t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3452,9 +3757,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                slt t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3472,9 +3777,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                slt t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3492,9 +3797,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                slt t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3512,9 +3817,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                slt t0 t0 t1
+                addi t2, zero, -1
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3532,9 +3837,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                slt t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3552,9 +3857,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                slt t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3572,9 +3877,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                slt t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3592,9 +3897,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                slt t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3612,9 +3917,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                slt t0 t0 t1
+                addi t2, zero, 2047
+                slt t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3632,9 +3937,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                sltu t0 t0 t1
+                addi t2, zero, 0
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3652,9 +3957,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                sltu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3672,9 +3977,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                sltu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3692,9 +3997,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                sltu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3712,9 +4017,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                sltu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3732,9 +4037,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                sltu t0 t0 t1
+                addi t2, zero, 1
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3752,9 +4057,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                sltu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3772,9 +4077,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                sltu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3792,9 +4097,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                sltu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3812,9 +4117,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                sltu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3832,9 +4137,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                sltu t0 t0 t1
+                addi t2, zero, -1
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3852,9 +4157,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                sltu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3872,9 +4177,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                sltu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3892,9 +4197,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                sltu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3912,9 +4217,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                sltu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3932,9 +4237,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                sltu t0 t0 t1
+                addi t2, zero, 2047
+                sltu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3952,9 +4257,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                xor t0 t0 t1
+                addi t2, zero, 0
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3972,9 +4277,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                xor t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -3992,9 +4297,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                xor t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4012,9 +4317,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                xor t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4032,9 +4337,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                xor t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4052,9 +4357,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                xor t0 t0 t1
+                addi t2, zero, 1
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4072,9 +4377,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                xor t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4092,9 +4397,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                xor t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4112,9 +4417,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                xor t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4132,9 +4437,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                xor t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4152,9 +4457,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                xor t0 t0 t1
+                addi t2, zero, -1
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4172,9 +4477,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                xor t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4192,9 +4497,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                xor t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4212,9 +4517,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                xor t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4232,9 +4537,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                xor t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4252,9 +4557,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                xor t0 t0 t1
+                addi t2, zero, 2047
+                xor t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4264,6 +4569,7 @@ public class RiscInstructionTest {
         assertEquals("00000000", val.getHexadecimalValue());
     }
 
+
     @Test
     public void test_srl_i0_i0() throws AssemblyException {
         setCode("""
@@ -4271,9 +4577,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                srl t0 t0 t1
+                addi t2, zero, 0
+                srl t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4291,9 +4597,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                srl t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                srl t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4311,9 +4617,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                srl t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                srl t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4331,9 +4637,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                srl t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                srl t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4351,9 +4657,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                srl t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                srl t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4371,9 +4677,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                srl t0 t0 t1
+                addi t2, zero, 1
+                srl t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4391,9 +4697,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                srl t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                srl t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4411,9 +4717,169 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                srl t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                srl t0 t1 t2
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_sra_i0_i0() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 0
+                addi t2, zero, 0
+                sra t0 t1 t2
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_sra_i0_i1() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 0
+                addi t2, zero, 1
+                sra t0 t1 t2
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_sra_i0_ineg1() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 0
+                addi t2, zero, -1
+                sra t0 t1 t2
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_sra_i0_i2047() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                sra t0 t1 t2
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_sra_i1_i0() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 1
+                addi t2, zero, 0
+                sra t0 t1 t2
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_sra_i1_i1() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 1
+                addi t2, zero, 1
+                sra t0 t1 t2
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_sra_i1_ineg1() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 1
+                addi t2, zero, -1
+                sra t0 t1 t2
+                addi t6, zero, x
+                sw t0, 0(t6)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_sra_i1_i2047() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            .text
+            main:
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                sra t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4431,9 +4897,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                or t0 t0 t1
+                addi t2, zero, 0
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4451,9 +4917,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                or t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4471,9 +4937,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                or t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4491,9 +4957,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                or t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4511,9 +4977,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                or t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4531,9 +4997,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                or t0 t0 t1
+                addi t2, zero, 1
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4551,9 +5017,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                or t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4571,9 +5037,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                or t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4591,9 +5057,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                or t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4611,9 +5077,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                or t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4631,9 +5097,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                or t0 t0 t1
+                addi t2, zero, -1
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4651,9 +5117,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                or t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4671,9 +5137,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                or t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4691,9 +5157,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                or t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4711,9 +5177,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                or t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4731,9 +5197,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                or t0 t0 t1
+                addi t2, zero, 2047
+                or t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4751,9 +5217,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                mul t0 t0 t1
+                addi t2, zero, 0
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4771,9 +5237,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                mul t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4791,9 +5257,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                mul t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4811,9 +5277,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                mul t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4831,9 +5297,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                mul t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4851,9 +5317,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                mul t0 t0 t1
+                addi t2, zero, 1
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4871,9 +5337,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                mul t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4891,9 +5357,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                mul t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4911,9 +5377,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                mul t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4931,9 +5397,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                mul t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4951,9 +5417,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                mul t0 t0 t1
+                addi t2, zero, -1
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4971,9 +5437,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                mul t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -4991,9 +5457,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                mul t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5011,9 +5477,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                mul t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5031,9 +5497,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                mul t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5051,9 +5517,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                mul t0 t0 t1
+                addi t2, zero, 2047
+                mul t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5071,9 +5537,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                mulh t0 t0 t1
+                addi t2, zero, 0
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5091,9 +5557,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                mulh t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5111,9 +5577,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                mulh t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5131,9 +5597,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                mulh t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5151,9 +5617,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                mulh t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5171,9 +5637,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                mulh t0 t0 t1
+                addi t2, zero, 1
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5191,9 +5657,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                mulh t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5211,9 +5677,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                mulh t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5231,9 +5697,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                mulh t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5251,9 +5717,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                mulh t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5271,9 +5737,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                mulh t0 t0 t1
+                addi t2, zero, -1
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5291,9 +5757,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                mulh t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5311,9 +5777,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                mulh t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5331,9 +5797,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                mulh t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5351,9 +5817,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                mulh t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5371,9 +5837,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                mulh t0 t0 t1
+                addi t2, zero, 2047
+                mulh t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5391,9 +5857,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                mulhsu t0 t0 t1
+                addi t2, zero, 0
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5411,9 +5877,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                mulhsu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5431,9 +5897,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                mulhsu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5451,9 +5917,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                mulhsu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5471,9 +5937,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                mulhsu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5491,9 +5957,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                mulhsu t0 t0 t1
+                addi t2, zero, 1
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5511,9 +5977,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                mulhsu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5531,9 +5997,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                mulhsu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5551,9 +6017,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                mulhsu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5571,9 +6037,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                mulhsu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5591,9 +6057,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                mulhsu t0 t0 t1
+                addi t2, zero, -1
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5611,9 +6077,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                mulhsu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5631,9 +6097,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                mulhsu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5651,9 +6117,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                mulhsu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5671,9 +6137,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                mulhsu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5691,9 +6157,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                mulhsu t0 t0 t1
+                addi t2, zero, 2047
+                mulhsu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5711,9 +6177,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                mulhu t0 t0 t1
+                addi t2, zero, 0
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5731,9 +6197,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                mulhu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5751,9 +6217,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                mulhu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5771,9 +6237,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                mulhu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5791,9 +6257,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                mulhu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5811,9 +6277,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                mulhu t0 t0 t1
+                addi t2, zero, 1
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5831,9 +6297,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                mulhu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5851,9 +6317,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                mulhu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5871,9 +6337,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                mulhu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5891,9 +6357,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                mulhu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5911,9 +6377,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                mulhu t0 t0 t1
+                addi t2, zero, -1
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5931,9 +6397,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                mulhu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5951,9 +6417,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                mulhu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5971,9 +6437,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                mulhu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -5991,9 +6457,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                mulhu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6011,9 +6477,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                mulhu t0 t0 t1
+                addi t2, zero, 2047
+                mulhu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6031,9 +6497,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                div t0 t0 t1
+                addi t2, zero, 0
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6051,9 +6517,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                div t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6071,9 +6537,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                div t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6091,9 +6557,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                div t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6111,9 +6577,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                div t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6131,9 +6597,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                div t0 t0 t1
+                addi t2, zero, 1
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6151,9 +6617,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                div t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6171,9 +6637,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                div t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6191,9 +6657,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                div t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6211,9 +6677,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                div t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6231,9 +6697,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                div t0 t0 t1
+                addi t2, zero, -1
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6251,9 +6717,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                div t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6271,9 +6737,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                div t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6291,9 +6757,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                div t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6311,9 +6777,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                div t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6331,9 +6797,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                div t0 t0 t1
+                addi t2, zero, 2047
+                div t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6351,9 +6817,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                divu t0 t0 t1
+                addi t2, zero, 0
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6371,9 +6837,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                divu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6391,9 +6857,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                divu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6411,9 +6877,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                divu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6431,9 +6897,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                divu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6451,9 +6917,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                divu t0 t0 t1
+                addi t2, zero, 1
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6471,9 +6937,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                divu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6491,9 +6957,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                divu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6511,9 +6977,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                divu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6531,9 +6997,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                divu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6551,9 +7017,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                divu t0 t0 t1
+                addi t2, zero, -1
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6571,9 +7037,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                divu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6591,9 +7057,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                divu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6611,9 +7077,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                divu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6631,9 +7097,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                divu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6651,9 +7117,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                divu t0 t0 t1
+                addi t2, zero, 2047
+                divu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6671,9 +7137,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                rem t0 t0 t1
+                addi t2, zero, 0
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6691,9 +7157,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                rem t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6711,9 +7177,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                rem t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6731,9 +7197,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                rem t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6751,9 +7217,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                rem t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6771,9 +7237,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                rem t0 t0 t1
+                addi t2, zero, 1
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6791,9 +7257,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                rem t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6811,9 +7277,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                rem t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6831,9 +7297,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                rem t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6851,9 +7317,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                rem t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6871,9 +7337,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                rem t0 t0 t1
+                addi t2, zero, -1
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6891,9 +7357,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                rem t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6911,9 +7377,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                rem t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6931,9 +7397,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                rem t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6951,9 +7417,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                rem t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6971,9 +7437,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                rem t0 t0 t1
+                addi t2, zero, 2047
+                rem t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -6991,9 +7457,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
                 addi t1, zero, 0
-                remu t0 t0 t1
+                addi t2, zero, 0
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7011,9 +7477,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 1
-                remu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 1
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7031,9 +7497,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, -1
-                remu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, -1
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7051,9 +7517,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 0
-                addi t1, zero, 2047
-                remu t0 t0 t1
+                addi t1, zero, 0
+                addi t2, zero, 2047
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7071,9 +7537,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 0
-                remu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 0
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7091,9 +7557,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
                 addi t1, zero, 1
-                remu t0 t0 t1
+                addi t2, zero, 1
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7111,9 +7577,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, -1
-                remu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, -1
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7131,9 +7597,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 1
-                addi t1, zero, 2047
-                remu t0 t0 t1
+                addi t1, zero, 1
+                addi t2, zero, 2047
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7151,9 +7617,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 0
-                remu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 0
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7171,9 +7637,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 1
-                remu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 1
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7191,9 +7657,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
                 addi t1, zero, -1
-                remu t0 t0 t1
+                addi t2, zero, -1
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7211,9 +7677,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, -1
-                addi t1, zero, 2047
-                remu t0 t0 t1
+                addi t1, zero, -1
+                addi t2, zero, 2047
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7231,9 +7697,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 0
-                remu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 0
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7251,9 +7717,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, 1
-                remu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, 1
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7271,9 +7737,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
-                addi t1, zero, -1
-                remu t0 t0 t1
+                addi t1, zero, 2047
+                addi t2, zero, -1
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
@@ -7291,9 +7757,9 @@ public class RiscInstructionTest {
             x: .word 0
             .text
             main:
-                addi t0, zero, 2047
                 addi t1, zero, 2047
-                remu t0 t0 t1
+                addi t2, zero, 2047
+                remu t0 t1 t2
                 addi t6, zero, x
                 sw t0, 0(t6)
             ebreak
