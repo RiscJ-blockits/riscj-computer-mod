@@ -89,7 +89,7 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
      */
     @Override
     public Text getDisplayName() {
-        return Text.of("Program Editor");
+        return Text.translatable("block.riscj_blockits.programming_block");
     }
 
     /**
