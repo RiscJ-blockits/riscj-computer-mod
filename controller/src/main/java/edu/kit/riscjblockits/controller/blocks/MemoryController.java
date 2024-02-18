@@ -5,11 +5,13 @@ import edu.kit.riscjblockits.model.blocks.IControllerQueryableBlockModel;
 import edu.kit.riscjblockits.model.blocks.MemoryModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_PROGRAMM_ITEM;
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_QUERY_LINE;
 
 /**
  * The controller for a Memory block entity.
@@ -58,6 +60,9 @@ public class MemoryController extends ComputerBlockController {
                 Memory memory = Memory.fromData(memoryData);
                 boolean newMemory = ((MemoryModel) getModel()).setMemory(memory);
                 if (newMemory) onUpdate();
+            } else if (s.equals(MEMORY_QUERY_LINE)) {
+                long line = Long.parseLong(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
+                ((MemoryModel) getModel()).setMemoryQueryLine(line);
             }
         }
     }

@@ -220,9 +220,13 @@ public final class DataConstants {
     public static final String MEMORY_ADDRESS = "addressSize";
 
     /**
-     * Identifier for the initial program counter register of the memory.
+     * Identifier for the initial program-counter-register of the memory.
      */
     public static final String MEMORY_INITIAL_PC = "initialPC";
+    /**
+     * Identifier for the memory address we want to display inside the memory.
+     */
+    public static final String MEMORY_QUERY_LINE = "memory_query_line";
 
     /**
      * NBT-Tag of the Programm Item.

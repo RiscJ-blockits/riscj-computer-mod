@@ -1,10 +1,14 @@
 package edu.kit.riscjblockits.view.client.screens.widgets;
 
+import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHandler;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -105,6 +109,7 @@ public class MemoryListWidget implements Drawable {
         } else if (scrollPosition > getContentsHeight() - height) {
             scrollPosition = getContentsHeight() - height;
         }
+        updateQueriedLine();
     }
 
     /**
@@ -117,11 +122,24 @@ public class MemoryListWidget implements Drawable {
         this.y = y;
     }
 
+    /**
+     * Jumps to a specific line in the memory screen.
+     * Used by the search funktion.
+     * @param line The line to jump to.
+     */
     public void jumpToLine(int line) {
         if (line < 0 || line >= handler.getMemorySize()) {
             return;
         }
         scrollPosition = line * ENTRY_HEIGHT;
+        updateQueriedLine();
+    }
+
+    private void updateQueriedLine() {
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeBlockPos(handler.getBlockEntity().getPos());
+        buf.writeLong(scrollPosition / ENTRY_HEIGHT);
+        ClientPlayNetworking.send(NetworkingConstants.SYNC_MEMORY_LINE_QUERY, buf);
     }
 
 }

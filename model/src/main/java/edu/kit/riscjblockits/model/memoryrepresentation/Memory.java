@@ -6,6 +6,7 @@ import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -44,6 +45,7 @@ public class Memory {
      * where the program counter should start.
      */
     private Value initialProgramCounter;
+    private long queryLine;
 
     /**
      * Constructor for memory.
@@ -140,11 +142,14 @@ public class Memory {
         }
         // save all values
         for (Value address : values) {
+            long addressInt = new BigInteger(address.getByteValue()).intValue();
+            if (!((addressInt > (queryLine - 500)) && addressInt < queryLine + 500)) {
+                continue;
+            }
             Value value = memory.get(address);
             if(value == null) continue;
             memoryData.set(address.getHexadecimalValue(), new DataStringEntry(value.getHexadecimalValue()));
         }
-
         // save memory
         data.set(MEMORY_MEMORY, memoryData);
         return data;
@@ -176,6 +181,10 @@ public class Memory {
      */
     public Value getInitialProgramCounter() {
         return initialProgramCounter;
+    }
+
+    public void setMemoryQueryLine(long line) {
+        queryLine = line;
     }
 
 }
