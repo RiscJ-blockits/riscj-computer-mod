@@ -1,4 +1,7 @@
 # riscjblockits
+
+If you find issues or have questions, feel free to join our [discord server](https://discord.gg/pwSuvEJBfC) or report the issue to our [GitHub](https://github.com/RiscJ-blockits/riscj-computer-mod/issues).
+
 ## Build:
 1) import this project
 2) wait for setup to finish
