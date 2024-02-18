@@ -7,8 +7,10 @@ import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_ADDRESS;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_INITIAL_PC;
@@ -73,7 +75,9 @@ public class Memory {
      * @param value the value to write
      */
     public void setValue(Value address, Value value) {
-        memory.put(address, value);
+        synchronized (memory) {
+            memory.put(address, value);
+        }
     }
 
     /**
@@ -129,10 +133,16 @@ public class Memory {
 
         // create new data container for memory
         IDataContainer memoryData = new Data();
-
+        // synchronize memory to avoid concurrent modification
+        Set<Value> values;
+        synchronized (memory) {
+            values = new HashSet<>(memory.keySet());
+        }
         // save all values
-        for (Value address : memory.keySet()) {
-            memoryData.set(address.getHexadecimalValue(), new DataStringEntry(memory.get(address).getHexadecimalValue()));
+        for (Value address : values) {
+            Value value = memory.get(address);
+            if(value == null) continue;
+            memoryData.set(address.getHexadecimalValue(), new DataStringEntry(value.getHexadecimalValue()));
         }
 
         // save memory
