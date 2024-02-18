@@ -34,6 +34,8 @@ public class AluModel extends BlockModel{
      */
     private Value result;
 
+    private boolean explosion = false;
+
     /**
      * Constructor. Return a model for an alu block.
      */
@@ -61,6 +63,7 @@ public class AluModel extends BlockModel{
      */
     @Override
     public IDataElement getData() {
+
         Data aluData = new Data();
         if (operation != null) {
             aluData.set(ALU_OPERATION, new DataStringEntry(operation));
@@ -73,6 +76,9 @@ public class AluModel extends BlockModel{
         }
         if (result != null) {
             aluData.set(ALU_RESULT, new DataStringEntry(result.getHexadecimalValue()));
+        }
+        if(explosion){
+            aluData.set("explosion", new DataStringEntry("true"));
         }
         return aluData;
     }
@@ -119,6 +125,13 @@ public class AluModel extends BlockModel{
     public void setResult(Value result) {
         this.result = result;
         setUnqueriedStateChange(true);
+    }
+
+    /**
+     * Setter for the explosion of the alu.
+     */
+    public void setExplosion() {
+        this.explosion = true;
     }
 
 }

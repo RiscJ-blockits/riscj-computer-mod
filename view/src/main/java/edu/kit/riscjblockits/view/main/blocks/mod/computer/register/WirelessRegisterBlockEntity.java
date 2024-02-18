@@ -37,9 +37,6 @@ public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
      * This method syncs the register with the connected register.
      */
     public void syncRegister() {
-        if (this.getController() == null) {
-            this.setController();
-        }
         World world = this.getWorld();
         BlockPos pos = this.getPos();
         if (!world.isClient) {
@@ -48,12 +45,7 @@ public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
             }
             BlockPosition connectedBlockPos = ((WirelessRegisterController)this.getController()).getConnectedPos();
             BlockPos conPos = new BlockPos((int)connectedBlockPos.getX(), (int)connectedBlockPos.getY(), (int)connectedBlockPos.getZ());
-            if (!(world.getBlockEntity(conPos) instanceof WirelessRegisterBlockEntity)) {
-                ((WirelessRegisterController) this.getController())
-                        .setWirelessNeighbourPosition(new BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
-                conPos = pos;
-            }
-            if (!conPos.equals(pos)) {
+            if (!conPos.equals(pos) && world.getBlockEntity(conPos) != null) {
                 WirelessRegisterController connectedController = ((WirelessRegisterController)((ModBlockEntity)world.getBlockEntity(conPos)).getController());
                 ((WirelessRegisterController)this.getController()).setRegisterModel(connectedController);
             }

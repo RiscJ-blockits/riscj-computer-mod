@@ -41,7 +41,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
      */
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/programming_block_gui.png");
     private static final Identifier ASSEMBLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_unpressed.png");
-    private static final Identifier ASSEMBLE_BUTTON_TEXTURE_FAILED = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_unpressed_failed.png");
+    private static final Identifier ASSEMBLE_BUTTON_TEXTURE_FAILED = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_failed.png");
     private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/instructions_button.png");
     private static final Identifier EXAMPLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/example_button.png");
     private static final Identifier AI_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/ai_button.png");
@@ -121,7 +121,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         super.init();
         this.narrow = this.width < 379;
         // add the edit box widget to the screen
-        editBox = new AssemblerSyntaxTextEditWidget(textRenderer, this.x + 32, this.y + 19, 112, 87);
+        editBox = new AssemblerSyntaxTextEditWidget(textRenderer, this.x + 32, this.y + 19, 112, 89);
         addDrawableChild(editBox);
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
@@ -131,6 +131,12 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         assembleButton.setX(this.x + 151);
         assembleButton.setY(this.y + 63);
         addDrawableChild(assembleButton);
+         //ad Example Button
+        exampleButton = new IconButtonWidget(this.x + 25, this.y + 111, 13, 13, button ->{
+            editBox.setText(this.handler.getExample());
+        }, EXAMPLE_BUTTON_TEXTURE);
+        addDrawableChild(exampleButton);
+
         IconButtonWidget instructionSetButton = new IconButtonWidget(
             this.x + 8, this.y + 111,
             13, 13,
@@ -140,15 +146,12 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
                 button.setPosition(this.x + 8, this.y + 111);
                 this.editBox.setPosition(this.x + 8, this.y + 18);
                 this.assembleButton.setPosition(this.x + 151, this.y + 63);
+                this.editBox.setPosition(this.x + 32, this.y + 19);
+                this.exampleButton.setPosition(this.x + 25, this.y + 111);
             },
             INSTRUCTIONS_BUTTON_TEXTURE
         );
         addDrawableChild(instructionSetButton);
-        //ad Example Button
-        exampleButton = new IconButtonWidget(this.x + 25, this.y + 111, 13, 13, button ->{
-            editBox.setText(this.handler.getExample());
-        }, EXAMPLE_BUTTON_TEXTURE);
-        addDrawableChild(exampleButton);
         //add Ai Button
         aiButton = new IconButtonWidget(this.x + 50, this.y + 111, 13, 13, button ->{
             String text = editBox.getText();
