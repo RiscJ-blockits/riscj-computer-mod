@@ -46,6 +46,11 @@ public final class DataConstants {
     public static final String REGISTER_TYPE = "type";
 
     /**
+     * Identifies a list with the alu register names.
+     */
+    public static final String REGISTER_ALU_REGS = "alu_regs";
+
+    /**
      * Identifier for the word length of the register.
      * {@link RegisterModel#getData()}
      */
