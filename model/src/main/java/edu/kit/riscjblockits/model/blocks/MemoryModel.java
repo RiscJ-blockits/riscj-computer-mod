@@ -93,4 +93,13 @@ public class MemoryModel extends BlockModel {
         return memory != null;
     }
 
+    /**
+     * Setter for the address we want to display in the memory screen.
+     * @param line the line to set the memory query line to.
+     */
+    public void setMemoryQueryLine(long line) {
+        if (memory == null) return;
+        memory.setMemoryQueryLine(line);
+    }
+
 }

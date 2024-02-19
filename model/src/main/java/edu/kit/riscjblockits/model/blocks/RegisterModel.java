@@ -5,9 +5,10 @@ import edu.kit.riscjblockits.model.data.DataStringEntry;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
-import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_ALU_REGS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_FOUND;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_MISSING;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGTH;
@@ -25,6 +26,7 @@ public class RegisterModel extends BlockModel {
 
     private String registerType;
     private Value value;
+    private String aluRegisterNames;
 
     /**
      * Holds the names of the registers that are:
@@ -66,6 +68,9 @@ public class RegisterModel extends BlockModel {
             Data registersData = new Data();
             registersData.set(REGISTER_MISSING, new DataStringEntry(missingAvailableRegisters[0]));
             registersData.set(REGISTER_FOUND, new DataStringEntry(missingAvailableRegisters[1]));
+            if (aluRegisterNames != null && !aluRegisterNames.isEmpty()) {
+                registersData.set(REGISTER_ALU_REGS, new DataStringEntry(aluRegisterNames));
+            }
             regData.set(REGISTER_REGISTERS, registersData);
         }
         return regData;
@@ -124,6 +129,14 @@ public class RegisterModel extends BlockModel {
      */
     protected int getWordLength() {
         return wordLength;
+    }
+
+    /**
+     * Setter for the alu register names.
+     * @param aluRegs The names of the alu registers.
+     */
+    public void setAluRegisterNames(String[] aluRegs) {
+        aluRegisterNames = String.join(" ", aluRegs);
     }
 
 }
