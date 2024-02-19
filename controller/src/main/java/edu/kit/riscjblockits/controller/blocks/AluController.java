@@ -557,6 +557,12 @@ public class AluController extends ComputerBlockController {
         BigInteger bigInt1 = getUnsignedBigInteger(operand1);
         BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
+        if (bigInt2.equals(BigInteger.ZERO)) {
+            ((AluModel) this.getModel()).setExplosion();
+            // return first operand (x) as per RISC-V documentation
+            return new Value(operand1.getByteValue());
+        }
+
         BigInteger result = bigInt1.remainder(bigInt2);
 
         return reconvertToByteArrayOfOriginalLength(array1signed.length, result);
@@ -574,6 +580,12 @@ public class AluController extends ComputerBlockController {
 
         byte[] array2 = operand2.getByteValue();
         BigInteger bigInt2 = new BigInteger(array2);
+
+        if (bigInt2.equals(BigInteger.ZERO)) {
+            ((AluModel) this.getModel()).setExplosion();
+            // return first operand (x) as per RISC-V documentation
+            return new Value(operand1.getByteValue());
+        }
 
         BigInteger result = bigInt1.remainder(bigInt2);
 
@@ -606,7 +618,6 @@ public class AluController extends ComputerBlockController {
         BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
         if (bigInt2.equals(BigInteger.ZERO)) {
-            //spawnEffect(IConnectableComputerBlockEntity.ComputerEffect.EXPLODE);
             ((AluModel) this.getModel()).setExplosion();
             return Value.fromHex("FF".repeat(array1.length), array1.length);
         }
