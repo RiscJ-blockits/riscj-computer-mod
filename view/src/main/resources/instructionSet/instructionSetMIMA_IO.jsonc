@@ -16,7 +16,9 @@
       "AKKU": 3,
       "SAR": 4,
       "SDR": 5,
-      "test": 6
+      "in": 6,
+      "out": 7,
+      "mode": 8
     }
   },
   "memory": {
