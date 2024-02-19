@@ -1,11 +1,19 @@
 package edu.kit.riscjblockits.model;
 
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ValueTest {
+
+    @Test
+    void emptyValue() {
+        Value val = new Value(new byte[0]);
+        assertEquals("", val.getBinaryValue());
+        assertEquals("", val.getHexadecimalValue());
+    }
 
     @Test
     void getBinaryValue() {
@@ -68,6 +76,39 @@ class ValueTest {
 
         val = Value.fromBinary("011", 2);
         assertEquals("0000000000000011", val.getBinaryValue());
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            Value.fromBinary("abd", 1);
+        });
+
+        String expectedMessage = "Value String must only contain 1 and 0";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void fromFloat() {
+        Value val = Value.fromFloat("0.05", 4);
+        assertEquals("00111101010011001100110011001101", val.getBinaryValue());
+    }
+
+    @Test
+    void fromFloatNegative() {
+        Value val = Value.fromFloat("-0.05", 4);
+        assertEquals("10111101010011001100110011001101", val.getBinaryValue());
+    }
+
+    @Test @Disabled
+    void getFloatValue() {
+        Value val = Value.fromBinary("00111101010011001100110011001101", 4);
+        assertEquals("0.05", val.getFloatValue());
+    }
+
+    @Test
+    void fromDecimal() {
+        Value val = Value.fromDecimal("5", 4);
+        assertEquals("00000000000000000000000000000101", val.getBinaryValue());
     }
 
     @Test
@@ -112,5 +153,41 @@ class ValueTest {
         Value val2 = Value.fromHex("20", 1);
         assertTrue(val1.greaterThanUnsigned(val2));
         assertFalse(val2.greaterThanUnsigned(val1));
+    }
+
+    @Test
+    void equals() {
+        Value val1 = Value.fromHex("F0", 1);
+        Value val2 = Value.fromHex("F0", 1);
+        assertEquals(val1, val2);
+    }
+
+    @Test
+    void testHashCode() {
+        Value val1 = Value.fromHex("F0", 1);
+        assertEquals(val1.hashCode(), val1.hashCode());
+    }
+
+    @Test
+    void lowerThanFloat() {
+        Value val1 = Value.fromFloat("0.05", 4);
+        Value val2 = Value.fromFloat("0.06", 4);
+        assertTrue(val1.lowerThan(val2));
+        assertFalse(val2.lowerThan(val1));
+    }
+
+
+    @Test @Disabled
+    void greaterThanFloat() {
+        Value val1 = Value.fromFloat("0.05", 4);
+        Value val2 = Value.fromFloat("0.06", 4);
+        assertTrue(val2.greaterThanFloat(val1));
+        assertFalse(val1.greaterThanFloat(val2));
+    }
+
+    @Test
+    void negateInt() {
+        Value val = Value.fromHex("F0", 1).negate();
+        assertEquals("10", val.getHexadecimalValue());
     }
 }

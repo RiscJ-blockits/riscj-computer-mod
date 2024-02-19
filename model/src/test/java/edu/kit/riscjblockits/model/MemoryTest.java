@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class MemoryTest {
 
@@ -65,6 +65,34 @@ class MemoryTest {
         Memory loadedMemory = Memory.fromData(data);
 
         assertEquals(memory, loadedMemory);
+    }
+
+    @Test
+    void testProgramCounter() {
+        Memory memory = new Memory(2, 2);
+
+        memory.setInitialProgramCounter(new Value(new byte[]{0,0x10}));
+        assertEquals(new Value(new byte[]{0,0x10}), memory.getInitialProgramCounter());
+    }
+
+    @Test
+    void testEquals() {
+        Memory memory = new Memory(2, 2);
+        Memory memory2 = new Memory(2, 2);
+        assertEquals(memory, memory2);
+    }
+
+    @Test
+    void testNotEquals() {
+        Memory memory = new Memory(2, 2);
+        Memory memory2 = new Memory(2, 3);
+        assertNotEquals(memory, memory2);
+    }
+
+    @Test
+    void testHashCode() {
+        Memory memory = new Memory(2, 2);
+        assertEquals(memory.hashCode(), memory.hashCode());
     }
 
 }
