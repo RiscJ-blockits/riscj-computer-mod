@@ -4,6 +4,7 @@ import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.controller.blocks.io.TerminalInputController;
 import edu.kit.riscjblockits.controller.blocks.io.TerminalModeController;
+import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
@@ -14,6 +15,7 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.data.DataNbtConverter;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -235,6 +237,30 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
             .append(": " + typeMode + "\n")
             .append(Text.translatable("riscj_blockits.register_value"))
             .append(": " + value);
+    }
+
+    @Override
+    public void syncToClient() {
+        if (world == null || world.isClient || getModel() == null) return;
+        if (getModel().hasUnqueriedStateChange() || ((IViewQueryableBlockModel) inputController.getModel()).hasUnqueriedStateChange()
+            || ((IViewQueryableBlockModel) outputController.getModel()).hasUnqueriedStateChange()) {
+            if (world.getPlayers().isEmpty()) {
+                return;       //we are too early in the loading process
+            }
+            NbtCompound nbt = new NbtCompound();
+            writeNbt(nbt);
+            world.getPlayers().forEach(
+                player -> {
+                    // reset reader Index, to make sure multiple players can receive the same packet
+                    PacketByteBuf buf = PacketByteBufs.create();
+                    buf.writeBlockPos(pos);
+                    buf.writeNbt(nbt);
+                    ServerPlayNetworking.send((ServerPlayerEntity) player,
+                        NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, buf);});
+            getModel().onStateQuery();
+            ((IViewQueryableBlockModel) inputController.getModel()).onStateQuery();
+            ((IViewQueryableBlockModel) outputController.getModel()).onStateQuery();
+        }
     }
 
 }

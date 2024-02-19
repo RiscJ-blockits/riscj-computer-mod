@@ -1230,5 +1230,6 @@
         }
 
     },
-    "example_programm": "ToDo"
+    "example_programm": "ToDo",
+    "ai_api_key": ""
 }

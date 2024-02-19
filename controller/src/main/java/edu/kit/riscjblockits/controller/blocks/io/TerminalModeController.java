@@ -65,6 +65,8 @@ public class TerminalModeController extends RegisterController {
     @Override
     public void startClustering(BlockPosition pos) {
         super.startClustering(pos);
+        inputController.getModel().setPosition(pos);
+        outputController.getModel().setPosition(pos);
         //This is the controller that gets first registered with the cluster. It needs to start the clustering in the other controllers
         ClusterHandler cluster = getClusterHandler();
         inputController.setClusterHandler(cluster);

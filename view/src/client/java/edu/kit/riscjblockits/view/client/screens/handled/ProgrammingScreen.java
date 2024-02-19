@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
+import edu.kit.riscjblockits.view.main.ai.AiProgrammer;
 import edu.kit.riscjblockits.view.client.screens.widgets.DualTexturedIconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.InstructionsWidget;
@@ -43,6 +44,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     private static final Identifier ASSEMBLE_BUTTON_TEXTURE_FAILED = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/write_button_failed.png");
     private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/instructions_button.png");
     private static final Identifier EXAMPLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/example_button.png");
+    private static final Identifier AI_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/ai_button.png");
 
     /**
      * Can display information about all available instructions.
@@ -58,6 +60,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
      * The button that is used to load example code.
      */
     private IconButtonWidget exampleButton;
+    private IconButtonWidget aiButton;
 
     /**
      * The edit box widget that is used to enter the code.
@@ -70,6 +73,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
      */
     private boolean narrow;
 
+    private AiProgrammer aiProgrammer;
+
     /**
      * Creates a new ProgrammingScreen.
      * @param handler the handler of the screen
@@ -81,9 +86,6 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         this.backgroundHeight = 222;
         this.backgroundWidth = 176;
         this.playerInventoryTitleY = this.backgroundHeight - 94;
-
-
-
         assembleButton = new DualTexturedIconButtonWidget(
                 0, 0,
                 15, 25,
@@ -112,7 +114,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     /**
      * Initializes the screen.
      * Adds the edit box widget to the screen.
-     * Adds the button to the screen.
+     * Add the button to the screen.
      */
     @Override
     protected void init() {
@@ -129,7 +131,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         assembleButton.setX(this.x + 151);
         assembleButton.setY(this.y + 63);
         addDrawableChild(assembleButton);
-
+         //ad Example Button
         exampleButton = new IconButtonWidget(this.x + 25, this.y + 111, 13, 13, button ->{
             editBox.setText(this.handler.getExample());
         }, EXAMPLE_BUTTON_TEXTURE);
@@ -150,9 +152,15 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
             INSTRUCTIONS_BUTTON_TEXTURE
         );
         addDrawableChild(instructionSetButton);
+        //add Ai Button
+        aiButton = new IconButtonWidget(this.x + 50, this.y + 111, 13, 13, button ->{
+            String text = editBox.getText();
+            String aiText = aiProgrammer.queryAi(text);
+            editBox.setText(text + aiText);
+        }, AI_BUTTON_TEXTURE);
+        addDrawableChild(aiButton);
 
         handler.enableSyncing();
-
         ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION);
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SHOW_ASSEMBLER_EXCEPTION, (client1, handler1, buf, responseSender) -> {
             showError(buf.readString());
@@ -197,6 +205,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         // render the tooltip of the button if the mouse is over it
         drawMouseoverTooltip(context, mouseX, mouseY);
         exampleButton.visible = !this.handler.getExample().isEmpty();
+        aiButton.visible = aiProgrammer != null;
     }
 
     /**
@@ -272,7 +281,12 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         super.handledScreenTick();
         this.instructionsWidget.update();
         this.editBox.setInstructionArgumentCountMap(getArgumentCountMap());
-
+        if (aiProgrammer == null) {
+            String key = handler.getOpenAiKey();
+            if (key != null && !key.isEmpty()) {
+                aiProgrammer = new AiProgrammer(key);
+            }
+        }
     }
 
 }
