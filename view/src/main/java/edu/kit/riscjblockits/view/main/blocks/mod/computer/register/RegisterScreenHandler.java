@@ -170,6 +170,9 @@ public class RegisterScreenHandler extends ModScreenHandler {
     }
 
     private boolean searchAlu() {
+        if (blockEntity == null) {
+            return false;
+        }
         List<BlockEntity> blockEntities = new ArrayList<>();
         World world = blockEntity.getWorld();
         BlockPos pos = blockEntity.getPos();
