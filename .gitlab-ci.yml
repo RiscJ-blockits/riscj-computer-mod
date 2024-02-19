@@ -41,3 +41,4 @@ sonarqube-check:
     - merge_requests
     - main
     - implementation
+    - qualitätsicherung

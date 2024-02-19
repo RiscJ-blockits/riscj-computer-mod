@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.model.data;
 
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -16,7 +17,7 @@ public class Data implements IDataContainer {
      * The Map's key is the key the data is stored under.
      * The value is the {@link IDataElement} itself.
      */
-    private final Map<String, IDataElement> contents = new HashMap<>();
+    private final Map<String, IDataElement> contents = Collections.synchronizedMap(new HashMap<>());
 
     /**
      * Creates a new empty Data container.

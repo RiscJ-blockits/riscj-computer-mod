@@ -178,6 +178,7 @@ public class Value {
         return stringBuilder.toString();
     }
 
+
     /**
      * Return the value incremented by 1.
      * @return the incremented value

@@ -7,6 +7,7 @@ import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_ALU_REGS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_FOUND;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_MISSING;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
@@ -94,6 +95,10 @@ public class RegisterController extends ComputerBlockController {
                     missingAvailableRegisters[0] = ((IDataStringEntry) registers.get(REGISTER_MISSING)).getContent();
                     missingAvailableRegisters[1] = ((IDataStringEntry) registers.get(REGISTER_FOUND)).getContent();
                     ((RegisterModel) getModel()).setMissingAvailableRegisters(missingAvailableRegisters);
+                    if (registers.get(REGISTER_ALU_REGS) instanceof IDataStringEntry) {
+                        String[] aluRegs = ((IDataStringEntry) registers.get(REGISTER_ALU_REGS)).getContent().split(" ");
+                        ((RegisterModel) getModel()).setAluRegisterNames(aluRegs);
+                    }
                 }
                 case REGISTER_WORD_LENGTH -> {
                     int wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
