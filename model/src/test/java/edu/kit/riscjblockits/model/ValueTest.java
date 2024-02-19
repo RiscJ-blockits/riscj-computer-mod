@@ -77,9 +77,7 @@ class ValueTest {
         val = Value.fromBinary("011", 2);
         assertEquals("0000000000000011", val.getBinaryValue());
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Value.fromBinary("abd", 1);
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> Value.fromBinary("abd", 1));
 
         String expectedMessage = "Value String must only contain 1 and 0";
         String actualMessage = exception.getMessage();
