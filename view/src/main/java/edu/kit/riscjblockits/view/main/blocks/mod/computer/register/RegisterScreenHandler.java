@@ -150,6 +150,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
         String aluRegs = "";
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(REGISTER_REGISTERS)) {
+                if (!(((IDataContainer) ((IDataContainer) data).get(s)).get(REGISTER_ALU_REGS) instanceof IDataStringEntry)) return registers;
                 aluRegs = ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(s)).get(REGISTER_ALU_REGS)).getContent();
             }
         }
