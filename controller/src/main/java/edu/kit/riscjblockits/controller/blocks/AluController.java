@@ -663,13 +663,13 @@ public class AluController extends ComputerBlockController {
         BigInteger bigInt1 = getUnsignedBigInteger(operand1);
         BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
-        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1signed.length);
+        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1signed.length * 2);
 
         byte[] fullLengthResultArray = new byte[array1signed.length];
 
         System.arraycopy(result, 0, fullLengthResultArray,
-                array1signed.length/2,
-                array1signed.length/2);
+            0,
+            array1signed.length);
 
         return new Value(fullLengthResultArray);
     }
@@ -686,13 +686,13 @@ public class AluController extends ComputerBlockController {
 
         BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
-        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1signed.length);
+        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1signed.length * 2);
 
         byte[] fullLengthResultArray = new byte[array1signed.length];
 
         System.arraycopy(result, 0, fullLengthResultArray,
-                array1signed.length/2,
-                array1signed.length/2);
+            0,
+            array1signed.length);
 
         return new Value(fullLengthResultArray);
     }
@@ -710,13 +710,13 @@ public class AluController extends ComputerBlockController {
         byte[] array2 = operand2.getByteValue();
         BigInteger bigInt2 = new BigInteger(array2);
 
-        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1.length);
+        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1.length * 2);
 
         byte[] fullLengthResultArray = new byte[array1.length];
 
         System.arraycopy(result, 0, fullLengthResultArray,
-                array1.length/2,
-                array1.length/2);
+                0,
+                array1.length);
 
         return new Value(fullLengthResultArray);
     }
