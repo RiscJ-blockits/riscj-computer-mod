@@ -284,10 +284,10 @@ class ComputerBlockEntityTest {
         blocks.put("REGISTER9", registerEntity9);
     }
 
-    @Disabled("Because of refactored funktionality")
+    @Disabled("Because of refactored functionality")
     @Test
     @Order(5)
-    void startSimualtion() {
+    void startSimulation() {
         NbtCompound nbt = new NbtCompound();
         RegisterBlockEntity registerEntity9 = (RegisterBlockEntity) blocks.get("REGISTER9");
         ((RegisterBlockEntity) registerEntity9).writeNbt(nbt);

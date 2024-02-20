@@ -34,7 +34,7 @@ public class BusBlockEntity extends ComputerBlockEntity {
 
     /**
      * Every entity needs its own controller.
-     * @return An BusController bound to this entity.
+     * @return A BusController bound to this entity.
      */
     @Override
     protected ComputerBlockController createController() {
@@ -63,7 +63,7 @@ public class BusBlockEntity extends ComputerBlockEntity {
     }
 
     /**
-     * Method to get the state of a side of the bus.
+     * Method to get the state of the side of the bus.
      * @param neighbours The list of neighbors of the bus.
      * @param pos The position of the NeighbourBlock at the side of the bus.
      * @return The state of the side.
@@ -100,11 +100,9 @@ public class BusBlockEntity extends ComputerBlockEntity {
         NbtCompound nbt = new NbtCompound();
         writeNbt(nbt);
         Text busData = Text.translatable("riscj_blockits.no_bus_data");
-
         if (nbt.contains(MOD_DATA) && (nbt.getCompound(MOD_DATA).contains(BUS_DATA))) {
             busData = Text.of(nbt.getCompound(MOD_DATA).getString(BUS_DATA));
         }
-
         return Text.translatable("block.riscj_blockits.bus_block")
                 .append("\n")
                 .append(Text.translatable("block.riscj_blockits.bus_data"))
