@@ -2,6 +2,7 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.systemclock;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.SystemClockController;
+import edu.kit.riscjblockits.model.blocks.SystemClockModel;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
@@ -17,11 +18,10 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import edu.kit.riscjblockits.model.blocks.SystemClockModel;
-
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
+import static edu.kit.riscjblockits.model.blocks.ClockMode.REALTIME;
 import static edu.kit.riscjblockits.model.blocks.ClockMode.STEP;
 import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_MODE;
 import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_SPEED;
@@ -85,13 +85,23 @@ public class SystemClockBlockEntity extends ComputerBlockEntity implements Exten
 
     @Override
     public Text getGoggleText() {
-
+        double speed = getSystemClockSpeed();
+        for (int i = 0; i < SystemClockScreenHandler.SECONDS_TRANSLATIONS.length; i++) {
+            if (speed == SystemClockScreenHandler.SECONDS_TRANSLATIONS[i][0]) {
+                speed = SystemClockScreenHandler.SECONDS_TRANSLATIONS[i][1];
+                break;
+            }
+        }
+        String speedString = String.valueOf(speed);
+        if (getSystemClockMode().equals(REALTIME.toString())) {
+            speedString = "NaN";
+        }
         return Text.translatable("block.riscj_blockits.system_clock_block")
                 .append("\n")
                 .append(Text.translatable("riscj_blockits.clockmode"))
                 .append(": " + getSystemClockMode() + "\n")
                 .append(Text.translatable("riscj_blockits.clockspeed"))
-                .append(": " + getSystemClockSpeed());
+                .append(": " + speedString);
     }
 
     /**
