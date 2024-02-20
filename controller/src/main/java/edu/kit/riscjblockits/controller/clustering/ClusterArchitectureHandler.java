@@ -23,6 +23,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_ME
 import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_FOUND_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.CLUSTERING_MISSING_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_ALU_REGS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_FOUND;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_MISSING;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
@@ -109,7 +110,6 @@ public final class ClusterArchitectureHandler {
         } else {
             correctArchitecture = false;
         }
-
         //check Registers
         boolean rightAmountOfRegisters = (availableRegisters.size() >= istModel.getRegisterNames().size()); //more registers are ok
         Collections.sort(availableRegisters);
@@ -120,6 +120,7 @@ public final class ClusterArchitectureHandler {
         Data choseData = new Data();
         choseData.set(REGISTER_MISSING, new DataStringEntry(listToString(requiredRegisters)));
         choseData.set(REGISTER_FOUND, new DataStringEntry(listToString(availableRegisters)));
+        choseData.set(REGISTER_ALU_REGS, new DataStringEntry(listToString(List.of(aluRegisterNames))));
         Data rData = new Data();
         rData.set(REGISTER_REGISTERS, choseData);
         rData.set(REGISTER_WORD_LENGTH, new DataStringEntry(String.valueOf(istModel.getMemoryWordSize()))); //ToDo vielleicht wäre hier ein Int Data Element besser

@@ -9,10 +9,12 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.lwjgl.glfw.GLFW;
 
 /**
  * This class represents the screen of the memory block in the game.
@@ -29,6 +31,7 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
      * The list widget that displays the memory contents.
      */
     private final MemoryListWidget memoryListWidget;
+    private TextFieldWidget inputBox;
 
     /**
      * Creates a new MemoryScreen with the given settings.
@@ -56,6 +59,11 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
         super.init();
         ClientPlayNetworking.send(NetworkingConstants.REQUEST_DATA, PacketByteBufs.create().writeBlockPos(handler.getBlockEntity().getPos()));
         memoryListWidget.updatePos(this.x + 7, this.y + 26);
+        // add the edit box widget to the screen
+        inputBox = new TextFieldWidget(textRenderer, this.x + 108, this.y + 126, 61, 11, Text.literal(""));
+        inputBox.setMaxLength(10);
+        addDrawableChild(inputBox);
+        inputBox.setFocused(false);
     }
 
     /**
@@ -85,8 +93,8 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        drawMouseoverTooltip(context, mouseX, mouseY);
         memoryListWidget.render(context, mouseX, mouseY, delta);
+        drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
     /**
@@ -102,6 +110,32 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         memoryListWidget.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        // close the screen if the escape key is pressed
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            assert this.client != null;
+            assert this.client.player != null;
+            this.client.player.closeHandledScreen();
+        } else if (keyCode == GLFW.GLFW_KEY_ENTER) { //Send Data on Enter
+            String address = inputBox.getText();
+            try {
+                int addressInt = Integer.parseInt(address, 16);
+                if (addressInt >= 0 && addressInt < handler.getMemorySize()) {
+                    memoryListWidget.jumpToLine(addressInt);
+                }
+            } catch (NumberFormatException e) {
+                // do nothing
+            }
+            inputBox.setText("");
+        }
+        // return true if the edit box is focused or the edit box is focused --> suppress all other key presses (e.g. "e")
+        if (this.inputBox.keyPressed(keyCode, scanCode, modifiers) || this.inputBox.isFocused()) {
+            return true;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
 }

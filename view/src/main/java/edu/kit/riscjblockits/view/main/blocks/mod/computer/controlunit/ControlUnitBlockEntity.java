@@ -127,7 +127,7 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
      */
     @Override
     public void updateUI() {
-        if (getItems().get(0).getCount() == 0 && getModel() != null
+        if (getItems().get(0).getCount() == 1 && getModel() != null
                 && ((IDataStringEntry) ((IDataContainer) getModel().getData()).get(CONTROL_ITEM_PRESENT)).getContent().equals("false")) {
             ItemScatterer.spawn(world, pos, (this));        //drop the IstItem if it is rejected
         }
@@ -236,6 +236,11 @@ public class ControlUnitBlockEntity extends ComputerBlockEntityWithInventory imp
                         default:
                             break;
                     }
+                }
+            } else if (s.equals(CONTROL_ITEM_PRESENT)) {
+                if (((IDataStringEntry) ((IDataContainer) data).get(CONTROL_ITEM_PRESENT)).getContent()
+                    .equals("false")) {
+                    return new List[] {new ArrayList<>(), new ArrayList<>()};
                 }
             }
         }
