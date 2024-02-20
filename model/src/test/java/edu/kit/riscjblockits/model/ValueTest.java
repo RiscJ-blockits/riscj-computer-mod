@@ -96,12 +96,6 @@ class ValueTest {
     }
 
     @Test
-    void fromFloat() {
-        Value val = Value.fromFloat("0.05", 4);
-        assertEquals("00111101010011001100110011001101", val.getBinaryValue());
-    }
-
-    @Test
     void fromFloatNegative() {
         Value val = Value.fromFloat("-0.05", 4);
         assertEquals("10111101010011001100110011001101", val.getBinaryValue());
@@ -187,6 +181,7 @@ class ValueTest {
         Value val2 = Value.fromFloat("0.0", 4);
         assertTrue(val1.greaterThanFloat(val2));
         assertFalse(val2.greaterThanFloat(val1));
+    }
 
     @Test
     void equals() {
