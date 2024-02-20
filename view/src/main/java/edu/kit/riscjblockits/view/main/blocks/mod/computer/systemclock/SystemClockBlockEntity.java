@@ -124,9 +124,11 @@ public class SystemClockBlockEntity extends ComputerBlockEntity implements Exten
      */
     public void setPowered(boolean powered) {
         if (powered && !this.powered) {
-            if (getController() == null)
-                return;
+            if (getController() == null) return;
             ((SystemClockController) getController()).onUserTickTriggered();
+            updateCursor();
+            assert world != null;
+            world.setBlockState(pos, world.getBlockState(pos).with(RISCJ_blockits.ACTIVE_STATE_PROPERTY, true));
         }
         this.powered = powered;
     }
@@ -179,9 +181,12 @@ public class SystemClockBlockEntity extends ComputerBlockEntity implements Exten
      */
     @Override
     public void updateUI() {
-        if (getModel() != null && ((SystemClockModel) getModel()).getVisualisationState())
+        if (getModel() != null && ((SystemClockModel) getModel()).getVisualisationState() && world != null) {
             updateCursor();
-        super.updateUI();
+            world.setBlockState(pos, world.getBlockState(pos).with(RISCJ_blockits.ACTIVE_STATE_PROPERTY, true));
+        } else if (getModel() != null && world != null) {
+            world.setBlockState(pos, world.getBlockState(pos).with(RISCJ_blockits.ACTIVE_STATE_PROPERTY, false));
+        }
     }
 
     /**
