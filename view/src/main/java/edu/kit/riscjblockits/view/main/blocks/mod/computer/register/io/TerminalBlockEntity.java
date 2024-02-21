@@ -222,7 +222,7 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
             typeMode = nbt.getString(REGISTER_TERMINAL_MODE_TYPE);
         }
 
-        return Text.translatable("block.riscj_blockits.register_block")
+        return Text.translatable("block.riscj_blockits.text_output_block")
             .append("\n")
             .append(Text.translatable("riscj_blockits.register_type"))
             .append(": " + typeIn + "\n")
