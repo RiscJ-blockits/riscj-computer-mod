@@ -299,10 +299,13 @@ public class AluController extends ComputerBlockController {
         float float2 = getValueAsFloat(operand2);
 
         if(float1 <= float2) {
-            return new Value(new byte[]{1});
+            byte[] array = new byte[operand1.getByteValue().length];
+            // set last bit to one
+            array[operand1.getByteValue().length - 1] = 1;
+            return new Value(array);
         }
 
-        return new Value(new byte[]{0});
+        return new Value(new byte[operand1.getByteValue().length]);
     }
 
     /**
@@ -316,10 +319,13 @@ public class AluController extends ComputerBlockController {
         float float2 = getValueAsFloat(operand2);
 
         if(float1 < float2) {
-            return new Value(new byte[]{1});
+            byte[] array = new byte[operand1.getByteValue().length];
+            // set last bit to one
+            array[operand1.getByteValue().length - 1] = 1;
+            return new Value(array);
         }
 
-        return new Value(new byte[]{0});
+        return new Value(new byte[operand1.getByteValue().length]);
     }
 
     /**
@@ -333,9 +339,13 @@ public class AluController extends ComputerBlockController {
         float float2 = getValueAsFloat(operand2);
 
         if(float1 == float2) {
-            return new Value(new byte[]{1});
+            byte[] array = new byte[operand1.getByteValue().length];
+            // set last bit to one
+            array[operand1.getByteValue().length - 1] = 1;
+            return new Value(array);
         }
-        return new Value(new byte[]{0});
+
+        return new Value(new byte[operand1.getByteValue().length]);
     }
 
     /**
@@ -410,11 +420,13 @@ public class AluController extends ComputerBlockController {
      */
     private Value fsgnjx(Value operand1, Value operand2) {
 
-        if(getValueAsFloat(operand2) > 0) {
+
+        byte[] array = operand2.getByteValue();
+        if ((array[0] & 0x80) == 0x00) {
             return operand1;
         }
 
-        return getFloatAsValue(0 - getValueAsFloat(operand1));
+        return swapSign(operand1);
     }
 
     /**
@@ -424,11 +436,15 @@ public class AluController extends ComputerBlockController {
      * @return operand1 with the inverse sign bit of operand2
      */
     private Value fsgnjn(Value operand1, Value operand2) {
-        if(getValueAsFloat(operand2) < 0 ^ getValueAsFloat(operand1) < 0) {
+        byte[] array1 = operand1.getByteValue();
+        byte[] array2 = operand2.getByteValue();
+
+        if((array1[0] & 0x80) == 0x80 ^ (array2[0] & 0x80) == 0x80) {
             return operand1;
         }
 
-        return getFloatAsValue(0 - getValueAsFloat(operand1));
+
+        return swapSign(operand1);
     }
 
     /**
@@ -438,12 +454,20 @@ public class AluController extends ComputerBlockController {
      * @return operand1 with the sign bit of operand2
      */
     private Value fsgnj(Value operand1, Value operand2) {
+        byte[] array1 = operand1.getByteValue();
+        byte[] array2 = operand2.getByteValue();
 
-        if(getValueAsFloat(operand2) < 0 ^ getValueAsFloat(operand1) < 0) {
-            return getFloatAsValue(0 - getValueAsFloat(operand1));
+        if((array1[0] & 0x80) == 0x80 ^ (array2[0] & 0x80) == 0x80) {
+            return swapSign(operand1);
         }
 
         return operand1;
+    }
+
+    private Value swapSign(Value operand1) {
+        byte[] array = operand1.getByteValue();
+        array[0] = (byte) (array[0] ^ 0x80);
+        return new Value(array);
     }
 
     /**
@@ -557,6 +581,12 @@ public class AluController extends ComputerBlockController {
         BigInteger bigInt1 = getUnsignedBigInteger(operand1);
         BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
+        if (bigInt2.equals(BigInteger.ZERO)) {
+            ((AluModel) this.getModel()).setExplosion();
+            // return first operand (x) as per RISC-V documentation
+            return new Value(operand1.getByteValue());
+        }
+
         BigInteger result = bigInt1.remainder(bigInt2);
 
         return reconvertToByteArrayOfOriginalLength(array1signed.length, result);
@@ -574,6 +604,12 @@ public class AluController extends ComputerBlockController {
 
         byte[] array2 = operand2.getByteValue();
         BigInteger bigInt2 = new BigInteger(array2);
+
+        if (bigInt2.equals(BigInteger.ZERO)) {
+            ((AluModel) this.getModel()).setExplosion();
+            // return first operand (x) as per RISC-V documentation
+            return new Value(operand1.getByteValue());
+        }
 
         BigInteger result = bigInt1.remainder(bigInt2);
 
@@ -606,7 +642,6 @@ public class AluController extends ComputerBlockController {
         BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
         if (bigInt2.equals(BigInteger.ZERO)) {
-            //spawnEffect(IConnectableComputerBlockEntity.ComputerEffect.EXPLODE);
             ((AluModel) this.getModel()).setExplosion();
             return Value.fromHex("FF".repeat(array1.length), array1.length);
         }
@@ -652,13 +687,13 @@ public class AluController extends ComputerBlockController {
         BigInteger bigInt1 = getUnsignedBigInteger(operand1);
         BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
-        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1signed.length);
+        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1signed.length * 2);
 
         byte[] fullLengthResultArray = new byte[array1signed.length];
 
         System.arraycopy(result, 0, fullLengthResultArray,
-                array1signed.length/2,
-                array1signed.length/2);
+            0,
+            array1signed.length);
 
         return new Value(fullLengthResultArray);
     }
@@ -675,13 +710,13 @@ public class AluController extends ComputerBlockController {
 
         BigInteger bigInt2 = getUnsignedBigInteger(operand2);
 
-        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1signed.length);
+        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1signed.length * 2);
 
         byte[] fullLengthResultArray = new byte[array1signed.length];
 
         System.arraycopy(result, 0, fullLengthResultArray,
-                array1signed.length/2,
-                array1signed.length/2);
+            0,
+            array1signed.length);
 
         return new Value(fullLengthResultArray);
     }
@@ -699,13 +734,13 @@ public class AluController extends ComputerBlockController {
         byte[] array2 = operand2.getByteValue();
         BigInteger bigInt2 = new BigInteger(array2);
 
-        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1.length);
+        byte[] result = signExtend(bigInt1.multiply(bigInt2).toByteArray(), array1.length * 2);
 
         byte[] fullLengthResultArray = new byte[array1.length];
 
         System.arraycopy(result, 0, fullLengthResultArray,
-                array1.length/2,
-                array1.length/2);
+                0,
+                array1.length);
 
         return new Value(fullLengthResultArray);
     }

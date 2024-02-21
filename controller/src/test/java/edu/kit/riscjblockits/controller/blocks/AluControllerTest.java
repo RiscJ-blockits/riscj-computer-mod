@@ -276,7 +276,7 @@ class AluControllerTest {
 
         controller.executeAluOperation("MULH");
 
-        assertEquals("00FF", model.getResult().getHexadecimalValue());
+        assertEquals("FFFF", model.getResult().getHexadecimalValue());
     }
 
     @Test
@@ -290,7 +290,7 @@ class AluControllerTest {
 
         controller.executeAluOperation("MULH");
 
-        assertEquals("007F", model.getResult().getHexadecimalValue());
+        assertEquals("0001", model.getResult().getHexadecimalValue());
     }
 
     @Test
@@ -318,7 +318,7 @@ class AluControllerTest {
 
         controller.executeAluOperation("MULHU");
 
-        assertEquals("00F0", model.getResult().getHexadecimalValue());
+        assertEquals("0FFE", model.getResult().getHexadecimalValue());
     }
 
     @Test
@@ -332,7 +332,7 @@ class AluControllerTest {
 
         controller.executeAluOperation("MULHSU");
 
-        assertEquals("00F0", model.getResult().getHexadecimalValue());
+        assertEquals("FFFF", model.getResult().getHexadecimalValue());
     }
 
     @Test
@@ -346,7 +346,7 @@ class AluControllerTest {
 
         controller.executeAluOperation("MULHSU");
 
-        assertEquals("00F0", model.getResult().getHexadecimalValue());
+        assertEquals("0FFE", model.getResult().getHexadecimalValue());
     }
 
     @Test
