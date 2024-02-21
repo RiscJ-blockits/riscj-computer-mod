@@ -420,11 +420,13 @@ public class AluController extends ComputerBlockController {
      */
     private Value fsgnjx(Value operand1, Value operand2) {
 
-        if(getValueAsFloat(operand2) > 0) {
+
+        byte[] array = operand2.getByteValue();
+        if ((array[0] & 0x80) == 0x00) {
             return operand1;
         }
 
-        return getFloatAsValue(0 - getValueAsFloat(operand1));
+        return swapSign(operand1);
     }
 
     /**
@@ -434,11 +436,15 @@ public class AluController extends ComputerBlockController {
      * @return operand1 with the inverse sign bit of operand2
      */
     private Value fsgnjn(Value operand1, Value operand2) {
-        if(getValueAsFloat(operand2) < 0 ^ getValueAsFloat(operand1) < 0) {
+        byte[] array1 = operand1.getByteValue();
+        byte[] array2 = operand2.getByteValue();
+
+        if((array1[0] & 0x80) == 0x80 ^ (array2[0] & 0x80) == 0x80) {
             return operand1;
         }
 
-        return getFloatAsValue(0 - getValueAsFloat(operand1));
+
+        return swapSign(operand1);
     }
 
     /**
@@ -448,12 +454,20 @@ public class AluController extends ComputerBlockController {
      * @return operand1 with the sign bit of operand2
      */
     private Value fsgnj(Value operand1, Value operand2) {
+        byte[] array1 = operand1.getByteValue();
+        byte[] array2 = operand2.getByteValue();
 
-        if(getValueAsFloat(operand2) < 0 ^ getValueAsFloat(operand1) < 0) {
-            return getFloatAsValue(0 - getValueAsFloat(operand1));
+        if((array1[0] & 0x80) == 0x80 ^ (array2[0] & 0x80) == 0x80) {
+            return swapSign(operand1);
         }
 
         return operand1;
+    }
+
+    private Value swapSign(Value operand1) {
+        byte[] array = operand1.getByteValue();
+        array[0] = (byte) (array[0] ^ 0x80);
+        return new Value(array);
     }
 
     /**
