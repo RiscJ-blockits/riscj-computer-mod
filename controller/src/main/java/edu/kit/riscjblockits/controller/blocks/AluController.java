@@ -299,10 +299,13 @@ public class AluController extends ComputerBlockController {
         float float2 = getValueAsFloat(operand2);
 
         if(float1 <= float2) {
-            return new Value(new byte[]{1});
+            byte[] array = new byte[operand1.getByteValue().length];
+            // set last bit to one
+            array[operand1.getByteValue().length - 1] = 1;
+            return new Value(array);
         }
 
-        return new Value(new byte[]{0});
+        return new Value(new byte[operand1.getByteValue().length]);
     }
 
     /**
@@ -316,10 +319,13 @@ public class AluController extends ComputerBlockController {
         float float2 = getValueAsFloat(operand2);
 
         if(float1 < float2) {
-            return new Value(new byte[]{1});
+            byte[] array = new byte[operand1.getByteValue().length];
+            // set last bit to one
+            array[operand1.getByteValue().length - 1] = 1;
+            return new Value(array);
         }
 
-        return new Value(new byte[]{0});
+        return new Value(new byte[operand1.getByteValue().length]);
     }
 
     /**
@@ -333,9 +339,13 @@ public class AluController extends ComputerBlockController {
         float float2 = getValueAsFloat(operand2);
 
         if(float1 == float2) {
-            return new Value(new byte[]{1});
+            byte[] array = new byte[operand1.getByteValue().length];
+            // set last bit to one
+            array[operand1.getByteValue().length - 1] = 1;
+            return new Value(array);
         }
-        return new Value(new byte[]{0});
+
+        return new Value(new byte[operand1.getByteValue().length]);
     }
 
     /**
