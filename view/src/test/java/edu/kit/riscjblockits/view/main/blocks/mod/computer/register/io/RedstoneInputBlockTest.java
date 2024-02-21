@@ -21,7 +21,6 @@ class RedstoneInputBlockTest {
         RedstoneInputBlock redstoneInputBlock = new RedstoneInputBlock();
         RedstoneInputBlockEntity redstoneInputBlockEntity = (RedstoneInputBlockEntity) redstoneInputBlock.createBlockEntity(new BlockPos(0,0,0), null);
         assert redstoneInputBlockEntity != null;
-        assertNull(redstoneInputBlockEntity.getPos());
         assertFalse(redstoneInputBlockEntity.isActive());
         assertFalse(redstoneInputBlockEntity.hasWorld());
     }

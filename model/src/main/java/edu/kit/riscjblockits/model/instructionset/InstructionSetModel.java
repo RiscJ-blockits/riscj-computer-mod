@@ -122,6 +122,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @param commandHashMap Instructions of the instruction set, mapped by command keyword.
      * @param opcodeHashMap Instructions of the instruction set, mapped by opcode.
      * @param exampleProgram Example program for the instruction set.
+     * @param aiApi API key for the AI.
      */
     public InstructionSetModel(String name, int instructionLength, InstructionSetRegisters instructionSetRegisters,
                                InstructionSetMemory instructionSetMemory, String[] aluActions,

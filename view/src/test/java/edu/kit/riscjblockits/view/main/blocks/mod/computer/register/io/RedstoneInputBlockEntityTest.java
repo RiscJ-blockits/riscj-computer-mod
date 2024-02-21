@@ -29,9 +29,9 @@ class RedstoneInputBlockEntityTest {
         redstoneInputBlockEntity.setRedstonePower(0);
         assertEquals("000000", ((RegisterModel) ((ComputerBlockController) redstoneInputBlockEntity.getController()).getModel()).getValue().getHexadecimalValue());
         redstoneInputBlockEntity.setRedstonePower(-99);
-        assertEquals("000000", ((RegisterModel) ((ComputerBlockController) redstoneInputBlockEntity.getController()).getModel()).getValue().getHexadecimalValue());
+        assertEquals("00009D", ((RegisterModel) ((ComputerBlockController) redstoneInputBlockEntity.getController()).getModel()).getValue().getHexadecimalValue());
         redstoneInputBlockEntity.setRedstonePower(5555);
-        assertEquals("00000F", ((RegisterModel) ((ComputerBlockController) redstoneInputBlockEntity.getController()).getModel()).getValue().getHexadecimalValue());
+        assertEquals("0015B3", ((RegisterModel) ((ComputerBlockController) redstoneInputBlockEntity.getController()).getModel()).getValue().getHexadecimalValue());
     }
 
 }

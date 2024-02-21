@@ -4,7 +4,9 @@ import edu.kit.riscjblockits.controller.blocks.BlockController;
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.TestSetupMain;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.junit.jupiter.api.MethodOrderer;
@@ -25,7 +27,7 @@ class ProgrammingBlockEntityTest {
     @Test
     @Order(1)
     void createController() {
-        programmingBlock = new ProgrammingBlockEntity(new BlockPos(0,0, 0), RISCJ_blockits.PROGRAMMING_BLOCK.getDefaultState());
+        programmingBlock = new ProgrammingBlockEntity(new BlockPos(0,0, 1), RISCJ_blockits.PROGRAMMING_BLOCK.getDefaultState());
         programmingBlock.setController();
         assertEquals(BlockControllerType.PROGRAMMING, ((BlockController) programmingBlock.getController()).getControllerType());
     }
@@ -53,11 +55,24 @@ class ProgrammingBlockEntityTest {
         assertEquals("ADD 5", programmingBlock.getCode());
     }
 
+    @Order(4)
     @Test
     void writeNbt() {
         NbtCompound nbt = new NbtCompound();
         programmingBlock.writeNbt(nbt);
         assertEquals("ADD 5", nbt.getString("code"));
+        programmingBlock.setCode("");
+        programmingBlock.readNbt(nbt);
+        assertEquals("ADD 5", programmingBlock.getCode());
+    }
+
+    @Order(4)
+    @Test
+    void writeScreenOpeningData() {
+        PacketByteBuf buf = PacketByteBufs.create();
+        programmingBlock.writeScreenOpeningData(null, buf);
+        assertEquals(new BlockPos(0,0,1), buf.readBlockPos());
+        assertEquals("ADD 5", buf.readString());
     }
 
 }

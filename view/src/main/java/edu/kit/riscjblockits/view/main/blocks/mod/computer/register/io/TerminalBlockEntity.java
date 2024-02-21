@@ -87,11 +87,6 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
     }
 
     @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-        buf.writeBlockPos(this.pos);
-    }
-
-    @Override
     public Text getDisplayName() {
         return Text.translatable("block.riscj_blockits.text_output_block");
     }
