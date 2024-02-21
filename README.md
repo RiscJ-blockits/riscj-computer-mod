@@ -7,8 +7,16 @@
 (https://fabricmc.net/wiki/tutorial:setup)
 
 ## Install
-1) Install fabric launcher and api: https://fabricmc.net/wiki/player:tutorials:install_mcl:windows
-2) Download our .jar and move it into the mods folder in your minecraft installation
+### With CurseForge
+1) Goto https://www.curseforge.com/download/app and click on Download standalone
+2) Install the downloaded file
+3) Goto https://www.curseforge.com/minecraft/mc-mods/riscj-computer and click on Install
+4) let the browser open curseforge and click on Create a new profile
+5) Press on play (you may have to log in to your minecraft account first)
+
+### direct download
+1) Install the fabric launcher and api with this tutorial: https://fabricmc.net/wiki/player:tutorials:install_mcl:windows (do steps 1-4)
+2) Download our .jar and move it into the mods folder of your new fabric minecraft installation
 
 ## Features:
 ### Introduction
