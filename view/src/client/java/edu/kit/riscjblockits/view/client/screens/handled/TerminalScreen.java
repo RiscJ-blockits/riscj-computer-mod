@@ -94,8 +94,8 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
                 this.x = this.terminalSelectionWidget.findLeftEdge(this.width, this.backgroundWidth);
                 button.setPosition(this.x + 7, this.y + 99);
                 inputBox.setPosition(this.x + 108, this.y + 99);
+                this.outputtedText.setPosition(this.x + 8, this.y + 18);
             }, BUTTON_TEXTURE);
-
 
         this.addDrawableChild(regSelectButton);
         this.addSelectableChild(this.terminalSelectionWidget);
