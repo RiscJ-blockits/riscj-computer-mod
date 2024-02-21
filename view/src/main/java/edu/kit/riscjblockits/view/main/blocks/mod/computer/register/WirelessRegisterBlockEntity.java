@@ -67,4 +67,5 @@ public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
         }
         ((WirelessRegisterBlockEntity) world.getBlockEntity(pos)).syncRegister();
     }
+
 }

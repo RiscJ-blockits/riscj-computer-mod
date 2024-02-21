@@ -99,10 +99,18 @@ public class SystemClockController extends ComputerBlockController {
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(CLOCK_SPEED)) {
                 String value = ((IDataStringEntry) ((IDataContainer) data).get(CLOCK_SPEED)).getContent();
-                ((SystemClockModel) getModel()).setClockSpeed(Integer.parseInt(value));          //ToDo error handling hier nötig?
+                try {
+                    ((SystemClockModel) getModel()).setClockSpeed(Integer.parseInt(value));
+                } catch (NumberFormatException e) {
+                    ((SystemClockModel) getModel()).setClockSpeed(1);
+                }
             } else if (s.equals(CLOCK_MODE)) {
                 String value = ((IDataStringEntry) ((IDataContainer) data).get(CLOCK_MODE)).getContent();
-                ((SystemClockModel) getModel()).setClockMode(ClockMode.valueOf(value));         //ToDo error handling hier nötig?
+                try {
+                    ((SystemClockModel) getModel()).setClockMode(ClockMode.valueOf(value));
+                } catch (IllegalArgumentException e) {
+                    ((SystemClockModel) getModel()).setClockMode(ClockMode.STEP);
+                }
             }
         }
     }

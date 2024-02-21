@@ -40,19 +40,17 @@ public class RegSelectWidget extends ExtendableWidget {
      * The screen handler for the register screen.
      */
     protected RegisterScreenHandler registerScreenHandler;
-    private MinecraftClient client;
-    private int cachedInvChangeCount;
     /**
      * The widget for the list of registers.
      */
     protected RegisterListWidget registerList;
-    private int width;
-    private int height;
-    private final List<Element> children = new ArrayList<>();
     /**
      * The position of the block entity.
      */
     protected BlockPos pos;
+    private MinecraftClient client;
+    private int cachedInvChangeCount;
+    private final List<Element> children = new ArrayList<>();
 
     /**
      * Creates a new RegSelectWidget.

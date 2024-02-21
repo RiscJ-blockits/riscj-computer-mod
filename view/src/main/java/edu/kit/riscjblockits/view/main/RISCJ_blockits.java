@@ -267,7 +267,7 @@ public class RISCJ_blockits implements ModInitializer {
      * It is linked to the instruction set file for MiMa.
      */
     public static final Item INSTRUCTION_SET_ITEM_MIMA = new InstructionSetItem(new Item.Settings().maxCount(1),
-        RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc"));
+        RISCJ_blockits.class.getClassLoader().getResourceAsStream("instructionSet/instructionSetMIMA.jsonc"));
     /**
      * This attribute defines all mima with IO support instruction set items.
      * It is linked to the instruction set file for mima with IO support.
