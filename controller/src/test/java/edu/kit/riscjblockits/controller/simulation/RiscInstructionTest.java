@@ -7769,5 +7769,7308 @@ public class RiscInstructionTest {
         assertEquals("00000000", val.getHexadecimalValue());
     }
 
+    @Test
+    public void test_fadd_s_i0x00000000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x00000000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x00000000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x00000000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x00000000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x3f800000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x3f800000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("40000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x3f800000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("402B74BC", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x3f800000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x3f800000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3E92250E", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x3fd6e979_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x3fd6e979_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("402B74BC", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x3fd6e979_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("4056E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x3fd6e979_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x3fd6e979_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F76E579", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x7f36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x7f36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x7f36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x7f36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0x7f36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0xbf36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0xbf36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3E92250E", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0xbf36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F76E579", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0xbf36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fadd_s_i0xbf36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fadd.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BFB6ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x00000000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x00000000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x00000000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BFD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x00000000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x00000000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x3f800000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x3f800000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x3f800000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF2DD2F2", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x3f800000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x3f800000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FDB76BC", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x3fd6e979_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x3fd6e979_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F2DD2F2", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x3fd6e979_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x3fd6e979_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x3fd6e979_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("4019301B", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x7f36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x7f36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x7f36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x7f36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0x7f36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0xbf36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0xbf36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BFDB76BC", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0xbf36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("C019301B", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0xbf36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsub_s_i0xbf36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsub.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x00000000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x00000000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x00000000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x00000000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x00000000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("80000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x3f800000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x3f800000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x3f800000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x3f800000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x3f800000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x3fd6e979_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x3fd6e979_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x3fd6e979_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("40346B2B", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x3fd6e979_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x3fd6e979_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF999158", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x7f36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x7f36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x7f36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x7f36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0x7f36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF02B684", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0xbf36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("80000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0xbf36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0xbf36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF999158", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0xbf36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF02B684", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmul_s_i0xbf36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmul.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F02B684", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x00000000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7FC00000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x00000000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x00000000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x00000000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x00000000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("80000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x3f800000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x3f800000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x3f800000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F1878C2", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x3f800000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("002CC862", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x3f800000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BFB32186", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x3fd6e979_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x3fd6e979_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x3fd6e979_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x3fd6e979_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("004B30B2", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x3fd6e979_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("C0166164", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x7f36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x7f36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x7f36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7ED9E693", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x7f36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0x7f36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0xbf36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0xbf36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0xbf36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BED9E693", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0xbf36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("80200000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fdiv_s_i0xbf36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fdiv.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsqrt_s_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                fsqrt.s ft0 ft1
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsqrt_s_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                fsqrt.s ft0 ft1
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsqrt_s_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                fsqrt.s ft0 ft1
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FA5DB8A", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsqrt_s_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                fsqrt.s ft0 ft1
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("5F5866B4", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsqrt_s_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                fsqrt.s ft0 ft1
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7FC00000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x00000000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x00000000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x00000000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x00000000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x00000000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("80000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x3f800000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x3f800000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x3f800000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x3f800000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x3f800000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x3fd6e979_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x3fd6e979_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x3fd6e979_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x3fd6e979_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x3fd6e979_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BFD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x7f36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x7f36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x7f36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x7f36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0x7f36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0xbf36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0xbf36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0xbf36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0xbf36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnj_s_i0xbf36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnj.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x00000000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("80000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x00000000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("80000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x00000000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("80000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x00000000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("80000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x00000000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x3f800000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x3f800000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x3f800000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x3f800000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x3f800000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x3fd6e979_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BFD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x3fd6e979_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BFD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x3fd6e979_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BFD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x3fd6e979_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BFD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x3fd6e979_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x7f36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x7f36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x7f36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x7f36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0x7f36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0xbf36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0xbf36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0xbf36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0xbf36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjn_s_i0xbf36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjn.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x00000000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x00000000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x00000000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x00000000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x00000000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("80000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x3f800000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x3f800000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x3f800000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x3f800000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x3f800000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x3fd6e979_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x3fd6e979_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x3fd6e979_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x3fd6e979_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x3fd6e979_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BFD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x7f36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x7f36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x7f36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x7f36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0x7f36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("FF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0xbf36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0xbf36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0xbf36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0xbf36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fsgnjx_s_i0xbf36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fsgnjx.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x00000000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x00000000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x00000000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x00000000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x00000000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x3f800000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x3f800000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x3f800000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x3f800000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x3f800000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x3fd6e979_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x3fd6e979_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x3fd6e979_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x3fd6e979_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x3fd6e979_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x7f36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x7f36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x7f36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x7f36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0x7f36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0xbf36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0xbf36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0xbf36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0xbf36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmin_s_i0xbf36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmin.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x00000000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x00000000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x00000000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x00000000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x00000000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x3f800000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x3f800000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x3f800000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x3f800000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x3f800000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x3fd6e979_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x3fd6e979_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x3fd6e979_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x3fd6e979_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x3fd6e979_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x7f36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x7f36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x7f36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x7f36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0x7f36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0xbf36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0xbf36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3F800000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0xbf36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("3FD6E979", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0xbf36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("7F36ED79", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fmax_s_i0xbf36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fmax.s ft0 ft1 ft2
+                addi t0, zero, x
+                fsw ft0, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("BF36ED79", val.getHexadecimalValue());
+    }
+
+    @Test
+    public void test_feq_si_i0x00000000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x00000000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x00000000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x00000000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x00000000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x3f800000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x3f800000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x3f800000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x3f800000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x3f800000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x3fd6e979_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x3fd6e979_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x3fd6e979_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x3fd6e979_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x3fd6e979_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x7f36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x7f36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x7f36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x7f36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0x7f36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0xbf36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0xbf36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0xbf36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0xbf36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_feq_si_i0xbf36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                feq.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x00000000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x00000000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x00000000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x00000000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x00000000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x3f800000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x3f800000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x3f800000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x3f800000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x3f800000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x3fd6e979_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x3fd6e979_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x3fd6e979_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x3fd6e979_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x3fd6e979_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x7f36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x7f36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x7f36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x7f36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0x7f36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0xbf36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0xbf36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0xbf36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0xbf36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_flt_si_i0xbf36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                flt.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x00000000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x00000000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x00000000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x00000000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x00000000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x00000000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x3f800000_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x3f800000_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x3f800000_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x3f800000_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x3f800000_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3f800000
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x3fd6e979_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x3fd6e979_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x3fd6e979_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x3fd6e979_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x3fd6e979_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x3fd6e979
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x7f36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x7f36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x7f36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x7f36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0x7f36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0x7f36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0xbf36ed79_i0x00000000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x00000000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0xbf36ed79_i0x3f800000() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3f800000
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0xbf36ed79_i0x3fd6e979() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x3fd6e979
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0xbf36ed79_i0x7f36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0x7f36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+
+    @Test
+    public void test_fle_si_i0xbf36ed79_i0xbf36ed79() throws AssemblyException {
+        setCode("""
+            .data
+            x: .word 0
+            i0: .word 0xbf36ed79
+            i1: .word 0xbf36ed79
+            .text
+            main:
+                addi t0, zero, i0
+                flw ft1, 0(t0)
+                addi t0, zero, i1
+                flw ft2, 0(t0)
+                fle.s s1 ft1 ft2
+                addi t0, zero, x
+                sw s1, 0(t0)
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000001", val.getHexadecimalValue());
+    }
+
 
 }
