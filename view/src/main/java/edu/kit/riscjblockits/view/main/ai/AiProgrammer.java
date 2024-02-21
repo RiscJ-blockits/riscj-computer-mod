@@ -14,7 +14,14 @@ import java.nio.charset.StandardCharsets;
  * A class that queries the OpenAI API for RISC-V assembler code.
  */
 public class AiProgrammer {
+
+    /**
+     * Error messages if no api key is found.
+     */
     public static final String ERROR_KEY_NOT_FOUND = "No API key found. Please add your OpenAI API key to the Instruction Set.";
+    /**
+     * Error message if the API key is incorrect or an error occurred while trying to access the OpenAI API.
+     */
     public static final String ERROR_MESSAGE = "An error occurred while trying to access the OpenAI API. \n Is your key correct?";
     private static final String OPEN_AI_API_URL = "https://api.openai.com/v1/chat/completions";
     private static final String PROMPT = "You are an github copilot style ai that only outputs Risc-V assembler code based on the users wishes and the already available code. You can only write valid code with comments. Don't explain the code. The code should not include syscalls.";
