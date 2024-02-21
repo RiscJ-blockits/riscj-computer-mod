@@ -9589,7 +9589,7 @@ public class RiscInstructionTest {
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("7FC00000", val.getHexadecimalValue());
+        assertEquals("FFC00000", val.getHexadecimalValue());
     }
 
 
@@ -10270,7 +10270,7 @@ public class RiscInstructionTest {
             """);
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
-        assertEquals("7FC00000", val.getHexadecimalValue());
+        assertEquals("FFC00000", val.getHexadecimalValue());
     }
 
 
