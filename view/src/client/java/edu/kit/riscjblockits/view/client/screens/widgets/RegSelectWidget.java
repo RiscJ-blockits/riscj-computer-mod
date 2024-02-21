@@ -69,6 +69,7 @@ public class RegSelectWidget extends ExtendableWidget {
      */
     public void initialize(int parentWidth, int parentHeight, MinecraftClient client, boolean narrow, RegisterScreenHandler registerScreenHandler) {
         super.initialize(parentWidth, parentHeight, narrow, TEXTURE);
+        children.clear();
         pos = registerScreenHandler.getBlockEntity().getPos();
         this.client = client;
         this.registerScreenHandler = registerScreenHandler;
@@ -122,6 +123,8 @@ public class RegSelectWidget extends ExtendableWidget {
         TextRenderer textRenderer = minecraftClient.textRenderer;
         context.drawText(textRenderer, Text.literal(TO_DO_TEXT), i + 8, j + 8, 0x555555, false);
 
+//        registerList.render(context, mouseX, mouseY, delta);
+
         for (Element element : this.children) {
             ((Drawable) element).render(context, mouseX, mouseY, delta);
         }
@@ -148,7 +151,7 @@ public class RegSelectWidget extends ExtendableWidget {
             return false;
         }
         this.children.forEach((element) -> element.mouseClicked(mouseX, mouseY, button));
-        return registerList.mouseClicked(mouseX, mouseY, button);
+        return true; //registerList.mouseClicked(mouseX, mouseY, button);
     }
 
     /**
