@@ -223,19 +223,12 @@ public class Assembler {
                 localCurrentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
                 continue;
             }
-            if (instructionSetModel.isDataStorageCommand(line)) {
-                String unsplitDirtyData = instructionSetModel.getStorageCommandData(line);
-                for (String dirtyData : unsplitDirtyData.split(",")) {
-                    assert localCurrentAddress != null;
-                    localCurrentAddress = localCurrentAddress.getIncrementedValue();
-                }
-                continue;
-            }
 
             Matcher labelMatcher = LABEL_COMMAND_PATTERN.matcher(line);
             if (!labelMatcher.matches()) {
                 continue;
             }
+
             String label = labelMatcher.group("label");
             if (label != null) {
                 labels.put(label, localCurrentAddress);
@@ -251,6 +244,17 @@ public class Assembler {
             if (cmd == null) {
                 continue;
             }
+
+            if (instructionSetModel.isDataStorageCommand(cmd)) {
+                String unsplitDirtyData = instructionSetModel.getStorageCommandData(cmd);
+                for (String dirtyData : unsplitDirtyData.split(",")) {
+                    assert localCurrentAddress != null;
+                    localCurrentAddress = localCurrentAddress.getIncrementedValue();
+                }
+                continue;
+            }
+
+
 
             // increment memory address
             assert localCurrentAddress != null;
