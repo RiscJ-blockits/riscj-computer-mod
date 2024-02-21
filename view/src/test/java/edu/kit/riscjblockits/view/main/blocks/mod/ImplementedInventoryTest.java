@@ -12,6 +12,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
@@ -53,10 +54,20 @@ class ImplementedInventoryTest {
     @Test
     @Order(4)
     void removeStack() {
+        assertFalse(inventory.isEmpty());
         inventory.removeStack(0);
         assertTrue(inventory.isEmpty());
-
+        assertEquals(9, inventory.size());
     }
+
+    @Test
+    @Order(5)
+    void clear() {
+        setStack();
+        inventory.clear();
+        assertTrue(inventory.isEmpty());
+    }
+
 
     void setStack() {
         inventory.setStack(0, new ItemStack(RISCJ_blockits.MANUAL_ITEM));
@@ -64,6 +75,7 @@ class ImplementedInventoryTest {
 
     @Test
     void markDirty() {
+        //assert that no exception is thrown
         inventory.markDirty();
     }
 

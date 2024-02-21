@@ -78,7 +78,7 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
      */
     @Override
     public Text getDisplayName() {
-        return Text.literal("Memory");
+        return Text.translatable("block.riscj_blockits.memory_block");
     }
 
     /**

@@ -85,6 +85,9 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
     @SerializedName(value = "example_programm")
     private String exampleProgram;
 
+    @SerializedName(value = "ai_api_key")
+    private String aiApi;
+
     /**
      * Constructor for the instruction set model.
      * Creates an empty model.
@@ -102,6 +105,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
         this.programStartLabel = null;
         this.dataStorageKeywords = null;
         this.exampleProgram = "";
+        this.aiApi = "";
     }
 
     /**
@@ -118,13 +122,14 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @param commandHashMap Instructions of the instruction set, mapped by command keyword.
      * @param opcodeHashMap Instructions of the instruction set, mapped by opcode.
      * @param exampleProgram Example program for the instruction set.
+     * @param aiApi API key for the AI.
      */
     public InstructionSetModel(String name, int instructionLength, InstructionSetRegisters instructionSetRegisters,
                                InstructionSetMemory instructionSetMemory, String[] aluActions,
                                MicroInstruction[] fetchPhase, HashMap<String, String> addressChangeHashMap,
                                String programStartLabel, HashMap<String, String> dataStorageKeywords,
                                HashMap<String, Instruction> commandHashMap,
-                               HashMap<String, List<Instruction>> opcodeHashMap, String exampleProgram) {
+                               HashMap<String, List<Instruction>> opcodeHashMap, String exampleProgram, String aiApi) {
         this.name = name;
         this.instructionLength = instructionLength;
         this.instructionSetRegisters = instructionSetRegisters;
@@ -137,6 +142,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
         this.commandHashMap = commandHashMap;
         this.opcodeHashMap = opcodeHashMap;
         this.exampleProgram = exampleProgram != null ? exampleProgram : "";
+        this.aiApi = aiApi;
     }
 
     /**
@@ -422,6 +428,11 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
     @Override
     public String getExample() {
         return exampleProgram;
+    }
+
+    @Override
+    public String getApiKey() {
+        return aiApi;
     }
 
     /**

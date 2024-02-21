@@ -53,6 +53,8 @@ dependencies {
 
 	implementation project(':controller')
 	implementation project(':model')
+
+	implementation 'org.json:json:20210307'
 }
 
 processResources {
@@ -84,7 +86,17 @@ jar {
 	// Include the output of the controller and model modules
 	from project(':controller').sourceSets.main.output
 	from project(':model').sourceSets.main.output
+	//to add json library
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	from {
+		configurations.runtimeClasspath
+				.filter { it.name.contains("json") }
+				.collect { it.isDirectory() ? it : zipTree(it) }
+	}
 }
+
+
+
 
 // configure the maven publication
 publishing {

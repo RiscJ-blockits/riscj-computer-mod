@@ -33,6 +33,8 @@ public class RedstoneInputBlockEntity extends RegisterBlockEntity {
      */
     public void setRedstonePower(int power) {
         Value value = Value.fromDecimal(String.valueOf(power), 3);
+        String  test = value.getBinaryValue();
+        String  test2 = value.getHexadecimalValue();
         IDataContainer data = new Data();
         data.set(REGISTER_VALUE, new DataStringEntry(value.getHexadecimalValue()));
         data.set(REGISTER_WORD_LENGTH, new DataStringEntry("3"));       //ToDo hardcode?
