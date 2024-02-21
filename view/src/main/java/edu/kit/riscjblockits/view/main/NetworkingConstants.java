@@ -55,6 +55,10 @@ public abstract class NetworkingConstants {
      * A String with the json is sent as a parameter.
      */
     public static final Identifier SYNC_IST_INPUT = new Identifier(RISCJ_blockits.MOD_ID, "sync_ist_input");
+    /**
+     * Used by the client to tell the server which memory data to send.
+     */
+    public static final Identifier SYNC_MEMORY_LINE_QUERY = new Identifier(RISCJ_blockits.MOD_ID, "sync_memory_line_query");
 
     /**
      * This class should not be instantiated.

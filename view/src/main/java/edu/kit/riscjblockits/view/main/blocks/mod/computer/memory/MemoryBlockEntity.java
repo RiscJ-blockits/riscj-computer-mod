@@ -3,9 +3,12 @@ package edu.kit.riscjblockits.view.main.blocks.mod.computer.memory;
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
 import edu.kit.riscjblockits.model.data.Data;
+import edu.kit.riscjblockits.model.data.DataStringEntry;
+import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntityWithInventory;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_QUERY_LINE;
 
 /**
  * This class represents a memory entity from our mod in the game.
@@ -39,6 +43,13 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
      */
     public MemoryBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.MEMORY_BLOCK_ENTITY, pos, state, PROGRAM_SLOT);
+        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_MEMORY_LINE_QUERY,
+            (server, player, handler, buf, responseSender) -> server.execute(() -> {
+                BlockPos blockPos = buf.readBlockPos();
+                long line = buf.readLong();
+                assert world != null;
+                ((MemoryBlockEntity) world.getBlockEntity(blockPos)).setMemoryQueryLine(line);
+            }));
     }
 
     /**
@@ -91,9 +102,9 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
     public void inventoryChanged() {
         if (getController() != null) {             //only on the server
             if (getItems().get(0).getCount() == 0) {        //Item is removed when there are zero 'air' items
-                Data cuData = new Data();
-                cuData.set(MEMORY_MEMORY, null);
-                getController().setData(cuData);
+                Data mData = new Data();
+                mData.set(MEMORY_MEMORY, null);
+                getController().setData(mData);
             } else {
                 NbtCompound programmNbt = getItems().get(0).getNbt();
                 Data memData = new Data();
@@ -122,4 +133,16 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
                 .append(": ")
                 .append(programText);
     }
+
+    /**
+     * The address we want to display in the memory screen.
+     * @param line the line to set the memory query line to.
+     */
+    public void setMemoryQueryLine(long line) {
+        Data mData = new Data();
+        mData.set(MEMORY_QUERY_LINE, new DataStringEntry(String.valueOf(line)));
+        getController().setData(mData);
+    }
+
 }
+

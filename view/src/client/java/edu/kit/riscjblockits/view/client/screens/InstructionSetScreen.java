@@ -106,7 +106,7 @@ public class InstructionSetScreen extends Screen {
             }
         }
         // add the edit box widget to the screen
-        inputBox = new TextEditWidget(textRenderer, x + 33, y + 9,  212, 143);
+        inputBox = new TextEditWidget(textRenderer, x + 33, y + 9,  212, 136);
         addDrawableChild(inputBox);
         inputBox.setText(istString);
         // add the build button to the screen

@@ -14,14 +14,14 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGT
 
 /**
  * This class represents the model for a wireless register.
- * It is a normalregister that can sync its data with another wireless neighbor.
+ * It is a NormalRegister that can sync its data with another wireless neighbor.
  */
 public class WirelessRegisterModel extends RegisterModel {
 
     /**
      * The register model that is shared with the wireless neighbor and holds the data of both registers.
      */
-    private RegisterModel registerModel;
+    private SynchronizedRegisterModel registerModel;
 
     /**
      * The position of the wireless neighbor.
@@ -33,8 +33,16 @@ public class WirelessRegisterModel extends RegisterModel {
      */
     public WirelessRegisterModel() {
         super();
-        registerModel = new RegisterModel();
-        wirelessNeighbourPosition = new BlockPosition(0,-300,0);
+        registerModel = new SynchronizedRegisterModel();
+        registerModel.registerObserver(this);
+    }
+
+    /**
+     * Sets the position of the wireless neighbor.
+     * @param wirelessNeighbourPosition The position of the wireless neighbor.
+     */
+    public void setWirelessNeighbourPosition(BlockPosition wirelessNeighbourPosition) {
+        this.wirelessNeighbourPosition = wirelessNeighbourPosition;
     }
 
     /**
@@ -44,32 +52,22 @@ public class WirelessRegisterModel extends RegisterModel {
     @Override
     public void setPosition(BlockPosition position) {
         super.setPosition(position);
-        if (wirelessNeighbourPosition.equals(new BlockPosition(0,-300,0))) {
-            wirelessNeighbourPosition = position;
-        }
-    }
-
-    /**
-     * Sets the BlockPosition of the wireless neighbour.
-     * @param wirelessNeighbourPosition The BlockPosition of the wireless neighbour.
-     */
-    public void setWirelessNeighbourPosition(BlockPosition wirelessNeighbourPosition) {
-        this.wirelessNeighbourPosition = wirelessNeighbourPosition;
     }
 
     /**
      * Sets the register model.
      * @param registerModel The register model that holds the data of the register.
      */
-    public void setRegisterModel(RegisterModel registerModel) {
+    public void setRegisterModel(SynchronizedRegisterModel registerModel) {
         this.registerModel = registerModel;
+        registerModel.registerObserver(this);
     }
 
     /**
      * Getter for the register model.
      * @return The register model that holds the data of the register.
      */
-    public RegisterModel getRegisterModel() {
+    public SynchronizedRegisterModel getRegisterModel() {
         return registerModel;
     }
 
@@ -79,7 +77,7 @@ public class WirelessRegisterModel extends RegisterModel {
      */
     @Override
     public void setValue(Value value) {
-        setUnqueriedStateChange(true);
+        registerModel.notifyObservers();
         registerModel.setValue(value);
     }
 
@@ -100,7 +98,7 @@ public class WirelessRegisterModel extends RegisterModel {
     @Override
     public void setWordLength(int wordLength) {
         registerModel.setWordLength(wordLength);
-        setUnqueriedStateChange(true);
+        registerModel.notifyObservers();
     }
 
     /**
@@ -113,7 +111,7 @@ public class WirelessRegisterModel extends RegisterModel {
         Data connectedPos = new Data();
         if (wirelessNeighbourPosition == null) {
             connectedPos.set(REGISTER_WIRELESS_XPOS, new DataStringEntry(String.valueOf(0)));
-            connectedPos.set(REGISTER_WIRELESS_YPOS, new DataStringEntry(String.valueOf(0)));
+            connectedPos.set(REGISTER_WIRELESS_YPOS, new DataStringEntry(String.valueOf(-300)));
             connectedPos.set(REGISTER_WIRELESS_ZPOS, new DataStringEntry(String.valueOf(0)));
         } else {
             connectedPos.set(REGISTER_WIRELESS_XPOS, new DataStringEntry(String.valueOf(wirelessNeighbourPosition.getX())));
@@ -131,7 +129,24 @@ public class WirelessRegisterModel extends RegisterModel {
      * @return The BlockPosition of the wireless neighbor.
      */
     public BlockPosition getWirelessNeighbourPosition() {
-        return wirelessNeighbourPosition;
+        if (wirelessNeighbourPosition != null) {
+            return wirelessNeighbourPosition;
+        } else  {
+            return new BlockPosition(0, -300, 0);
+        }
     }
 
+    /**
+     * Sets whether this block has a state change that has not been queried by the view yet.
+     */
+    public void update() {
+        setUnqueriedStateChange(true);
+    }
+
+    /**
+     * Notifies the syncronized register model that the wireless register model has been broken.
+     */
+    public void onBroken() {
+        registerModel.removeObserver(this);
+    }
 }

@@ -7,16 +7,23 @@ import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModScreenHandler;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.alu.AluBlockEntity;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_ALU_REGS;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_MISSING;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
@@ -26,6 +33,8 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
  */
 public class RegisterScreenHandler extends ModScreenHandler {
 
+    private ModBlockEntity blockEntity;
+
     /**
      * Creates a new {@link RegisterScreenHandler} for the given {@link ModBlockEntity}.
      * @param syncId the syncId
@@ -34,6 +43,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
      */
     public RegisterScreenHandler(int syncId, PlayerInventory inventory, ModBlockEntity blockEntity) {
         super(RISCJ_blockits.REGISTER_SCREEN_HANDLER, syncId, blockEntity);
+        this.blockEntity = blockEntity;
         addPlayerInventorySlots(inventory);
     }
 
@@ -63,12 +73,8 @@ public class RegisterScreenHandler extends ModScreenHandler {
      * @return The value of the currently opened Register from the model. As a hex string.
      */
     public String getRegisterValue() {
-        NbtCompound nbt = getBlockEntity().createNbt();
-        if (!nbt.contains(MOD_DATA)) {
-            return "";
-        }
-        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
-        if (!data.isContainer()) {
+        IDataElement data = getRegisterData();
+        if (data == null) {
             return "";
         }
         for (String s : ((IDataContainer) data).getKeys()) {
@@ -84,12 +90,8 @@ public class RegisterScreenHandler extends ModScreenHandler {
      * @return the register Type of the currently opened RegisterBlock.
      */
     public String getCurrentRegister(){
-        NbtCompound nbt = getBlockEntity().createNbt();
-        if (!nbt.contains(MOD_DATA)) {
-            return "";
-        }
-        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
-        if (!data.isContainer()) {
+        IDataElement data = getRegisterData();
+        if (data == null) {
             return "";
         }
         for (String s : ((IDataContainer) data).getKeys()) {
@@ -106,12 +108,8 @@ public class RegisterScreenHandler extends ModScreenHandler {
      * @return All registers inside the cluster matching the given key.
      */
     public List<String> getRegisters(String key) {
-        NbtCompound nbt = getBlockEntity().createNbt();
-        if (!nbt.contains(MOD_DATA)) {
-            return new ArrayList<>();
-        }
-        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
-        if (!data.isContainer()) {
+        IDataElement data = getRegisterData();
+        if (data == null) {
             return new ArrayList<>();
         }
         for (String s : ((IDataContainer) data).getKeys()) {
@@ -123,8 +121,7 @@ public class RegisterScreenHandler extends ModScreenHandler {
                 if (!s2.equals(key)) {
                     continue;
                 }
-                List<String> registers = new ArrayList<>(List.of(
-                    ((IDataStringEntry) ((IDataContainer) regData).get(s2)).getContent().split(" ")));
+                List<String> registers = new ArrayList<>(List.of(((IDataStringEntry) ((IDataContainer) regData).get(s2)).getContent().split(" ")));
                 int i = 0;
                 while( i < registers.size()) {
                     if (registers.get(i).equals(RegisterModel.UNASSIGNED_REGISTER) || registers.get(i).isEmpty()) {
@@ -133,10 +130,65 @@ public class RegisterScreenHandler extends ModScreenHandler {
                         i++;
                     }
                 }
+                if (key.equals(REGISTER_MISSING)) {
+                    registers = removeAluRegs(registers);
+                }
                 return registers;
             }
         }
         return new ArrayList<>();
     }
+
+    private List<String> removeAluRegs(List<String> registers) {
+        if (searchAlu()) {
+            return registers;
+        }
+        IDataElement data = getRegisterData();
+        if (data == null) {
+            return registers;
+        }
+        String aluRegs = "";
+        for (String s : ((IDataContainer) data).getKeys()) {
+            if (s.equals(REGISTER_REGISTERS)) {
+                aluRegs = ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(s)).get(REGISTER_ALU_REGS)).getContent();
+            }
+        }
+        registers.removeAll(List.of(aluRegs.split(" ")));
+        return registers;
+    }
+
+    private IDataElement getRegisterData() {
+        NbtCompound nbt = getBlockEntity().createNbt();
+        if (!nbt.contains(MOD_DATA)) {
+            return null;
+        }
+        IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
+        if (!data.isContainer()) {
+            return null;
+        }
+        return data;
+    }
+
+    private boolean searchAlu() {
+        List<BlockEntity> blockEntities = new ArrayList<>();
+        World world = blockEntity.getWorld();
+        BlockPos pos = blockEntity.getPos();
+        assert world != null; //the screen gets only opened if the world is not null
+        blockEntities.add(world.getBlockEntity(pos.down()));
+        blockEntities.add(world.getBlockEntity(pos.up()));
+        blockEntities.add(world.getBlockEntity(pos.south()));
+        blockEntities.add(world.getBlockEntity(pos.north()));
+        blockEntities.add(world.getBlockEntity(pos.east()));
+        blockEntities.add(world.getBlockEntity(pos.west()));
+        for (BlockEntity entity:blockEntities) {
+            if (entity instanceof ComputerBlockEntity computerEntity
+                && computerEntity instanceof AluBlockEntity) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
 }

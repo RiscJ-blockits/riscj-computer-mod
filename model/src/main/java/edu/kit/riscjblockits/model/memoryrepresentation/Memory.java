@@ -6,9 +6,12 @@ import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 
+import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_ADDRESS;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_INITIAL_PC;
@@ -42,6 +45,7 @@ public class Memory {
      * where the program counter should start.
      */
     private Value initialProgramCounter;
+    private long queryLine;
 
     /**
      * Constructor for memory.
@@ -73,7 +77,9 @@ public class Memory {
      * @param value the value to write
      */
     public void setValue(Value address, Value value) {
-        memory.put(address, value);
+        synchronized (memory) {
+            memory.put(address, value);
+        }
     }
 
     /**
@@ -129,12 +135,21 @@ public class Memory {
 
         // create new data container for memory
         IDataContainer memoryData = new Data();
-
-        // save all values
-        for (Value address : memory.keySet()) {
-            memoryData.set(address.getHexadecimalValue(), new DataStringEntry(memory.get(address).getHexadecimalValue()));
+        // synchronize memory to avoid concurrent modification
+        Set<Value> values;
+        synchronized (memory) {
+            values = new HashSet<>(memory.keySet());
         }
-
+        // save all values
+        for (Value address : values) {
+            long addressInt = new BigInteger(address.getByteValue()).intValue();
+            if (!((addressInt > (queryLine - 500)) && addressInt < queryLine + 500)) {
+                continue;
+            }
+            Value value = memory.get(address);
+            if(value == null) continue;
+            memoryData.set(address.getHexadecimalValue(), new DataStringEntry(value.getHexadecimalValue()));
+        }
         // save memory
         data.set(MEMORY_MEMORY, memoryData);
         return data;
@@ -166,6 +181,10 @@ public class Memory {
      */
     public Value getInitialProgramCounter() {
         return initialProgramCounter;
+    }
+
+    public void setMemoryQueryLine(long line) {
+        queryLine = line;
     }
 
 }

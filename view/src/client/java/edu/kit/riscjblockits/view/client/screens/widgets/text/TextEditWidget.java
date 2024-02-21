@@ -143,7 +143,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         tickCounter += delta;
         // calculate start index of text
         int start = (int) Math.max(scrollPosition/(LINE_HEIGHT * TEXT_SCALE) - 1, 0);
-        context.enableScissor(x - LINE_INDEX_OFFSET - LINE_INDEX_EXPECTED_WIDTH, y, x + width, x + height);
+        context.enableScissor(x - LINE_INDEX_OFFSET - LINE_INDEX_EXPECTED_WIDTH, y, x + width, y + height);
         // prepare text scaling
         MatrixStack matrixStack = context.getMatrices();
         matrixStack.push();
@@ -367,6 +367,8 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         for (String lineString : text.split("\n", -1)) {
             lines.add(new Line(lineString));
         }
+        cursorX = 0;
+        cursorY = 0;
         scrollPosition = 0;
     }
 
