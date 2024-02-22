@@ -122,6 +122,7 @@ public class RiscInstructionTest {
         simControllers.add(systemClockController);
         for (String registerType : instructionSetModel.getRegisterNames()) {
             RegisterController registerController = new RegisterController(getBlockEntityMock());
+            ((RegisterModel) registerController.getModel()).setWordLength(4);
             ((RegisterModel) registerController.getModel()).setRegisterType(registerType);
             simControllers.add(registerController);
         }
