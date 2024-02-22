@@ -110,6 +110,9 @@ public class RegisterModel extends BlockModel {
      * @param value The value to set the register to.
      */
     public void setValue(Value value) {
+        if (value.getByteValue().length != wordLength) {
+            value = Value.fromHex(value.getHexadecimalValue(), wordLength);
+        }
         this.value = value;
         setUnqueriedStateChange(true);
     }
