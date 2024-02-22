@@ -4,6 +4,7 @@ import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.controller.blocks.io.TerminalInputController;
 import edu.kit.riscjblockits.controller.blocks.io.TerminalModeController;
+import edu.kit.riscjblockits.controller.blocks.io.TerminalOutputController;
 import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataContainer;
@@ -35,6 +36,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_INPUT;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_IN_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_MODE_TYPE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_OUTPUT;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_OUT_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMNAL_MODE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
@@ -81,7 +83,7 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
     @Override
     protected ComputerBlockController createController() {
         inputController = new TerminalInputController(this);
-        outputController = new RegisterController(this);
+        outputController = new TerminalOutputController(this);
         modeController = new TerminalModeController(this, inputController, outputController);
         return modeController;
     }
@@ -158,7 +160,11 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         if (getModel() != null) {                       //we are in the server, so we send the data in the model
-            nbt.put(MOD_DATA, new DataNbtConverter(collectData()).getNbtElement());
+            try {
+                nbt.put(MOD_DATA, new DataNbtConverter(collectData()).getNbtElement());
+            } catch (NullPointerException e) {
+                return;
+            }
         }
         markDirty();
     }
@@ -176,6 +182,7 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
         collectData.set(REGISTER_VALUE, outData.get(REGISTER_VALUE));
         collectData.set(REGISTER_WORD_LENGTH, outData.get(REGISTER_WORD_LENGTH));
         collectData.set(REGISTER_REGISTERS, outData.get(REGISTER_REGISTERS));
+        collectData.set(REGISTER_TERMINAL_OUTPUT, outData.get(REGISTER_TERMINAL_OUTPUT));
         return collectData;
     }
 
@@ -183,8 +190,12 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         if (world != null && world.isClient) {         //we are in the client
-            String newValue = getRegisterValue(nbt);
-            persistentText = persistentText + translateHexToAscii(newValue);
+            if (nbt.contains(MOD_DATA)) {
+                nbt = nbt.getCompound(MOD_DATA);
+            }
+            if (nbt.contains(REGISTER_TERMINAL_OUTPUT)) {
+                persistentText = nbt.getString(REGISTER_TERMINAL_OUTPUT);
+            }
         }
     }
 

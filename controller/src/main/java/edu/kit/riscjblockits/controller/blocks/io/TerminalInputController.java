@@ -49,6 +49,7 @@ public class TerminalInputController extends RegisterController {
         ((RegisterModel) getModel()).setValue(Value.fromHex(hexInput, 2));
         if (input.length() == 1) {
             input = "";
+            return;
         }
         input = input.substring(1);
     }

@@ -122,9 +122,6 @@ public class RegSelectWidget extends ExtendableWidget {
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
         TextRenderer textRenderer = minecraftClient.textRenderer;
         context.drawText(textRenderer, Text.literal(TO_DO_TEXT), i + 8, j + 8, 0x555555, false);
-
-//        registerList.render(context, mouseX, mouseY, delta);
-
         for (Element element : this.children) {
             ((Drawable) element).render(context, mouseX, mouseY, delta);
         }
