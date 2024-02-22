@@ -41,6 +41,7 @@ public class TerminalInputController extends RegisterController {
      */
     public void setNextValue() {
         if (input.isEmpty()) {
+            ((RegisterModel) getModel()).setValue(Value.fromHex("00", 2));
             return;
         }
         char nextChar = input.charAt(0);
