@@ -13,14 +13,19 @@ public class CProgrammingController extends ProgrammingController {
 
     @Override
     public IDataElement assemble(String code, IDataElement instructionSetData) throws AssemblyException {
+        return super.assemble(translateC(code), instructionSetData);
+    }
+
+    public String translateC(String code) throws AssemblyException {
         //use gcc to compile the code to assembly
         String output = "";
         String temp;
         ProcessBuilder processBuilder = new ProcessBuilder();
-        //processBuilder.directory(new File("tmp"));
-        processBuilder.command("bash", "-c", "echo \"" + code + "\" > test.c");
-        processBuilder.command("bash", "-c", "riscv64-unknown-elf-gcc -march=rv32imf -mabi=ilp32 -S test.c -o example.s");
-        processBuilder.command("bash", "-c", "cat example.s");
+//        processBuilder.inheritIO();
+        //processBuilder.command("bash", "-c", "echo \"" + code + "\" > test.c");
+//        processBuilder.command("bash", "-c", "riscv64-unknown-elf-gcc -march=rv32imf -mabi=ilp32 -S test.c -o example.s");
+//        processBuilder.command("bash", "-c", "cat example.s");
+        processBuilder.command("bash", "-c","echo \"" + code + "\" | riscv64-unknown-elf-gcc -march=rv32imf -mabi=ilp32 -S -xc - -o-");
         processBuilder.redirectErrorStream(true);
         Process process;
         try {
@@ -33,13 +38,12 @@ public class CProgrammingController extends ProgrammingController {
             throw new AssemblyException("gcc could not compile the code: " + e.getMessage());
         }
         //sanitize the output
-        output = sanitizeOutput(output) + "\nebreak\n";
-        return super.assemble(output, instructionSetData);
+        return sanitizeOutput(output) + "\nebreak\n";
     }
 
     private String sanitizeOutput(String output) {
         //remove some lines
-        return Arrays.stream(output.split("\\r?\\n"))
+        String code = Arrays.stream(output.split("\\r?\\n"))
             .filter(line -> !line.contains(".file"))
             .filter(line -> !line.contains(".ident"))
             .filter(line -> !line.contains(".size"))
@@ -48,8 +52,30 @@ public class CProgrammingController extends ProgrammingController {
             .filter(line -> !line.contains(".globl"))
             .filter(line -> !line.contains(".type"))
             .filter(line -> !line.contains(".option"))
+            .filter(line -> !line.contains("nop"))
             .map(line -> line.replaceAll("\t", " ")) //remove tabs
+            .map(line -> line.replaceAll(",", ", ")) //add spaces for assembler
             .collect(Collectors.joining("\n"));
+        //replace pseudo instructions
+        for (String line : code.split("\n")) {
+            if (line.matches("\\s*li \\w*, \\w*\\s*")) { //replace out li pseudo instructions
+                line = line.trim();
+                String number = line.split(" ")[2];
+                String register = line.split(" ")[1].replace(",", "");
+                code = code.replace(line, "addi " + register + ", zero, " + number);
+            } else if (line.matches("\\s*mv \\w*, \\w*\\s*")) { //replace out mv pseudo instructions
+                line = line.trim();
+                String source = line.split(" ")[2];
+                String destination = line.split(" ")[1].replace(",", "");
+                code = code.replace(line, "addi " + destination + ", " + source + ", 0");
+            } else if (line.matches("\\s*jr \\w*\\s*")) { //replace out jr pseudo instructions
+                line = line.trim();
+                String register = line.split(" ")[1].replace(",", "");
+                //code = code.replace(line, "jalr zero, " + register);  //FixME
+                code = code.replace(line, "");
+            }
+        }
+        return code;
     }
 
 }
