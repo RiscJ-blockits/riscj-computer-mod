@@ -148,6 +148,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
                 this.assembleButton.setPosition(this.x + 151, this.y + 63);
                 this.editBox.setPosition(this.x + 32, this.y + 19);
                 this.exampleButton.setPosition(this.x + 25, this.y + 111);
+                this.aiButton.setPosition(this.x + 50, this.y + 111);
             },
             INSTRUCTIONS_BUTTON_TEXTURE
         );
