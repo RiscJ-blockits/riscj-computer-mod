@@ -24,6 +24,7 @@ import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -15070,6 +15071,34 @@ public class RiscInstructionTest {
         runSimulation();
         Value val = memoryController.getValue(Value.fromHex("00", 4));
         assertEquals("00000001", val.getHexadecimalValue());
+    }
+
+    @Disabled
+    @Test
+    public void test_c1() throws AssemblyException {
+        setCode("""
+            riscv64-unknown-elf-gcc -march=rv32imf -mabi=ilp32 -S test.c -o example.s
+                        
+            .text
+            main:
+            addi sp, sp, -32
+            sw s0, 24(sp)
+            addi s0, sp, 32
+            li a5, 6
+            sw	a5,-20(s0)
+            lw	a5,-20(s0)
+            addiw	a5,a5,5
+            sw	a5,-20(s0)
+            li	a5,5
+            mv	a0,a5
+            ld	s0,24(sp)
+            addi sp,sp,32
+            jr ra
+            ebreak
+            """);
+        runSimulation();
+        Value val = memoryController.getValue(Value.fromHex("00", 4));
+        assertEquals("00000000", val.getHexadecimalValue());
     }
 
 
