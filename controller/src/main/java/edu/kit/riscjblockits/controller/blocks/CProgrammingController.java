@@ -21,10 +21,6 @@ public class CProgrammingController extends ProgrammingController {
         String output = "";
         String temp;
         ProcessBuilder processBuilder = new ProcessBuilder();
-//        processBuilder.inheritIO();
-        //processBuilder.command("bash", "-c", "echo \"" + code + "\" > test.c");
-//        processBuilder.command("bash", "-c", "riscv64-unknown-elf-gcc -march=rv32imf -mabi=ilp32 -S test.c -o example.s");
-//        processBuilder.command("bash", "-c", "cat example.s");
         processBuilder.command("bash", "-c","echo \"" + code + "\" | riscv64-unknown-elf-gcc -march=rv32imf -mabi=ilp32 -S -xc - -o-");
         processBuilder.redirectErrorStream(true);
         Process process;
@@ -52,7 +48,7 @@ public class CProgrammingController extends ProgrammingController {
             .filter(line -> !line.contains(".globl"))
             .filter(line -> !line.contains(".type"))
             .filter(line -> !line.contains(".option"))
-            .filter(line -> !line.contains("nop"))
+            .filter(line -> !line.contains("nop")) //we don't need nops
             .map(line -> line.replaceAll("\t", " ")) //remove tabs
             .map(line -> line.replaceAll(",", ", ")) //add spaces for assembler
             .collect(Collectors.joining("\n"));

@@ -131,7 +131,7 @@ class CProgrammingControllerTest {
     }
 
     @Test
-    void assemble() throws AssemblyException {
+    void test1() throws AssemblyException {
         setCode("""
         void main() {
             int a = 5;
@@ -146,6 +146,24 @@ class CProgrammingControllerTest {
                 }
             }
         }
+    }
+
+    @Test
+    void test2() throws AssemblyException {
+        setCode("""
+            int add(int a, int b);
+            
+            void main() {
+                int a = 5;
+                int b = 8;
+                int c = add(a, b);
+            } 
+                    
+            int add(int a, int b) {
+                return a + b;
+            }
+            """);
+        runSimulation();
     }
 
 }
