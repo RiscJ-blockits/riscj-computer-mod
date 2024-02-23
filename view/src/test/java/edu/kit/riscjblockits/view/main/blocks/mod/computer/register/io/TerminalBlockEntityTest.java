@@ -112,7 +112,7 @@ class TerminalBlockEntityTest {
         terminalBlockEntity.writeNbt(nbt);
         assertEquals(1, nbt.getKeys().size());
         NbtCompound subNbt = nbt.getCompound(MOD_DATA);
-        assertEquals(8, subNbt.getKeys().size());
+        assertEquals(9, subNbt.getKeys().size());
     }
 
     @Order(1)
