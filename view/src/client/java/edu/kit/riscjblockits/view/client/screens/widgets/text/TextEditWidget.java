@@ -60,6 +60,8 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
      * The expected width of the line index.
      */
     private static final int LINE_INDEX_EXPECTED_WIDTH = 18;
+    private static final int MAX_LINES_AMOUNT = 32767;
+    private static final int MAX_NBT_CHARS = 32767;
     /**
      * the textRenderer used to render the text.
      */
@@ -394,6 +396,8 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
     public String getText() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < lines.size(); i++) {
+            if ((result.length() + lines.get(i).getContent().length())>= MAX_NBT_CHARS)
+                return result.toString();
             result.append(lines.get(i).getContent());
             if (i < lines.size() - 1)
                 result.append("\n");
@@ -402,7 +406,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
     }
 
     private void drawCursor(DrawContext context, int x, int y, boolean endOfLine) {
-        if (((int) this.tickCounter) / 6 % 2 == 0) {
+        if (((int) this.tickCounter) / 6 % 2 == 0 && isFocused()) {
             context.drawText(this.textRenderer, endOfLine ? "_" : "|", x, y, endOfLine ? TEXT_COLOR : 0x999999, false);
         }
     }
@@ -628,11 +632,17 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         }
 
         // add missing lines
-        for (int k = cursorY + 1; k < cursorY + splitString.length; k++)
+        for (int k = cursorY + 1; k < Math.min(cursorY + splitString.length, MAX_LINES_AMOUNT); k++)
             lines.add(k, new Line());
 
         for (int i = 0; i < splitString.length; i++) {
             int j = i + cursorY;
+            if (j >= MAX_LINES_AMOUNT - 1) {
+                cursorX = lines.get(lines.size() - 1).getContent().length();
+                lines.get(lines.size() - 1).insert(afterInsertContent, cursorX);
+                cursorY = lines.size() - 1;
+                return;
+            }
 
             if ( i >= 1) {
                 cursorX = 0;
