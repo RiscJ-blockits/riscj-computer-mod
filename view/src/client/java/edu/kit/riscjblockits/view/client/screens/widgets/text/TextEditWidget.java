@@ -532,7 +532,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         for (int i = startY; i <= endY; i++) {
             String line = lines.get(i).getContent();
             if (i == startY && i == endY) {
-                result.append(line, startX, startX);
+                result.append(line, startX, endX);
             } else if (i == startY) {
                 result.append(line.substring(startX));
             } else if (i == endY) {
@@ -540,7 +540,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             } else if (i > startY) {
                 result.append(line);
             }
-            if (i < lines.size() - 1) {
+            if (i < lines.size() - 1 && i != endY) {
                 result.append("\n");
             }
         }
@@ -626,23 +626,21 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         if (cursorX < lines.get(cursorY).getContent().length()) {
             afterInsertContent = lines.get(cursorY).cut(cursorX, lines.get(cursorY).getContent().length());
         }
+
+        // add missing lines
+        for (int k = cursorY + 1; k < cursorY + splitString.length; k++)
+            lines.add(k, new Line());
+
         for (int i = 0; i < splitString.length; i++) {
             int j = i + cursorY;
 
-            // create new line if necessary
             if ( i >= 1) {
-                if (j >= lines.size())
-                    for (int k = 0; k <= j - lines.size() + 1; k++)
-                        lines.add(new Line());
-                else
-                    lines.add(j, new Line());
                 cursorX = 0;
             }
             Line line = lines.get(j);
             line.insert(splitString[i], cursorX);
-            moveCursorX(splitString[i].length(), true);
-
         }
+        cursorX = splitString[splitString.length - 1].length();
         lines.get(cursorY + splitString.length - 1).insert(afterInsertContent, cursorX);
         moveCursorY(splitString.length - 1, true);
         updateWindow();
