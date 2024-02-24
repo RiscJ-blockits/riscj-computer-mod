@@ -183,6 +183,7 @@ public class ClusterHandler {
         busBlocks.remove(destroyedBlockController);
         List<IQueryableBusSystem> newBusSystemModels =
                 busSystemModel.splitBusSystemModel(destroyedBlockController.getBlockPosition());
+        busSystemModel.resetVisualisation();
         List<ClusterHandler> newClusterHandlers = new ArrayList<>();
         for (IQueryableBusSystem newBusSystemModel: newBusSystemModels) {
             newClusterHandlers.add(new ClusterHandler(newBusSystemModel));
