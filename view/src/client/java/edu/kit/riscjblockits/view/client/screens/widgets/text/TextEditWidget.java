@@ -60,8 +60,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
      * The expected width of the line index.
      */
     private static final int LINE_INDEX_EXPECTED_WIDTH = 18;
-    private static final int MAX_LINES_AMOUNT = 32767;
-    private static final int MAX_NBT_CHARS = 32767;
+    private static final int MAX_LINES_AMOUNT = 1000000;
     /**
      * the textRenderer used to render the text.
      */
@@ -396,8 +395,6 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
     public String getText() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < lines.size(); i++) {
-            if ((result.length() + lines.get(i).getContent().length())>= MAX_NBT_CHARS)
-                return result.toString();
             result.append(lines.get(i).getContent());
             if (i < lines.size() - 1)
                 result.append("\n");

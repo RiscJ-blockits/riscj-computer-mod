@@ -10,9 +10,12 @@ import edu.kit.riscjblockits.view.main.blocks.mod.ImplementedInventory;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntityWithInventory;
 import edu.kit.riscjblockits.view.main.data.DataNbtConverter;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
+import io.netty.buffer.Unpooled;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -36,6 +39,11 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
         ImplementedInventory {
 
     /**
+     * The size of the chunks that the code is split into during transport.
+     */
+    public static final int CHUNK_SIZE = 32000;
+
+    /**
      * The code that is currently in the programming block.
      * Might not be up-to-date with the code in the client's programming screen.
      */
@@ -48,16 +56,40 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
      */
     public ProgrammingBlockEntity(BlockPos pos, BlockState state) {
         super(RISCJ_blockits.PROGRAMMING_BLOCK_ENTITY, pos, state, 3);
-        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE,
+        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE_C2S,
             (server, player, handler, buf, responseSender) -> server.execute(() -> {
                 NbtCompound nbt = buf.readNbt();
                 BlockPos blockPos = buf.readBlockPos();
                 assert nbt != null;
-                String newCode = nbt.getString(PROGRAMMING_BLOCK_CODE);
-                if (player.getServerWorld().getBlockEntity(blockPos) instanceof ProgrammingBlockEntity blockEntity) {
-                    blockEntity.setCode(newCode);
+                NbtCompound chunkContainer = nbt.getCompound(PROGRAMMING_BLOCK_CODE);
+                int chunkIndex = chunkContainer.getInt("chunkIndex");
+                String chunkCode = chunkContainer.getString("chunkData");
+                BlockEntity be = player.getServerWorld().getBlockEntity(blockPos);
+                if (be instanceof ProgrammingBlockEntity blockEntity) {
+                    if (chunkIndex == 0) {
+                        blockEntity.setCode("");
+                    }
+                    blockEntity.setCode(blockEntity.getCode() + chunkCode);
                 }
+                if (chunkCode.length() < CHUNK_SIZE) {
+                    return;
+                }
+                responseSender.sendPacket(NetworkingConstants.SYNC_PROGRAMMING_CODE_CONFIRMATION_C2S, new PacketByteBuf(Unpooled.buffer())
+                        .writeInt(chunkIndex + 1));
             }));
+        ServerPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE_CONFIRMATION_S2C);
+        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE_CONFIRMATION_S2C,
+                (server, player, handler, buf, responseSender) -> server.execute(() -> {
+                    int requestedChunk = buf.readInt();
+                    BlockPos blockPos = buf.readBlockPos();
+                    BlockEntity be = player.getServerWorld().getBlockEntity(blockPos);
+                    if (be instanceof ProgrammingBlockEntity blockEntity) {
+                        if (requestedChunk * CHUNK_SIZE > blockEntity.getCode().length()) {
+                            return;
+                        }
+                        blockEntity.sendChunk(player, requestedChunk, blockEntity.getCode());
+                    }
+                }));
     }
 
     /**
@@ -72,14 +104,35 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
     /**
      * Will write the data needed to open the screen to the packet buffer.
      *
-     * @param player the player that is opening the screen
-     * @param buf    the packet buffer to write to
+     * @param p the p that is opening the screen
+     * @param openBuf    the packet buffer to write to
      */
     @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-        buf.writeBlockPos(pos);
-        buf.writeString(code);
+    public void writeScreenOpeningData(ServerPlayerEntity p, PacketByteBuf openBuf) {
+        openBuf.writeBlockPos(pos);
+
         markDirty();
+    }
+
+    private void sendChunk(ServerPlayerEntity player, int chunkIndex, String text) {
+        NbtCompound nbt = new NbtCompound();
+
+        int start = chunkIndex * CHUNK_SIZE;
+        int end = Math.min((chunkIndex + 1) * CHUNK_SIZE, text.length());
+        // cant send as there is no more text
+        if (start >= end || start >= text.length()) {
+            return;
+        }
+        nbt.putInt("chunkIndex", chunkIndex);
+        nbt.putString("chunkData", text.substring(start, end));
+
+
+        NbtCompound container = new NbtCompound();
+        container.put(PROGRAMMING_BLOCK_CODE, nbt);
+        PacketByteBuf packet = PacketByteBufs.create();
+        packet.writeNbt(container);
+        packet.writeBlockPos(getPos());
+        ServerPlayNetworking.send(player, NetworkingConstants.SYNC_PROGRAMMING_CODE_S2C, packet);
     }
 
     /**
@@ -95,8 +148,8 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
     /**
      * Will create the screenHandler for the screen.
      * @param syncId the sync id of the screenHandler
-     * @param playerInventory the player inventory
-     * @param player the player
+     * @param playerInventory the p inventory
+     * @param player the p
      * @return the screenHandler
      */
     @Nullable

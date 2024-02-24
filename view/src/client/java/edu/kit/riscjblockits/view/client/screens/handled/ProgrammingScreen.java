@@ -2,14 +2,15 @@ package edu.kit.riscjblockits.view.client.screens.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
-import edu.kit.riscjblockits.view.main.ai.AiProgrammer;
 import edu.kit.riscjblockits.view.client.screens.widgets.DualTexturedIconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.IconButtonWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.InstructionsWidget;
 import edu.kit.riscjblockits.view.client.screens.widgets.text.AssemblerSyntaxTextEditWidget;
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
+import edu.kit.riscjblockits.view.main.ai.AiProgrammer;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
+import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
@@ -21,12 +22,14 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
 import java.util.List;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.PROGRAMMING_BLOCK_CODE;
+import static edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlockEntity.CHUNK_SIZE;
 
 /**
  * This class represents the programming screen.
@@ -45,6 +48,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     private static final Identifier INSTRUCTIONS_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/instructions_button.png");
     private static final Identifier EXAMPLE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/example_button.png");
     private static final Identifier AI_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/programming/ai_button.png");
+
 
     /**
      * Can display information about all available instructions.
@@ -73,6 +77,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
      */
     private boolean narrow;
 
+
     private AiProgrammer aiProgrammer;
 
     /**
@@ -98,6 +103,29 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
                 ASSEMBLE_BUTTON_TEXTURE,
                 ASSEMBLE_BUTTON_TEXTURE_FAILED
         );
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE_S2C,
+                (client, handler1, buf, responseSender) -> client.execute(() -> {
+                    NbtCompound nbt = buf.readNbt();
+                    BlockPos blockPos = buf.readBlockPos();
+                    assert nbt != null;
+                    NbtCompound chunkContainer = nbt.getCompound(PROGRAMMING_BLOCK_CODE);
+                    int chunkIndex = chunkContainer.getInt("chunkIndex");
+                    String chunkCode = chunkContainer.getString("chunkData");
+
+
+                    if (chunkIndex == 0) {
+                        editBox.setText("");
+                    }
+                    editBox.setText(editBox.getText() + chunkCode);
+                    if (chunkCode.length() < CHUNK_SIZE) {
+                        ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE_S2C);
+                        return;
+                    }
+                    responseSender.sendPacket(NetworkingConstants.SYNC_PROGRAMMING_CODE_CONFIRMATION_S2C, new PacketByteBuf(Unpooled.buffer())
+                            .writeInt(chunkIndex + 1).writeBlockPos(blockPos));
+                }));
+        ClientPlayNetworking.send(NetworkingConstants.SYNC_PROGRAMMING_CODE_CONFIRMATION_S2C, new PacketByteBuf(Unpooled.buffer())
+                .writeInt(0).writeBlockPos(handler.getBlockEntity().getPos()));
 
     }
 
@@ -248,12 +276,38 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     }
 
     private void syncCode(String text) {
-        PacketByteBuf packet = PacketByteBufs.create();
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE_CONFIRMATION_C2S,
+                (client1, handler1, buf, responseSender) -> {
+                    int requestedChunk = buf.readInt();
+                    if (requestedChunk * CHUNK_SIZE > text.length()) {
+                        ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE_CONFIRMATION_C2S);
+                        return;
+                    }
+                    sendChunk(requestedChunk, text);
+                });
+
+        sendChunk(0, text);
+    }
+
+    private void sendChunk(int chunkIndex, String text) {
         NbtCompound nbt = new NbtCompound();
-        nbt.putString(PROGRAMMING_BLOCK_CODE, text);
-        packet.writeNbt(nbt);
+
+        int start = chunkIndex * CHUNK_SIZE;
+        int end = Math.min((chunkIndex + 1) * CHUNK_SIZE, text.length());
+        // cant send as there is no more text
+        if (start > end || start > text.length()) {
+            return;
+        }
+        nbt.putInt("chunkIndex", chunkIndex);
+        nbt.putString("chunkData", text.substring(start, end));
+
+
+        NbtCompound container = new NbtCompound();
+        container.put(PROGRAMMING_BLOCK_CODE, nbt);
+        PacketByteBuf packet = PacketByteBufs.create();
+        packet.writeNbt(container);
         packet.writeBlockPos(handler.getBlockEntity().getPos());
-        ClientPlayNetworking.send(NetworkingConstants.SYNC_PROGRAMMING_CODE, packet);
+        ClientPlayNetworking.send(NetworkingConstants.SYNC_PROGRAMMING_CODE_C2S, packet);
     }
 
     @Override
