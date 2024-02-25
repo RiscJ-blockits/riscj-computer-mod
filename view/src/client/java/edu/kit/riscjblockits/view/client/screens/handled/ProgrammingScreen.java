@@ -184,7 +184,6 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         for (String[] instruction : instructions) {
             argumentCountMap.put(instruction[0], instruction[1].split(", ?").length);
         }
-
         return argumentCountMap;
     }
 
