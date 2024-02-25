@@ -1,0 +1,54 @@
+{
+  //FixMe: some micro Instructions are still producing null elements
+
+  "name": "Test",             // declare name
+  "instruction_length": 4,   // declade instruction length
+
+  "registers": {                  // define existing (required) registers
+    "program_counter": "fetch1",   // register containing the current program address
+    "alu": [                    // alu specific registers
+    ],
+    "float": {},            // float registers
+    "integer": {            //
+      "test1": 1,
+      "test2": 2,
+      "fetch1": 3,
+      "fetch2": 4
+    },
+    "initial_values": {
+    }
+  },
+  "memory": {
+    "word_length": 4,
+    "address_length": 4,
+    "access_delay": 3,
+    "byte_order": "le",
+    "possible_opcode_lengths": [4],
+    "opcode_position": "MOST"
+  },
+  "alu_operations": [
+  ],
+  "fetch": [
+    ["fetch1", "fetch2", "r", "<mem_vis>", "SAR"]
+  ],
+  "address_change": {
+  },
+  "program_start_label":
+  "START",
+  "data_storage_keywords": {
+  },
+  "instructions": {
+    "TEST": {
+      "arguments": [""],
+      "opcode": "0000",
+      "execution": [
+        ["test1", "test2", "", "", ""],
+        ["test1", "test2", "", "", ""],
+        ["PAUSE", "", "", "", "", "", ""]
+      ],
+      "translation": [
+        "0000"
+      ]
+    }
+  }
+}
