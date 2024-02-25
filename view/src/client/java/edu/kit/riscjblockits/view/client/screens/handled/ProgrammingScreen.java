@@ -12,6 +12,7 @@ import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
@@ -98,6 +99,8 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
                 ASSEMBLE_BUTTON_TEXTURE,
                 ASSEMBLE_BUTTON_TEXTURE_FAILED
         );
+        editBox = new AssemblerSyntaxTextEditWidget(MinecraftClient.getInstance().textRenderer, this.x + 32, this.y + 19, 112, 89);
+
 
     }
 
@@ -120,8 +123,9 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
     protected void init() {
         super.init();
         this.narrow = this.width < 379;
-        // add the edit box widget to the screen
-        editBox = new AssemblerSyntaxTextEditWidget(textRenderer, this.x + 32, this.y + 19, 112, 89);
+        // set the position of the edit box
+        editBox.setX(this.x + 32);
+        editBox.setY(this.y + 19);
         addDrawableChild(editBox);
         editBox.setFocused(false);
         editBox.setText(handler.getCode());
