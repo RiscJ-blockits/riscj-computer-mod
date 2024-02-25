@@ -44,7 +44,7 @@ public class MemoryListWidget implements Drawable {
     /**
      * The current scroll position.
      */
-    private int scrollPosition;
+    private long scrollPosition;
 
     /**
      * Constructor for the MemoryListWidget.
@@ -70,10 +70,10 @@ public class MemoryListWidget implements Drawable {
 
         for (int i = 0; i <  ENTRY_AMOUNT; i++) {
 
-            int line = (scrollPosition / ENTRY_HEIGHT + i);
+            long line = (scrollPosition / ENTRY_HEIGHT + i);
             // only draw an entry when it is between top and bottom of the scroll widget
             if ((line + 1) * ENTRY_HEIGHT >= scrollPosition && line * ENTRY_HEIGHT < scrollPosition + height) {
-                String addresHexString = Integer.toHexString(line).toUpperCase();
+                String addresHexString = Long.toHexString(line).toUpperCase();
                 context.drawText(textRenderer, Text.literal("0".repeat(addresHexString.length() % 2) + addresHexString),
                         this.x + 2, this.y + 2 + i * ENTRY_HEIGHT, 0xffffff, true);
                 String lineContent = handler.getMemoryLine(line).substring(Math.max(handler.getMemoryLine(line).length() - 8, 0));
@@ -83,14 +83,14 @@ public class MemoryListWidget implements Drawable {
         }
         context.disableScissor();
         context.drawGuiTexture(SCROLLER_TEXTURE, this.x + this.width + SCROLLBAR_OFFSET,
-            this.y + getScrollbarPosition(), SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+            (this.y + getScrollbarPosition()), SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
     }
 
     private int getScrollbarPosition() {
-        return MathHelper.clamp((((scrollPosition * this.height) / (getContentsHeight()))), 0, this.height - SCROLLBAR_HEIGHT);
+        return (int) MathHelper.clamp((((scrollPosition * this.height) / (getContentsHeight()))), 0, this.height - SCROLLBAR_HEIGHT);
     }
 
-    protected int getContentsHeight() {
+    protected long getContentsHeight() {
         return Math.max(this.handler.getMemorySize() * ENTRY_HEIGHT, ENTRY_HEIGHT * ENTRY_AMOUNT);
     }
 
@@ -103,7 +103,7 @@ public class MemoryListWidget implements Drawable {
      * @param verticalAmount The vertical scroll amount.
      */
     public void mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        scrollPosition -= (int) (SCROLL_MULTIPLIER * verticalAmount);
+        scrollPosition -= (long) (SCROLL_MULTIPLIER * verticalAmount);
         if (scrollPosition < 0) {
             scrollPosition = 0;
         } else if (scrollPosition > getContentsHeight() - height) {
@@ -127,8 +127,8 @@ public class MemoryListWidget implements Drawable {
      * Used by the search funktion.
      * @param line The line to jump to.
      */
-    public void jumpToLine(int line) {
-        if (line < 0 || line >= handler.getMemorySize()) {
+    public void jumpToLine(long line) {
+        if (line < 0 || line > handler.getMemorySize()) {
             return;
         }
         scrollPosition = line * ENTRY_HEIGHT;

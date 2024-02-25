@@ -122,8 +122,8 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
         } else if (keyCode == GLFW.GLFW_KEY_ENTER) { //Send Data on Enter
             String address = inputBox.getText();
             try {
-                int addressInt = Integer.parseInt(address, 16);
-                if (addressInt >= 0 && addressInt < handler.getMemorySize()) {
+                long addressInt = Long.parseLong(address, 16);
+                if (addressInt >= 0 && addressInt <= handler.getMemorySize()) {
                     memoryListWidget.jumpToLine(addressInt);
                 }
             } catch (NumberFormatException e) {
