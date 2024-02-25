@@ -52,6 +52,10 @@ class SimulationTimeHandlerTest {
     private RegisterController programCounter;
     private IConnectableComputerBlockEntity blockEntity;
 
+    /**
+     * Build an instruction set model for testing purposes.
+     * @return the instruction set model
+     */
     private static InstructionSetModel buildInstructionSetModelTest() {
         InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetTestRun.jsonc");
         try {
@@ -61,6 +65,9 @@ class SimulationTimeHandlerTest {
         }
     }
 
+    /**
+     * Set up the test environment before each test by mocking all necessary components.
+     */
     @BeforeEach
     void setUp() {
 
@@ -122,6 +129,9 @@ class SimulationTimeHandlerTest {
         handler = new SimulationTimeHandler(controllers, busSystem);
     }
 
+    /**
+     * Clean up after each test to avoid reusing any fields.
+     */
     @AfterEach
     void tearDown() {
 
@@ -139,6 +149,10 @@ class SimulationTimeHandlerTest {
         handler = null;
     }
 
+    /**
+     * Rather a simulation-wide unit/integration test, as it executes the whole simulation.
+     * @throws InterruptedException if sleep is interrupted
+     */
     @Test
     void onMinecraftTick() throws InterruptedException {
 
@@ -154,6 +168,10 @@ class SimulationTimeHandlerTest {
         verify(test1Register, never()).setNewValue(any());
     }
 
+    /**
+     * Rather a simulation-wide unit/integration test, as it executes the whole simulation.
+     * @throws InterruptedException if sleep is interrupted
+     */
     @Test
     void onUserTickTrigger() throws InterruptedException {
 
@@ -167,6 +185,10 @@ class SimulationTimeHandlerTest {
         verify(test1Register, never()).setNewValue(any());
     }
 
+    /**
+     * Rather a simulation-wide unit/integration test, as it executes the whole simulation.
+     * @throws InterruptedException if sleep is interrupted
+     */
     @Test
     void onSimulationTickComplete() throws InterruptedException {
 

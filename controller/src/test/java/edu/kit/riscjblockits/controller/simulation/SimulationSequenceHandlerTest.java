@@ -43,6 +43,10 @@ class SimulationSequenceHandlerTest {
 
     IBusSystem busSystem;
 
+    /**
+     * Build an instruction set model for testing purposes.
+     * @return the instruction set model
+     */
     private static InstructionSetModel buildInstructionSetModelTest() {
         InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetTestRun.jsonc");
         try {
@@ -52,6 +56,9 @@ class SimulationSequenceHandlerTest {
         }
     }
 
+    /**
+     * Set up the test environment by mocking all necessary components.
+     */
     @BeforeEach
     void setUp() {
         busSystem = new BusSystemModel(new BlockPosition(0, 0, 0));
@@ -100,10 +107,9 @@ class SimulationSequenceHandlerTest {
         this.handler = new SimulationSequenceHandler(controllers, busSystem, stub);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
+    /**
+     * Test the execution of the fetch phase.
+     */
     @Test
     void runFetch() {
         handler.run();
@@ -112,6 +118,9 @@ class SimulationSequenceHandlerTest {
         assertTrue(simulationComplete);
     }
 
+    /**
+     * Test the execution of the execute phase.
+     */
     @Test
     void runExecute() {
         handler.run();
@@ -123,18 +132,27 @@ class SimulationSequenceHandlerTest {
         assertTrue(simulationComplete);
     }
 
+    /**
+     * Test the reset of the visualisation.
+     */
     @Test
     void resetVisualisation() {
         handler.resetVisualisation();
         assertFalse(((BusSystemModel)busSystem).getActiveVisualization(new BlockPosition(0, 0, 0)));
     }
 
+    /**
+     * Test the full visualisation.
+     */
     @Test
     void fullVisualisation() {
         handler.fullVisualisation();
         assertTrue(((BusSystemModel)busSystem).getActiveVisualization(new BlockPosition(0, 0, 0)));
     }
 
+    /**
+     * Test the setting of the visualisation mode.
+     */
     @Test
     void setVisualizationMode() {
         handler.setVisualizationMode(SimulationSequenceHandler.VisualisationMode.FAST);
