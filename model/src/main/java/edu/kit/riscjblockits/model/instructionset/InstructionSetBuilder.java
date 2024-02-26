@@ -47,7 +47,7 @@ public final class InstructionSetBuilder {
      * @throws UnsupportedEncodingException if the character encoding is not supported
      * @throws InstructionBuildException if the instruction set cannot be built.
      */
-    public static InstructionSetModel buildInstructionSetModel (String s) throws UnsupportedEncodingException, InstructionBuildException {
+    public static InstructionSetModel buildInstructionSetModel (String s) throws InstructionBuildException {
         InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
         return buildInstructionSetModel(stream);
     }

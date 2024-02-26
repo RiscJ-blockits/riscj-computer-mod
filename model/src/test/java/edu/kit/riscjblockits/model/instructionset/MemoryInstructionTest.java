@@ -19,5 +19,6 @@ class MemoryInstructionTest {
 
     @Test
     void getFlag() {
+        assertEquals("r", test.getFlag());
     }
 }
