@@ -94,6 +94,8 @@ public class Assembler {
 
             if (instructionSetModel.isAddressChange(line)) {
                 String address = instructionSetModel.getChangedAddress(line);
+                if (address.isBlank())
+                    continue;
                 currentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
                 continue;
             }
@@ -216,15 +218,9 @@ public class Assembler {
             // check if line is address change
             if (instructionSetModel.isAddressChange(line)) {
                 String address = instructionSetModel.getChangedAddress(line);
+                if (address.isBlank())
+                    continue;
                 localCurrentAddress = ValueExtractor.extractValue(address, calculatedMemoryAddressSize);
-                continue;
-            }
-            if (instructionSetModel.isDataStorageCommand(line)) {
-                String unsplitDirtyData = instructionSetModel.getStorageCommandData(line);
-                for (String dirtyData : unsplitDirtyData.split(",")) {
-                    assert localCurrentAddress != null;
-                    localCurrentAddress = localCurrentAddress.getIncrementedValue();
-                }
                 continue;
             }
 
@@ -232,6 +228,7 @@ public class Assembler {
             if (!labelMatcher.matches()) {
                 continue;
             }
+
             String label = labelMatcher.group("label");
             if (label != null) {
                 labels.put(label, localCurrentAddress);
@@ -247,6 +244,17 @@ public class Assembler {
             if (cmd == null) {
                 continue;
             }
+
+            if (instructionSetModel.isDataStorageCommand(cmd)) {
+                String unsplitDirtyData = instructionSetModel.getStorageCommandData(cmd);
+                for (String dirtyData : unsplitDirtyData.split(",")) {
+                    assert localCurrentAddress != null;
+                    localCurrentAddress = localCurrentAddress.getIncrementedValue();
+                }
+                continue;
+            }
+
+
 
             // increment memory address
             assert localCurrentAddress != null;

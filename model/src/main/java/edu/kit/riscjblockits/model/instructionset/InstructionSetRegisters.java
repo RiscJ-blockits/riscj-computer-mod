@@ -78,7 +78,7 @@ public class InstructionSetRegisters {
      * @return Address of the register.
      */
     public Integer getFloatRegister(String name) {
-        if (!intRegs.containsKey(name)) {
+        if (!floatRegs.containsKey(name)) {
             return null;
         }
         return floatRegs.get(name);

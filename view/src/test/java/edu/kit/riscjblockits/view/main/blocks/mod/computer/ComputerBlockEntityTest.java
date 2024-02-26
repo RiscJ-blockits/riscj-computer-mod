@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
+import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
 import edu.kit.riscjblockits.controller.clustering.ClusterHandler;
 import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
 import edu.kit.riscjblockits.model.data.Data;
@@ -17,6 +18,7 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUn
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.junit.jupiter.api.BeforeAll;
@@ -61,7 +63,7 @@ class ComputerBlockEntityTest {
     private static World world;
 
     @BeforeAll
-    private static void setup() {
+    static void setup() {
         world = mock(World.class);
         when(world.isClient()).thenReturn(false);
         BlockPos posAlu = new BlockPos(0,0, 4);
@@ -284,10 +286,10 @@ class ComputerBlockEntityTest {
         blocks.put("REGISTER9", registerEntity9);
     }
 
-    @Disabled("Because of refactored funktionality")
+    @Disabled("Because of refactored functionality")
     @Test
     @Order(5)
-    void startSimualtion() {
+    void startSimulation() {
         NbtCompound nbt = new NbtCompound();
         RegisterBlockEntity registerEntity9 = (RegisterBlockEntity) blocks.get("REGISTER9");
         ((RegisterBlockEntity) registerEntity9).writeNbt(nbt);
@@ -313,6 +315,18 @@ class ComputerBlockEntityTest {
         }  catch (InstructionBuildException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    void getGoggleText() {
+        ComputerBlockEntity entity = new ComputerBlockEntity(RISCJ_blockits.TEXT_OUTPUT_BLOCK_ENTITY, new BlockPos(0,0,0), RISCJ_blockits.TEXT_OUTPUT_BLOCK.getDefaultState()) {
+            @Override
+            protected IUserInputReceivableComputerController createController() {
+                return null;
+            }
+        };
+       Text text = Text.of("Goggle Text " + new BlockPos(0,0,0));
+       assertEquals(text, entity.getGoggleText());
     }
 
 }

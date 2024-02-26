@@ -4,6 +4,8 @@ import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.controller.blocks.io.TerminalInputController;
 import edu.kit.riscjblockits.controller.blocks.io.TerminalModeController;
+import edu.kit.riscjblockits.controller.blocks.io.TerminalOutputController;
+import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataElement;
@@ -14,6 +16,7 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.data.DataNbtConverter;
 import edu.kit.riscjblockits.view.main.data.NbtDataConverter;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -33,6 +36,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_INPUT;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_IN_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_MODE_TYPE;
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_OUTPUT;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_OUT_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMNAL_MODE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
@@ -79,14 +83,9 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
     @Override
     protected ComputerBlockController createController() {
         inputController = new TerminalInputController(this);
-        outputController = new RegisterController(this);
+        outputController = new TerminalOutputController(this);
         modeController = new TerminalModeController(this, inputController, outputController);
         return modeController;
-    }
-
-    @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-        buf.writeBlockPos(this.pos);
     }
 
     @Override
@@ -161,7 +160,11 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         if (getModel() != null) {                       //we are in the server, so we send the data in the model
-            nbt.put(MOD_DATA, new DataNbtConverter(collectData()).getNbtElement());
+            try {
+                nbt.put(MOD_DATA, new DataNbtConverter(collectData()).getNbtElement());
+            } catch (NullPointerException e) {
+                return;
+            }
         }
         markDirty();
     }
@@ -179,6 +182,7 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
         collectData.set(REGISTER_VALUE, outData.get(REGISTER_VALUE));
         collectData.set(REGISTER_WORD_LENGTH, outData.get(REGISTER_WORD_LENGTH));
         collectData.set(REGISTER_REGISTERS, outData.get(REGISTER_REGISTERS));
+        collectData.set(REGISTER_TERMINAL_OUTPUT, outData.get(REGISTER_TERMINAL_OUTPUT));
         return collectData;
     }
 
@@ -186,8 +190,12 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         if (world != null && world.isClient) {         //we are in the client
-            String newValue = getRegisterValue(nbt);
-            persistentText = persistentText + translateHexToAscii(newValue);
+            if (nbt.contains(MOD_DATA)) {
+                nbt = nbt.getCompound(MOD_DATA);
+            }
+            if (nbt.contains(REGISTER_TERMINAL_OUTPUT)) {
+                persistentText = nbt.getString(REGISTER_TERMINAL_OUTPUT);
+            }
         }
     }
 
@@ -225,7 +233,7 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
             typeMode = nbt.getString(REGISTER_TERMINAL_MODE_TYPE);
         }
 
-        return Text.translatable("block.riscj_blockits.register_block")
+        return Text.translatable("block.riscj_blockits.text_output_block")
             .append("\n")
             .append(Text.translatable("riscj_blockits.register_type"))
             .append(": " + typeIn + "\n")
@@ -235,6 +243,30 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
             .append(": " + typeMode + "\n")
             .append(Text.translatable("riscj_blockits.register_value"))
             .append(": " + value);
+    }
+
+    @Override
+    public void syncToClient() {
+        if (world == null || world.isClient || getModel() == null) return;
+        if (getModel().hasUnqueriedStateChange() || ((IViewQueryableBlockModel) inputController.getModel()).hasUnqueriedStateChange()
+            || ((IViewQueryableBlockModel) outputController.getModel()).hasUnqueriedStateChange()) {
+            if (world.getPlayers().isEmpty()) {
+                return;       //we are too early in the loading process
+            }
+            NbtCompound nbt = new NbtCompound();
+            writeNbt(nbt);
+            world.getPlayers().forEach(
+                player -> {
+                    // reset reader Index, to make sure multiple players can receive the same packet
+                    PacketByteBuf buf = PacketByteBufs.create();
+                    buf.writeBlockPos(pos);
+                    buf.writeNbt(nbt);
+                    ServerPlayNetworking.send((ServerPlayerEntity) player,
+                        NetworkingConstants.SYNC_BLOCK_ENTITY_DATA, buf);});
+            getModel().onStateQuery();
+            ((IViewQueryableBlockModel) inputController.getModel()).onStateQuery();
+            ((IViewQueryableBlockModel) outputController.getModel()).onStateQuery();
+        }
     }
 
 }

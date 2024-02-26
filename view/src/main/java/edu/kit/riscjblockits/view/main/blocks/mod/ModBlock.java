@@ -62,7 +62,7 @@ public abstract class ModBlock extends BlockWithEntity {
     @Deprecated(forRemoval = false)
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        // open Gui if a Screenhandlerfactory is present for the block
+        // open Gui if a Screenhandler factory is present for the block
         if (!world.isClient) {
             //This will call the createScreenHandlerFactory method from BlockWithEntity, which will return our blockEntity cast to
             //a namedScreenHandlerFactory. If your block class does not extend BlockWithEntity, it needs to implement createScreenHandlerFactory.

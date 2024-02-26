@@ -41,11 +41,16 @@ public class TerminalInputController extends RegisterController {
      */
     public void setNextValue() {
         if (input.isEmpty()) {
+            ((RegisterModel) getModel()).setValue(Value.fromHex("00", 2));
             return;
         }
         char nextChar = input.charAt(0);
         String hexInput = Integer.toHexString(nextChar);
         ((RegisterModel) getModel()).setValue(Value.fromHex(hexInput, 2));
+        if (input.length() == 1) {
+            input = "";
+            return;
+        }
         input = input.substring(1);
     }
 

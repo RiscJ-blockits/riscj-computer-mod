@@ -97,6 +97,10 @@ public final class DataConstants {
      * Identifier for the type of the mode-Register of the terminal.
      */
     public static final String REGISTER_TERMINAL_MODE_TYPE = "terminal_mode_type";
+    /**
+     * Contains the output of the terminal that should be displayed.
+     */
+    public static final String REGISTER_TERMINAL_OUTPUT = "terminal_output_string";
 
     //SystemClock Constants
     /**

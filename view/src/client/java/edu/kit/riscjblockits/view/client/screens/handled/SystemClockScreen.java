@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import static edu.kit.riscjblockits.model.blocks.ClockMode.MC_TICK;
 import static edu.kit.riscjblockits.model.blocks.ClockMode.REALTIME;
 import static edu.kit.riscjblockits.model.blocks.ClockMode.STEP;
-import static java.lang.Double.NaN;
 
 /**
  * The screen for the system clock block.
@@ -35,11 +34,6 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
      * The representing ticks one computer tick should take can be configured here.
      */
     private static final int[][] MODE_TRANSLATIONS = {{0,0}, {1,80}, {2,40}, {3,20}, {4,15}, {5,10}, {6,5}, {7,2}, {8,1}, {9,0}};
-
-    /**
-     * This translates the different speeds into ticks per second.
-     */
-    private static final double[][] SECONDS_TRANSLATIONS = {{0,0}, {80,0.25}, {40,0.5}, {20,1}, {15,1.5}, {10,2}, {5,4}, {2,10}, {1,20}, {9,NaN}}; //assuming 20 ticks per second
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/system_clock/system_clock_gui.png");
     private static final Identifier MODE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/system_clock/system_clock_button.png");
     private static final String MODE_TEXTURE = "textures/gui/system_clock/system_clock_lever_%d.png";
@@ -139,7 +133,7 @@ public class SystemClockScreen extends HandledScreen<SystemClockScreenHandler> {
     public void handledScreenTick() {
         super.handledScreenTick();
         clockSpeed = Text.literal(String.valueOf(((SystemClockBlockEntity)handler.getBlockEntity()).getSystemClockSpeed())); //FixMe: why two times?
-        clockSpeed = Text.literal(String.valueOf(SECONDS_TRANSLATIONS[getButtonStep()][1]));
+        clockSpeed = Text.literal(String.valueOf(SystemClockScreenHandler.SECONDS_TRANSLATIONS[getButtonStep()][1]));
     }
 
     /**

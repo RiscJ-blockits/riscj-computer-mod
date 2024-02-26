@@ -130,4 +130,11 @@ public interface IQueryableInstructionSetModel {
      * @return the example code for the instruction set as a string.
      */
     String getExample();
+
+    /**
+     * Gets the api Key for code generation support.
+     * @return the api key.
+     */
+    String getApiKey();
+
 }

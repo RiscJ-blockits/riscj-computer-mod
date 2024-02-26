@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 class AssemblerTest {
 
@@ -257,5 +258,42 @@ class AssemblerTest {
 
         val = memory.getValueAt(Value.fromHex("04", 4));
         assertEquals("0000006F", val.getHexadecimalValue());
+    }
+
+    @Test
+    void invalidInstruction() {
+        InstructionSetModel model = buildInstructionSetModelMima();
+        Assembler assembler = new Assembler(model);
+        assertThrowsExactly(AssemblyException.class, () -> assembler.assemble("AD 0x16"));
+    }
+
+    @Test
+    void invalidLabel() {
+        InstructionSetModel model = buildInstructionSetModelMima();
+        Assembler assembler = new Assembler(model);
+        assertThrowsExactly(AssemblyException.class, () -> assembler.assemble("ADD x"));
+    }
+
+    @Test
+    void invalidLine() {
+        InstructionSetModel model = buildInstructionSetModelMima();
+        Assembler assembler = new Assembler(model);
+        assertThrowsExactly(AssemblyException.class, () -> assembler.assemble("dxdr_: h~ooll"));
+    }
+
+    @Test
+    void floatRegisterInsert() throws AssemblyException {
+        InstructionSetModel model = buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+        assembler.assemble("flw ft1, 0(t1)");
+    }
+
+    @Test
+    void assembleProgramStartLabel() throws AssemblyException {
+        InstructionSetModel model = buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+        assembler.assemble("add t1, t2, t3\nmain: addi t1, t2, 0xFF");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        assertEquals("00000001", memory.getInitialProgramCounter().getHexadecimalValue());
     }
 }
