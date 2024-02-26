@@ -5,11 +5,14 @@ import edu.kit.riscjblockits.controller.blocks.ClusteringStub_ComputerController
 import edu.kit.riscjblockits.controller.blocks.ClusteringStub_ControlUnit;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -322,5 +325,19 @@ class ClusterHandlerTest {
         InstructionSetModel istModel = new InstructionSetModel();
         assertFalse(ch.setIstModel(istModel));
         assertFalse(ch.setIstModel(null));
+
+        ch.blockDestroyed(block1);
+        ch = block3.getClusterHandler();
+
+        assertTrue(ch.setIstModel(buildInstructionSetModelMima()));
+    }
+
+    private static InstructionSetModel buildInstructionSetModelMima() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
+        try {
+            return InstructionSetBuilder.buildInstructionSetModel(is);
+        }  catch (InstructionBuildException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

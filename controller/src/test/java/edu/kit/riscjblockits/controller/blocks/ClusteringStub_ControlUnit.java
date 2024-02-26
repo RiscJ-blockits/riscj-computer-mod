@@ -3,6 +3,7 @@ package edu.kit.riscjblockits.controller.blocks;
 import edu.kit.riscjblockits.controller.clustering.ClusterHandler;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.blocks.IViewQueryableBlockModel;
+import edu.kit.riscjblockits.model.data.IDataElement;
 
 import java.util.List;
 
@@ -75,4 +76,7 @@ public class ClusteringStub_ControlUnit extends ControlUnitController implements
     public void stopVisualisation() {
         //
     }
+
+    @Override
+    public void setData(IDataElement data) {}
 }
