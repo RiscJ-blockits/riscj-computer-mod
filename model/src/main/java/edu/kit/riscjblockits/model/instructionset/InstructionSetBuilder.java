@@ -36,6 +36,9 @@ public final class InstructionSetBuilder {
         } catch (JsonSyntaxException e) {
             throw new InstructionBuildException("Error while parsing the instruction set: " + e.getMessage());
         }
+        if(instructionSet == null) {
+            throw new InstructionBuildException("Error while parsing the instruction set: The instruction set is empty.");
+        }
         instructionSet.generateHashMaps();
         return instructionSet;
     }
@@ -44,7 +47,6 @@ public final class InstructionSetBuilder {
      * Builds an InstructionSetModel from a given String.
      * @param s String
      * @return InstructionSetModel
-     * @throws UnsupportedEncodingException if the character encoding is not supported
      * @throws InstructionBuildException if the instruction set cannot be built.
      */
     public static InstructionSetModel buildInstructionSetModel (String s) throws InstructionBuildException {

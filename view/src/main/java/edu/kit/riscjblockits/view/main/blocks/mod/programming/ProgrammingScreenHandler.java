@@ -174,11 +174,7 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
         }
         IDataElement instructionSetData = new NbtDataConverter(nbt).getData();
         InstructionSetModel instructionSet;
-        try {
-            instructionSet = InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
-        } catch (UnsupportedEncodingException e) {
-            return new ArrayList<>();
-        }
+        instructionSet = InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
         return instructionSet.getPossibleInstructions();
     }
 
@@ -224,7 +220,7 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
         try {
             instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(ist);
             return instructionSetModel.getExample();
-        }catch (UnsupportedEncodingException | InstructionBuildException e) {
+        }catch (InstructionBuildException e) {
             return "";
         }
     }
