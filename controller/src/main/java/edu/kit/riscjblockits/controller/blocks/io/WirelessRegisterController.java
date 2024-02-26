@@ -84,9 +84,14 @@ public class WirelessRegisterController extends RegisterController {
                 }
                 case REGISTER_WIRELESS -> {
                     IDataContainer position = (IDataContainer) ((IDataContainer) data).get(s);
-                    double x = Double.parseDouble(((IDataStringEntry) position.get(REGISTER_WIRELESS_XPOS)).getContent());
-                    double y = Double.parseDouble(((IDataStringEntry) position.get(REGISTER_WIRELESS_YPOS)).getContent());
-                    double z = Double.parseDouble(((IDataStringEntry) position.get(REGISTER_WIRELESS_ZPOS)).getContent());
+                    double x, y, z;
+                    try {
+                        x = Double.parseDouble(((IDataStringEntry) position.get(REGISTER_WIRELESS_XPOS)).getContent());
+                        y = Double.parseDouble(((IDataStringEntry) position.get(REGISTER_WIRELESS_YPOS)).getContent());
+                        z = Double.parseDouble(((IDataStringEntry) position.get(REGISTER_WIRELESS_ZPOS)).getContent());
+                    } catch (NumberFormatException | ClassCastException | NullPointerException e) {
+                        continue;
+                    }
                     BlockPosition blockPosition = new BlockPosition(x, y, z);
                     ((WirelessRegisterModel) getModel()).setWirelessNeighbourPosition(blockPosition);
                 }
