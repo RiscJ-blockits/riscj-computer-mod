@@ -7,26 +7,39 @@ import edu.kit.riscjblockits.model.data.DataStringEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_MODE;
+import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_SPEED;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SystemClockControllerTest {
 
-    private SystemClockController systemClockControllerUnderTest;
+    private SystemClockController systemClockController;
+    Data clockData;
 
     @BeforeEach
     void setUp() {
-        systemClockControllerUnderTest = new SystemClockController(new ArchiCheckStub_Entity());
+        systemClockController = new SystemClockController(new ArchiCheckStub_Entity());
+        clockData = new Data();
     }
 
     @Test
     void setData() {
-        Data clockData = new Data();
-        clockData.set("speed", new DataStringEntry("42"));
-        clockData.set("mode", new DataStringEntry("MC_TICK"));
-        systemClockControllerUnderTest.setData(clockData);
-        SystemClockModel clockModel = ((SystemClockModel) systemClockControllerUnderTest.getModel());
+        clockData.set(CLOCK_SPEED, new DataStringEntry("42"));
+        clockData.set(CLOCK_MODE, new DataStringEntry("MC_TICK"));
+        systemClockController.setData(clockData);
+        SystemClockModel clockModel = ((SystemClockModel) systemClockController.getModel());
         assertEquals(42, clockModel.getClockSpeed());
         assertEquals(ClockMode.MC_TICK, clockModel.getClockMode());
+    }
+
+    @Test
+    void setWrongData() {
+        clockData.set(CLOCK_SPEED, new DataStringEntry("ysdxfdgs"));
+        clockData.set(CLOCK_MODE, new DataStringEntry("<fdssf"));
+        systemClockController.setData(clockData);
+        SystemClockModel clockModel = ((SystemClockModel) systemClockController.getModel());
+        assertEquals(1, clockModel.getClockSpeed());
+        assertEquals(ClockMode.STEP, clockModel.getClockMode());
     }
 
 }

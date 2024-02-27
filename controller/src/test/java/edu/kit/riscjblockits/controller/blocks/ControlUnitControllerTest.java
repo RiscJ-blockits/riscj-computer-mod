@@ -46,7 +46,7 @@ class ControlUnitControllerTest {
     @Test
     void setNoIstModel() {
         Data istModelData = new Data();
-        istModelData.set("istModel", new DataStringEntry(""));
+        istModelData.set(CONTROL_IST_MODEL, new DataStringEntry(""));
         controlUnitController.setData(istModelData);
         ControlUnitModel controlUnitModel = (ControlUnitModel) controlUnitController.getModel();
         assertNull(controlUnitModel.getIstModel());
@@ -57,10 +57,22 @@ class ControlUnitControllerTest {
         Data istModelData = new Data();
         istModelData.set(CONTROL_IST_ITEM, new DataStringEntry("this is not a json string"));
         Data cucData = new Data();
-        cucData.set(CONTROL_IST_MODEL, new Data());
+        cucData.set(CONTROL_IST_MODEL, istModelData);
         controlUnitController.setData(cucData);
         ControlUnitModel controlUnitModel = (ControlUnitModel) controlUnitController.getModel();
         assertNull(controlUnitModel.getIstModel());
+    }
+
+    @Test
+    void setIstModel() {
+        String istModelString = "{\"name\":\"test\"}";
+        Data istModelData = new Data();
+        istModelData.set(CONTROL_IST_ITEM, new DataStringEntry(istModelString));
+        Data cucData = new Data();
+        cucData.set(CONTROL_IST_MODEL, istModelData);
+        controlUnitController.setData(cucData);
+        ControlUnitModel controlUnitModel = (ControlUnitModel) controlUnitController.getModel();
+        assertEquals("test", controlUnitModel.getIstModel().getName());
     }
 
 }

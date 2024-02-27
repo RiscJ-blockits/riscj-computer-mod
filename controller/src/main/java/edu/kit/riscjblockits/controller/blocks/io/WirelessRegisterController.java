@@ -69,17 +69,23 @@ public class WirelessRegisterController extends RegisterController {
         for (String s : ((IDataContainer) data).getKeys()) {
             switch (s) {
                 case REGISTER_WORD_LENGTH -> {
-                    int wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
+                    int wordLength;
+                    try {
+                        wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
                     ((WirelessRegisterModel) getModel()).setWordLength(wordLength);
                 }
                 case REGISTER_VALUE -> {
                     int wordLength;
+                    Value value;
                     try {
                         wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(REGISTER_WORD_LENGTH)).getContent());
-                    } catch (NumberFormatException e) {
+                        value = Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
+                    } catch (ClassCastException | NumberFormatException e) {
                         continue;
                     }
-                    Value value = Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
                     ((WirelessRegisterModel) getModel()).setValue(value);
                 }
                 case REGISTER_WIRELESS -> {
