@@ -11,7 +11,6 @@ import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
-import java.io.UnsupportedEncodingException;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
@@ -83,7 +82,7 @@ public class ControlUnitController extends ComputerBlockController{
                 IQueryableInstructionSetModel istModel = null;
                 try {
                     istModel = InstructionSetBuilder.buildInstructionSetModel(ist);
-                } catch (UnsupportedEncodingException |  InstructionBuildException e) {
+                } catch (InstructionBuildException e) {
                     return;
                 }
                 boolean newIstModel = ((ControlUnitModel) getModel()).setIstModel(istModel);
