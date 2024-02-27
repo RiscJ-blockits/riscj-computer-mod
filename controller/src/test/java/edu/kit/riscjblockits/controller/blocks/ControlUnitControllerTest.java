@@ -7,6 +7,8 @@ import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
+import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_MODEL;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ControlUnitControllerTest {
@@ -19,7 +21,7 @@ class ControlUnitControllerTest {
     }
 
     @Test
-    void setData() {
+    void setClusteringData() {
         Data clusteringData = new Data();
         clusteringData.set("missingRegisters", new DataStringEntry("R1 R2 R3"));
         clusteringData.set("foundRegisters", new DataStringEntry("R4 R5 R6"));
@@ -39,6 +41,26 @@ class ControlUnitControllerTest {
         assertEquals("1", ((IDataStringEntry) (clusteringData.get("foundALU"))).getContent());
         assertEquals("1", ((IDataStringEntry) (clusteringData.get("foundControlUnit"))).getContent());
         assertEquals("1", ((IDataStringEntry) (clusteringData.get("foundSystemClock"))).getContent());
+    }
+
+    @Test
+    void setNoIstModel() {
+        Data istModelData = new Data();
+        istModelData.set("istModel", new DataStringEntry(""));
+        controlUnitController.setData(istModelData);
+        ControlUnitModel controlUnitModel = (ControlUnitModel) controlUnitController.getModel();
+        assertNull(controlUnitModel.getIstModel());
+    }
+
+    @Test
+    void setWrongIstModel() {
+        Data istModelData = new Data();
+        istModelData.set(CONTROL_IST_ITEM, new DataStringEntry("this is not a json string"));
+        Data cucData = new Data();
+        cucData.set(CONTROL_IST_MODEL, new Data());
+        controlUnitController.setData(cucData);
+        ControlUnitModel controlUnitModel = (ControlUnitModel) controlUnitController.getModel();
+        assertNull(controlUnitModel.getIstModel());
     }
 
 }

@@ -40,19 +40,17 @@ public class RegSelectWidget extends ExtendableWidget {
      * The screen handler for the register screen.
      */
     protected RegisterScreenHandler registerScreenHandler;
-    private MinecraftClient client;
-    private int cachedInvChangeCount;
     /**
      * The widget for the list of registers.
      */
     protected RegisterListWidget registerList;
-    private int width;
-    private int height;
-    private final List<Element> children = new ArrayList<>();
     /**
      * The position of the block entity.
      */
     protected BlockPos pos;
+    private MinecraftClient client;
+    private int cachedInvChangeCount;
+    private final List<Element> children = new ArrayList<>();
 
     /**
      * Creates a new RegSelectWidget.
@@ -71,6 +69,7 @@ public class RegSelectWidget extends ExtendableWidget {
      */
     public void initialize(int parentWidth, int parentHeight, MinecraftClient client, boolean narrow, RegisterScreenHandler registerScreenHandler) {
         super.initialize(parentWidth, parentHeight, narrow, TEXTURE);
+        children.clear();
         pos = registerScreenHandler.getBlockEntity().getPos();
         this.client = client;
         this.registerScreenHandler = registerScreenHandler;
@@ -123,7 +122,6 @@ public class RegSelectWidget extends ExtendableWidget {
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
         TextRenderer textRenderer = minecraftClient.textRenderer;
         context.drawText(textRenderer, Text.literal(TO_DO_TEXT), i + 8, j + 8, 0x555555, false);
-
         for (Element element : this.children) {
             ((Drawable) element).render(context, mouseX, mouseY, delta);
         }
@@ -150,7 +148,7 @@ public class RegSelectWidget extends ExtendableWidget {
             return false;
         }
         this.children.forEach((element) -> element.mouseClicked(mouseX, mouseY, button));
-        return registerList.mouseClicked(mouseX, mouseY, button);
+        return true; //registerList.mouseClicked(mouseX, mouseY, button);
     }
 
     /**

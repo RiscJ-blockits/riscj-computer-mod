@@ -9,9 +9,9 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalB
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.TerminalScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.widget.EditBoxWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
@@ -44,7 +44,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     /**
      * A Minecraft class that is used to display the output string.
      */
-    private MultilineText outputtedText;
+    private EditBoxWidget outputtedText;
     private TerminalSelectionWidget terminalSelectionWidget;
     private IconButtonWidget regSelectButton;
     private boolean narrow;
@@ -65,7 +65,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     /**
      * Initializes the screen.
      * Adds the edit box widget to the screen.
-     * Adds the Text to the screen.
+     * Add the Text to the screen.
      */
     @Override
     protected void init() {
@@ -75,7 +75,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         }
         // add the edit box widget to the screen
         inputBox = new TextFieldWidget(textRenderer, this.x + 108, this.y + 99, 61, 11, Text.literal(""));
-        inputBox.setMaxLength(1);
+        inputBox.setMaxLength(15);
         addDrawableChild(inputBox);
         inputBox.setFocused(false);
         //add text to the screen
@@ -94,13 +94,14 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
                 this.x = this.terminalSelectionWidget.findLeftEdge(this.width, this.backgroundWidth);
                 button.setPosition(this.x + 7, this.y + 99);
                 inputBox.setPosition(this.x + 108, this.y + 99);
+                this.outputtedText.setPosition(this.x + 8, this.y + 18);
             }, BUTTON_TEXTURE);
-
 
         this.addDrawableChild(regSelectButton);
         this.addSelectableChild(this.terminalSelectionWidget);
         this.setInitialFocus(this.terminalSelectionWidget);
         this.titleX = 29;
+        outputtedText = new EditBoxWidget(textRenderer, this.x + 7, this.y + 18, 160, 77, Text.literal(""), Text.literal(""));
     }
 
     /**
@@ -123,7 +124,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
         drawMouseoverTooltip(context, mouseX, mouseY);  // render the tooltip of the button if the mouse is over it
 
         if(outputtedText != null){
-            outputtedText.draw(context, this.x + 8, this.y + 18, 9, 0xffffff);
+            outputtedText.render(context, mouseX, mouseY, delta);
         }
     }
 
@@ -175,6 +176,7 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
             this.client.player.closeHandledScreen();
         } else if (keyCode == GLFW.GLFW_KEY_ENTER) { //Send Data on Enter
             sendData(inputBox.getText());
+            inputBox.setText("");
             //ToDo reset Text inside the box
         }
         // return true if the edit box is focused or the edit box is focused --> suppress all other key presses (e.g. "e")
@@ -191,7 +193,8 @@ public class TerminalScreen extends HandledScreen<TerminalScreenHandler> {
     public void handledScreenTick() {
         this.terminalSelectionWidget.update();
         output = ((TerminalBlockEntity) handler.getBlockEntity()).getDisplayedString();
-        outputtedText = MultilineText.create(textRenderer, Text.literal(output), 160, 8);
+        //outputtedText = MultilineText.create(textRenderer, Text.literal(output), 160, 8);
+        outputtedText.setText(output);
     }
 
     /**

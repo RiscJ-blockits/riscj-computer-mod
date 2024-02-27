@@ -126,6 +126,7 @@ public class WirelessRegisterModel extends RegisterModel {
 
     /**
      * Getter for the BlockPosition of the wireless neighbor.
+     * If the position is not set, return (0, -300, 0).
      * @return The BlockPosition of the wireless neighbor.
      */
     public BlockPosition getWirelessNeighbourPosition() {
@@ -144,7 +145,7 @@ public class WirelessRegisterModel extends RegisterModel {
     }
 
     /**
-     * Notifies the syncronized register model that the wireless register model has been broken.
+     * Notifies the synchronized register model that the wireless register model has been broken.
      */
     public void onBroken() {
         registerModel.removeObserver(this);

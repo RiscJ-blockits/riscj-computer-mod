@@ -67,4 +67,5 @@ public abstract class NetworkingConstants {
     private NetworkingConstants() {
         throw new IllegalStateException("Utility class");
     }
+
 }

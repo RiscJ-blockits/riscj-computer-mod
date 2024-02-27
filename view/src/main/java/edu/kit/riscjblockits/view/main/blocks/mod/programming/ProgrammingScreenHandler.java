@@ -164,17 +164,10 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
      * @return ArrayList of String[] with the instructions
      */
     public List<String[]> getInstructions() {
-        if (inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt()
-            || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
+        InstructionSetModel instructionSet = buildInstructionSetModel();
+        if (instructionSet == null) {
             return new ArrayList<>();
         }
-        NbtElement nbt = inventory.getStack(0).getOrCreateNbt().get(CONTROL_IST_ITEM);
-        if (nbt == null) {
-            return new ArrayList<>();
-        }
-        IDataElement instructionSetData = new NbtDataConverter(nbt).getData();
-        InstructionSetModel instructionSet;
-        instructionSet = InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
         return instructionSet.getPossibleInstructions();
     }
 
@@ -222,6 +215,35 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
             return instructionSetModel.getExample();
         }catch (InstructionBuildException e) {
             return "";
+        }
+    }
+
+    /**
+     * Get the OpenAI API key from the instruction set.
+     * @return An Api Key String.
+     */
+    public String getOpenAiKey() {
+        InstructionSetModel instructionSetModel = buildInstructionSetModel();
+        if (instructionSetModel == null) {
+            return "";
+        }
+        return instructionSetModel.getApiKey();
+    }
+
+    private InstructionSetModel buildInstructionSetModel() {
+        if (inventory.getStack(0).isEmpty() || !inventory.getStack(0).hasNbt()
+            || !inventory.getStack(0).getNbt().contains(CONTROL_IST_ITEM)) {
+            return null;
+        }
+        NbtElement nbt = inventory.getStack(0).getOrCreateNbt().get(CONTROL_IST_ITEM);
+        if (nbt == null) {
+            return null;
+        }
+        IDataElement instructionSetData = new NbtDataConverter(nbt).getData();
+        try{
+            return InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
+        } catch (InstructionBuildException buildException) {
+            return null;
         }
     }
 

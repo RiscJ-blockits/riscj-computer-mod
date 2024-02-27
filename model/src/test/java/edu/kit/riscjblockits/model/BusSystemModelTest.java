@@ -302,4 +302,27 @@ class BusSystemModelTest {
 
         assertEquals(results.get(1).getBusGraph(), system3.getBusGraph());
     }
+
+    @Test
+    void setAndResetVisualisation() {
+        system1.activateVisualisation();
+        assertTrue(system1.getActiveVisualization(new BlockPosition(0, 0, 0)));
+
+        system1.resetVisualisation();
+        assertFalse(system1.getActiveVisualization(new BlockPosition(0, 0, 0)));
+    }
+
+    @Test
+    void presentData() {
+        assertTrue(system1.getPresentData().equals(new Value()));
+        system1.setBusDataPath(new BlockPosition(0, 0, 0), new BlockPosition(0, 0, 0), Value.fromBinary("00000000", 1));
+        assertTrue(system1.getPresentData().equals(Value.fromBinary("00000000", 1)));
+    }
+
+    @Test
+    void getBusSystemNeighbors() {
+        system1.addNode(new BlockPosition(1, 0, 0));
+        system1.addEdge(new BlockPosition(0, 0, 0), new BlockPosition(1, 0, 0));
+        assertEquals(1, system1.getBusSystemNeighbors(new BlockPosition(0, 0, 0)).size());
+    }
 }

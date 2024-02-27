@@ -79,8 +79,12 @@ public class SystemClockModel extends BlockModel implements ISimulationTimingObs
     /**
      * Setter for the clock speed. Notifies the observers about the state change.
      * @param clockSpeed the new clock speed.
+     * @throws IllegalArgumentException if the clock speed is less than 0.
      */
     public void setClockSpeed(int clockSpeed) {
+        if (clockSpeed < 0) {
+            throw new IllegalArgumentException("Clock speed must be greater than 0");
+        }
         this.clockSpeed = clockSpeed;
         notifyObservers();
         setUnqueriedStateChange(true);

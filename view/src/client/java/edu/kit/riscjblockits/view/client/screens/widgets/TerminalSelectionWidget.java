@@ -81,7 +81,6 @@ public class TerminalSelectionWidget extends RegSelectWidget{
         if(!this.isOpen()) {
             return;
         }
-
         switch (this.displayMode){
             case IN:
                 context.drawTexture(IOM_BUTTON_HIGHLIGHTED_TEXTURE, i, j, 0,0, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT, IOM_BUTTON_WIDTH, IOM_BUTTON_HEIGHT);

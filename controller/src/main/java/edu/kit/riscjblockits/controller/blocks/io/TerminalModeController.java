@@ -32,7 +32,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGT
 public class TerminalModeController extends RegisterController {
 
     private final TerminalInputController inputController;
-    private final RegisterController outputController;
+    private final TerminalOutputController outputController;
 
     /**
      * Constructor for the TerminalModeController.
@@ -40,7 +40,7 @@ public class TerminalModeController extends RegisterController {
      * @param inputController The controller for the input register.
      * @param outputController The controller for the output register.
      */
-    public TerminalModeController(IConnectableComputerBlockEntity blockEntity, TerminalInputController inputController, RegisterController outputController) {
+    public TerminalModeController(IConnectableComputerBlockEntity blockEntity, TerminalInputController inputController, TerminalOutputController outputController) {
         super(blockEntity);
         this.inputController = inputController;
         this.outputController = outputController;
@@ -65,6 +65,8 @@ public class TerminalModeController extends RegisterController {
     @Override
     public void startClustering(BlockPosition pos) {
         super.startClustering(pos);
+        inputController.getModel().setPosition(pos);
+        outputController.getModel().setPosition(pos);
         //This is the controller that gets first registered with the cluster. It needs to start the clustering in the other controllers
         ClusterHandler cluster = getClusterHandler();
         inputController.setClusterHandler(cluster);
@@ -81,7 +83,7 @@ public class TerminalModeController extends RegisterController {
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             switch (s) {
-                case REGISTER_TYPE -> {
+                case REGISTER_TYPE -> { //a new register type was set on the screen
                     String type = ((IDataStringEntry) ((IDataContainer) data).get(s)).getContent();
                     String first;
                     String second;
@@ -129,7 +131,7 @@ public class TerminalModeController extends RegisterController {
                     try {
                         wordLength = Integer.parseInt(
                             ((IDataStringEntry) ((IDataContainer) data).get(REGISTER_WORD_LENGTH)).getContent());
-                    } catch (NumberFormatException e) {
+                    } catch (NumberFormatException | ClassCastException | NullPointerException e) {
                         continue;
                     }
                     Value value =
@@ -141,7 +143,7 @@ public class TerminalModeController extends RegisterController {
                     try {
                         wordLength = Integer.parseInt(
                             ((IDataStringEntry) ((IDataContainer) data).get(REGISTER_WORD_LENGTH)).getContent());
-                    } catch (NumberFormatException e) {
+                    } catch (NumberFormatException | ClassCastException | NullPointerException e) {
                         continue;
                     }
                     Value value =

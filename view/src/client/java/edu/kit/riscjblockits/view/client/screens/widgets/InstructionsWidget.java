@@ -7,6 +7,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -67,6 +68,8 @@ public class InstructionsWidget extends ExtendableWidget {
             InstructionEntry entry = new InstructionEntry(id, arguments);
             entries.add(entry);
         }
+        //sort the entries with their id
+        entries.sort(Comparator.comparing(InstructionEntry::getId));
         return entries;
     }
 
@@ -104,4 +107,5 @@ public class InstructionsWidget extends ExtendableWidget {
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         return instructionList.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
+
 }

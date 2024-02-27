@@ -41,7 +41,7 @@ public class Value {
      */
     public static Value fromHex(String s, int length) {
         byte[] bytes = new byte[length];
-        byte[] hexBytes = HexFormat.of().parseHex(s); //Todo fill with zeros if length is not a multiple of 2
+        byte[] hexBytes = HexFormat.of().parseHex("0".repeat(s.length()%2) + s);
         int offset = length - hexBytes.length;
         offset = Math.max(offset, 0);
         int endOffset = Math.max(hexBytes.length - length, 0);
@@ -251,7 +251,7 @@ public class Value {
         ByteBuffer wrapped = ByteBuffer.wrap(comparator.getByteValue());
         int num = wrapped.getInt();
         float other = (float) num;
-        wrapped = ByteBuffer.wrap(comparator.getByteValue());
+        wrapped = ByteBuffer.wrap(getByteValue());
         num = wrapped.getInt();
         float me = (float) num;
         return me < other;
@@ -293,7 +293,7 @@ public class Value {
         ByteBuffer wrapped = ByteBuffer.wrap(comparator.getByteValue());
         int num = wrapped.getInt();
         float other = (float) num;
-        wrapped = ByteBuffer.wrap(comparator.getByteValue());
+        wrapped = ByteBuffer.wrap(getByteValue());
         num = wrapped.getInt();
         float me = (float) num;
 

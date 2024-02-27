@@ -2,12 +2,17 @@ package edu.kit.riscjblockits.controller.clustering;
 
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.controller.blocks.ClusteringStub_ComputerController;
+import edu.kit.riscjblockits.controller.blocks.ClusteringStub_ControlUnit;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
+import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
+import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -305,5 +310,34 @@ class ClusterHandlerTest {
         secondCluster = block3.getClusterHandler();
         assertEquals(secondCluster.getBlocks().size(), firstCluster.getBlocks().size());
         assertEquals(secondCluster.getBusBlocks().size(), firstCluster.getBusBlocks().size());
+    }
+
+    @Test
+    void setIstModel() {
+        ClusteringStub_ControlUnit block1 = new ClusteringStub_ControlUnit(new BlockPosition(0,0,0), BlockControllerType.CONTROL_UNIT, blocks);
+        allNeighbours.add(block1);
+        ClusteringStub_ControlUnit block2 = new ClusteringStub_ControlUnit(new BlockPosition(2,0,0), BlockControllerType.CONTROL_UNIT, blocks);
+        allNeighbours.add(block2);
+        ClusteringStub_ComputerController block3 = new ClusteringStub_ComputerController(new BlockPosition(1,0,0), BlockControllerType.BUS, allNeighbours);
+
+        ClusterHandler ch = block3.getClusterHandler();
+
+        InstructionSetModel istModel = new InstructionSetModel();
+        assertFalse(ch.setIstModel(istModel));
+        assertFalse(ch.setIstModel(null));
+
+        ch.blockDestroyed(block1);
+        ch = block3.getClusterHandler();
+
+        assertTrue(ch.setIstModel(buildInstructionSetModelMima()));
+    }
+
+    private static InstructionSetModel buildInstructionSetModelMima() {
+        InputStream is = InstructionSetBuilder.class.getClassLoader().getResourceAsStream("instructionSetMIMA.jsonc");
+        try {
+            return InstructionSetBuilder.buildInstructionSetModel(is);
+        }  catch (InstructionBuildException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -136,17 +136,6 @@ public class BusSystemModel implements IQueryableBusSystem, IBusSystem {
         }
     }
 
-    /**
-     * Removes an edge between two nodes.
-     * @param pos1 is the first node of the edge
-     * @param pos2 is the second node of the edge
-     */
-    public void removeEdge(BlockPosition pos1, BlockPosition pos2) {
-        if (isNode(pos1) && isNode(pos2)) {
-            adjPositions.get(pos1).remove(pos2);
-            adjPositions.get(pos2).remove(pos1);
-        }
-    }
 
     /**
      * Removes a node and all edges connected to it.
