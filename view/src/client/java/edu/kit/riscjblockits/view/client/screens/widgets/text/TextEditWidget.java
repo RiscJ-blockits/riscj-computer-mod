@@ -203,6 +203,9 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
      * @param displayY the y position to draw the selection
      */
     protected void drawSelectionForLine(DrawContext context, int i, int displayY) {
+        if (lines.get(i).getContent().length() < windowStartX)
+            return;
+
         int startX;
         int startY;
         int endX;
@@ -235,7 +238,8 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             beforeWidth = textRenderer.getWidth(wholeLine.substring(windowStartX, charsBefore));
         else
             beforeWidth = textRenderer.getWidth(wholeLine.substring(0, charsBefore));
-        drawSelection(context, (int) (x * INVERSE_TEXT_SCALE) + beforeWidth, displayY, textRenderer.getWidth(selectedText));
+        drawSelection(context, (int) (x * INVERSE_TEXT_SCALE) + beforeWidth, displayY,
+                textRenderer.getWidth(selectedText.substring(windowStartX - charsBefore)));
     }
 
     /**
@@ -647,7 +651,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             Line line = lines.get(j);
             line.insert(splitString[i], cursorX);
         }
-        cursorX = splitString[splitString.length - 1].length();
+        cursorX += splitString[splitString.length - 1].length();
         lines.get(cursorY + splitString.length - 1).insert(afterInsertContent, cursorX);
         moveCursorY(splitString.length - 1, true);
         updateWindow();
