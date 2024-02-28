@@ -1,5 +1,6 @@
 package edu.kit.riscjblockits.controller.blocks;
 
+import edu.kit.riscjblockits.controller.simulation.SimulationTimeHandler;
 import edu.kit.riscjblockits.model.blocks.ClockMode;
 import edu.kit.riscjblockits.model.blocks.SystemClockModel;
 import edu.kit.riscjblockits.model.data.Data;
@@ -10,6 +11,10 @@ import org.junit.jupiter.api.Test;
 import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_MODE;
 import static edu.kit.riscjblockits.model.data.DataConstants.CLOCK_SPEED;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class SystemClockControllerTest {
 
@@ -40,6 +45,28 @@ class SystemClockControllerTest {
         SystemClockModel clockModel = ((SystemClockModel) systemClockController.getModel());
         assertEquals(1, clockModel.getClockSpeed());
         assertEquals(ClockMode.STEP, clockModel.getClockMode());
+    }
+
+    @Test
+    void testSetControllerType() {
+        systemClockController.setControllerType(BlockControllerType.CLOCK);
+        assertEquals(BlockControllerType.CLOCK, systemClockController.getControllerType());
+    }
+
+    @Test
+    void testTickTrigger() {
+        SimulationTimeHandler mockTimeHandler = mock(SimulationTimeHandler.class);
+        systemClockController.createBlockModel();
+        systemClockController.setSimulationTimeHandler(mockTimeHandler);
+        doNothing().when(mockTimeHandler).onUserTickTrigger();
+        doNothing().when(mockTimeHandler).onMinecraftTick();
+
+        systemClockController.tick();
+        verify(mockTimeHandler).onMinecraftTick();
+
+        systemClockController.onUserTickTriggered();
+        verify(mockTimeHandler).onUserTickTrigger();
+
     }
 
 }
