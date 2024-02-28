@@ -68,7 +68,7 @@ public class WirelessRegisterController extends RegisterController {
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             switch (s) {
-                case REGISTER_WORD_LENGTH -> {
+                case REGISTER_WORD_LENGTH -> { //ToDo duplicated code: could probably just be removed @Thomas
                     int wordLength;
                     try {
                         wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
@@ -77,7 +77,7 @@ public class WirelessRegisterController extends RegisterController {
                     }
                     ((WirelessRegisterModel) getModel()).setWordLength(wordLength);
                 }
-                case REGISTER_VALUE -> {
+                case REGISTER_VALUE -> { //ToDo duplicated code: could probably just be removed @Thomas
                     int wordLength;
                     Value value;
                     try {

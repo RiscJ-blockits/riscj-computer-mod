@@ -46,15 +46,6 @@ public class WirelessRegisterModel extends RegisterModel {
     }
 
     /**
-     * Sets the position of the associated block in the minecraft world.
-     * @param position The position of the associated block in the minecraft world.
-     */
-    @Override
-    public void setPosition(BlockPosition position) {
-        super.setPosition(position);
-    }
-
-    /**
      * Sets the register model.
      * @param registerModel The register model that holds the data of the register.
      */
@@ -80,7 +71,6 @@ public class WirelessRegisterModel extends RegisterModel {
         registerModel.notifyObservers();
         registerModel.setValue(value);
     }
-
 
     /**
      * Getter for the data of the register.
@@ -150,4 +140,5 @@ public class WirelessRegisterModel extends RegisterModel {
     public void onBroken() {
         registerModel.removeObserver(this);
     }
+
 }

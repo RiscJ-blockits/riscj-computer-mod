@@ -28,4 +28,11 @@ class BusModelTest {
         assertEquals("0000000000000000002D", ((IDataStringEntry) busData.get("presentData")).getContent());
     }
 
+    @Test
+    void getData2() {
+        BusSystemModel bsm = new DataStub_BusSystemModel(Value.fromDecimal("45", 10), false);
+        Data busData = (Data) busModelUnderTest.getData();
+        assertEquals("false", ((IDataStringEntry) busData.get("active")).getContent());
+    }
+
 }

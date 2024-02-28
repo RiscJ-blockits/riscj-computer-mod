@@ -163,4 +163,5 @@ public class BlockPosition {
         return (blockPosition.getZ() - blockPosition1.getZ() == 1 || blockPosition.getZ() - blockPosition1.getZ() == -1)
                 && blockPosition.getX() == blockPosition1.getX() && blockPosition.getY() == blockPosition1.getY();
     }
+
 }
