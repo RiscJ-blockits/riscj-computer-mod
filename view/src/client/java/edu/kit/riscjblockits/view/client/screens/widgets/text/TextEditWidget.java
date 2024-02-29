@@ -239,7 +239,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         else
             beforeWidth = textRenderer.getWidth(wholeLine.substring(0, charsBefore));
         drawSelection(context, (int) (x * INVERSE_TEXT_SCALE) + beforeWidth, displayY,
-                textRenderer.getWidth(selectedText.substring(windowStartX - charsBefore)));
+                textRenderer.getWidth(selectedText.substring(Math.max(windowStartX - charsBefore, 0))));
     }
 
     /**
@@ -625,7 +625,9 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             deleteSelection();
         }
 
-        String[] splitString = text.split("\n", -1);
+        String[] splitString = text
+                .replace("\r", "")
+                .split("\n", -1);
 
         String afterInsertContent = "";
         if (cursorX < lines.get(cursorY).getContent().length()) {
