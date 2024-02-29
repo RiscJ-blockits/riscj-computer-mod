@@ -63,7 +63,11 @@ public abstract class NetworkingConstants {
     public static final Identifier SYNC_MEMORY_LINE_QUERY = new Identifier(RISCJ_blockits.MOD_ID, "sync_memory_line_query");
     public static final Identifier SYNC_PROGRAMMING_CODE_CONFIRMATION_S2C = new Identifier(RISCJ_blockits.MOD_ID, "sync_programming_code_confirmation_server");
     public static final Identifier SYNC_PROGRAMMING_CODE_CONFIRMATION_C2S = new Identifier(RISCJ_blockits.MOD_ID, "sync_programming_code_confirmation");
-
+    //
+    public static final Identifier SYNC_IST_TEXT_C2S = new Identifier(RISCJ_blockits.MOD_ID, "sync_ist_text");
+    public static final Identifier SYNC_IST_TEXT_S2C = new Identifier(RISCJ_blockits.MOD_ID, "sync_ist_text_server");
+    public static final Identifier SYNC_IST_TEXT_CONFIRMATION_S2C = new Identifier(RISCJ_blockits.MOD_ID, "sync_ist_text_confirmation_server");
+    public static final Identifier SYNC_IST_TEXT_CONFIRMATION_C2S = new Identifier(RISCJ_blockits.MOD_ID, "sync_ist_text_confirmation");
     /**
      * This class should not be instantiated.
      * @throws IllegalStateException if the class is instantiated.

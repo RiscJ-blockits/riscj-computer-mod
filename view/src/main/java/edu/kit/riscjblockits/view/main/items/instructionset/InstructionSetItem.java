@@ -1,8 +1,11 @@
 package edu.kit.riscjblockits.view.main.items.instructionset;
 
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
+import edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlockEntity;
+import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -12,6 +15,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.io.BufferedReader;
@@ -21,6 +25,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
+import static edu.kit.riscjblockits.model.data.DataConstants.PROGRAMMING_BLOCK_CODE;
+import static edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlockEntity.CHUNK_SIZE;
 
 /**
  * This class defines the instruction set item in the game.
@@ -32,6 +38,7 @@ public class InstructionSetItem extends Item {
      * The default instruction set json.
      */
     private final String defaultInstructionSetJson;
+    private String text = "";
 
     /**
      * Creates a new instruction set item with the given settings.
@@ -57,6 +64,40 @@ public class InstructionSetItem extends Item {
                 }
                 server.execute(() -> player.getStackInHand(currentHand).setNbt(nbt));
             });
+        //--------------------------------------------------------------------------------------------------------------
+        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_IST_TEXT_C2S,
+            (server, player, handler, buf, responseSender) -> server.execute(() -> {
+                NbtCompound nbt = buf.readNbt();
+                assert nbt != null;
+                NbtCompound chunkContainer = nbt.getCompound(PROGRAMMING_BLOCK_CODE);
+                int chunkIndex = chunkContainer.getInt("chunkIndex");
+                String chunkCode = chunkContainer.getString("chunkData");
+                server.execute(() -> {
+                    if (chunkIndex == 0) {
+                        ((InstructionSetItem) player.getMainHandStack().getItem()).setText("");
+                    }
+                    ((InstructionSetItem) player.getMainHandStack().getItem()).setText(chunkCode);
+                });
+
+                if (chunkCode.length() < CHUNK_SIZE) {
+                    return;
+                }
+                responseSender.sendPacket(NetworkingConstants.SYNC_IST_TEXT_CONFIRMATION_C2S, new PacketByteBuf(
+                    Unpooled.buffer())
+                    .writeInt(chunkIndex + 1));
+            }));
+        ServerPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SYNC_IST_TEXT_CONFIRMATION_S2C);
+        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_IST_TEXT_CONFIRMATION_S2C,
+            (server, player, handler, buf, responseSender) -> server.execute(() -> {
+                int requestedChunk = buf.readInt();
+                server.execute(() -> {
+                    String tempText = ((InstructionSetItem) player.getMainHandStack().getItem()).getText();
+                    if (requestedChunk * CHUNK_SIZE > tempText.length()) {
+                        return;
+                    }
+                    ((InstructionSetItem) player.getMainHandStack().getItem()).sendChunk(player, requestedChunk, tempText);
+                });
+            }));
     }
 
     /**
@@ -86,13 +127,44 @@ public class InstructionSetItem extends Item {
      */
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (world.isClient) {
+        if (world.isClient || hand == Hand.OFF_HAND) { //offhand is not allowed to simplify syncing
             return super.use(world, user, hand);
         }
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString(hand.toString());
         ServerPlayNetworking.send((ServerPlayerEntity) user, NetworkingConstants.OPEN_IST_SCREEN, buf);
         return super.use(world, user, hand);
+    }
+
+    private void sendChunk(ServerPlayerEntity player, int chunkIndex, String text) {
+        NbtCompound nbt = new NbtCompound();
+
+        int start = chunkIndex * CHUNK_SIZE;
+        int end = Math.min((chunkIndex + 1) * CHUNK_SIZE, text.length());
+        // can't send as there is no more text
+        if (start >= end || start >= text.length()) {
+            return;
+        }
+        nbt.putInt("chunkIndex", chunkIndex);
+        nbt.putString("chunkData", text.substring(start, end));
+
+        NbtCompound container = new NbtCompound();
+        container.put(PROGRAMMING_BLOCK_CODE, nbt);
+        PacketByteBuf packet = PacketByteBufs.create();
+        packet.writeNbt(container);
+        ServerPlayNetworking.send(player, NetworkingConstants.SYNC_IST_TEXT_S2C, packet);
+    }
+
+    public void setText(String text) {
+        if (text == null) {
+            this.text = text;
+        } else {
+            this.text = this.text + text;
+        }
+    }
+
+    public String getText() {
+        return text;
     }
 
 }
