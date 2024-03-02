@@ -372,6 +372,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         for (String lineString : text.split("\n", -1)) {
             lines.add(new Line(lineString));
         }
+        windowStartX = 0;
         cursorX = 0;
         cursorY = 0;
         scrollPosition = 0;
