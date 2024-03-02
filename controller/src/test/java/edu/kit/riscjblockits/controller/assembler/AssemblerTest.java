@@ -296,4 +296,14 @@ class AssemblerTest {
         Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
         assertEquals("00000001", memory.getInitialProgramCounter().getHexadecimalValue());
     }
+
+    @Test
+    void assembleAsciiStartPos() throws AssemblyException {
+        InstructionSetModel model = buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+
+        assembler.assemble(".ascii \"hello\"\nmain: addi t1, t2, 0xFF");
+        Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
+        assertEquals("00000005", memory.getInitialProgramCounter().getHexadecimalValue());
+    }
 }

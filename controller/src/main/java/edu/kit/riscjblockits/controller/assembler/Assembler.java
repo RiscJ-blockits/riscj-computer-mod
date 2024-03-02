@@ -247,7 +247,7 @@ public class Assembler {
 
             if (instructionSetModel.isDataStorageCommand(cmd)) {
                 String unsplitDirtyData = instructionSetModel.getStorageCommandData(cmd);
-                for (String dirtyData : unsplitDirtyData.split(",")) {
+                for (String dirtyData : unsplitDirtyData.split(";")) {
                     assert localCurrentAddress != null;
                     localCurrentAddress = localCurrentAddress.getIncrementedValue();
                 }
