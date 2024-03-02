@@ -104,6 +104,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
                 ASSEMBLE_BUTTON_TEXTURE,
                 ASSEMBLE_BUTTON_TEXTURE_FAILED
         );
+        ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE_S2C);
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE_S2C,
                 (client, handler1, buf, responseSender) -> client.execute(() -> {
                     NbtCompound nbt = buf.readNbt();
@@ -119,7 +120,6 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
                     }
                     editBox.setText(editBox.getText() + chunkCode);
                     if (chunkCode.length() < CHUNK_SIZE) {
-                        ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SYNC_PROGRAMMING_CODE_S2C);
                         return;
                     }
                     responseSender.sendPacket(NetworkingConstants.SYNC_PROGRAMMING_CODE_CONFIRMATION_S2C, new PacketByteBuf(Unpooled.buffer())
@@ -128,6 +128,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         ClientPlayNetworking.send(NetworkingConstants.SYNC_PROGRAMMING_CODE_CONFIRMATION_S2C, new PacketByteBuf(Unpooled.buffer())
                 .writeInt(0).writeBlockPos(handler.getBlockEntity().getPos()));
         editBox = new AssemblerSyntaxTextEditWidget(MinecraftClient.getInstance().textRenderer, this.x + 32, this.y + 19, 112, 89);
+        editBox.setText(handler.getCode());
 
     }
 
@@ -155,7 +156,6 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         editBox.setY(this.y + 19);
         addDrawableChild(editBox);
         editBox.setFocused(false);
-        editBox.setText(handler.getCode());
         instructionsWidget.initialize(this.width, this.height - backgroundHeight, this.client, this.narrow, this.handler);
         addDrawableChild(instructionsWidget);
         // add the assembly button to the screen
