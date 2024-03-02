@@ -628,6 +628,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
 
         String[] splitString = text
                 .replace("\r", "")
+                .replace("\t", "    ")
                 .split("\n", -1);
 
         String afterInsertContent = "";
