@@ -249,6 +249,19 @@ public final class DataConstants {
      */
     public static final String PROGRAMMING_BLOCK_CODE = "code";
 
+    //InstructionSet Constants
+    /**
+     * Identifier for the instruction set text for syncing.
+     */
+    public static final String INSTRUCTION_SET = "instructionSet";
+    public static final String INSTRUCTION_SET_TEMP = "instructionSetTemp";
+    /**
+     * Identifier for the temporary InstructionSetModel inside the instruction set item nbt..
+     */
+    public static final String TEMP_IST_NBT_TAG = "temp_IstString";
+    public static final String CHUNK_INDEX = "chunkIndex";
+    public static final String CHUNK_DATA = "chunkData";
+
     /**
      * Illegal Constructor. Utility class.
      * @throws IllegalStateException if called.
