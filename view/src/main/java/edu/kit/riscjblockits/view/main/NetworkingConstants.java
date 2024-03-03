@@ -19,6 +19,9 @@ public abstract class NetworkingConstants {
      * The position of the block must be sent as a parameter.
      */
     public static final Identifier SYNC_PROGRAMMING_CODE_C2S = new Identifier(RISCJ_blockits.MOD_ID, "sync_programming_code");
+    /**
+     * Used by the server to send the assembled code back to the client.
+     */
     public static final Identifier SYNC_PROGRAMMING_CODE_S2C = new Identifier(RISCJ_blockits.MOD_ID, "sync_programming_code_server");
 
     /**
@@ -61,13 +64,31 @@ public abstract class NetworkingConstants {
      * Used by the client to tell the server which memory data to send.
      */
     public static final Identifier SYNC_MEMORY_LINE_QUERY = new Identifier(RISCJ_blockits.MOD_ID, "sync_memory_line_query");
+    /**
+     * After a chunk of the programming text is sent to the client, the client sends a confirmation back to the server.
+     */
     public static final Identifier SYNC_PROGRAMMING_CODE_CONFIRMATION_S2C = new Identifier(RISCJ_blockits.MOD_ID, "sync_programming_code_confirmation_server");
+    /**
+     * After a chunk of the programming text is sent to the server, the server sends a confirmation back to the client.
+     */
     public static final Identifier SYNC_PROGRAMMING_CODE_CONFIRMATION_C2S = new Identifier(RISCJ_blockits.MOD_ID, "sync_programming_code_confirmation");
-    //
+    /**
+     * Represents the identifier constant for synchronizing the instruction set text from the client to the server.
+     */
     public static final Identifier SYNC_IST_TEXT_C2S = new Identifier(RISCJ_blockits.MOD_ID, "sync_ist_text");
+    /**
+     * Represents the identifier constant for synchronizing the temporary instruction set text from the client to the server.
+     */
     public static final Identifier SYNC_TEMP_TEXT_C2S = new Identifier(RISCJ_blockits.MOD_ID, "sync_ist_text_server");
+    /**
+     * After a chunk of the instruction set is sent to the server, the server sends a confirmation back to the client.
+     */
     public static final Identifier SYNC_TEMP_TEXT_CONFIRMATION_C2S = new Identifier(RISCJ_blockits.MOD_ID, "sync_ist_text_confirmation_server");
+    /**
+     * After a chunk of the instruction set is sent to the client, the client sends a confirmation back to the server.
+     */
     public static final Identifier SYNC_IST_TEXT_CONFIRMATION_C2S = new Identifier(RISCJ_blockits.MOD_ID, "sync_ist_text_confirmation");
+
     /**
      * This class should not be instantiated.
      * @throws IllegalStateException if the class is instantiated.
