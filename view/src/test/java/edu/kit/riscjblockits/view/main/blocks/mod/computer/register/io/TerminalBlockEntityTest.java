@@ -13,7 +13,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -38,24 +37,6 @@ class TerminalBlockEntityTest {
     static void beforeAll() {
         terminalBlockEntity = new TerminalBlockEntity(new BlockPos(10, 0, 0), RISCJ_blockits.TEXT_OUTPUT_BLOCK.getDefaultState());
         terminalBlockEntity.setController();
-    }
-
-    @Disabled("fails because of refactoring")
-    @Test
-    @Order(1)
-    void readNbt() {
-        NbtCompound nbt = new NbtCompound();
-        NbtCompound subNbt = new NbtCompound();
-        subNbt.putString(REGISTER_VALUE, "2b");
-        subNbt.putString(REGISTER_WORD_LENGTH, "5");
-        nbt.put(MOD_DATA, subNbt);
-        World world = mock(World.class);
-        when(world.isClient()).thenReturn(true);
-        //world.isClient is still false why??
-        TerminalBlockEntity terminalBlockEntity = new TerminalBlockEntity(new BlockPos(0,0, 0), RISCJ_blockits.REGISTER_BLOCK.getDefaultState());
-        terminalBlockEntity.setWorld(world);
-        terminalBlockEntity.readNbt(nbt);
-        assertEquals("+", terminalBlockEntity.getDisplayedString());
     }
 
     @Test
@@ -127,6 +108,5 @@ class TerminalBlockEntityTest {
         terminalBlockEntity.onBroken();
         assertEquals(0, ((ComputerBlockController) terminalBlockEntity.getController()).getClusterHandler().getBusSystemModel().getBusGraph().size());
     }
-
 
 }

@@ -5,6 +5,7 @@ import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.model.blocks.WirelessRegisterModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -100,5 +101,19 @@ class WirelessRegisterControllerTest {
         wirelessRegisterController.setData(data);
         assertEquals("", ((DataStringEntry) ((Data) wirelessRegisterModel.getData()).get(REGISTER_VALUE)).getContent());
     }
+
+    @Test
+    void setValue() {
+        wirelessRegisterController.setNewValue(Value.fromHex("1A", 2));
+        assertEquals("00001A", wirelessRegisterController.getValue().getHexadecimalValue());
+    }
+
+    @Test
+    void getRegisterType() {
+        assertEquals("[NOT_ASSIGNED]", wirelessRegisterController.getRegisterType());
+        wirelessRegisterModel.setRegisterType("IR");
+        assertEquals("IR", wirelessRegisterController.getRegisterType());
+    }
+
 
 }

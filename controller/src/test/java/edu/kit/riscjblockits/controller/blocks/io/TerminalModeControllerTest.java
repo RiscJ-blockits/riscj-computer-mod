@@ -1,17 +1,14 @@
 package edu.kit.riscjblockits.controller.blocks.io;
 
 import edu.kit.riscjblockits.controller.blocks.IConnectableComputerBlockEntity;
-import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.model.blocks.RegisterModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.DataStringEntry;
-import edu.kit.riscjblockits.model.data.IDataElement;
+import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static edu.kit.riscjblockits.model.blocks.RegisterModel.DEFAULT_WORD_LENGTH;
-import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_ALU_REGS;
-import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_FOUND;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_MISSING;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_INPUT;
@@ -21,7 +18,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TERMINAL_O
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_TYPE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_VALUE;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_WORD_LENGTH;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 class TerminalModeControllerTest {
@@ -157,6 +154,16 @@ class TerminalModeControllerTest {
         data = (Data) registerModel.getData();
         choseData = (Data) data.get(REGISTER_REGISTERS);
         assertEquals(0, choseData.getKeys().size());
+    }
+
+    @Test
+    void setNewValue() {
+        terminalInputController.addInput("test");
+        terminalModeController.setNewValue(Value.fromHex("01", 2));
+        assertEquals("000074", terminalInputController.getValue().getHexadecimalValue());
+        terminalModeController.setNewValue(Value.fromHex("02", 2));
+        terminalModeController.setNewValue(Value.fromHex("01", 2));
+        assertEquals("000000", terminalInputController.getValue().getHexadecimalValue());
     }
 
 }

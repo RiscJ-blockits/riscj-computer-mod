@@ -44,6 +44,7 @@ public class WirelessRegisterController extends RegisterController {
      * @param registerController The controller of the WirelessRegister that is connected with the WirelessRegister.
      */
     public void setRegisterModel(WirelessRegisterController registerController) {
+        //wtf?
         ((WirelessRegisterModel)getModel()).setRegisterModel(
                 ((WirelessRegisterModel)registerController.getModel()).getRegisterModel());
     }
@@ -152,4 +153,5 @@ public class WirelessRegisterController extends RegisterController {
         super.onBroken();
         ((WirelessRegisterModel)getModel()).onBroken();
     }
+
 }

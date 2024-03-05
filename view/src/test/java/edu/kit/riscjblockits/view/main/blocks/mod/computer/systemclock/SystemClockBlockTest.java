@@ -4,7 +4,6 @@ import edu.kit.riscjblockits.view.main.TestSetupMain;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -34,8 +33,8 @@ class SystemClockBlockTest {
     }
 
     @Test
-    @Disabled("no assertion can be done")
     void scheduledTick() {
+        //only tests if the method is called without errors because no good way to assert the result
         SystemClockBlock systemClockBlock = new SystemClockBlock();
         SystemClockBlockEntity systemClockBlockEntity = (SystemClockBlockEntity) systemClockBlock.createBlockEntity(new BlockPos(0,0,0), null);
         ServerWorld world = mock(ServerWorld.class);

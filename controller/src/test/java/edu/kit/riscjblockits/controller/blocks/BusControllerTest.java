@@ -7,13 +7,10 @@ import edu.kit.riscjblockits.model.busgraph.BusSystemModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class BusControllerTest {
@@ -29,7 +26,6 @@ class BusControllerTest {
         BusSystemModel busSystemModel = mock(BusSystemModel.class);
         when(clusterHandler.getBusSystemModel()).thenReturn(busSystemModel);
         when(busSystemModel.getBusSystemNeighbors(testBusController.getModel().getPosition())).thenReturn(List.of(new BlockPosition(1, 1, 1)));
-
     }
 
     @Test
@@ -49,4 +45,11 @@ class BusControllerTest {
         BusModel busModel = (BusModel) testBusController.getModel();
         assertEquals(busSystemModel, busModel.getBelongsToSystem());
     }
+
+    @Test
+    void testNullGetBusSystemNeighbors() {
+        testBusController = new BusController(mock(IConnectableComputerBlockEntity.class));
+        assertNull(testBusController.getBusSystemNeighbors());
+    }
+
 }
