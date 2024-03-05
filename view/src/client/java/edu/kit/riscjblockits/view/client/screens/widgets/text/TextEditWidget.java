@@ -60,6 +60,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
      * The expected width of the line index.
      */
     private static final int LINE_INDEX_EXPECTED_WIDTH = 18;
+    private static final int MAX_LINES_AMOUNT = 1000000;
     /**
      * the textRenderer used to render the text.
      */
@@ -202,6 +203,9 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
      * @param displayY the y position to draw the selection
      */
     protected void drawSelectionForLine(DrawContext context, int i, int displayY) {
+        if (lines.get(i).getContent().length() < windowStartX)
+            return;
+
         int startX;
         int startY;
         int endX;
@@ -234,7 +238,8 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             beforeWidth = textRenderer.getWidth(wholeLine.substring(windowStartX, charsBefore));
         else
             beforeWidth = textRenderer.getWidth(wholeLine.substring(0, charsBefore));
-        drawSelection(context, (int) (x * INVERSE_TEXT_SCALE) + beforeWidth, displayY, textRenderer.getWidth(selectedText));
+        drawSelection(context, (int) (x * INVERSE_TEXT_SCALE) + beforeWidth, displayY,
+                textRenderer.getWidth(selectedText.substring(Math.max(windowStartX - charsBefore, 0))));
     }
 
     /**
@@ -367,6 +372,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         for (String lineString : text.split("\n", -1)) {
             lines.add(new Line(lineString));
         }
+        windowStartX = 0;
         cursorX = 0;
         cursorY = 0;
         scrollPosition = 0;
@@ -402,7 +408,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
     }
 
     private void drawCursor(DrawContext context, int x, int y, boolean endOfLine) {
-        if (((int) this.tickCounter) / 6 % 2 == 0) {
+        if (((int) this.tickCounter) / 6 % 2 == 0 && isFocused()) {
             context.drawText(this.textRenderer, endOfLine ? "_" : "|", x, y, endOfLine ? TEXT_COLOR : 0x999999, false);
         }
     }
@@ -532,7 +538,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
         for (int i = startY; i <= endY; i++) {
             String line = lines.get(i).getContent();
             if (i == startY && i == endY) {
-                result.append(line, startX, startX);
+                result.append(line, startX, endX);
             } else if (i == startY) {
                 result.append(line.substring(startX));
             } else if (i == endY) {
@@ -540,7 +546,7 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             } else if (i > startY) {
                 result.append(line);
             }
-            if (i < lines.size() - 1) {
+            if (i < lines.size() - 1 && i != endY) {
                 result.append("\n");
             }
         }
@@ -620,29 +626,36 @@ public class TextEditWidget implements Widget, Drawable, Element, Selectable {
             deleteSelection();
         }
 
-        String[] splitString = text.split("\n", -1);
+        String[] splitString = text
+                .replace("\r", "")
+                .replace("\t", "    ")
+                .split("\n", -1);
 
         String afterInsertContent = "";
         if (cursorX < lines.get(cursorY).getContent().length()) {
             afterInsertContent = lines.get(cursorY).cut(cursorX, lines.get(cursorY).getContent().length());
         }
+
+        // add missing lines
+        for (int k = cursorY + 1; k < Math.min(cursorY + splitString.length, MAX_LINES_AMOUNT); k++)
+            lines.add(k, new Line());
+
         for (int i = 0; i < splitString.length; i++) {
             int j = i + cursorY;
+            if (j >= MAX_LINES_AMOUNT - 1) {
+                cursorX = lines.get(lines.size() - 1).getContent().length();
+                lines.get(lines.size() - 1).insert(afterInsertContent, cursorX);
+                cursorY = lines.size() - 1;
+                return;
+            }
 
-            // create new line if necessary
             if ( i >= 1) {
-                if (j >= lines.size())
-                    for (int k = 0; k <= j - lines.size() + 1; k++)
-                        lines.add(new Line());
-                else
-                    lines.add(j, new Line());
                 cursorX = 0;
             }
             Line line = lines.get(j);
             line.insert(splitString[i], cursorX);
-            moveCursorX(splitString[i].length(), true);
-
         }
+        cursorX += splitString[splitString.length - 1].length();
         lines.get(cursorY + splitString.length - 1).insert(afterInsertContent, cursorX);
         moveCursorY(splitString.length - 1, true);
         updateWindow();

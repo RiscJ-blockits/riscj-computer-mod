@@ -72,7 +72,6 @@ class ProgrammingBlockEntityTest {
         PacketByteBuf buf = PacketByteBufs.create();
         programmingBlock.writeScreenOpeningData(null, buf);
         assertEquals(new BlockPos(0,0,1), buf.readBlockPos());
-        assertEquals("ADD 5", buf.readString());
     }
 
 }

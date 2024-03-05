@@ -66,8 +66,6 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
         this(syncId, playerInventory,
                 new SimpleInventory(3),
                 (ProgrammingBlockEntity) playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
-        // load code from packet buffer
-        blockEntity.setCode(buf.readString());
     }
 
     /**
