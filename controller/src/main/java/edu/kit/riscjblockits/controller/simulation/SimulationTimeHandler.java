@@ -131,4 +131,28 @@ public class SimulationTimeHandler implements ISimulationTimingObserver, IRealti
         }
     }
 
+    /**
+     * Get the current Minecraft tick counter to check in tests.
+     * @return The current Minecraft tick counter.
+     */
+    int getMinecraftTickCounter() {
+        return minecraftTickCounter;
+    }
+
+/**
+     * Get the current clock mode to check in tests.
+     * @return The current clock mode.
+     */
+    ClockMode getClockMode() {
+        return clockMode;
+    }
+
+    /**
+     * Get the current clock speed to check in tests.
+     * @return The current clock speed.
+     */
+    int getClockSpeed() {
+        return clockSpeed;
+    }
+
 }

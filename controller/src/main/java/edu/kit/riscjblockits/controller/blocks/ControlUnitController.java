@@ -11,7 +11,6 @@ import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 
-import java.io.UnsupportedEncodingException;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_CLUSTERING;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
@@ -75,11 +74,14 @@ public class ControlUnitController extends ComputerBlockController{
                     updateClusterHandler();
                     return;
                 }
-                String ist = ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(s)).get(CONTROL_IST_ITEM)).getContent();
+                String ist;
+                try {
+                    ist = ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(s)).get(CONTROL_IST_ITEM)).getContent();
+                } catch (ClassCastException e) { continue; }
                 IQueryableInstructionSetModel istModel = null;
                 try {
                     istModel = InstructionSetBuilder.buildInstructionSetModel(ist);
-                } catch (UnsupportedEncodingException |  InstructionBuildException e) {
+                } catch (InstructionBuildException e) {
                     return;
                 }
                 boolean newIstModel = ((ControlUnitModel) getModel()).setIstModel(istModel);

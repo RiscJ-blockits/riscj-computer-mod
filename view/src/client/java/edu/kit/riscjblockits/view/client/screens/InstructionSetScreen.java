@@ -22,8 +22,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
-import java.io.UnsupportedEncodingException;
-
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
 
 /**
@@ -207,7 +205,7 @@ public class InstructionSetScreen extends Screen {
         InstructionSetModel instructionSetModel;
         try {
             instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(ist);
-        }catch (UnsupportedEncodingException | InstructionBuildException e) {
+        }catch (InstructionBuildException e) {
             tickCounter = 100;
             //errorText = MultilineText.create(textRenderer,Text.of(e.getMessage()) , 182 * 2);
             errorText = MultilineText.create(textRenderer,Text.translatable("ist_error"), 200);

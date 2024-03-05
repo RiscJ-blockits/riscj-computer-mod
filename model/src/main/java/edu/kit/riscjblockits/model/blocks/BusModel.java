@@ -77,4 +77,11 @@ public class BusModel extends BlockModel{
         return belongsToSystem.getActiveVisualization(getPosition());
     }
 
+    /**
+     * Getter for the bus system this bus belongs to.
+     * @return The bus system this bus belongs to.
+     */
+    public BusSystemModel getBelongsToSystem() {
+        return belongsToSystem;
+    }
 }

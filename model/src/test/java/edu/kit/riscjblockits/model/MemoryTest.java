@@ -23,8 +23,14 @@ class MemoryTest {
         Value v = memory.getValueAt(new Value(new byte[]{0,0,0,0x10}));
 
         assertArrayEquals(val.getByteValue(), v.getByteValue());
+    }
 
+    @Test
+    void getAndSetNonexistentValue() {
+        Memory memory = new Memory(4, 4);
+        Value v = memory.getValueAt(new Value(new byte[]{0,0,0,0x11}));
 
+        assertEquals(new Value(new byte[4]), v);
     }
 
     @Test

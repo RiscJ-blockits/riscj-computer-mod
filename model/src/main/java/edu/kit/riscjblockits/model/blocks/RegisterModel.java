@@ -22,6 +22,10 @@ public class RegisterModel extends BlockModel {
      * The default register type. Is displayed in the ui if no register type is set.
      */
     public static final String UNASSIGNED_REGISTER = "[NOT_ASSIGNED]";
+    /**
+     * The default word length of a register.
+     */
+    public static final int DEFAULT_WORD_LENGTH = 3;
     private int wordLength;
 
     private String registerType;
@@ -45,7 +49,7 @@ public class RegisterModel extends BlockModel {
         value = new Value();
         setType(ModelType.REGISTER);
         registerType = UNASSIGNED_REGISTER;
-        wordLength = 3;
+        wordLength = DEFAULT_WORD_LENGTH;
     }
 
     /**

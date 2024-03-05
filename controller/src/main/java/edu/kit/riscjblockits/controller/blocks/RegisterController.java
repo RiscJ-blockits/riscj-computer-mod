@@ -92,8 +92,12 @@ public class RegisterController extends ComputerBlockController {
                 case REGISTER_REGISTERS -> {
                     IDataContainer registers = (IDataContainer) ((IDataContainer) data).get(s);
                     String[] missingAvailableRegisters = new String[2];
-                    missingAvailableRegisters[0] = ((IDataStringEntry) registers.get(REGISTER_MISSING)).getContent();
-                    missingAvailableRegisters[1] = ((IDataStringEntry) registers.get(REGISTER_FOUND)).getContent();
+                    try {
+                        missingAvailableRegisters[0] = ((IDataStringEntry) registers.get(REGISTER_MISSING)).getContent();
+                        missingAvailableRegisters[1] = ((IDataStringEntry) registers.get(REGISTER_FOUND)).getContent();
+                    } catch (ClassCastException e) {
+                        continue;
+                    }
                     ((RegisterModel) getModel()).setMissingAvailableRegisters(missingAvailableRegisters);
                     if (registers.get(REGISTER_ALU_REGS) instanceof IDataStringEntry) {
                         String[] aluRegs = ((IDataStringEntry) registers.get(REGISTER_ALU_REGS)).getContent().split(" ");
@@ -101,17 +105,23 @@ public class RegisterController extends ComputerBlockController {
                     }
                 }
                 case REGISTER_WORD_LENGTH -> {
-                    int wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
+                    int wordLength;
+                    try {
+                        wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
                     ((RegisterModel) getModel()).setWordLength(wordLength);
                 }
                 case REGISTER_VALUE -> {
                     int wordLength;
+                    Value value;
                     try {
                         wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(REGISTER_WORD_LENGTH)).getContent());
-                    } catch (NumberFormatException e) {
-                        continue;
+                        value = Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
+                    } catch (NumberFormatException | ClassCastException e) {
+                        continue;       //we cant set value without a word length
                     }
-                    Value value = Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
                     ((RegisterModel) getModel()).setValue(value);
                 }
                 default -> {

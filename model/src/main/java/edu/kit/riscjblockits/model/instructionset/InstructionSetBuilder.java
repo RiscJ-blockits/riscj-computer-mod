@@ -9,7 +9,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -36,6 +35,9 @@ public final class InstructionSetBuilder {
         } catch (JsonSyntaxException e) {
             throw new InstructionBuildException("Error while parsing the instruction set: " + e.getMessage());
         }
+        if(instructionSet == null) {
+            throw new InstructionBuildException("Error while parsing the instruction set: The instruction set is empty.");
+        }
         instructionSet.generateHashMaps();
         return instructionSet;
     }
@@ -44,10 +46,9 @@ public final class InstructionSetBuilder {
      * Builds an InstructionSetModel from a given String.
      * @param s String
      * @return InstructionSetModel
-     * @throws UnsupportedEncodingException if the character encoding is not supported
      * @throws InstructionBuildException if the instruction set cannot be built.
      */
-    public static InstructionSetModel buildInstructionSetModel (String s) throws UnsupportedEncodingException, InstructionBuildException {
+    public static InstructionSetModel buildInstructionSetModel (String s) throws InstructionBuildException {
         InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
         return buildInstructionSetModel(stream);
     }

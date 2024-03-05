@@ -68,25 +68,36 @@ public class WirelessRegisterController extends RegisterController {
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             switch (s) {
-                case REGISTER_WORD_LENGTH -> {
-                    int wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
-                    ((WirelessRegisterModel) getModel()).setWordLength(wordLength);
-                }
-                case REGISTER_VALUE -> {
+                case REGISTER_WORD_LENGTH -> { //ToDo duplicated code: could probably just be removed @Thomas
                     int wordLength;
                     try {
-                        wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(REGISTER_WORD_LENGTH)).getContent());
+                        wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
                     } catch (NumberFormatException e) {
                         continue;
                     }
-                    Value value = Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
+                    ((WirelessRegisterModel) getModel()).setWordLength(wordLength);
+                }
+                case REGISTER_VALUE -> { //ToDo duplicated code: could probably just be removed @Thomas
+                    int wordLength;
+                    Value value;
+                    try {
+                        wordLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(REGISTER_WORD_LENGTH)).getContent());
+                        value = Value.fromHex(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent(), wordLength);
+                    } catch (ClassCastException | NumberFormatException e) {
+                        continue;
+                    }
                     ((WirelessRegisterModel) getModel()).setValue(value);
                 }
                 case REGISTER_WIRELESS -> {
                     IDataContainer position = (IDataContainer) ((IDataContainer) data).get(s);
-                    double x = Double.parseDouble(((IDataStringEntry) position.get(REGISTER_WIRELESS_XPOS)).getContent());
-                    double y = Double.parseDouble(((IDataStringEntry) position.get(REGISTER_WIRELESS_YPOS)).getContent());
-                    double z = Double.parseDouble(((IDataStringEntry) position.get(REGISTER_WIRELESS_ZPOS)).getContent());
+                    double x, y, z;
+                    try {
+                        x = Double.parseDouble(((IDataStringEntry) position.get(REGISTER_WIRELESS_XPOS)).getContent());
+                        y = Double.parseDouble(((IDataStringEntry) position.get(REGISTER_WIRELESS_YPOS)).getContent());
+                        z = Double.parseDouble(((IDataStringEntry) position.get(REGISTER_WIRELESS_ZPOS)).getContent());
+                    } catch (NumberFormatException | ClassCastException | NullPointerException e) {
+                        continue;
+                    }
                     BlockPosition blockPosition = new BlockPosition(x, y, z);
                     ((WirelessRegisterModel) getModel()).setWirelessNeighbourPosition(blockPosition);
                 }

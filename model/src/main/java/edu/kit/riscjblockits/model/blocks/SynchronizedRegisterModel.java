@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * This class represents the synchronized RegisterModel.
+ * It is used to synchronize the wireless register models.
  */
 public class SynchronizedRegisterModel extends RegisterModel {
 
@@ -14,7 +15,7 @@ public class SynchronizedRegisterModel extends RegisterModel {
     private List<WirelessRegisterModel> wirelessRegisterModels;
 
     /**
-     * Creates a new SyncronizedRegisterModel.
+     * Creates a new SynchronizedRegisterModel.
      */
     public SynchronizedRegisterModel() {
         super();
@@ -52,4 +53,5 @@ public class SynchronizedRegisterModel extends RegisterModel {
             wirelessRegisterModel.update();
         }
     }
+
 }

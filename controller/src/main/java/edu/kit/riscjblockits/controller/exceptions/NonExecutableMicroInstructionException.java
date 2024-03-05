@@ -46,4 +46,5 @@ public class NonExecutableMicroInstructionException extends RuntimeException {
      */
     public NonExecutableMicroInstructionException() {
     }
+
 }
