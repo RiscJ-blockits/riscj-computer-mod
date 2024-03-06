@@ -51,9 +51,12 @@ public class AluController extends ComputerBlockController {
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(ALU_OPERATION)) {
-                ((AluModel) getModel()).setOperation(((IDataStringEntry)((IDataContainer) data).get(s)).getContent());
+                try {
+                    ((AluModel) getModel()).setOperation(((IDataStringEntry)((IDataContainer) data).get(s)).getContent());
+                } catch (ClassCastException | NullPointerException e) {
+                    //silent fail
+                }
             }
-            //ToDo sollen wir hier auch die Operanden setzen können?
         }
     }
 

@@ -57,7 +57,7 @@ public class TerminalBlockEntity extends RegisterBlockEntity implements Extended
     //the normal register is the mode register
     private TerminalInputController inputController;
     private TerminalModeController modeController;
-    private RegisterController outputController;
+    private TerminalOutputController outputController;
 
     /**
      * The constructor of the block entity.

@@ -3,7 +3,6 @@ package edu.kit.riscjblockits.controller.clustering;
 import edu.kit.riscjblockits.controller.blocks.AluController;
 import edu.kit.riscjblockits.controller.blocks.ArchiCheckStub_ClusterHandler;
 import edu.kit.riscjblockits.controller.blocks.ArchiCheckStub_Entity;
-import edu.kit.riscjblockits.controller.blocks.ArchiCheckStub_RegisterController;
 import edu.kit.riscjblockits.controller.blocks.ControlUnitController;
 import edu.kit.riscjblockits.controller.blocks.IQueryableClusterController;
 import edu.kit.riscjblockits.controller.blocks.MemoryController;
@@ -19,7 +18,6 @@ import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
 import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,14 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ClusterArchitectureHandlerTest {
-
-    @Disabled("Disabled because cast with stub does not work here")
-    @Test
-    void checkArchitecture() {
-        ArchiCheckStub_RegisterController block1 = new ArchiCheckStub_RegisterController(new BlockPosition(0,0,0), "IAR", new java.util.ArrayList<>());
-        ClusterHandler ch = block1.getClusterHandler();
-        ch.checkFinished();
-    }
 
     @Test
     void verySimpleCheckArchitectureWithRegister() {

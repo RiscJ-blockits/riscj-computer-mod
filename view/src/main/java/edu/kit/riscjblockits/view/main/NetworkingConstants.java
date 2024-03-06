@@ -18,7 +18,9 @@ public abstract class NetworkingConstants {
      * Used by the client when it wants to send code inputted from the player to the server for assembly.
      * The position of the block must be sent as a parameter.
      */
-    public static final Identifier SYNC_PROGRAMMING_CODE = new Identifier(RISCJ_blockits.MOD_ID, "sync_programming_code");
+    public static final Identifier SYNC_PROGRAMMING_CODE_C2S = new Identifier(RISCJ_blockits.MOD_ID, "sync_programming_code");
+    public static final Identifier SYNC_PROGRAMMING_CODE_S2C = new Identifier(RISCJ_blockits.MOD_ID, "sync_programming_code_server");
+
     /**
      * Used by the server to send exceptions while assembly back to the client.
      */
@@ -59,6 +61,8 @@ public abstract class NetworkingConstants {
      * Used by the client to tell the server which memory data to send.
      */
     public static final Identifier SYNC_MEMORY_LINE_QUERY = new Identifier(RISCJ_blockits.MOD_ID, "sync_memory_line_query");
+    public static final Identifier SYNC_PROGRAMMING_CODE_CONFIRMATION_S2C = new Identifier(RISCJ_blockits.MOD_ID, "sync_programming_code_confirmation_server");
+    public static final Identifier SYNC_PROGRAMMING_CODE_CONFIRMATION_C2S = new Identifier(RISCJ_blockits.MOD_ID, "sync_programming_code_confirmation");
 
     /**
      * This class should not be instantiated.

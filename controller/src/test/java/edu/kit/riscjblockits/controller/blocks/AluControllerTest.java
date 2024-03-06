@@ -15,7 +15,9 @@ import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.ALU_OPERATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class AluControllerTest {
 
@@ -29,11 +31,31 @@ class AluControllerTest {
     @Test
     void setData() {
         Data aluData = new Data();
-        aluData.set("operation", new DataStringEntry("add"));
+        aluData.set(ALU_OPERATION, new DataStringEntry("add"));
         aluController.setData(aluData);
         AluModel aluModel = (AluModel) aluController.getModel();
         aluData = (Data) aluModel.getData();
-        assertEquals("add", ((IDataStringEntry) (aluData.get("operation"))).getContent());
+        assertEquals("add", ((IDataStringEntry) (aluData.get(ALU_OPERATION))).getContent());
+    }
+
+    @Test
+    void setWrongData() {
+        Data aluData = new Data();
+        aluData.set(ALU_OPERATION, new DataStringEntry(""));
+        aluController.setData(aluData);
+        AluModel aluModel = (AluModel) aluController.getModel();
+        aluData = (Data) aluModel.getData();
+        assertEquals("", ((IDataStringEntry) (aluData.get(ALU_OPERATION))).getContent());
+    }
+
+    @Test
+    void setNoData() {
+        Data aluData = new Data();
+        aluData.set(ALU_OPERATION, null);
+        aluController.setData(aluData);
+        AluModel aluModel = (AluModel) aluController.getModel();
+        aluData = (Data) aluModel.getData();
+        assertFalse(aluData.getKeys().contains(ALU_OPERATION));
     }
 
     private IConnectableComputerBlockEntity getBlockEntityMock() {
@@ -627,4 +649,5 @@ class AluControllerTest {
 
         assertEquals("0004", model.getResult().getHexadecimalValue());
     }
+
 }

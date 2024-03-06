@@ -46,6 +46,7 @@ public class AssemblerSyntaxTextEditWidget extends TextEditWidget {
     protected void drawLine(DrawContext context, String line, int windowStartX, int i, int displayX, int displayY) {
         int pos = 0;
         int x = displayX;
+        int renderedInfront = 0;
         while (!line.isEmpty()) {
 
             // find the closest match
@@ -83,12 +84,12 @@ public class AssemblerSyntaxTextEditWidget extends TextEditWidget {
                     drawNormal(context, line.substring(Math.max(windowStartX - pos, 0)), x, displayY);
                 return;
             }
-            int renderedInfront = 0;
+
             // render the text before the match
             if (closestStart > 0) {
                 if (windowStartX < pos + closestStart)
                     x += drawNormal(context, line.substring(Math.max(windowStartX - pos, 0), closestStart), x, displayY);
-                renderedInfront = closestStart;
+                renderedInfront += closestStart;
                 line = line.substring(closestStart);
             }
             // draw next match

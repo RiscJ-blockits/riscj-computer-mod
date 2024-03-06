@@ -23,7 +23,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,8 +66,6 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
         this(syncId, playerInventory,
                 new SimpleInventory(3),
                 (ProgrammingBlockEntity) playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
-        // load code from packet buffer
-        blockEntity.setCode(buf.readString());
     }
 
     /**
@@ -213,7 +210,7 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
         try {
             instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(ist);
             return instructionSetModel.getExample();
-        }catch (UnsupportedEncodingException | InstructionBuildException e) {
+        }catch (InstructionBuildException e) {
             return "";
         }
     }
@@ -240,9 +237,9 @@ public class ProgrammingScreenHandler extends ModScreenHandler {
             return null;
         }
         IDataElement instructionSetData = new NbtDataConverter(nbt).getData();
-        try {
+        try{
             return InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
-        } catch (UnsupportedEncodingException e) {
+        } catch (InstructionBuildException buildException) {
             return null;
         }
     }

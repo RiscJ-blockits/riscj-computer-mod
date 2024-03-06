@@ -20,8 +20,6 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
-import java.io.UnsupportedEncodingException;
-
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
 
 /**
@@ -107,7 +105,7 @@ public class ControlUnitScreenHandler extends ModScreenHandler {
         InstructionSetModel instructionSet;
         try {
             instructionSet = InstructionSetBuilder.buildInstructionSetModel(((IDataStringEntry) instructionSetData).getContent());
-        } catch (UnsupportedEncodingException | InstructionBuildException e) {
+        } catch (InstructionBuildException e) {
             return "";
         }
         return instructionSet.getName();

@@ -53,7 +53,12 @@ public class MemoryController extends ComputerBlockController {
                     onUpdate();
                     return;
                 }
-                IDataContainer memoryData = (IDataContainer) ((IDataContainer) ((IDataContainer) data).get(s)).get(MEMORY_PROGRAMM_ITEM);
+                IDataContainer memoryData;
+                try {
+                    memoryData = (IDataContainer) ((IDataContainer) ((IDataContainer) data).get(s)).get(MEMORY_PROGRAMM_ITEM);
+                } catch (ClassCastException e) {
+                    return;     //silent fail with malformed data
+                }
                 if (memoryData.getKeys().isEmpty()) {
                     return;     //happens during a world load when the nbt is loaded
                 }

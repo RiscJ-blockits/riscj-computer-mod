@@ -4,17 +4,20 @@ import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.IUserInputReceivableComputerController;
 import edu.kit.riscjblockits.controller.clustering.ClusterHandler;
 import edu.kit.riscjblockits.model.blocks.ControlUnitModel;
+import edu.kit.riscjblockits.model.blocks.MemoryModel;
 import edu.kit.riscjblockits.model.data.Data;
 import edu.kit.riscjblockits.model.data.IDataContainer;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.instructionset.InstructionBuildException;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetBuilder;
 import edu.kit.riscjblockits.model.instructionset.InstructionSetModel;
+import edu.kit.riscjblockits.model.memoryrepresentation.Memory;
 import edu.kit.riscjblockits.view.client.TestSetupClient;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.TestSetupMain;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.alu.AluBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.controlunit.ControlUnitBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.items.instructionset.InstructionSetItem;
 import net.minecraft.nbt.NbtCompound;
@@ -286,7 +289,7 @@ class ComputerBlockEntityTest {
         blocks.put("REGISTER9", registerEntity9);
     }
 
-    @Disabled("Because of refactored functionality")
+    @Disabled("Because of refactored functionality")        //ToDo alu registers to the alu
     @Test
     @Order(5)
     void startSimulation() {
@@ -294,9 +297,13 @@ class ComputerBlockEntityTest {
         RegisterBlockEntity registerEntity9 = (RegisterBlockEntity) blocks.get("REGISTER9");
         ((RegisterBlockEntity) registerEntity9).writeNbt(nbt);
         NbtCompound subNbt = (NbtCompound) nbt.get(MOD_DATA);
+        assert subNbt != null;
         subNbt.putString(REGISTER_TYPE, "Z");
         registerEntity9.readNbt(nbt);
         //only when memory is set
+        Memory memory = new Memory(2,2);
+        ((MemoryModel) ((MemoryBlockEntity) blocks.get("MEMORY")).getModel()).setMemory(memory);
+        ControlUnitBlockEntity cuEntity = (ControlUnitBlockEntity) blocks.get("CONTROL_UNIT");
     }
 
     private static InstructionSetModel buildInstructionSetModelMima() {
