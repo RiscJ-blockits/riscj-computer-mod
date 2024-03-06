@@ -1,5 +1,6 @@
 {
   "variants": {
-    "": { "model": "riscj_blockits:block/memory_block" }
+    "active=true": { "model":  "riscj_blockits:block/memory_block_active"},
+    "active=false": { "model":  "riscj_blockits:block/memory_block"}
   }
 }

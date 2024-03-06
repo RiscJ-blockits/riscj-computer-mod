@@ -1,5 +1,6 @@
 {
   "variants": {
-    "": { "model": "riscj_blockits:block/redstone_input_block" }
+    "active=true": { "model":  "riscj_blockits:block/redstone_imput_block_active"},
+    "active=false": { "model":  "riscj_blockits:block/redstone_input_block"}
   }
 }

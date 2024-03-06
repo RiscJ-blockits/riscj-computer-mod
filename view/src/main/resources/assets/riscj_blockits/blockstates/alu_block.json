@@ -1,7 +1,6 @@
 {
   "variants": {
-    "": {
-      "model": "riscj_blockits:block/alu_block"
-    }
+"active=true": { "model":  "riscj_blockits:block/alu_block_active"},
+"active=false": { "model":  "riscj_blockits:block/alu_block"}
   }
 }
