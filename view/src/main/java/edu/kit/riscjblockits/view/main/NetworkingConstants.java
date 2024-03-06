@@ -88,6 +88,10 @@ public abstract class NetworkingConstants {
      * After a chunk of the instruction set is sent to the client, the client sends a confirmation back to the server.
      */
     public static final Identifier SYNC_IST_TEXT_CONFIRMATION_C2S = new Identifier(RISCJ_blockits.MOD_ID, "sync_ist_text_confirmation");
+    /**
+     * The size of the chunks that the code is split into during transport. In chars.
+     */
+    public static final int CHUNK_SIZE = 15000;
 
     /**
      * This class should not be instantiated.

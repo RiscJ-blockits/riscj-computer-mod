@@ -27,7 +27,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
 import static edu.kit.riscjblockits.model.data.DataConstants.INSTRUCTION_SET;
 import static edu.kit.riscjblockits.model.data.DataConstants.INSTRUCTION_SET_TEMP;
 import static edu.kit.riscjblockits.model.data.DataConstants.TEMP_IST_NBT_TAG;
-import static edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlockEntity.CHUNK_SIZE;
+import static edu.kit.riscjblockits.view.main.NetworkingConstants.CHUNK_SIZE;
 
 /**
  * This class defines the instruction set item in the game.
