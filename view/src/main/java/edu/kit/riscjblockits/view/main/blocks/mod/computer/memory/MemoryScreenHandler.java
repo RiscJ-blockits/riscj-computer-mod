@@ -124,7 +124,7 @@ public class MemoryScreenHandler extends ModScreenHandler {
      * @param address the line of the memory to get
      * @return a string with the address and the value of the memory at the given line separated by a space
      */
-    public String getMemoryLine(int address) {
+    public String getMemoryLine(long address) {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
             return "0";
@@ -152,7 +152,7 @@ public class MemoryScreenHandler extends ModScreenHandler {
      * Getter for the memory size of the memory block entity.
      * @return the size of the memory in addressable units
      */
-    public int getMemorySize() {
+    public long getMemorySize() {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
             return 9;
@@ -163,7 +163,8 @@ public class MemoryScreenHandler extends ModScreenHandler {
         }
         for (String s : ((IDataContainer) data).getKeys()) {
             if (s.equals(MEMORY_ADDRESS)) {
-                return (int) Math.pow(Math.pow(2, 8), Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent()));
+                int addressLength = 8 * Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
+                return (long) (Math.pow(2, addressLength));
             }
         }
         return 9;

@@ -23,6 +23,10 @@ import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
+import static edu.kit.riscjblockits.model.data.DataConstants.INSTRUCTION_SET;
+import static edu.kit.riscjblockits.model.data.DataConstants.INSTRUCTION_SET_TEMP;
+import static edu.kit.riscjblockits.model.data.DataConstants.TEMP_IST_NBT_TAG;
+import static edu.kit.riscjblockits.view.main.NetworkingConstants.CHUNK_SIZE;
 
 /**
  * This class represents the Instruction Set Item Screen. With it, the player can modify the Instruction Set on the Item.
@@ -32,10 +36,6 @@ public class InstructionSetScreen extends Screen {
     private static final Identifier WRITE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/instructionset/save_button.png");
 
     private static final Identifier RESTORE_BUTTON_TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/instructionset/reset_button.png");
-    /**
-     * The tag that is used to store user input temporary data in the NBT.
-     */
-    private static final String TEMP_IST_NBT_TAG = "temp_IstString";
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/instructionset/instructionset_gui.png");
 
     /**
@@ -98,6 +98,7 @@ public class InstructionSetScreen extends Screen {
             if (s.equals(CONTROL_IST_ITEM)) {
                 istString = nbt.getString(CONTROL_IST_ITEM);
             } else if (s.equals(TEMP_IST_NBT_TAG)) {
+                if(nbt.getString(s).isEmpty()) continue;
                 istString = nbt.getString(s);
                 edited = true;
                 break;
@@ -183,9 +184,7 @@ public class InstructionSetScreen extends Screen {
             nbt.putString(TEMP_IST_NBT_TAG, inputBox.getText());
             client.player.getStackInHand(currentHand).setNbt(nbt);
             client.player.getInventory().markDirty();
-            PacketByteBuf buf = PacketByteBufs.create().writeNbt(nbt);
-            buf.writeString(currentHand.toString());
-            ClientPlayNetworking.send(NetworkingConstants.SYNC_IST_INPUT, buf);     //sync data to server
+            syncTempText(inputBox.getText()); //sync data to server
             this.client.player.closeHandledScreen();
         }
         // return true if the edit box is focused or the edit box is focused --> suppress all other key presses (e.g. "e")
@@ -207,7 +206,6 @@ public class InstructionSetScreen extends Screen {
             instructionSetModel = InstructionSetBuilder.buildInstructionSetModel(ist);
         }catch (InstructionBuildException e) {
             tickCounter = 100;
-            //errorText = MultilineText.create(textRenderer,Text.of(e.getMessage()) , 182 * 2);
             errorText = MultilineText.create(textRenderer,Text.translatable("ist_error"), 200);
             return;
         }
@@ -219,10 +217,9 @@ public class InstructionSetScreen extends Screen {
         client.player.getStackInHand(currentHand).setNbt(nbt);
         client.player.getStackInHand(currentHand).setCustomName(Text.of(instructionSetModel.getName() + " " + I18n.translate("istItem.title")));
         client.player.getInventory().markDirty();
-        PacketByteBuf buf = PacketByteBufs.create().writeNbt(nbt);
-        buf.writeString(currentHand.toString());
-        ClientPlayNetworking.send(NetworkingConstants.SYNC_IST_INPUT, buf);     //sync data to server
         edited = false;
+        syncIstText(ist);
+        syncTempText("");
         this.client.player.closeHandledScreen();
     }
 
@@ -241,6 +238,50 @@ public class InstructionSetScreen extends Screen {
             }
         }
         inputBox.setText(istString);
+    }
+
+    private void syncIstText(String text) {
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_IST_TEXT_CONFIRMATION_C2S,
+            (client1, handler1, buf, responseSender) -> {
+                int requestedChunk = buf.readInt();
+                if (requestedChunk * CHUNK_SIZE > text.length()) {
+                    ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SYNC_IST_TEXT_CONFIRMATION_C2S);
+                    return;
+                }
+                sendChunk(requestedChunk, text, INSTRUCTION_SET, NetworkingConstants.SYNC_IST_TEXT_C2S);
+            });
+        sendChunk(0, text, INSTRUCTION_SET, NetworkingConstants.SYNC_IST_TEXT_C2S);
+    }
+
+    private void syncTempText(String text) {
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_TEMP_TEXT_CONFIRMATION_C2S,
+            (client1, handler1, buf, responseSender) -> {
+                int requestedChunk = buf.readInt();
+                if (requestedChunk * CHUNK_SIZE > text.length()) {
+                    ClientPlayNetworking.unregisterGlobalReceiver(NetworkingConstants.SYNC_TEMP_TEXT_CONFIRMATION_C2S);
+                    return;
+                }
+                sendChunk(requestedChunk, text, INSTRUCTION_SET_TEMP, NetworkingConstants.SYNC_TEMP_TEXT_C2S);
+            });
+        sendChunk(0, text, INSTRUCTION_SET_TEMP, NetworkingConstants.SYNC_TEMP_TEXT_C2S);
+    }
+
+    private void sendChunk(int chunkIndex, String text, String tag, Identifier network) {
+        NbtCompound nbt = new NbtCompound();
+        int start = chunkIndex * CHUNK_SIZE;
+        int end = Math.min((chunkIndex + 1) * CHUNK_SIZE, text.length());
+        // can't send as there is no more text
+        if (start > end || start > text.length()) {
+            return;
+        }
+        nbt.putInt("chunkIndex", chunkIndex);
+        nbt.putString("chunkData", text.substring(start, end));
+        //
+        NbtCompound container = new NbtCompound();
+        container.put(tag, nbt);
+        PacketByteBuf packet = PacketByteBufs.create();
+        packet.writeNbt(container);
+        ClientPlayNetworking.send(network, packet);
     }
 
 }
