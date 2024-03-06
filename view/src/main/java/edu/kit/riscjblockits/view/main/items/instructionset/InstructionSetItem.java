@@ -1,6 +1,7 @@
 package edu.kit.riscjblockits.view.main.items.instructionset;
 
 import edu.kit.riscjblockits.view.main.NetworkingConstants;
+import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
@@ -20,7 +21,13 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.CHUNK_DATA;
+import static edu.kit.riscjblockits.model.data.DataConstants.CHUNK_INDEX;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
+import static edu.kit.riscjblockits.model.data.DataConstants.INSTRUCTION_SET;
+import static edu.kit.riscjblockits.model.data.DataConstants.INSTRUCTION_SET_TEMP;
+import static edu.kit.riscjblockits.model.data.DataConstants.TEMP_IST_NBT_TAG;
+import static edu.kit.riscjblockits.view.main.NetworkingConstants.CHUNK_SIZE;
 
 /**
  * This class defines the instruction set item in the game.
@@ -35,36 +42,77 @@ public class InstructionSetItem extends Item {
 
     /**
      * Creates a new instruction set item with the given settings.
-     * @param settings The settings for the item as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
+     *
+     * @param settings    The settings for the item as {@link net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings}.
      * @param inputStream The input stream to read the default instruction set json from.
      */
     public InstructionSetItem(Settings settings, InputStream inputStream) {
         super(settings);
         defaultInstructionSetJson = new BufferedReader(
-                new InputStreamReader(inputStream, StandardCharsets.UTF_8))
-                .lines()
-                .collect(Collectors.joining("\n"));
-
-        ServerPlayNetworking.registerGlobalReceiver(        //receiver when the player edits the item
-            NetworkingConstants.SYNC_IST_INPUT, (server, player, handler, buf, responseSender) -> {
+            new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+            .lines()
+            .collect(Collectors.joining("\n"));
+        //sync Ist Text
+        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_IST_TEXT_C2S,
+            (server, player, handler, buf, responseSender) -> server.execute(() -> {
                 NbtCompound nbt = buf.readNbt();
-                String hand = buf.readString();
-                Hand currentHand;
-                if (hand.equals("MAIN_HAND")) {
-                    currentHand = Hand.MAIN_HAND;
-                } else {
-                    currentHand = Hand.OFF_HAND;
+                assert nbt != null;
+                NbtCompound chunkContainer = nbt.getCompound(INSTRUCTION_SET);
+                int chunkIndex = chunkContainer.getInt(CHUNK_INDEX);
+                String chunkCode = chunkContainer.getString(CHUNK_DATA);
+                server.execute(() -> {
+                    NbtCompound itemNbt = player.getMainHandStack().getOrCreateNbt();
+                    String oldText = itemNbt.getString(CONTROL_IST_ITEM);
+                    if (chunkIndex == 0) {
+                        oldText = "";    //reset old text
+                    }
+                    oldText += chunkCode;
+                    itemNbt.putString(CONTROL_IST_ITEM, oldText);    //reset old text
+                    player.getMainHandStack().setNbt(itemNbt);
+                });
+
+                if (chunkCode.length() < CHUNK_SIZE) {
+                    return;
                 }
-                server.execute(() -> player.getStackInHand(currentHand).setNbt(nbt));
-            });
+                responseSender.sendPacket(NetworkingConstants.SYNC_IST_TEXT_CONFIRMATION_C2S, new PacketByteBuf(
+                    Unpooled.buffer())
+                    .writeInt(chunkIndex + 1));
+            }));
+        //sync Temp Text
+        ServerPlayNetworking.registerGlobalReceiver(NetworkingConstants.SYNC_TEMP_TEXT_C2S,
+            (server, player, handler, buf, responseSender) -> server.execute(() -> {
+                NbtCompound nbt = buf.readNbt();
+                assert nbt != null;
+                NbtCompound chunkContainer = nbt.getCompound(INSTRUCTION_SET_TEMP);
+                int chunkIndex = chunkContainer.getInt(CHUNK_INDEX);
+                String chunkCode = chunkContainer.getString(CHUNK_DATA);
+                server.execute(() -> {
+                    NbtCompound itemNbt = player.getMainHandStack().getOrCreateNbt();
+                    String oldText = itemNbt.getString(TEMP_IST_NBT_TAG);
+                    if (chunkIndex == 0) {
+                        oldText = "";    //reset old text
+                    }
+                    oldText += chunkCode;
+                    itemNbt.putString(TEMP_IST_NBT_TAG, oldText);    //reset old text
+                    player.getMainHandStack().setNbt(itemNbt);
+                });
+
+                if (chunkCode.length() < CHUNK_SIZE) {
+                    return;
+                }
+                responseSender.sendPacket(NetworkingConstants.SYNC_TEMP_TEXT_CONFIRMATION_C2S, new PacketByteBuf(
+                    Unpooled.buffer())
+                    .writeInt(chunkIndex + 1));
+            }));
     }
 
     /**
      * If for some reason the nbt data is not set, the default instruction set json is set.
-     * @param stack the item stack of this item.
-     * @param world the world the item is in.
-     * @param entity the entity the item is in.
-     * @param slot the slot the item is in.
+     *
+     * @param stack    the item stack of this item.
+     * @param world    the world the item is in.
+     * @param entity   the entity the item is in.
+     * @param slot     the slot the item is in.
      * @param selected whether the item is selected.
      */
     @Override
@@ -79,14 +127,15 @@ public class InstructionSetItem extends Item {
 
     /**
      * Opens the instruction set screen when the item is used.
+     *
      * @param world the Minecraft world the item was used in
-     * @param user the player who used the item
-     * @param hand the hand used
+     * @param user  the player who used the item
+     * @param hand  the hand used
      * @return action result determined by minecraft
      */
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (world.isClient) {
+        if (world.isClient || hand == Hand.OFF_HAND) { //offhand is not allowed to simplify syncing
             return super.use(world, user, hand);
         }
         PacketByteBuf buf = PacketByteBufs.create();

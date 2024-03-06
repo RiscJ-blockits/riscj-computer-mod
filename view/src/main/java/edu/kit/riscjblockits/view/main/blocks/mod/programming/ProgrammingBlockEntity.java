@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import static edu.kit.riscjblockits.model.data.DataConstants.CONTROL_IST_ITEM;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_PROGRAMM_ITEM;
 import static edu.kit.riscjblockits.model.data.DataConstants.PROGRAMMING_BLOCK_CODE;
+import static edu.kit.riscjblockits.view.main.NetworkingConstants.CHUNK_SIZE;
 
 /**
  * This class represents a programming block entity from our mod in the game.
@@ -37,11 +38,6 @@ import static edu.kit.riscjblockits.model.data.DataConstants.PROGRAMMING_BLOCK_C
  */
 public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implements ExtendedScreenHandlerFactory,
         ImplementedInventory {
-
-    /**
-     * The size of the chunks that the code is split into during transport.
-     */
-    public static final int CHUNK_SIZE = 32000;
 
     /**
      * The code that is currently in the programming block.
@@ -94,7 +90,7 @@ public class ProgrammingBlockEntity extends ModBlockEntityWithInventory implemen
 
     /**
      * Every entity needs its own controller.
-     * @return An ProgrammingController bound to this entity.
+     * @return A ProgrammingController bound to this entity.
      */
     @Override
     protected IUserInputReceivableController createController() {

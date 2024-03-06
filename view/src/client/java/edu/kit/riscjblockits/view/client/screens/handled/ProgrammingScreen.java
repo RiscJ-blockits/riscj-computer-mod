@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.PROGRAMMING_BLOCK_CODE;
-import static edu.kit.riscjblockits.view.main.blocks.mod.programming.ProgrammingBlockEntity.CHUNK_SIZE;
+import static edu.kit.riscjblockits.view.main.NetworkingConstants.CHUNK_SIZE;
 
 /**
  * This class represents the programming screen.
@@ -205,7 +205,7 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         HashMap<String, Integer> argumentCountMap = new HashMap<>();
         List<String[]> instructions;
 
-        // can only fill map if instructionSet is parsable
+        // can only fill the map if instructionSet is parsable
         try {
             instructions = (handler).getInstructions();
         }catch (InstructionBuildException e) {
