@@ -250,7 +250,6 @@ class AluControllerTest {
         assertEquals("7FF4", model.getResult().getHexadecimalValue());
     }
 
-    //TODO check mulh tests
     @Test
     void executeAluOperationMULH() {
 

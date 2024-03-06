@@ -267,7 +267,6 @@ public class AluController extends ComputerBlockController {
      * @return float value
      */
     private Value fcvtsu(Value operand1) {
-        //TODO check if this is correct
         ByteBuffer wrapped = ByteBuffer.wrap(operand1.getByteValue());
         long num = wrapped.getLong();
         num = Math.abs(num);
