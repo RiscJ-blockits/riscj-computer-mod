@@ -173,7 +173,7 @@ public class Assembler {
         writeLabelsToArguments(arguments);
         makeLabelsRelative(arguments, instruction.getArguments());
         writeRegistersToArguments(arguments);
-        return new Command(instruction, arguments);
+        return new Command(instruction, arguments, cmd[0]);
     }
 
     private void makeLabelsRelative(String[] arguments, String[] arguments1) throws AssemblyException {

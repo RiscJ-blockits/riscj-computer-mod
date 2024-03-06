@@ -34,11 +34,13 @@ public class Command {
 
     /**
      * Constructor for a command.
+     *
      * @param instruction the instruction of the command
-     * @param arguments the arguments of the command
+     * @param arguments   the arguments of the command
+     * @param s
      * @throws AssemblyException if the given command cant be assembled
      */
-    public Command(IQueryableInstruction instruction, String[] arguments) throws AssemblyException {
+    public Command(IQueryableInstruction instruction, String[] arguments, String s) throws AssemblyException {
         for (int i = 0; i < arguments.length; i++) {
             Matcher matcher = MULTI_ARGUMENT_PATTERN.matcher(instruction.getArguments()[i]);
             if (matcher.matches()) {
@@ -58,7 +60,7 @@ public class Command {
 
         assembledTranslation = new String[translation.length];
         for (int i = 0; i < translation.length; i++) {
-            assembledTranslation[i] = assembleArgument(translation[i]);
+            assembledTranslation[i] = assembleArgument(translation[i], s);
         }
 
 
@@ -67,11 +69,13 @@ public class Command {
 
     /**
      * Assembles a single translation part.
+     *
      * @param translationPart the translation part to assemble
+     * @param instructionName name of the instruction to show in error messages
      * @return the assembled translation part
      * @throws AssemblyException if the translation part cant be assembled
      */
-    private String assembleArgument(String translationPart) throws AssemblyException {
+    private String assembleArgument(String translationPart, String instructionName) throws AssemblyException {
         // check if translation part is argument
         Matcher matcher = ARGUMENT_TRANSLATION_PATTERN.matcher(translationPart);
         Matcher matcherRange = ARGUMENT_TRANSLATION_PATTERN_RANGE.matcher(translationPart);
@@ -90,12 +94,12 @@ public class Command {
             // get value from arguments map
             String argumentValue = argumentsInstructionMap.get(argument);
             if (argumentValue == null) {
-                throw new AssemblyException("Argument " + argument + " not found --> invalid Instruction-Set");
+                throw new AssemblyException("Argument " + argument + " in instruction " + instructionName + " not found --> invalid Instruction-Set");
             }
             // extract value from argument
             Value argumentValueObject = ValueExtractor.extractValue(argumentValue, to);
             if (argumentValueObject == null) {
-                throw new AssemblyException("Argument " + argument + " has invalid value");
+                throw new AssemblyException("Argument " + argument +" in instruction " + instructionName + " has invalid value");
             }
             String argumentValueBinary = argumentValueObject.getBinaryValue();
             // cut off leading zeros --> trim to arguments length
@@ -109,12 +113,12 @@ public class Command {
             // get value from arguments map
             String argumentValue = argumentsInstructionMap.get(argument);
             if (argumentValue == null) {
-                throw new AssemblyException("Argument " + argument + " not found");
+                throw new AssemblyException("Argument " + argument + " in instruction " + instructionName + " not found");
             }
             // extract value from argument
             Value argumentValueObject = ValueExtractor.extractValue(argumentValue, length);
             if (argumentValueObject == null) {
-                throw new AssemblyException("Argument " + argument + " has invalid value");
+                throw new AssemblyException("Argument " + argument + " in instruction " + instructionName + " has invalid value");
             }
             String argumentValueBinary = argumentValueObject.getBinaryValue();
             // cut off leading zeros --> trim to arguments length
