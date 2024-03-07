@@ -98,7 +98,7 @@ public class Memory {
     private Value getTrimmedAddress(Value address) {
         String addressString = address.getBinaryValue();
         if (addressString.length() <= memorySize)
-            return Value.fromBinary(addressString, memorySize / 8 + memorySize % 8 == 0? 0 : 1);
+            return Value.fromBinary(addressString, (memorySize / 8) + (memorySize % 8 == 0? 0 : 1));
 
         return Value.fromBinary(addressString.substring(addressString.length() - memorySize),
                 (memorySize / 8) + (memorySize % 8 == 0? 0 : 1));
