@@ -14,8 +14,8 @@ import edu.kit.riscjblockits.view.main.blocks.mod.computer.memory.MemoryScreenHa
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterScreenHandler;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlock;
-import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.WirelessRegisterBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.WirelessRegisterBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.WirelessRegisterBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneInputBlock;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneInputBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.RedstoneOutputBlock;
@@ -81,6 +81,10 @@ public class RISCJ_blockits implements ModInitializer {
      * This attribute defines the active state of a block.
      */
     public static final BooleanProperty ACTIVE_STATE_PROPERTY = BooleanProperty.of("active");
+    /**
+     * This attribute defines the wireless register is connected or not.
+     */
+    public static final BooleanProperty WIRELESS_CONNECTED_PROPERTY = BooleanProperty.of("connected");
 
     // define Blocks
     /**

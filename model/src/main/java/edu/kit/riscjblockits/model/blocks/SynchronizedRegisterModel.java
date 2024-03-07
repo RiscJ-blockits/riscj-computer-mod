@@ -32,6 +32,9 @@ public class SynchronizedRegisterModel extends RegisterModel {
         }
         wirelessRegisterModels.add(wirelessRegisterModel);
         wirelessRegisterModel.update();
+        for (WirelessRegisterModel model : wirelessRegisterModels) {
+            model.setConnected(wirelessRegisterModels.size() > 1);
+        }
     }
 
     /**
@@ -42,6 +45,7 @@ public class SynchronizedRegisterModel extends RegisterModel {
         wirelessRegisterModels.remove(wirelessRegisterModel);
         for (WirelessRegisterModel model : wirelessRegisterModels) {
             model.setWirelessNeighbourPosition(wirelessRegisterModels.get(0).getPosition());
+            model.setConnected(wirelessRegisterModels.size() > 1);
         }
     }
 

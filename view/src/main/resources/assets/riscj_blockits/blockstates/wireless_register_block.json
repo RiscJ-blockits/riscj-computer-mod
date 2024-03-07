@@ -1,7 +1,6 @@
 {
   "variants": {
-    "": {
-      "model": "riscj_blockits:block/wireless_register_block"
-    }
+    "connected=true": { "model":  "riscj_blockits:block/wireless_register_block"},
+    "connected=false": { "model":  "riscj_blockits:block/wireless_register_block_disconnected"}
   }
 }
