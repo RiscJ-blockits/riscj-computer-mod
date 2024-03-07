@@ -306,4 +306,12 @@ class AssemblerTest {
         Memory memory = Memory.fromData((IDataContainer) assembler.getMemoryData());
         assertEquals("00000005", memory.getInitialProgramCounter().getHexadecimalValue());
     }
+
+    @Test
+    void invalidArgumentNoOffset() {
+        InstructionSetModel model = buildInstructionSetModelRiscV();
+        Assembler assembler = new Assembler(model);
+        assertThrowsExactly(AssemblyException.class, () -> assembler.assemble("jalr t0, 16"));
+    }
+
 }

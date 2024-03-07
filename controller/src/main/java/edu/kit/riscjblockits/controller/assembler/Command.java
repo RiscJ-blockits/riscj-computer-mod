@@ -46,6 +46,9 @@ public class Command {
             if (matcher.matches()) {
                 String arg1 = matcher.group("arg1");
                 String arg2 = "[" + matcher.group("arg2") + "]";
+                if (!arguments[i].contains("(") || arguments[i].charAt(arguments[i].length() - 1) != ')') {
+                    throw new AssemblyException("Invalid value " + arguments[i] + " for argument " + instruction.getArguments()[i]);
+                }
                 argumentsInstructionMap.put(arg1, arguments[i].substring(0, arguments[i].indexOf("(")));
                 argumentsInstructionMap.put(arg2, arguments[i].substring(arguments[i].indexOf("(") + 1, arguments[i].length() - 1));
                 continue;
