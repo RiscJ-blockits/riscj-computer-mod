@@ -229,6 +229,11 @@ public final class DataConstants {
     public static final String MEMORY_ADDRESS = "addressSize";
 
     /**
+     * Identifier for the memory size in bits.
+     */
+    public static final String MEMORY_MEMORYSIZE = "memorySize";
+
+    /**
      * Identifier for the initial program-counter-register of the memory.
      */
     public static final String MEMORY_INITIAL_PC = "initialPC";

@@ -72,7 +72,7 @@ class ExecutorTest {
     @BeforeEach
     void setUp() {
         MemoryController memoryController = new MemoryController(getBlockEntityMock());
-        ((MemoryModel) (memoryController.getModel())).setMemory(new Memory(4, 4));
+        ((MemoryModel) (memoryController.getModel())).setMemory(new Memory(4, 4, 32));
         memoryController.writeMemory(Value.fromHex("00", 4), Value.fromHex("0456", 4));
         AluController aluController = new AluController(getBlockEntityMock());
         ((AluModel) aluController.getModel()).setOperand1(Value.fromHex("0100", 4));

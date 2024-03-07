@@ -26,6 +26,7 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
      * The background texture of the screen.
      */
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/memory_block/memory_block_gui.png");
+    public static final int SCREEN_LINES = 9;
 
     /**
      * The list widget that displays the memory contents.
@@ -123,8 +124,11 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
             String address = inputBox.getText();
             try {
                 long addressInt = Long.parseLong(address, 16);
-                if (addressInt >= 0 && addressInt <= handler.getMemorySize()) {
+                if (addressInt >= 0 && addressInt < handler.getMemorySize()-SCREEN_LINES) {
                     memoryListWidget.jumpToLine(addressInt);
+                }
+                else if(addressInt >= handler.getMemorySize()- SCREEN_LINES && addressInt <= handler.getMemorySize()){
+                    memoryListWidget.jumpToLine(handler.getMemorySize()-SCREEN_LINES);
                 }
             } catch (NumberFormatException e) {
                 // do nothing

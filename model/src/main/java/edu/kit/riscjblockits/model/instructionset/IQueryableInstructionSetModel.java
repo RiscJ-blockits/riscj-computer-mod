@@ -52,6 +52,12 @@ public interface IQueryableInstructionSetModel {
     int getMemoryAddressSize();
 
     /**
+     * Getter for the address size of the instruction set memory in bits.
+     * @return Address size of the instruction set memory in bits.
+     */
+    int getMemoryAddressSizeInBits();
+
+    /**
      * Getter for an instruction specified by its command keyword.
      * @param s Command keyword of the instruction.
      * @return Instruction matching the command keyword.

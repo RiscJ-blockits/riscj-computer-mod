@@ -21,6 +21,7 @@ import net.minecraft.screen.slot.Slot;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_ADDRESS;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORYSIZE;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
 
 /**
@@ -29,6 +30,7 @@ import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
  */
 public class MemoryScreenHandler extends ModScreenHandler {
 
+    public static final int SCREEN_LINES = 9;
     /**
      * The inventory of the memory entity.
      */
@@ -155,19 +157,19 @@ public class MemoryScreenHandler extends ModScreenHandler {
     public long getMemorySize() {
         NbtCompound nbt = getBlockEntity().createNbt();
         if (!nbt.contains(MOD_DATA)) {
-            return 9;
+            return SCREEN_LINES;
         }
         IDataElement data = new NbtDataConverter(nbt.get(MOD_DATA)).getData();
         if (!data.isContainer()) {
-            return 9;
+            return SCREEN_LINES;
         }
         for (String s : ((IDataContainer) data).getKeys()) {
-            if (s.equals(MEMORY_ADDRESS)) {
-                int addressLength = 8 * Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
+            if (s.equals(MEMORY_MEMORYSIZE)) {
+                int addressLength = Integer.parseInt(((IDataStringEntry) ((IDataContainer) data).get(s)).getContent());
                 return (long) (Math.pow(2, addressLength));
             }
         }
-        return 9;
+        return SCREEN_LINES;
     }
 
 }

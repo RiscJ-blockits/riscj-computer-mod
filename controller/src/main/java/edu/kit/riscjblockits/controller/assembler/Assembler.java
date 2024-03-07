@@ -67,11 +67,13 @@ public class Assembler {
         this.instructionSetModel = instructionSetModel;
         calculatedMemoryAddressSize = instructionSetModel.getMemoryAddressSize();
         calculatedMemoryWordSize = instructionSetModel.getMemoryWordSize();
+        int memorySize = instructionSetModel.getMemoryAddressSizeInBits();
 
 
         memory = new Memory(
             calculatedMemoryAddressSize,
-            calculatedMemoryWordSize
+            calculatedMemoryWordSize,
+            memorySize
         );
         currentAddress = new Value(new byte[calculatedMemoryAddressSize]);
     }

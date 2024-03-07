@@ -86,7 +86,7 @@ class ClusterArchitectureHandlerTest {
     @Test
     void checkArchitectureMIMA2_4() {
         MemoryController memoryController = new MemoryController(new ArchiCheckStub_Entity());
-        ((MemoryModel) memoryController.getModel()).setMemory(new Memory(10, 10));
+        ((MemoryModel) memoryController.getModel()).setMemory(new Memory(10, 10, 80));
         blockController.add(memoryController);
         blockController.add(new ControlUnitController(new ArchiCheckStub_Entity()));
         ArchiCheckStub_ClusterHandler clusterHandler = new ArchiCheckStub_ClusterHandler(blockController);
