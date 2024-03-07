@@ -29,12 +29,18 @@ public class WirelessRegisterModel extends RegisterModel {
     private BlockPosition wirelessNeighbourPosition;
 
     /**
+     * Attribute that indicates if the wireless register is connected to another wireless register.
+     */
+    private boolean isConnected;
+
+    /**
      * Creates a new WirelessRegisterModel.
      */
     public WirelessRegisterModel() {
         super();
         registerModel = new SynchronizedRegisterModel();
         registerModel.registerObserver(this);
+        isConnected = false;
     }
 
     /**
@@ -139,6 +145,22 @@ public class WirelessRegisterModel extends RegisterModel {
      */
     public void onBroken() {
         registerModel.removeObserver(this);
+    }
+
+    /**
+     * Getter for the Attribute that indicates if the wireless register is connected to another wireless register.
+     * @return The Attribute isConnected.
+     */
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    /**
+     * Setter for the Attribute isConnected.
+     * @param isConnected The new value for the Attribute isConnected.
+     */
+    public void setConnected(boolean isConnected) {
+        this.isConnected = isConnected;
     }
 
 }

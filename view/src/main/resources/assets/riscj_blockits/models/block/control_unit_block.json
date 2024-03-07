@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "riscj_blockits:block/control_unit_block",
-		"particle": "riscj_blockits:block/control_unit_block"
+		"0": "riscj_blockits:block/control_unit_inactive",
+		"particle": "riscj_blockits:block/control_unit_inactive"
 	},
 	"elements": [
 		{

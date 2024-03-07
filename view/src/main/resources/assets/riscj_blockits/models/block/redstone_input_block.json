@@ -1,8 +1,8 @@
 {
   "parent": "riscj_blockits:block/register_block",
   "textures": {
-    "0": "riscj_blockits:block/redstone_register_texture_active",
+    "0": "riscj_blockits:block/redstone_register_in_inactive",
     "1": "riscj_blockits:block/glass",
-    "particle": "riscj_blockits:block/redstone_register_texture_active"
+    "particle": "riscj_blockits:block/redstone_register_in_inactive"
   }
 }
