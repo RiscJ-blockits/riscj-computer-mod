@@ -42,6 +42,9 @@ public class Memory {
      */
     private final int addressLength;
 
+    /**
+     * the size of the memory in bits.
+     */
     private final int memorySize;
 
     /**
@@ -69,9 +72,9 @@ public class Memory {
      * @return the value at the given address
      */
     public Value getValueAt(Value address) {
-
-        if (memory.containsKey(address))
-            return memory.get(address);
+        Value trimmedAddress = getTrimmedAddress(address);
+        if (memory.containsKey(trimmedAddress))
+            return memory.get(trimmedAddress);
         return new Value(new byte[memoryLength]);
     }
 
@@ -81,9 +84,24 @@ public class Memory {
      * @param value the value to write
      */
     public void setValue(Value address, Value value) {
+        Value trimmedAddress = getTrimmedAddress(address);
         synchronized (memory) {
-            memory.put(address, value);
+            memory.put(trimmedAddress, value);
         }
+    }
+
+    /**
+     * Will trim a given address to the memory address size.
+     * @param address the address to trim
+     * @return the trimmed address
+     */
+    private Value getTrimmedAddress(Value address) {
+        String addressString = address.getBinaryValue();
+        if (addressString.length() <= memorySize)
+            return Value.fromBinary(addressString, memorySize / 8 + memorySize % 8 == 0? 0 : 1);
+
+        return Value.fromBinary(addressString.substring(addressString.length() - memorySize),
+                (memorySize / 8) + (memorySize % 8 == 0? 0 : 1));
     }
 
     /**
