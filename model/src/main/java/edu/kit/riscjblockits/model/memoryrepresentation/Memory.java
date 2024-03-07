@@ -16,6 +16,7 @@ import java.util.Set;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_ADDRESS;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_INITIAL_PC;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
+import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORYSIZE;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_WORD;
 
 /**
@@ -42,6 +43,11 @@ public class Memory {
     private final int addressLength;
 
     /**
+     * the size of the memory in bits.
+     */
+    private final int memorySize;
+
+    /**
      * where the program counter should start.
      */
     private Value initialProgramCounter;
@@ -53,9 +59,10 @@ public class Memory {
      * @param addressLength the size of a memory address in bytes
      * @param memoryLength the size of a memory word in bytes
      */
-    public Memory(int addressLength, int memoryLength) {
+    public Memory(int addressLength, int memoryLength, int memorySize) {
         this.memoryLength = memoryLength;
         this.addressLength = addressLength;
+        this.memorySize = memorySize;
     }
 
     /**
@@ -65,9 +72,9 @@ public class Memory {
      * @return the value at the given address
      */
     public Value getValueAt(Value address) {
-
-        if (memory.containsKey(address))
-            return memory.get(address);
+        Value trimmedAddress = getTrimmedAddress(address);
+        if (memory.containsKey(trimmedAddress))
+            return memory.get(trimmedAddress);
         return new Value(new byte[memoryLength]);
     }
 
@@ -77,9 +84,24 @@ public class Memory {
      * @param value the value to write
      */
     public void setValue(Value address, Value value) {
+        Value trimmedAddress = getTrimmedAddress(address);
         synchronized (memory) {
-            memory.put(address, value);
+            memory.put(trimmedAddress, value);
         }
+    }
+
+    /**
+     * Will trim a given address to the memory address size.
+     * @param address the address to trim
+     * @return the trimmed address
+     */
+    private Value getTrimmedAddress(Value address) {
+        String addressString = address.getBinaryValue();
+        if (addressString.length() <= memorySize)
+            return Value.fromBinary(addressString, memorySize / 8 + memorySize % 8 == 0? 0 : 1);
+
+        return Value.fromBinary(addressString.substring(addressString.length() - memorySize),
+                (memorySize / 8) + (memorySize % 8 == 0? 0 : 1));
     }
 
     /**
@@ -91,12 +113,14 @@ public class Memory {
         // load word size and address size
         IDataStringEntry wordSizeString = (IDataStringEntry) data.get(MEMORY_WORD);
         IDataStringEntry addressSizeString = (IDataStringEntry) data.get(MEMORY_ADDRESS);
+        IDataStringEntry memorySizeString = (IDataStringEntry) data.get(MEMORY_MEMORYSIZE);
 
         int wordSize = Integer.parseInt(addressSizeString.getContent());
         int addressSize = Integer.parseInt(wordSizeString.getContent());
+        int memorySize = Integer.parseInt(memorySizeString.getContent());
 
         // create new memory
-        Memory memory = new Memory(addressSize, wordSize);
+        Memory memory = new Memory(addressSize, wordSize, memorySize);
 
         // load initial program counter if one is set
         if (data.get(MEMORY_INITIAL_PC).isEntry()) {
@@ -116,6 +140,7 @@ public class Memory {
 
     /**
      * Saves the memory to a {@link IDataElement}.
+     * Only sends 500 addresses around the query line.
      * @return the saved memory
      *          Data Format: key: memory, value: DataContainer
      *                          key: wordSize, value: Memory length as String
@@ -128,6 +153,7 @@ public class Memory {
         // save word size and address size
         data.set(MEMORY_WORD, new DataStringEntry(String.valueOf(memoryLength)));
         data.set(MEMORY_ADDRESS, new DataStringEntry(String.valueOf(addressLength)));
+        data.set(MEMORY_MEMORYSIZE, new DataStringEntry(String.valueOf(memorySize)));
 
         // save initial program counter if one is set
         if (initialProgramCounter != null)
@@ -155,11 +181,34 @@ public class Memory {
         return data;
     }
 
+    /**
+     * Saves the memory to a {@link IDataElement}.
+     * Saves the whole memory.
+     * @return the saved memory
+     *          Data Format: key: memory, value: DataContainer
+     *                          key: wordSize, value: Memory length as String
+     *                          key: addressSize, value: Address length as String
+     */
+    public IDataElement getCompleteData() {
+        IDataContainer data = (IDataContainer) getData();
+        IDataContainer memoryData = new Data();
+        Set<Value> values;
+        values = new HashSet<>(memory.keySet());
+        // save all values
+        for (Value address : values) {
+            Value value = memory.get(address);
+            if(value == null) continue;
+            memoryData.set(address.getHexadecimalValue(), new DataStringEntry(value.getHexadecimalValue()));
+        }
+        data.set(MEMORY_MEMORY, memoryData);
+        return data;
+    }
+
     @Override
     public boolean equals(Object o) { // generated by wizard
         if (this == o) return true;
         if (!(o instanceof Memory memory1)) return false;
-        return memoryLength == memory1.memoryLength && addressLength == memory1.addressLength && Objects.equals(memory, memory1.memory);
+        return memorySize == memory1.memorySize && memoryLength == memory1.memoryLength && addressLength == memory1.addressLength && Objects.equals(memory, memory1.memory);
     }
 
     @Override

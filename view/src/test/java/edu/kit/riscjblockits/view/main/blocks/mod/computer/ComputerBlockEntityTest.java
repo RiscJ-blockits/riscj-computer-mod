@@ -301,7 +301,7 @@ class ComputerBlockEntityTest {
         subNbt.putString(REGISTER_TYPE, "Z");
         registerEntity9.readNbt(nbt);
         //only when memory is set
-        Memory memory = new Memory(2,2);
+        Memory memory = new Memory(2,2, 16);
         ((MemoryModel) ((MemoryBlockEntity) blocks.get("MEMORY")).getModel()).setMemory(memory);
         ControlUnitBlockEntity cuEntity = (ControlUnitBlockEntity) blocks.get("CONTROL_UNIT");
     }

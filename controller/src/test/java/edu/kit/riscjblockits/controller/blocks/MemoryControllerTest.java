@@ -41,13 +41,13 @@ class MemoryControllerTest {
     @Test
     void setMemoryData() {
         Data memoryData = new Data();
-        Memory memory = new Memory(2,2);
+        Memory memory = new Memory(2,2, 16);
         memory.setValue(Value.fromHex("01",2),Value.fromHex("01",2));
         memory.setMemoryQueryLine(1);
         memoryData.set(MEMORY_PROGRAMM_ITEM, memory.getData());
         data.set(MEMORY_MEMORY, memoryData);
         testMemoryController.setData(data);
-        assertEquals(3, ((Data) testMemoryModel.getData()).getKeys().size());
+        assertEquals(4, ((Data) testMemoryModel.getData()).getKeys().size());
         data.set(MEMORY_MEMORY, null);
         testMemoryController.setData(data);
         assertEquals(0, ((Data) testMemoryModel.getData()).getKeys().size());

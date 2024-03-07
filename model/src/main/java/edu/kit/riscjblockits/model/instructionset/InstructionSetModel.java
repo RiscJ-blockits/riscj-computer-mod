@@ -157,6 +157,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
             }
             opcodeHashMap.get(e.getOpcode()).add(e);
         });
+        if (instructionSetRegisters == null) return;
         instructionSetRegisters.generateRegisterAddressMaps();
     }
 
@@ -166,6 +167,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public String[] getAluRegisters() {
+        if (instructionSetRegisters == null) return new String[0];
         return instructionSetRegisters.getAluRegs();
     }
 
@@ -210,6 +212,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public String getProgramCounter() {
+        if(instructionSetRegisters == null) return null;
         return instructionSetRegisters.getProgramCounter();
     }
 
@@ -219,6 +222,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public int getMemoryWordSize() {
+        if(instructionSetMemory == null) return 0;
         return instructionSetMemory.getWordSize() / 8 + (instructionSetMemory.getWordSize() % 8 > 0 ? 1 : 0);
     }
 
@@ -228,7 +232,13 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public int getMemoryAddressSize() {
+        if(instructionSetMemory == null) return 0;
         return instructionSetMemory.getAddressSize() / 8 + (instructionSetMemory.getAddressSize() % 8 > 0 ? 1 : 0);
+    }
+
+    @Override
+    public int getMemoryAddressSizeInBits() {
+        return instructionSetMemory != null ? instructionSetMemory.getAddressSize() : 0;
     }
 
     /**
@@ -248,6 +258,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public boolean isAddressChange(String s) {
+        if (addressChangeHashMap == null) return false;
         for (String key : addressChangeHashMap.keySet()) {
             Pattern p = Pattern.compile(key);
             if (p.matcher(s).matches()) {
@@ -264,6 +275,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public String getChangedAddress(String s) {
+        if (addressChangeHashMap == null) return null;
         for (String key : addressChangeHashMap.keySet()) {
             Pattern p = Pattern.compile(key);
             Matcher m = p.matcher(s);
@@ -299,6 +311,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public boolean isDataStorageCommand(String s) {
+        if (dataStorageKeywords == null) return false;
         for (String key : dataStorageKeywords.keySet()) {
             Pattern p = Pattern.compile(key);
             if (p.matcher(s).matches()) {
@@ -318,6 +331,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public String getStorageCommandData(String s) {
+        if (dataStorageKeywords == null) return null;
         for (String key : dataStorageKeywords.keySet()) {
             Pattern p = Pattern.compile(key);
             Matcher m = p.matcher(s);
@@ -362,7 +376,10 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public int getFetchPhaseLength() {
-        return fetchPhase.length;
+        if (fetchPhase != null) {
+            return fetchPhase.length;
+        }
+        return 0;
     }
 
     /**
@@ -372,12 +389,15 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      */
     @Override
     public MicroInstruction getFetchPhaseStep(int index) {
-        return fetchPhase[index];
+        if (fetchPhase != null) {
+            return fetchPhase[index];
+        }
+        return null;
     }
 
     @Override
     public IQueryableInstruction getInstructionFromBinary(String binaryValue) {
-
+        if (instructionSetMemory == null) return null;
         for (int opCodeLength : instructionSetMemory.getPossibleOpcodeLengths()) {
             int opCodeStart;
             if (Objects.equals(instructionSetMemory.getOpcodePosition(), "MOST")) {
@@ -413,6 +433,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @return Returns the names of all registers.
      */
     public List<String> getRegisterNames() {
+        if (instructionSetRegisters == null) return new ArrayList<>(0);
         return instructionSetRegisters.getRegisterNames();
     }
 
@@ -422,6 +443,7 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
      * @return The initial value of the register.
      */
     public String getRegisterInitialValue(String key) {
+        if (instructionSetRegisters == null) return "";
         return instructionSetRegisters.getInitialValue(key);
     }
 
@@ -461,14 +483,10 @@ public class InstructionSetModel implements IQueryableInstructionSetModel {
         if (!name.equals(that.name)) return false;
         assert programStartLabel != null;
         if (!programStartLabel.equals(that.programStartLabel)) return false;
-        //ToDo finish
-        return true;
+        if (!Arrays.equals(aluActions, that.aluActions)) return false;
+        if (!Objects.equals(addressChangeHashMap, that.addressChangeHashMap)) return false;
+        if (!Objects.equals(dataStorageKeywords, that.dataStorageKeywords)) return false;
+        if (!Objects.equals(exampleProgram, that.exampleProgram)) return false;
+        return Objects.equals(aiApi, that.aiApi);
     }
-
-    @Override
-    public int hashCode() {
-        //ToDo implement
-        return super.hashCode();
-    }
-
 }

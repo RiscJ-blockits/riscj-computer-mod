@@ -67,11 +67,13 @@ public class Assembler {
         this.instructionSetModel = instructionSetModel;
         calculatedMemoryAddressSize = instructionSetModel.getMemoryAddressSize();
         calculatedMemoryWordSize = instructionSetModel.getMemoryWordSize();
+        int memorySize = instructionSetModel.getMemoryAddressSizeInBits();
 
 
         memory = new Memory(
             calculatedMemoryAddressSize,
-            calculatedMemoryWordSize
+            calculatedMemoryWordSize,
+            memorySize
         );
         currentAddress = new Value(new byte[calculatedMemoryAddressSize]);
     }
@@ -324,6 +326,7 @@ public class Assembler {
      * @return the memory that was written to
      */
     public IDataElement getMemoryData() {
-        return memory.getData();
+        return memory.getCompleteData();
     }
+
 }
