@@ -122,6 +122,7 @@ public class Memory {
 
     /**
      * Saves the memory to a {@link IDataElement}.
+     * Only sends 500 addresses around the query line.
      * @return the saved memory
      *          Data Format: key: memory, value: DataContainer
      *                          key: wordSize, value: Memory length as String
@@ -158,6 +159,29 @@ public class Memory {
             memoryData.set(address.getHexadecimalValue(), new DataStringEntry(value.getHexadecimalValue()));
         }
         // save memory
+        data.set(MEMORY_MEMORY, memoryData);
+        return data;
+    }
+
+    /**
+     * Saves the memory to a {@link IDataElement}.
+     * Saves the whole memory.
+     * @return the saved memory
+     *          Data Format: key: memory, value: DataContainer
+     *                          key: wordSize, value: Memory length as String
+     *                          key: addressSize, value: Address length as String
+     */
+    public IDataElement getCompleteData() {
+        IDataContainer data = (IDataContainer) getData();
+        IDataContainer memoryData = new Data();
+        Set<Value> values;
+        values = new HashSet<>(memory.keySet());
+        // save all values
+        for (Value address : values) {
+            Value value = memory.get(address);
+            if(value == null) continue;
+            memoryData.set(address.getHexadecimalValue(), new DataStringEntry(value.getHexadecimalValue()));
+        }
         data.set(MEMORY_MEMORY, memoryData);
         return data;
     }

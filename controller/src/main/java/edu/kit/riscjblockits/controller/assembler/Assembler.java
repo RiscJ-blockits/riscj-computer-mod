@@ -326,6 +326,7 @@ public class Assembler {
      * @return the memory that was written to
      */
     public IDataElement getMemoryData() {
-        return memory.getData();
+        return memory.getCompleteData();
     }
+
 }

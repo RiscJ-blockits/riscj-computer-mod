@@ -126,8 +126,7 @@ public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
                 long addressInt = Long.parseLong(address, 16);
                 if (addressInt >= 0 && addressInt < handler.getMemorySize()-SCREEN_LINES) {
                     memoryListWidget.jumpToLine(addressInt);
-                }
-                else if(addressInt >= handler.getMemorySize()- SCREEN_LINES && addressInt <= handler.getMemorySize()){
+                } else if(addressInt >= handler.getMemorySize()- SCREEN_LINES && addressInt <= handler.getMemorySize()){
                     memoryListWidget.jumpToLine(handler.getMemorySize()-SCREEN_LINES);
                 }
             } catch (NumberFormatException e) {
