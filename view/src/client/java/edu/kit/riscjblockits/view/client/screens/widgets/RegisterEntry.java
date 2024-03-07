@@ -35,7 +35,7 @@ public class RegisterEntry extends ListEntry {
             if(RegisterEntry.this.missing) {
                 RegisterEntry.this.assignRegister(RegisterEntry.this.name);
             } else if (!RegisterEntry.this.currentReg) {
-                RegisterEntry.this.assignRegister(RegisterEntry.this.name);
+                //RegisterEntry.this.assignRegister(RegisterEntry.this.name); Can be used for stealing feature in the future
             } else {
                 RegisterEntry.this.deselectRegister();
             }
