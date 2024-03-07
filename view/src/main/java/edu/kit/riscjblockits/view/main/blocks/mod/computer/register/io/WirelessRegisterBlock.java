@@ -1,9 +1,11 @@
-package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
+package edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io;
 
 import edu.kit.riscjblockits.controller.blocks.io.WirelessRegisterController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -13,6 +15,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -28,6 +32,19 @@ import java.util.List;
  * This class defines a register block that can change its value based on another register somewhere else in the world.
  */
 public class WirelessRegisterBlock extends RegisterBlock {
+
+    /**
+     * Determines if the register is connected or not.
+     */
+    private static final BooleanProperty CONNECTED = RISCJ_blockits.WIRELESS_CONNECTED_PROPERTY;
+
+    /**
+     * Creates a new WirelessRegisterBlock with default settings.
+     */
+    public WirelessRegisterBlock() {
+        super();
+        setDefaultState(getDefaultState().with(CONNECTED, false));
+    }
 
     /**
      * Creates a new RedstoneInputBlockEntity.
@@ -120,6 +137,16 @@ public class WirelessRegisterBlock extends RegisterBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return (world1, pos, state1, be) -> WirelessRegisterBlockEntity.tick(world1, pos, state1, (ComputerBlockEntity) be);
+    }
+
+    /**
+     * Is called by minecraft. We add our custom block state.
+     * @param builder {@link net.minecraft.block.Block#appendProperties(StateManager.Builder)} for this block.
+     */
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        super.appendProperties(builder);
+        builder.add(CONNECTED);
     }
 
 }

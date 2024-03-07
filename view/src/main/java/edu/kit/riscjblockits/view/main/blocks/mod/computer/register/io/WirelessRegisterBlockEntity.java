@@ -1,11 +1,13 @@
-package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
+package edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
 import edu.kit.riscjblockits.controller.blocks.io.WirelessRegisterController;
 import edu.kit.riscjblockits.model.blocks.BlockPosition;
+import edu.kit.riscjblockits.model.blocks.WirelessRegisterModel;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.blocks.mod.ModBlockEntity;
 import edu.kit.riscjblockits.view.main.blocks.mod.computer.ComputerBlockEntity;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.RegisterBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -52,6 +54,10 @@ public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
         }
     }
 
+    private boolean isConnected() {
+        return ((WirelessRegisterModel) getModel()).isConnected();
+    }
+
     /**
      * Is called every tick.
      * Syncs the register with the connected registers.
@@ -66,6 +72,7 @@ public class WirelessRegisterBlockEntity extends RegisterBlockEntity {
             return;
         }
         ((WirelessRegisterBlockEntity) world.getBlockEntity(pos)).syncRegister();
+        world.setBlockState(pos, state.with(RISCJ_blockits.WIRELESS_CONNECTED_PROPERTY, ((WirelessRegisterBlockEntity)entity).isConnected()));
     }
 
 }

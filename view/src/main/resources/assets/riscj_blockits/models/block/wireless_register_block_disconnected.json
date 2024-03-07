@@ -1,0 +1,7 @@
+{
+  "parent": "riscj_blockits:block/wireless_register_block",
+  "textures": {
+    "0": "riscj_blockits:block/wireless_register_disconnected",
+    "particle": "riscj_blockits:block/wireless_register_disconnected"
+  }
+}

@@ -1,8 +1,9 @@
-package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
+package edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io;
 
 import edu.kit.riscjblockits.controller.blocks.BlockControllerType;
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.TestSetupMain;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.WirelessRegisterBlockEntity;
 import net.minecraft.util.math.BlockPos;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;

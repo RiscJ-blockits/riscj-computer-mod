@@ -1,7 +1,8 @@
 {
   "variants": {
-    "": {
-      "model": "riscj_blockits:block/text_output_block"
-    }
+    "facing=north": { "model": "riscj_blockits:block/text_output_block", "y": 180},
+    "facing=east":  { "model": "riscj_blockits:block/text_output_block", "y":  270 },
+    "facing=south": { "model": "riscj_blockits:block/text_output_block" },
+    "facing=west":  { "model": "riscj_blockits:block/text_output_block", "y": 90  }
   }
 }

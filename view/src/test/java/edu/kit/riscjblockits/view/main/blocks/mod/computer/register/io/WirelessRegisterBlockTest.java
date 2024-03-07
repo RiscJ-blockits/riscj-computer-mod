@@ -1,7 +1,9 @@
-package edu.kit.riscjblockits.view.main.blocks.mod.computer.register;
+package edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io;
 
 import edu.kit.riscjblockits.view.main.RISCJ_blockits;
 import edu.kit.riscjblockits.view.main.TestSetupMain;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.WirelessRegisterBlock;
+import edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io.WirelessRegisterBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
