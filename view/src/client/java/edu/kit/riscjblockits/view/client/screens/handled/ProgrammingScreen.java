@@ -78,7 +78,6 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
      */
     private boolean narrow;
 
-
     private AiProgrammer aiProgrammer;
 
     /**
@@ -237,6 +236,9 @@ public class ProgrammingScreen extends HandledScreen<ProgrammingScreenHandler> {
         drawMouseoverTooltip(context, mouseX, mouseY);
         exampleButton.visible = !this.handler.getExample().isEmpty();
         aiButton.visible = aiProgrammer != null;
+        if (handler.getInstructions().isEmpty()) {
+            aiButton.visible = false;
+        }
     }
 
     /**
