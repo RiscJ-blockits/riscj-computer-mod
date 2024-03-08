@@ -147,8 +147,13 @@ public class RegSelectWidget extends ExtendableWidget {
         if(!this.isOpen()) {
             return false;
         }
-        registerList.mouseClicked(mouseX, mouseY, button);
-        return true;
+        children.forEach((element) -> {
+            if (element.isMouseOver(mouseX, mouseY)) {
+                element.mouseClicked(mouseX, mouseY, button);
+            }
+        });
+        //registerList.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     /**
