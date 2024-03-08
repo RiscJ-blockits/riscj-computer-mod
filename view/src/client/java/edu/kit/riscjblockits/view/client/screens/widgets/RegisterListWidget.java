@@ -41,4 +41,26 @@ public class RegisterListWidget extends ScrollableListWidget<RegisterEntry> {
             }
         }
     }
+
+    /**
+     * Handles a mouse click on the widget.
+     * @param mouseX the X coordinate of the mouse
+     * @param mouseY the Y coordinate of the mouse
+     * @param button the mouse button number
+     * @return true if the click was handled, false otherwise
+     */
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (!isMouseOver(mouseX, mouseY)) {
+            return false;
+        }
+        entries.forEach((element) -> {
+            if (element.getY() + element.getHeight() < getY()
+                    || element.getY() >= getY() + getHeight()) {
+                return;
+            }
+            element.mouseClicked(mouseX, mouseY, button);
+        });
+        return true;
+    }
 }
