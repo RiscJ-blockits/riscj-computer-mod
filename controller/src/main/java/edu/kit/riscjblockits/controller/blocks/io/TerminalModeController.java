@@ -88,8 +88,8 @@ public class TerminalModeController extends RegisterController {
                     String first;
                     String second;
                     try {
-                        first = type.split("_")[0];
-                        second = type.split("_")[1];
+                        first = type.split("-")[0];
+                        second = type.split("-")[1];
                     } catch (ArrayIndexOutOfBoundsException e) {
                         continue;
                     }

@@ -114,13 +114,13 @@ public class TerminalSelectionWidget extends RegSelectWidget{
         buf.writeBlockPos(pos);
         switch (displayMode){
             case IN:
-                buf.writeString(IN +"_"+ name);
+                buf.writeString(IN +"-"+ name);
                 break;
             case OUT:
-                buf.writeString(OUT +"_"+ name);
+                buf.writeString(OUT +"-"+ name);
                 break;
             case MODE:
-                buf.writeString(MODE +"_"+ name);
+                buf.writeString(MODE +"-"+ name);
                 break;
         }
         ClientPlayNetworking.send(NetworkingConstants.SYNC_REGISTER_SELECTION, buf);
