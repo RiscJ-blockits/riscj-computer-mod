@@ -139,7 +139,7 @@ public class SimulationTimeHandler implements ISimulationTimingObserver, IRealti
         return minecraftTickCounter;
     }
 
-/**
+    /**
      * Get the current clock mode to check in tests.
      * @return The current clock mode.
      */

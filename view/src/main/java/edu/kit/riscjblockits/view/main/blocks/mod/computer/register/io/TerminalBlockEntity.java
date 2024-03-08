@@ -1,7 +1,6 @@
 package edu.kit.riscjblockits.view.main.blocks.mod.computer.register.io;
 
 import edu.kit.riscjblockits.controller.blocks.ComputerBlockController;
-import edu.kit.riscjblockits.controller.blocks.RegisterController;
 import edu.kit.riscjblockits.controller.blocks.io.TerminalInputController;
 import edu.kit.riscjblockits.controller.blocks.io.TerminalModeController;
 import edu.kit.riscjblockits.controller.blocks.io.TerminalOutputController;

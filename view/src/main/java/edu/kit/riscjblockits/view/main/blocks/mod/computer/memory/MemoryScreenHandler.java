@@ -19,7 +19,6 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
-import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_ADDRESS;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORY;
 import static edu.kit.riscjblockits.model.data.DataConstants.MEMORY_MEMORYSIZE;
 import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
@@ -30,6 +29,9 @@ import static edu.kit.riscjblockits.model.data.DataConstants.MOD_DATA;
  */
 public class MemoryScreenHandler extends ModScreenHandler {
 
+    /**
+     * The number of lines that are displayed on the screen.
+     */
     public static final int SCREEN_LINES = 9;
     /**
      * The inventory of the memory entity.

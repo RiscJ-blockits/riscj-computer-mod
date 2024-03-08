@@ -21,13 +21,14 @@ import org.lwjgl.glfw.GLFW;
  * It can display the contents of the memory in the computer.
  */
 public class MemoryScreen extends HandledScreen<MemoryScreenHandler> {
-
+    /**
+     * The number of lines that are displayed on the screen.
+     */
+    public static final int SCREEN_LINES = 9;
     /**
      * The background texture of the screen.
      */
     private static final Identifier TEXTURE = new Identifier(RISCJ_blockits.MOD_ID, "textures/gui/memory_block/memory_block_gui.png");
-    public static final int SCREEN_LINES = 9;
-
     /**
      * The list widget that displays the memory contents.
      */

@@ -77,7 +77,9 @@ public class ControlUnitController extends ComputerBlockController{
                 String ist;
                 try {
                     ist = ((IDataStringEntry) ((IDataContainer) ((IDataContainer) data).get(s)).get(CONTROL_IST_ITEM)).getContent();
-                } catch (ClassCastException e) { continue; }
+                } catch (ClassCastException e) {
+                    continue;
+                }
                 IQueryableInstructionSetModel istModel = null;
                 try {
                     istModel = InstructionSetBuilder.buildInstructionSetModel(ist);

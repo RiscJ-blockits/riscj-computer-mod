@@ -273,7 +273,7 @@ public class AluController extends ComputerBlockController {
         ByteBuffer wrapped = ByteBuffer.wrap(operand1.getByteValue());
         long num = wrapped.getLong();
         num = Math.abs(num);
-        float float1 = (float) num;
+        float float1 = num;
         return getFloatAsValue(float1);
     }
 
@@ -285,7 +285,7 @@ public class AluController extends ComputerBlockController {
     private Value fcvts(Value operand1) {
         ByteBuffer wrapped = ByteBuffer.wrap(operand1.getByteValue());
         int num = wrapped.getInt();
-        float float1 = (float) num;
+        float float1 = num;
 
         return getFloatAsValue(float1);
     }
@@ -667,7 +667,6 @@ public class AluController extends ComputerBlockController {
         BigInteger bigInt2 = new BigInteger(array2);
 
         if (bigInt2.equals(BigInteger.ZERO)) {
-            //spawnEffect(IConnectableComputerBlockEntity.ComputerEffect.EXPLODE);
             ((AluModel) this.getModel()).setExplosion();
             return Value.fromHex("FF".repeat(array1.length), array1.length);
         }

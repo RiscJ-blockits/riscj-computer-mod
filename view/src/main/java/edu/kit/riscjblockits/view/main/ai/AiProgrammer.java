@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -75,7 +76,7 @@ public class AiProgrammer {
         try {
             HttpResponse<String> httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
             response = httpResponse.body();
-        } catch (Exception e) {
+        } catch (IOException  | InterruptedException e) {
             return "";
         }
         return extractContent(response);

@@ -58,6 +58,7 @@ public class Memory {
      * Will create a new memory with the given address and word size.
      * @param addressLength the size of a memory address in bytes
      * @param memoryLength the size of a memory word in bytes
+     * @param memorySize the size of the memory in bits
      */
     public Memory(int addressLength, int memoryLength, int memorySize) {
         this.memoryLength = memoryLength;
