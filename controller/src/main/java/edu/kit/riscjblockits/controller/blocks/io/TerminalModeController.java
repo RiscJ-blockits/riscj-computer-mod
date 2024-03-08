@@ -12,6 +12,7 @@ import edu.kit.riscjblockits.model.data.IDataElement;
 import edu.kit.riscjblockits.model.data.IDataStringEntry;
 import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
+import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_ALU_REGS;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_FOUND;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_MISSING;
 import static edu.kit.riscjblockits.model.data.DataConstants.REGISTER_REGISTERS;
@@ -123,6 +124,14 @@ public class TerminalModeController extends RegisterController {
                         missingAvailableRegisters);
                     ((RegisterModel) inputController.getModel()).setMissingAvailableRegisters(
                         missingAvailableRegisters);
+                    // set alu registers
+                    if (registers.get(REGISTER_ALU_REGS) instanceof IDataStringEntry) {
+                        String[] aluRegs = ((IDataStringEntry) registers.get(REGISTER_ALU_REGS)).getContent().split(" ");
+                        ((RegisterModel) getModel()).setAluRegisterNames(aluRegs);
+                        ((RegisterModel) outputController.getModel()).setAluRegisterNames(aluRegs);
+                        ((RegisterModel) inputController.getModel()).setAluRegisterNames(aluRegs);
+                    }
+
                 }
                 case REGISTER_WORD_LENGTH -> {
                     int wordLength;
