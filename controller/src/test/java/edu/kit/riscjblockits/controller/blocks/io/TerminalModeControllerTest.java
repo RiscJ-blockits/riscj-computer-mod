@@ -41,13 +41,13 @@ class TerminalModeControllerTest {
 
     @Test
     void setNewDataRegisterType() {
-        data.set(REGISTER_TYPE, new DataStringEntry("In_test"));
+        data.set(REGISTER_TYPE, new DataStringEntry("In-test"));
         terminalModeController.setData(data);
         assertEquals("test", terminalInputController.getRegisterType());
-        data.set(REGISTER_TYPE, new DataStringEntry("Out_test"));
+        data.set(REGISTER_TYPE, new DataStringEntry("Out-test"));
         terminalModeController.setData(data);
         assertEquals("test", terminalOutputController.getRegisterType());
-        data.set(REGISTER_TYPE, new DataStringEntry("Mode_test"));
+        data.set(REGISTER_TYPE, new DataStringEntry("Mode-test"));
         terminalModeController.setData(data);
         assertEquals("test", terminalModeController.getRegisterType());
     }
