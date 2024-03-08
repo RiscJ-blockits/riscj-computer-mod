@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "active=true": { "model":  "riscj_blockits:block/redstone_output_block_active"},
+    "active=false": { "model":  "riscj_blockits:block/redstone_output_block"}
+  }
+}

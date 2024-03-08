@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "active=true": { "model":  "riscj_blockits:block/control_unit_block_active"},
+    "active=false": { "model":  "riscj_blockits:block/control_unit_block"}
+  }
+}

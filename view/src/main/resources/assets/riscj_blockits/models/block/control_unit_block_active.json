@@ -1,0 +1,7 @@
+{
+    "parent": "riscj_blockits:block/control_unit_block",
+  "textures": {
+    "0": "riscj_blockits:block/control_unit_active",
+    "particle": "riscj_blockits:block/control_unit_active"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "riscj_blockits:block/memory_block",
+  "textures": {
+    "0": "riscj_blockits:block/memory_block_active",
+    "1": "riscj_blockits:block/glass",
+    "particle": "riscj_blockits:block/memory_block_active"
+  }
+}

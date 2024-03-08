@@ -1,20 +1,44 @@
-qodana:
-   image:
-      name: jetbrains/qodana-jvm
-      entrypoint: [""]
-   cache:
-      - key: qodana-2023.2-$CI_DEFAULT_BRANCH-$CI_COMMIT_REF_SLUG
-        fallback_keys:
-           - qodana-2023.2-$CI_DEFAULT_BRANCH-
-           - qodana-2023.2-
-        paths:
-           - .qodana/cache
-   variables:
-      QODANA_TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdhbml6YXRpb24iOiIzMWJYeCIsInByb2plY3QiOiJwMjFCbiIsInRva2VuIjoiM3l4YmwifQ.ECLsuFCJ3ogjXDNR1p333VNDGkOixdPRKnLt2k-FoGo
-   script:
-      - qodana --save-report --results-dir=$CI_PROJECT_DIR/.qodana/results
-         --cache-dir=$CI_PROJECT_DIR/.qodana/cache
-   artifacts:
-      paths:
-         - qodana/report/
-      expose_as: 'Qodana report'
+stages:
+  - build
+  - test
+  - sonarqube-check
+
+build:
+  tags:
+    - shell
+  stage: build
+  script:
+    - ./gradlew --continue build --stacktrace -x test
+
+test:
+  tags:
+    - shell
+  stage: test
+  script:
+    - ./gradlew test --continue
+  artifacts:
+    expire_in: 5 day
+    reports:
+      junit:
+        - model/build/test-results/test/TEST-*.xml
+        - controller/build/test-results/test/TEST-*.xml
+        - view/build/test-results/test/TEST-*.xml
+    paths:
+      - controller/build/reports/
+      - model/build/reports/
+      - view/build/reports/
+    when: always
+
+sonarqube-check:
+  stage: sonarqube-check
+  variables:
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project required by the analysis task
+  tags:
+    - shell
+  script: ./gradlew build jacocoTestReport sonar -Dsonar.token=$SONAR_TOKEN
+  allow_failure: true
+  only:
+    - merge_requests
+    - main
+    - implementation
+    - qualitätsicherung

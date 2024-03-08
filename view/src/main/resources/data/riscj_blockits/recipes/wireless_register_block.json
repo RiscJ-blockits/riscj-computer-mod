@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " L ",
+    "CRC",
+    "CCC"
+  ],
+  "key": {
+    "R": {
+      "item": "riscj_blockits:register_block"
+    },
+    "L": {
+      "item": "minecraft:lightning_rod"
+    },
+    "C": {
+      "tag": "minecraft:copper_ingot"
+    }
+  },
+  "result": {
+    "item": "riscj_blockits:wireless_register_block",
+    "count": 1
+  }
+}

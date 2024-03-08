@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "riscj_blockits:control_unit_block",
+    "riscj_blockits:memory_block",
+    "riscj_blockits:register_block",
+    "riscj_blockits:system_clock_block",
+    "riscj_blockits:alu_block",
+    "riscj_blockits:bus_block"
+  ]
+}
+

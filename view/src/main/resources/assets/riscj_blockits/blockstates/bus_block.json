@@ -1,0 +1,144 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "active": "false"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_center"
+      }
+    },
+    {
+      "when": {
+        "active": "true"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_center_active"
+      }
+    },
+    {
+      "when": {
+        "up": "present"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_side",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "up": "active"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_side_active",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "down": "present"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_side",
+        "uvlock": false,
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "down": "active"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_side_active",
+        "uvlock": false,
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "north": "present"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_side",
+        "uvlock": false,
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "north": "active"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_side_active",
+        "uvlock": false,
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "east": "present"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_side",
+        "y": 90,
+        "x": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "east": "active"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_side_active",
+        "y": 90,
+        "x": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "south": "present"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_side",
+        "y": 180,
+        "x": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "south": "active"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_side_active",
+        "y": 180,
+        "x": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "west": "present"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_side",
+        "y": 270,
+        "x": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "west": "active"
+      },
+      "apply": {
+        "model": "riscj_blockits:block/bus_block_side_active",
+        "y": 270,
+        "x": 90,
+        "uvlock": false
+      }
+    }
+  ]
+}
