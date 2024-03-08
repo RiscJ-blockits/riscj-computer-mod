@@ -139,6 +139,9 @@ public class MemoryBlockEntity extends ComputerBlockEntityWithInventory implemen
      * @param line the line to set the memory query line to.
      */
     public void setMemoryQueryLine(long line) {
+        if (getController() == null) {
+            return; //should never be reached but is reached
+        }
         Data mData = new Data();
         mData.set(MEMORY_QUERY_LINE, new DataStringEntry(String.valueOf(line)));
         getController().setData(mData);

@@ -1,11 +1,10 @@
 {
-
-    "name": "RiscV",										//Name des Befehlssatzes
-    "instruction_length": 32,								//Länge des Befehlswortes
+    "name": "RiscV",                                        //Name des Befehlssatzes
+    "instruction_length": 32,                               //Länge des Befehlswortes
 
     "registers": {
         "program_counter": "PC",
-        "alu":["A", "B", "OUT"],							//Register der Architektur, die direkt an die ALU gebunden werden müssen
+        "alu":["A", "B", "OUT"],                            //Register der Architektur, die direkt an die ALU gebunden werden müssen
         "float": {
             //Register für Float-Operationen
             "ft0": 0,
@@ -41,7 +40,7 @@
             "ft10": 30,
             "ft11": 31
         },
-        "integer": {										//Register für Integer-Operationen
+        "integer": {                //Register für Integer-Operationen
             "zero": 0,
             "ra": 1,
             "sp": 2,
@@ -76,15 +75,15 @@
             "t6": 31
         }
     },
-    "memory": {												//Speicher-Spezifikation
-        "word_length": 32,									//Wortlänge im Speicher
-        "address_length": 32,								//Länge der Speicheradresse
-        "access_delay": 0,									//Verzögerung beim Speicherzugriff in Takten
-        "byte_order": "be",									//Big-Endian oder Little-Endian
+    "memory": {                         //Speicher-Spezifikation
+        "word_length": 32,              //Wortlänge im Speicher
+        "address_length": 32,           //Länge der Speicheradresse
+        "access_delay": 0,              //Verzögerung beim Speicherzugriff in Takten
+        "byte_order": "be",             //Big-Endian oder Little-Endian
         "possible_opcode_lengths": [7],
         "opcode_position": "LEAST"
     },
-    "alu_operations": [										//ALU-Operationen, die direkt angeboten werden
+    "alu_operations": [                 //ALU-Operationen, die direkt angeboten werden
         "AND",
         "OR",
         "ADD",
@@ -94,7 +93,7 @@
         "SRL",
         "SRA",
         "MUL",
-        "MULH",										//Unsigned-Operationen sind nötig für die Unterscheidung
+        "MULH",                         //Unsigned-Operationen sind nötig für die Unterscheidung
         "MULHSU",
         "MULHU",
         "DIV",
@@ -144,14 +143,14 @@
             "arguments": ["[destaddr]", "[origaddr1]", "[origaddr2]"],
             "opcode": "0110011",
             "execution": [
-                ["A", "&[origaddr1]", "", "", ""],		//Gibt je Subliste einen Abarbeitungsschritt für den Befehl an
-                ["B", "&[origaddr2]", "", "", ""],				//Standardformat für Datenbewegung -> [destination, origin, memory flag, storage operation]
-                ["ADD", "OUT", "A", "B", "", "", ""],			//ALU-Operationen-Format -> [operation, alu-dest, alu-origin 1, alu-origin 2, memory flag]
+                ["A", "&[origaddr1]", "", "", ""],              //Gibt je Subliste einen Abarbeitungsschritt für den Befehl an
+                ["B", "&[origaddr2]", "", "", ""],              //Standardformat für Datenbewegung -> [destination, origin, memory flag, storage operation]
+                ["ADD", "OUT", "A", "B", "", "", ""],           //ALU-Operationen-Format -> [operation, alu-dest, alu-origin 1, alu-origin 2, memory flag]
                 ["&[destaddr]", "OUT", "", "", ""]
             ],
-            "translation": [							//Übersetzung in Binärformat
+            "translation": [            //Übersetzung in Binärformat
                 "0000000",
-                "[origaddr2]<5>",						//Adressen oder Konstanten in [], <n> gibt Länge der Zahl an
+                "[origaddr2]<5>",       //Adressen oder Konstanten in [], <n> gibt Länge der Zahl an
                 "[origaddr1]<5>",
                 "000",
                 "[destaddr]<5>",
@@ -239,7 +238,7 @@
                 ["", "", "w", "Mem[OUT]", "&[t1]"]
             ],
             "translation": [
-                "[const]<11:5>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
+                "[const]<11:5>",            //Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
                 "[t1]<5>",
                 "[t2]<5>",
                 "010",
@@ -272,7 +271,7 @@
                 ["PC", "[const]", "", "", ""]
             ],
             "translation": [
-                "[const]<19:19>",						//Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
+                "[const]<19:19>",               //Konstant in [], <n:m> gibt den Bereich aus der Gesamtzahl an (m<n)
                 "[const]<9:0>",
                 "[const]<10:10>",
                 "[const]<18:11>",
@@ -1219,6 +1218,5 @@
 
     },
     "example_programm": "bubsort:\n    # a0 = int *list\n    # a1 = size\n    # internal\n    # t0 = swapped\n    # t1 = i\ndoLoop: # do loop\n    addi t0, zero, 0          # swapped = false\n    addi t1, zero, 1          # i = 1\nforLoop: # for loop\n    bge t1, a1, doBot    # break if i >= size\n    add t3, t1, a0# add i to array pointer\n    lw  t4, -1(t3)    # load list[i-1] into t4\n    lw  t5, 0(t3)     # load list[i] into t5\n    bge t5, t4, forBot    # if list[i-1] < list[i], it's in position\n    # if we get here, we need to swap\n    addi t0, zero, 1         # swapped = true\n    sw  t4, 0(t3)     # list[i] = list[i-1]\n    sw  t5, -1(t3)    # list[i-1] = list[i]\nforBot: # bottom of for loop body\n    addi t1, t1, 1    # i++\n    jal t2, forLoop      # loop again\ndoBot: # bottom of do loop body\n    bne t0, zero, doLoop   # loop if swapped = true\n    jalr t0, 0(ra)               # return via return address register\n\nmain: \naddi a0, zero, data # set pointer\n\naddi a1, zero, len  #load length\nlw a1, 0(a1)\n\njal ra, bubsort # start sorting\n\nebreak # stop the programm\n\n\nlen: \n.word 5\n# add a zero value so it is easier to see in memory\n.word 0\ndata:\n.word 23\n.word 16\n.word 69\n.word 2\n.word 128\n",
-
     "ai_api_key": ""
 }
