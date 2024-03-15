@@ -14,6 +14,9 @@
 4) let the browser open curseforge and click on Create a new profile
 5) Press on play (you may have to log in to your minecraft account first)
 
+### With Modrinth
+Modrinth Download: https://modrinth.com/mod/riscj-computer-mod
+
 ### direct download
 1) Install the fabric launcher and api with this tutorial: https://fabricmc.net/wiki/player:tutorials:install_mcl:windows (do steps 1-4)
 2) Download our .jar and move it into the mods folder of your new fabric minecraft installation
