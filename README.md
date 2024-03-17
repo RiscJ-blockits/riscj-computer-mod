@@ -1,4 +1,8 @@
 # riscjblockits
+
+<img alt="mima.png" height="500" src="/home/alpaka/IdeaProjects/riscjblockits/mima.png"/>
+<img alt="mima.png" height="500" src="/home/alpaka/IdeaProjects/riscjblockits/riscv.png"/>
+
 ## Build:
 1) import this project
 2) wait for setup to finish
