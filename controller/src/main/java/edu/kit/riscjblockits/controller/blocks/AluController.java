@@ -9,6 +9,7 @@ import edu.kit.riscjblockits.model.memoryrepresentation.Value;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 import static edu.kit.riscjblockits.model.data.DataConstants.ALU_OPERATION;
 import static java.lang.Math.max;
@@ -100,6 +101,7 @@ public class AluController extends ComputerBlockController {
         "XOR",
         "NEG",
         "JMN"
+        "EQ"
         */
 
         /*
@@ -164,6 +166,9 @@ public class AluController extends ComputerBlockController {
                 break;
             case "OR":
                 result = or(operand1, operand2);
+                break;
+            case "EQ":
+                result = eq(operand1, operand2);
                 break;
             case "XOR":
                 result = xor(operand1, operand2);
@@ -965,6 +970,28 @@ public class AluController extends ComputerBlockController {
 
         for (int i = 0; i < Math.min(array1.length, array2.length); i++) {
             result[i] = (byte) (array1[i] & array2[i]);
+        }
+
+        return new Value(result);
+    }
+
+    /**
+     * Mima Equate two values.
+     * @param operand1 first value
+     * @param operand2 second value
+     * @return when x=y then -1 else 0
+     */
+    private Value eq(Value operand1, Value operand2) {
+
+        byte[] array1 = operand1.getByteValue();
+        byte[] array2 = operand2.getByteValue();
+
+        byte[] result = new byte[max(array1.length, array2.length)];
+
+        if (Arrays.equals(array1, array2)) {
+            Arrays.fill(result, (byte) 0xFF);
+        } else {
+            //
         }
 
         return new Value(result);
